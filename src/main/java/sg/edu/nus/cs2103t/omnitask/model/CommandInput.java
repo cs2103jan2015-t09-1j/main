@@ -21,6 +21,11 @@ public class CommandInput {
 	// TODO: Might want to change this to an enum
 	private int type;
 
+	public CommandInput(String commandName) {
+		super();
+		this.commandName = commandName;
+	}
+
 	// TODO: Add more constructors for mostly used combination of fields
 	public CommandInput(String commandName, String name) {
 		super();

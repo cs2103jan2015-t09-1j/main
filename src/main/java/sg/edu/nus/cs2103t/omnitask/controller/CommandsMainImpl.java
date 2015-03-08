@@ -52,12 +52,6 @@ public class CommandsMainImpl extends Commands {
 	
 	private void processDisplayCommand(CommandInput commandInput) {
 		ArrayList<Task> tasks = data.getTasks();
-		
-		ui.showMessage("List of tasks: ");
-		
-		// TODO: Perhaps we need a new API on UI side to showcase list of tasks
-		for (Task task : tasks) {
-			ui.showMessage(task.getId() + " - " + task.getName());
-		}
+		ui.updateTaskListings(tasks);
 	}
 }

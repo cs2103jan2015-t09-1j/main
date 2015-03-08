@@ -4,10 +4,12 @@ import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.*;
 
 import sg.edu.nus.cs2103t.omnitask.controller.Controller;
+import sg.edu.nus.cs2103t.omnitask.model.Task;
 
 public class UIMainImpl extends JFrame implements UI {
 	
@@ -89,6 +91,16 @@ public class UIMainImpl extends JFrame implements UI {
 	@Override
 	public void exit() {
 
+	}
+
+	@Override
+	public void updateTaskListings(List<Task> tasks) {
+		// TODO: Show UI in table form
+		showMessage("List of tasks: ");
+		
+		for (Task task : tasks) {
+			showMessage(task.getId() + " - " + task.getName());
+		}
 	}
 
 }

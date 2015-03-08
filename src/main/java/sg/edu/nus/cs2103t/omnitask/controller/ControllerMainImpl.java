@@ -9,6 +9,7 @@ import sg.edu.nus.cs2103t.omnitask.data.DataJSONImpl;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.parser.Parser;
 import sg.edu.nus.cs2103t.omnitask.parser.ParserMainImpl;
+import sg.edu.nus.cs2103t.omnitask.ui.UIMainImpl;
 import sg.edu.nus.cs2103t.omnitask.ui.UIPrototypeImpl;
 import sg.edu.nus.cs2103t.omnitask.ui.UI;
 
@@ -25,7 +26,7 @@ public class ControllerMainImpl extends Controller {
 	@Override
 	public void start(String[] args) {
 		// Initialize components
-		ui = new UIPrototypeImpl(this);
+		ui = new UIMainImpl(this);
 		parser = new ParserMainImpl();
 		
 		// Get file from argument

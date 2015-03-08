@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import sg.edu.nus.cs2103t.omnitask.controller.Controller;
 
-public class UIPrototypeImpl extends UI {
+public class UIPrototypeImpl implements UI {
 
 	private Scanner input;
 	

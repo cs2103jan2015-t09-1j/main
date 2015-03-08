@@ -4,9 +4,13 @@ import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 import sg.edu.nus.cs2103t.omnitask.controller.Controller;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
@@ -15,22 +19,27 @@ public class UIMainImpl extends JFrame implements UI {
 	
 	private Controller controller;
 	
-	private JTextArea outputField;
+	private JTable taskTable;
+	
+	private JTextField outputField;
 	
 	private JTextField inputField;
 	
+	private ArrayList<Task> tasks;
+	
 	public UIMainImpl(Controller controller) {
 		this.controller = controller;
+		tasks = new ArrayList<Task>();
 	}
 
 	@Override
 	public void showMessage(String msg) {
-		outputField.setText(outputField.getText() + msg + "\n");
+		outputField.setText(msg);
 	}
 
 	@Override
 	public void showError(String msg) {
-		outputField.setText(outputField.getText() + "Error: " + msg + "\n");
+		outputField.setText("Error: " + msg);
 	}
 
 	@Override
@@ -44,7 +53,11 @@ public class UIMainImpl extends JFrame implements UI {
             }
         });
 		
-		showMessage("Welcome to OmniTask.");
+		controller.processUserInput("display");
+		showMessage("Welcome to OmniTask. Type 'help' to get help.");
+		
+		// Make sure input is focused
+		inputField.grabFocus();
 	}
 	
 	private void setupUI() {
@@ -53,8 +66,21 @@ public class UIMainImpl extends JFrame implements UI {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
-        outputField = new JTextArea();
-        outputField.setEditable(false);
+        taskTable = new JTable(new TaskTableModel());
+        
+        // TODO: Make code more decoupled?
+        TableColumn column = null;
+        for (int i = 0; i < 2; i++) {
+            column = taskTable.getColumnModel().getColumn(i);
+            if (i == 0) {
+                column.setPreferredWidth(10);
+            } else {
+                column.setPreferredWidth(600);
+            }
+        }
+        
+        JScrollPane scrollPane = new JScrollPane(taskTable);
+        taskTable.setFillsViewportHeight(true);
         
         inputField = new JTextField();
         inputField.addActionListener(new ActionListener(){
@@ -70,6 +96,9 @@ public class UIMainImpl extends JFrame implements UI {
         	
         });
         
+        outputField = new JTextField();
+        outputField.setEditable(false);
+        
         Container pane = getContentPane();
         GroupLayout gl = new GroupLayout(pane);
         pane.setLayout(gl);
@@ -77,13 +106,15 @@ public class UIMainImpl extends JFrame implements UI {
         gl.setAutoCreateContainerGaps(true);
 
         gl.setHorizontalGroup(gl.createParallelGroup()
-                .addComponent(outputField)
+                .addComponent(scrollPane)
                 .addComponent(inputField)
+                .addComponent(outputField)
         );
 
         gl.setVerticalGroup(gl.createSequentialGroup()
-        		.addComponent(outputField, 400, 400, 1000)
+        		.addComponent(scrollPane, 400, 400, 1000)
         		.addGap(10)
+        		.addComponent(outputField, 40, 40, 40)
                 .addComponent(inputField, 40, 40, 40)
         );
     }
@@ -95,12 +126,41 @@ public class UIMainImpl extends JFrame implements UI {
 
 	@Override
 	public void updateTaskListings(List<Task> tasks) {
-		// TODO: Show UI in table form
-		showMessage("List of tasks: ");
-		
-		for (Task task : tasks) {
-			showMessage(task.getId() + " - " + task.getName());
+		this.tasks.clear();
+		this.tasks.addAll(tasks);
+		taskTable.updateUI();
+	}
+	
+	private class TaskTableModel extends AbstractTableModel {
+		// TODO: Decouple this line somehow?
+		private String[] columnNames = new String[]{"id", "name"};
+
+		@Override
+		public int getColumnCount() {
+			return columnNames.length;
 		}
+		
+		public String getColumnName(int col) {
+	        return columnNames[col];
+	    }
+
+		@Override
+		public int getRowCount() {
+			return tasks.size();
+		}
+
+		@Override
+		public Object getValueAt(int row, int col) {
+			if (col == 0) {
+				return tasks.get(row).getId();
+			} else if (col == 1) {
+				return tasks.get(row).getName();
+			} else {
+				new Exception("Not implemented.").printStackTrace();
+				return null;
+			}
+		}
+		
 	}
 
 }

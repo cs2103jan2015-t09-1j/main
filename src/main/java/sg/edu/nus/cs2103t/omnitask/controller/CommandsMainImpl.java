@@ -48,9 +48,16 @@ public class CommandsMainImpl extends Commands {
 		task.setName(commandInput.getName());
 		
 		data.addTask(task);
+		// TODO: Fix magic string
+		ui.showMessage("Task \"" + commandInput.getName() + "\" added successfully!");
+		updateTaskListings();
 	}
 	
 	private void processDisplayCommand(CommandInput commandInput) {
+		updateTaskListings();
+	}
+	
+	private void updateTaskListings() {
 		ArrayList<Task> tasks = data.getTasks();
 		ui.updateTaskListings(tasks);
 	}

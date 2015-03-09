@@ -7,5 +7,7 @@ public abstract class Commands {
 	
 	public static String COMMAND_DISPLAY = "display";
 	
+	
+	
 	public abstract void processCommand(CommandInput commandInput);
 }

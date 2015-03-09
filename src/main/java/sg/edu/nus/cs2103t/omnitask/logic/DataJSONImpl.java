@@ -1,4 +1,4 @@
-package sg.edu.nus.cs2103t.omnitask.data;
+package sg.edu.nus.cs2103t.omnitask.logic;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import sg.edu.nus.cs2103t.omnitask.model.Task;
+import sg.edu.nus.cs2103t.omnitask.storage.*;
 
 public class DataJSONImpl extends Data {
 
@@ -24,25 +25,26 @@ public class DataJSONImpl extends Data {
 	
 	private ArrayList<Task> tasks;
 	
-	public DataJSONImpl(File storageFile) {
+	public DataJSONImpl(File storageFile,String jsonData) {
 		this.storageFile = storageFile;
 		this.gson = new Gson();
 		
-		try {
+		//try {
 			// read storage file
-			String json = readFromFile();
+			String json = jsonData;
 			
 		    // convert json to ArrayList
 			this.tasks = gson.fromJson(json, new TypeToken<ArrayList<Task>>(){}.getType());
-		} catch (IOException ex) {
+		//} catch (IOException ex) {
 			// TODO: Handle error
-			ex.printStackTrace();
-		}
+			//ex.printStackTrace();
+		//}
 		
 		if (this.tasks == null) {
 			this.tasks = new ArrayList<Task>();
 		}
 	}
+	
 
 	@Override
 	public ArrayList<Task> getTasks() {
@@ -54,48 +56,18 @@ public class DataJSONImpl extends Data {
 		// TODO: Perform sanitization and error checking
 		tasks.add(task);
 		
-		// Save changes to file
-		try {
-			saveToFile();
+		// Save changes to file (move to commandsMainImpl)
+		/*try {
+			//saveToFile();
 		} catch (IOException ex) {
 			// TODO: Handle error
 			ex.printStackTrace();
 			// Reverse change
 			tasks.remove(tasks.size()-1);
 			return false;
-		}
+		}*/
 		
 		return true;
 	}
 	
-	private String readFromFile() throws IOException {
-		String lines = "";
-		
-		InputStream in = Files.newInputStream(storageFile.toPath());
-	    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-	    String line = null;
-	    while ((line = reader.readLine()) != null) {
-	        lines += line + "\n";
-	    }
-	    in.close();
-	    
-	    return lines;
-	}
-	
-	private void saveToFile() throws IOException {
-		String json = gson.toJson(tasks);
-		
-		OutputStream out = new BufferedOutputStream(Files.newOutputStream(storageFile.toPath(), StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING));
-		out.write((json).getBytes());
-		out.flush();
-		out.close();
-	}
-	
-	public static boolean CheckIfFileExistAndCreateIfDoesNot(File file) throws IOException {
-		if (!file.exists()) {
-			Files.createFile(file.toPath());
-		}
-		
-		return true;
-	}
 }

@@ -1,11 +1,13 @@
 package sg.edu.nus.cs2103t.omnitask.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-import sg.edu.nus.cs2103t.omnitask.data.Data;
+import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 import sg.edu.nus.cs2103t.omnitask.ui.UI;
+import sg.edu.nus.cs2103t.omnitask.storage.*;
 
 public class CommandsMainImpl extends Commands {
 	
@@ -47,17 +49,28 @@ public class CommandsMainImpl extends Commands {
 		task.setId(taskId);
 		task.setName(commandInput.getName());
 		
-		data.addTask(task);
+		if(data.addTask(task)){
+			try {
+				IOImpl io = new IOImpl();
+				io.saveToFile(task);
+			} catch (IOException ex) {
+				// TODO: Handle error
+				ex.printStackTrace();
+				// Reverse change
+				tasks.remove(tasks.size()-1);
+			}
+		}
+		// TODO: Fix magic string
+		ui.showMessage("Task \"" + commandInput.getName() + "\" added successfully!");
+		updateTaskListings();
 	}
 	
 	private void processDisplayCommand(CommandInput commandInput) {
+		updateTaskListings();
+	}
+	
+	private void updateTaskListings() {
 		ArrayList<Task> tasks = data.getTasks();
-		
-		ui.showMessage("List of tasks: ");
-		
-		// TODO: Perhaps we need a new API on UI side to showcase list of tasks
-		for (Task task : tasks) {
-			ui.showMessage(task.getId() + " - " + task.getName());
-		}
+		ui.updateTaskListings(tasks);
 	}
 }

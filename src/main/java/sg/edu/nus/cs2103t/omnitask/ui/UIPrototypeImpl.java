@@ -1,10 +1,12 @@
 package sg.edu.nus.cs2103t.omnitask.ui;
 
+import java.util.List;
 import java.util.Scanner;
 
 import sg.edu.nus.cs2103t.omnitask.controller.Controller;
+import sg.edu.nus.cs2103t.omnitask.model.Task;
 
-public class UIPrototypeImpl extends UI {
+public class UIPrototypeImpl implements UI {
 
 	private Scanner input;
 	
@@ -55,5 +57,14 @@ public class UIPrototypeImpl extends UI {
 	@Override
 	public void exit() {
 		input.close();
+	}
+
+	@Override
+	public void updateTaskListings(List<Task> tasks) {
+		showMessage("List of tasks: ");
+		
+		for (Task task : tasks) {
+			showMessage(task.getId() + " - " + task.getName());
+		}
 	}
 }

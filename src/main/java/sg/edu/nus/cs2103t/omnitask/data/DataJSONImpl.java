@@ -68,6 +68,21 @@ public class DataJSONImpl extends Data {
 		return true;
 	}
 	
+	public boolean deleteTask(Task task, int id){
+		
+		tasks.remove(id-1);
+		
+		try {
+			saveToFile();
+		} catch (IOException ex) {
+			// TODO: Handle error
+			ex.printStackTrace();
+			return false;
+		} 
+		
+		return true;
+	}
+	
 	private String readFromFile() throws IOException {
 		String lines = "";
 		

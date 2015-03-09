@@ -48,16 +48,17 @@ public class CommandsMainImpl extends Commands {
 		task.setName(commandInput.getName());
 		
 		data.addTask(task);
+		// TODO: Fix magic string
+		ui.showMessage("Task \"" + commandInput.getName() + "\" added successfully!");
+		updateTaskListings();
 	}
 	
 	private void processDisplayCommand(CommandInput commandInput) {
+		updateTaskListings();
+	}
+	
+	private void updateTaskListings() {
 		ArrayList<Task> tasks = data.getTasks();
-		
-		ui.showMessage("List of tasks: ");
-		
-		// TODO: Perhaps we need a new API on UI side to showcase list of tasks
-		for (Task task : tasks) {
-			ui.showMessage(task.getId() + " - " + task.getName());
-		}
+		ui.updateTaskListings(tasks);
 	}
 }

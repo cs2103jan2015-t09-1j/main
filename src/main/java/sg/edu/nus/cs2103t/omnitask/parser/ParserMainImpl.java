@@ -3,7 +3,7 @@ package sg.edu.nus.cs2103t.omnitask.parser;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
-
+import java.lang.Object;
 public class ParserMainImpl extends Parser {
 
 private static final String STARTDATE_INDICATOR = "from";
@@ -32,13 +32,13 @@ private static final String ENDDATE_INDICATOR = "to";
 		if (inputSplit[0].toLowerCase().equals(CommandInput.COMMAND_ADD)) {
 			String name = "";
 			for (int i = 1; i < inputSplit.length; i++) {
-				if(inputSplit[i]!=STARTDATE_INDICATOR && inputSplit[i]!=DUEDATE_INDICATOR){//recognize date time in string
+				if(!inputSplit[i].equals(STARTDATE_INDICATOR) && !inputSplit[i].equals(DUEDATE_INDICATOR)){//recognize date time in string
 				name += inputSplit[i] + " ";
 				}
-				else if(inputSplit[i] == STARTDATE_INDICATOR){
+				else if(inputSplit[i].equals(STARTDATE_INDICATOR)){
 						beforeParse = inputSplit[i+1];
 						commandInput.setStartDate(fmt.parseDateTime(beforeParse));
-						if(inputSplit[i+2]==ENDDATE_INDICATOR){
+						if(inputSplit[i+2].equals(ENDDATE_INDICATOR)){
 							beforeParse = inputSplit[i+3];
 							commandInput.setEndDate(fmt.parseDateTime(beforeParse));
 						}

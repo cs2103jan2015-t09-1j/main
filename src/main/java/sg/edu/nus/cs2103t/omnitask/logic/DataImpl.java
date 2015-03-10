@@ -47,10 +47,10 @@ public class DataImpl extends Data {
 		Task task = new Task();
 		task.setId(getNewId());
 		task.setName(commandInput.getName());
-//		task.setStartDate(commandInput.getStartDate());
-//		task.setEndDate(commandInput.getEndDate());
-//		task.setStartTime(commandInput.getStartTime());
-//		task.setEndTime(commandInput.getEndTime());
+		// task.setStartDate(commandInput.getStartDate());
+		// task.setEndDate(commandInput.getEndDate());
+		// task.setStartTime(commandInput.getStartTime());
+		// task.setEndTime(commandInput.getEndTime());
 
 		// Add the task to our "local cache"
 		tasks.add(task);
@@ -104,7 +104,7 @@ public class DataImpl extends Data {
 	}
 
 	@Override
-	public boolean updateTask(CommandInput commandInput) {
+	public boolean editTask(CommandInput commandInput) {
 		// lacking startDate, endDate, startTime, endTime
 		int taskIdToUpdate = -1;
 		String tmpTaskName = "";

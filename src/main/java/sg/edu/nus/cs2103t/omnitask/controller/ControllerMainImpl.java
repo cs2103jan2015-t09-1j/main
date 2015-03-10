@@ -77,9 +77,9 @@ public class ControllerMainImpl extends Controller {
 		case "delete":
 			processDeleteCommand(commandInput);
 			break;
-			
+
 		case "edit":
-			processUpdateCommand(commandInput);
+			processEditCommand(commandInput);
 			break;
 
 		default:
@@ -122,9 +122,9 @@ public class ControllerMainImpl extends Controller {
 	}
 
 	@Override
-	public void processUpdateCommand(CommandInput commandInput) {
+	public void processEditCommand(CommandInput commandInput) {
 
-		if (data.updateTask(commandInput)) {
+		if (data.editTask(commandInput)) {
 			ui.showMessage("Task \"" + commandInput.getId()
 					+ "\" updated successfully!");
 		} else {

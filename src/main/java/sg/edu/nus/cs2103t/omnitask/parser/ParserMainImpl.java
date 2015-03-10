@@ -15,7 +15,7 @@ public class ParserMainImpl extends Parser {
 		if (!inputSplit[0].equals(CommandInput.COMMAND_ADD)
 				&& !inputSplit[0].equals(CommandInput.COMMAND_DISPLAY)
 				&& !inputSplit[0].equals(CommandInput.COMMAND_DELETE)
-				&& !inputSplit[0].equals(CommandInput.COMMAND_UPDATE)) {
+				&& !inputSplit[0].equals(CommandInput.COMMAND_EDIT)) {
 			return null;
 		}
 
@@ -38,7 +38,7 @@ public class ParserMainImpl extends Parser {
 
 		// parse for update command
 
-		if (inputSplit[0].equals(CommandInput.COMMAND_UPDATE)) {
+		if (inputSplit[0].equals(CommandInput.COMMAND_EDIT)) {
 			long updateId;
 			updateId = Long.parseLong(inputSplit[1]);
 			commandInput.setId(updateId);

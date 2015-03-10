@@ -40,13 +40,13 @@ public class IOJSONImpl extends IO {
 	    }
 	    in.close();
 	    
-<<<<<<< HEAD
-=======
+//<<<<<<< HEAD
+//=======
 	    // return empty arraylist if file has zero items
 	    if (lines.equals(""))
 	    	return new ArrayList<Task>();
 	    
->>>>>>> 291d7182368c9abe7e250cac11a32eebeb85e1b3
+//>>>>>>> 291d7182368c9abe7e250cac11a32eebeb85e1b3
 		// convert json to ArrayList
 		return gson.fromJson(lines, new TypeToken<ArrayList<Task>>(){}.getType());
 	}

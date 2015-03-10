@@ -106,7 +106,7 @@ public class DataImpl extends Data {
 
 		for (int i = 0; i < tasks.size(); i++) {
 			if (tasks.get(i).getId() == id) {
-				// store the task name from the file in a variable incase need
+				// store the task name from the file in a variable in case need
 				// to revert below
 				tmpTaskName = tasks.get(i).getName();
 

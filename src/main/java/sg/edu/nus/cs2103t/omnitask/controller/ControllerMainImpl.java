@@ -115,7 +115,7 @@ public class ControllerMainImpl extends Controller {
 					+ "\" deleted successfully!");
 		} else {
 			ui.showMessage("Unable to delete Task \"" + commandInput.getId()
-					+ "\"!");
+					+ "\". Please choose a valid id!");
 		}
 
 		updateTaskListings();
@@ -129,7 +129,7 @@ public class ControllerMainImpl extends Controller {
 					+ "\" updated successfully!");
 		} else {
 			ui.showMessage("Unable to update Task \"" + commandInput.getId()
-					+ "\"!");
+					+ "\". Please choose a valid id!");
 		}
 
 		updateTaskListings();

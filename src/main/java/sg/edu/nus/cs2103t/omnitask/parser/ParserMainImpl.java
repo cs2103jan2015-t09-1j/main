@@ -28,7 +28,7 @@ public class ParserMainImpl extends Parser {
 			commandInput.setName(name.trim());
 		}
 
-		// this is to parse command specific to delete
+		// parse for delete command
 
 		if (inputSplit[0].equals(CommandInput.COMMAND_DELETE)) {
 			long deleteId;

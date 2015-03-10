@@ -8,6 +8,6 @@ public abstract class Data {
 	public abstract ArrayList<Task> getTasks();
 	
 	public abstract boolean addTask(Task task);
-	
-	public abstract boolean deleteTask(Task task, int id);
+	//#tlx
+	public abstract boolean deleteTask(int id);
 }

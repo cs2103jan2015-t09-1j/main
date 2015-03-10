@@ -9,7 +9,7 @@ public interface UI {
 	
 	public void showError(String msg);
 	
-	public void start();
+//	public void start();
 	
 //<<<<<<< HEAD
 	public abstract void start();//push test sijie

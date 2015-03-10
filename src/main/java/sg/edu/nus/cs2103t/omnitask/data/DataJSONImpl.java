@@ -46,6 +46,17 @@ public class DataJSONImpl extends Data {
 
 	@Override
 	public ArrayList<Task> getTasks() {
+		//#tlx read file everytime get task is called?
+		try {
+			// read storage file
+			String json = readFromFile();
+			
+		    // convert json to ArrayList
+			this.tasks = gson.fromJson(json, new TypeToken<ArrayList<Task>>(){}.getType());
+		} catch (IOException ex) {
+			// TODO: Handle error
+			ex.printStackTrace();
+		}
 		return tasks;
 	}
 
@@ -68,9 +79,20 @@ public class DataJSONImpl extends Data {
 		return true;
 	}
 	
-	public boolean deleteTask(Task task, int id){
+	public boolean deleteTask(int id){
+	//#tlx############	
+
+		for(int i=0;i < tasks.size(); i++){
+			if(tasks.get(i).getId()==id){
+				tasks.remove(i);
+			}
+		}
 		
-		tasks.remove(id-1);
+		//if(this.tasks!=null){
+			//this.tasks.remove(id-1);
+		//}
+	//####################
+		
 		
 		try {
 			saveToFile();
@@ -92,7 +114,7 @@ public class DataJSONImpl extends Data {
 	    while ((line = reader.readLine()) != null) {
 	        lines += line + "\n";
 	    }
-	    in.close();
+	    in.close();	    
 	    
 	    return lines;
 	}

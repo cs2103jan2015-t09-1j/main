@@ -31,6 +31,14 @@ public class CommandsMainImpl extends Commands {
 				processDisplayCommand(commandInput);
 				break;
 				
+			case "delete":
+				processDeleteCommand(commandInput);
+				break;
+				
+			case "edit":
+				processUpdateCommand(commandInput);
+				break;
+				
 			default:
 				new Exception("Not implemented").printStackTrace();
 		}
@@ -51,6 +59,21 @@ public class CommandsMainImpl extends Commands {
 		// TODO: Fix magic string
 		ui.showMessage("Task \"" + commandInput.getName() + "\" added successfully!");
 		updateTaskListings();
+	}
+	
+	private void processDeleteCommand(CommandInput commandInput) {
+		
+		data.deleteTask((int)commandInput.getId());
+		
+		ui.showMessage("Task \"" + commandInput.getId() + "\" deleted successfully!");
+		updateTaskListings();
+	}
+	
+	private void processUpdateCommand(CommandInput commandInput) {
+		
+		//data.updateTask(taskName,id);
+		//ui.showMessage("Task \"" + commandInput.getId() + "\" updated successfully!");
+		//updateTaskListings();
 	}
 	
 	private void processDisplayCommand(CommandInput commandInput) {

@@ -9,7 +9,7 @@ public class ParserMainImpl extends Parser {
 		// TODO: Fix prototype implementation, need to think of the proper way to parse text modularly
 		String[] inputSplit = input.split(" ");
 		
-		// #tlx need to add !inputSplit[0].equals(Commands.COMMAND_DELETE) for subsequent commands to validate if user input a valid command
+		// need to add !inputSplit[0].equals(Commands.COMMAND_DELETE) for subsequent commands to validate if user input a valid command
 		if (!inputSplit[0].equals(CommandInput.COMMAND_ADD) && !inputSplit[0].equals(CommandInput.COMMAND_DISPLAY) && !inputSplit[0].equals(CommandInput.COMMAND_DELETE)) {
 			return null;
 		}
@@ -23,7 +23,7 @@ public class ParserMainImpl extends Parser {
 			commandInput.setName(name.trim());
 		}
 		
-		//#tlx this is to parse command specific to delete#####
+		//this is to parse command specific to delete
 		
 		if (inputSplit[0].equals(CommandInput.COMMAND_DELETE)) {
 			long deleteId;
@@ -31,7 +31,8 @@ public class ParserMainImpl extends Parser {
 			commandInput.setId(deleteId);
 		}
 		
-		//#########
+		//parse for update command
+		
 		
 		
 		

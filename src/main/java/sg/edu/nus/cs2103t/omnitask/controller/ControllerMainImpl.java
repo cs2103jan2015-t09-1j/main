@@ -61,7 +61,8 @@ public class ControllerMainImpl extends Controller {
 		}
 	}
 	
-	// TODO: Make this abstract in Controller.java?
+
+	@Override
 	public void processCommand(CommandInput commandInput) {
 		// TODO: switch only support constants, maybe bad idea to use it here as it cause magic string
 		switch (commandInput.getCommandName()) {
@@ -82,8 +83,9 @@ public class ControllerMainImpl extends Controller {
 		}
 	}
 
-	// TODO: Make this abstract in Controller.java?
-	private void processAddCommand(CommandInput commandInput) {
+
+	@Override
+	public void processAddCommand(CommandInput commandInput) {
 		Task task = data.addTask(commandInput);
 		
 		// TODO: Fix magic string
@@ -95,16 +97,35 @@ public class ControllerMainImpl extends Controller {
 		updateTaskListings();
 	}
 	
-	// TODO: Make this abstract in Controller.java?
-	private void processDisplayCommand(CommandInput commandInput) {
+
+	@Override
+	public void processDisplayCommand(CommandInput commandInput) {
 		updateTaskListings();
 	}
 	
-	// TODO: Make this abstract in Controller.java?
-	private void processDeleteCommand(CommandInput commandInput) {
-		data.deleteTask(commandInput.getId());
+
+	@Override
+	public void processDeleteCommand(CommandInput commandInput) {
 		
-		ui.showMessage("Task \"" + commandInput.getId() + "\" deleted successfully!");
+		if(data.deleteTask(commandInput.getId())){
+		    ui.showMessage("Task \"" + commandInput.getId() + "\" deleted successfully!");
+		}else{
+			ui.showMessage("Unable to delete Task \"" + commandInput.getId() + "\"!");
+		}
+		
+		updateTaskListings();
+	}
+	
+	@Override
+	public void processUpdateCommand(CommandInput commandInput) {
+		
+		if(data.updateTask(commandInput.getId(), commandInput.getName())){
+			ui.showMessage("Task \"" + commandInput.getId() + "\" updated successfully!");	
+		}else{
+			ui.showMessage("Unable to update Task \"" + commandInput.getId() + "\"!");
+		}
+		
+		
 		updateTaskListings();
 	}
 	

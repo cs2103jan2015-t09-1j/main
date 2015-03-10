@@ -39,7 +39,7 @@ public class IOJSONImpl extends IO {
 	        lines += line + "\n";
 	    }
 	    in.close();
-		
+	    
 		// convert json to ArrayList
 		return gson.fromJson(lines, new TypeToken<ArrayList<Task>>(){}.getType());
 	}

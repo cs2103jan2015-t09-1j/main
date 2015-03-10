@@ -98,5 +98,39 @@ public class DataImpl extends Data {
 		
 		return true;
 	}
+
+	@Override
+	public boolean updateTask(long id, String taskName) {
+		int taskIdToUpdate=-1;
+		String tmpTaskName  = "" ;
+			
+		for (int i=0; i < tasks.size(); i++) {
+			if (tasks.get(i).getId() == id) {
+				//store the task name from the file in a variable incase need to revert below
+				//
+				tasks.get(i).setName(taskName);
+				taskIdToUpdate=i;
+			}
+		}
+			
+		if (taskIdToUpdate != -1) {
+			// Commit it to storage
+			try {
+				io.saveToFile(tasks);
+			} catch (IOException ex) {
+				// TODO: Handle error
+				ex.printStackTrace();
+				
+				// Reverse change
+				//do a reverse of update
+				
+				return false;
+			}
+		} else {
+			return false;
+		}
+		
+		return true;
+	}
 	
 }

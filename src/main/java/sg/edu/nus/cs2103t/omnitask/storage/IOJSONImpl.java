@@ -40,11 +40,9 @@ public class IOJSONImpl extends IO {
 	    }
 	    in.close();
 	    
-	    //#wksim attempt to solve empty textfile issue 
-	    if((line = reader.readLine()) == null) {
-			return gson.fromJson(lines, new TypeToken<ArrayList<Task>>(){}.getType());
-		}
-	    //########## to no avail.
+	    // return empty arraylist if file has zero items
+	    if (lines.equals(""))
+	    	return new ArrayList<Task>();
 	    
 		// convert json to ArrayList
 		return gson.fromJson(lines, new TypeToken<ArrayList<Task>>(){}.getType());

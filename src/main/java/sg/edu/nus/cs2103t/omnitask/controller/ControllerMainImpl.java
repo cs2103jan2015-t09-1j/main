@@ -77,6 +77,10 @@ public class ControllerMainImpl extends Controller {
 		case "delete":
 			processDeleteCommand(commandInput);
 			break;
+			
+		case "edit":
+			processUpdateCommand(commandInput);
+			break;
 
 		default:
 			new Exception("Not implemented").printStackTrace();

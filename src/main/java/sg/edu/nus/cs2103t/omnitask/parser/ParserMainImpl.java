@@ -14,7 +14,8 @@ public class ParserMainImpl extends Parser {
 		// subsequent commands to validate if user input a valid command
 		if (!inputSplit[0].equals(CommandInput.COMMAND_ADD)
 				&& !inputSplit[0].equals(CommandInput.COMMAND_DISPLAY)
-				&& !inputSplit[0].equals(CommandInput.COMMAND_DELETE)) {
+				&& !inputSplit[0].equals(CommandInput.COMMAND_DELETE)
+				&& !inputSplit[0].equals(CommandInput.COMMAND_UPDATE)) {
 			return null;
 		}
 
@@ -42,7 +43,7 @@ public class ParserMainImpl extends Parser {
 			updateId = Long.parseLong(inputSplit[1]);
 			commandInput.setId(updateId);
 			String name = "";
-			for (int i = 1; i < inputSplit.length; i++) {
+			for (int i = 2; i < inputSplit.length; i++) {
 				name += inputSplit[i] + " ";
 			}
 			commandInput.setName(name.trim());

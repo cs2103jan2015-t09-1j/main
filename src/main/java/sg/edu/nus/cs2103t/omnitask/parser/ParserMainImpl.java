@@ -20,16 +20,16 @@ private static final String ENDDATE_INDICATOR = "to";
 
 		// need to add !inputSplit[0].equals(Commands.COMMAND_DELETE) for
 		// subsequent commands to validate if user input a valid command
-		if (!inputSplit[0].equals(CommandInput.COMMAND_ADD)
-				&& !inputSplit[0].equals(CommandInput.COMMAND_DISPLAY)
-				&& !inputSplit[0].equals(CommandInput.COMMAND_DELETE)
-				&& !inputSplit[0].equals(CommandInput.COMMAND_EDIT)
-				&& !inputSplit[0].equals(CommandInput.COMMAND_EXIT)) {
+		if (!inputSplit[0].toLowerCase().equals(CommandInput.COMMAND_ADD)
+				&& !inputSplit[0].toLowerCase().equals(CommandInput.COMMAND_DISPLAY)
+				&& !inputSplit[0].toLowerCase().equals(CommandInput.COMMAND_DELETE)
+				&& !inputSplit[0].toLowerCase().equals(CommandInput.COMMAND_EDIT)
+				&& !inputSplit[0].toLowerCase().equals(CommandInput.COMMAND_EXIT)) {
 			return null;
 		}
 
-		CommandInput commandInput = new CommandInput(inputSplit[0]);
-		if (inputSplit[0].equals(CommandInput.COMMAND_ADD)) {
+		CommandInput commandInput = new CommandInput(inputSplit[0].toLowerCase());
+		if (inputSplit[0].toLowerCase().equals(CommandInput.COMMAND_ADD)) {
 			String name = "";
 			for (int i = 1; i < inputSplit.length; i++) {
 				if(inputSplit[i]!=STARTDATE_INDICATOR && inputSplit[i]!=DUEDATE_INDICATOR){//recognize date time in string
@@ -55,7 +55,7 @@ private static final String ENDDATE_INDICATOR = "to";
 
 		// this is to parse command specific to delete
 
-		if (inputSplit[0].equals(CommandInput.COMMAND_DELETE)) {
+		if (inputSplit[0].toLowerCase().equals(CommandInput.COMMAND_DELETE)) {
 			long deleteId;
 			deleteId = Long.parseLong(inputSplit[1]);
 			commandInput.setId(deleteId);
@@ -63,7 +63,7 @@ private static final String ENDDATE_INDICATOR = "to";
 
 		// parse for update command
 
-		if (inputSplit[0].equals(CommandInput.COMMAND_EDIT)) {
+		if (inputSplit[0].toLowerCase().equals(CommandInput.COMMAND_EDIT)) {
 			long updateId;
 			updateId = Long.parseLong(inputSplit[1]);
 			commandInput.setId(updateId);
@@ -74,7 +74,7 @@ private static final String ENDDATE_INDICATOR = "to";
 			commandInput.setName(name.trim());
 		}
 		
-		if (inputSplit[0].equals(CommandInput.COMMAND_EXIT)) {
+		if (inputSplit[0].toLowerCase().equals(CommandInput.COMMAND_EXIT)) {
 			commandInput.setName("exit");
 		}
 

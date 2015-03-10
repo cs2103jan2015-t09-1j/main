@@ -62,33 +62,30 @@ public class UIMainImpl extends JFrame implements UI {
 		EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                UIMainImpl.this.setVisible(true);
+                showWindow();
             }
         });
 		
 		controller.processUserInput("display");
 		showMessage("Welcome to OmniTask. Type 'help' to get help.");
-		
-		// Make sure input is focused
-		inputField.grabFocus();
 	}
 	
 	private void setupHotkeys() {
 		Provider provider = Provider.getCurrentProvider(false);
-		provider.register(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.SHIFT_DOWN_MASK | KeyEvent.META_DOWN_MASK), new HotKeyListener(){
-
-			@Override
-			public void onHotKey(HotKey arg0) {
-				// TODO: Replace deprecated methods
-				if (isShowing()) {
-					hide();
-				} else {
-					show();
-				}
-			}
-			
-		});
+		provider.register(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.SHIFT_DOWN_MASK | KeyEvent.META_DOWN_MASK), showHideHotkeyListener);
 	}
+	
+	private HotKeyListener showHideHotkeyListener = new HotKeyListener() {
+		@Override
+		public void onHotKey(HotKey arg0) {
+			// TODO: Replace deprecated methods
+			if (isShowing()) {
+				hideWindow();
+			} else {
+				showWindow();
+			}
+		}
+	};
 	
 	private void setupUI() {
 		setTitle("OmniTask");
@@ -154,6 +151,17 @@ public class UIMainImpl extends JFrame implements UI {
 		System.exit(0);
 	}
 
+	private void hideWindow() {
+		setVisible(false);
+	}
+	
+	private void showWindow() {
+		setVisible(true);
+		
+		// Make sure input is focused
+		inputField.grabFocus();
+	}
+	
 	@Override
 	public void updateTaskListings(List<Task> tasks) {
 		this.tasks.clear();

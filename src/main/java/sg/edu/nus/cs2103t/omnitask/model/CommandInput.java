@@ -11,6 +11,8 @@ public class CommandInput {
 	public static String COMMAND_DELETE = "delete";
 
 	public static String COMMAND_EDIT = "edit";
+	
+	public static String COMMAND_EXIT = "exit";
 
 	private String commandName;
 

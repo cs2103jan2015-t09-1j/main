@@ -15,7 +15,8 @@ public class ParserMainImpl extends Parser {
 		if (!inputSplit[0].equals(CommandInput.COMMAND_ADD)
 				&& !inputSplit[0].equals(CommandInput.COMMAND_DISPLAY)
 				&& !inputSplit[0].equals(CommandInput.COMMAND_DELETE)
-				&& !inputSplit[0].equals(CommandInput.COMMAND_EDIT)) {
+				&& !inputSplit[0].equals(CommandInput.COMMAND_EDIT)
+				&& !inputSplit[0].equals(CommandInput.COMMAND_EXIT)) {
 			return null;
 		}
 
@@ -47,6 +48,10 @@ public class ParserMainImpl extends Parser {
 				name += inputSplit[i] + " ";
 			}
 			commandInput.setName(name.trim());
+		}
+		
+		if (inputSplit[0].equals(CommandInput.COMMAND_EXIT)) {
+			commandInput.setName("exit");
 		}
 
 		return commandInput;

@@ -81,6 +81,11 @@ public class ControllerMainImpl extends Controller {
 		case "edit":
 			processEditCommand(commandInput);
 			break;
+		
+		case "exit":
+			ui.exit();
+			System.exit(0);
+			break;
 
 		default:
 			new Exception("Not implemented").printStackTrace();

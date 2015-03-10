@@ -124,7 +124,7 @@ public class UIMainImpl extends JFrame implements UI {
 
 	@Override
 	public void exit() {
-
+		System.exit(0);
 	}
 
 	@Override

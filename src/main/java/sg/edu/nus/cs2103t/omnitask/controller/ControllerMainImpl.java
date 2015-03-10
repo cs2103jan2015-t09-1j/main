@@ -84,7 +84,6 @@ public class ControllerMainImpl extends Controller {
 		
 		case "exit":
 			ui.exit();
-			System.exit(0);
 			break;
 
 		default:

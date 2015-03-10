@@ -57,6 +57,7 @@ public class UIPrototypeImpl implements UI {
 	@Override
 	public void exit() {
 		input.close();
+		System.exit(0);
 	}
 
 	@Override

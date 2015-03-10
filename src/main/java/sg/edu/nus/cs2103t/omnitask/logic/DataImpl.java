@@ -83,6 +83,8 @@ public class DataImpl extends Data {
 			}
 		}
 
+		updateTaskId(); // Reassign taskId to the tasks Arraylist
+
 		if (taskToRemove != null) {
 			// Commit it to storage
 			try {
@@ -101,6 +103,13 @@ public class DataImpl extends Data {
 		}
 
 		return true;
+	}
+
+	// Reassign taskId to the tasks arraylist
+	private void updateTaskId() {
+		for (int i = 0; i < tasks.size(); i++) {
+			tasks.get(i).setId(i + 1);
+		}
 	}
 
 	@Override

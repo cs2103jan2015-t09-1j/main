@@ -9,13 +9,9 @@ public interface UI {
 	
 	public void showError(String msg);
 	
-//	public void start();
+	public abstract void start();
 	
-//<<<<<<< HEAD
-	public abstract void start();//push test sijie
-//=======
 	public void exit();
-//>>>>>>> 539c0fd0cf4488f2f17108ef11c8f4df5c6540db
 	
 	public void updateTaskListings(List<Task> tasks);
 }

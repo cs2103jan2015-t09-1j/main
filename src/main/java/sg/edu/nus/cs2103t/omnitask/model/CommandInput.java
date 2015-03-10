@@ -4,6 +4,14 @@ import org.joda.time.DateTime;
 
 // CommandInput object holds the parsed user commands parsed by Parser
 public class CommandInput {
+	public static String COMMAND_ADD = "add";
+	
+	public static String COMMAND_DISPLAY = "display";
+	
+	public static String COMMAND_DELETE = "delete";
+	
+	public static String COMMAND_UPDATE = "edit";
+	
 	private String commandName;
 	
 	private DateTime startDate;

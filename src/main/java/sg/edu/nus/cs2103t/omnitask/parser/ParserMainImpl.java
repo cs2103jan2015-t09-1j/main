@@ -1,6 +1,5 @@
 package sg.edu.nus.cs2103t.omnitask.parser;
 
-import sg.edu.nus.cs2103t.omnitask.controller.Commands;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 
 public class ParserMainImpl extends Parser {
@@ -10,13 +9,13 @@ public class ParserMainImpl extends Parser {
 		// TODO: Fix prototype implementation, need to think of the proper way to parse text modularly
 		String[] inputSplit = input.split(" ");
 		
-		//#tlx need to add !inputSplit[0].equals(Commands.COMMAND_DELETE) for subsequent commands to validate if user input a valid command
-		if (!inputSplit[0].equals(Commands.COMMAND_ADD) && !inputSplit[0].equals(Commands.COMMAND_DISPLAY) && !inputSplit[0].equals(Commands.COMMAND_DELETE)) {
+		// #tlx need to add !inputSplit[0].equals(Commands.COMMAND_DELETE) for subsequent commands to validate if user input a valid command
+		if (!inputSplit[0].equals(CommandInput.COMMAND_ADD) && !inputSplit[0].equals(CommandInput.COMMAND_DISPLAY) && !inputSplit[0].equals(CommandInput.COMMAND_DELETE)) {
 			return null;
 		}
 		
 		CommandInput commandInput = new CommandInput(inputSplit[0]);
-		if (inputSplit[0].equals(Commands.COMMAND_ADD)) {
+		if (inputSplit[0].equals(CommandInput.COMMAND_ADD)) {
 			String name = "";
 			for (int i = 1; i < inputSplit.length; i++) {
 				name += inputSplit[i] + " ";
@@ -26,7 +25,7 @@ public class ParserMainImpl extends Parser {
 		
 		//#tlx this is to parse command specific to delete#####
 		
-		if (inputSplit[0].equals(Commands.COMMAND_DELETE)) {
+		if (inputSplit[0].equals(CommandInput.COMMAND_DELETE)) {
 			long deleteId;
 			deleteId = Long.parseLong(inputSplit[1]);
 			commandInput.setId(deleteId);

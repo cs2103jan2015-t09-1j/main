@@ -2,24 +2,22 @@ package sg.edu.nus.cs2103t.omnitask.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 
-import sg.edu.nus.cs2103t.omnitask.data.Data;
-import sg.edu.nus.cs2103t.omnitask.data.DataJSONImpl;
+import sg.edu.nus.cs2103t.omnitask.logic.Data;
+import sg.edu.nus.cs2103t.omnitask.logic.DataImpl;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
+import sg.edu.nus.cs2103t.omnitask.model.Task;
 import sg.edu.nus.cs2103t.omnitask.parser.Parser;
 import sg.edu.nus.cs2103t.omnitask.parser.ParserMainImpl;
-import sg.edu.nus.cs2103t.omnitask.ui.UIMainImpl;
-import sg.edu.nus.cs2103t.omnitask.ui.UIPrototypeImpl;
+import sg.edu.nus.cs2103t.omnitask.storage.IO;
 import sg.edu.nus.cs2103t.omnitask.ui.UI;
+import sg.edu.nus.cs2103t.omnitask.ui.UIMainImpl;
 
 public class ControllerMainImpl extends Controller {
 	
 	protected UI ui;
 	
 	protected Parser parser;
-	
-	protected Commands commands;
 	
 	protected Data data;
 	
@@ -38,19 +36,15 @@ public class ControllerMainImpl extends Controller {
 			return;
 		}
 		
-		// Prompt to create file if it does not exist.
-		// Exit program if file does not exist and user does not want to create it
+		// Initialize data logic (which would create the storage file if needed)
+		// Exit application if fails
 		try {
-			DataJSONImpl.CheckIfFileExistAndCreateIfDoesNot(storageFile);
+			data = new DataImpl(storageFile);
 		} catch (IOException ex) {
 			ui.showError("No permission to access file.");
 			ui.exit();
 			return;
 		}
-		
-		// Continue initializing components
-		data = new DataJSONImpl(storageFile);
-		commands = new CommandsMainImpl(ui, data);
 		
 		// Pass control to UI to receive user input
 		ui.start();
@@ -63,8 +57,60 @@ public class ControllerMainImpl extends Controller {
 		if (commandInput == null) {
 			ui.showError("Invalid command entered. Please try again.");
 		} else {
-			commands.processCommand(commandInput);
+			processCommand(commandInput);
 		}
+	}
+	
+	// TODO: Make this abstract in Controller.java?
+	public void processCommand(CommandInput commandInput) {
+		// TODO: switch only support constants, maybe bad idea to use it here as it cause magic string
+		switch (commandInput.getCommandName()) {
+			case "add":
+				processAddCommand(commandInput);
+				break;
+				
+			case "display":
+				processDisplayCommand(commandInput);
+				break;
+				
+			case "delete":
+				processDeleteCommand(commandInput);
+				break;
+				
+			default:
+				new Exception("Not implemented").printStackTrace();
+		}
+	}
+
+	// TODO: Make this abstract in Controller.java?
+	private void processAddCommand(CommandInput commandInput) {
+		Task task = data.addTask(commandInput);
+		
+		// TODO: Fix magic string
+		if (task != null) {
+			ui.showMessage("Task \"" + task.getName() + "\" added successfully!");
+		} else {
+			ui.showMessage("Failed to add task \"" + commandInput.getName() + "\".");
+		}
+		updateTaskListings();
+	}
+	
+	// TODO: Make this abstract in Controller.java?
+	private void processDisplayCommand(CommandInput commandInput) {
+		updateTaskListings();
+	}
+	
+	// TODO: Make this abstract in Controller.java?
+	private void processDeleteCommand(CommandInput commandInput) {
+		data.deleteTask(commandInput.getId());
+		
+		ui.showMessage("Task \"" + commandInput.getId() + "\" deleted successfully!");
+		updateTaskListings();
+	}
+	
+	// Update UI
+	private void updateTaskListings() {
+		ui.updateTaskListings(data.getTasks());
 	}
 
 	private File checkForAndInitArgument(String[] args) {

@@ -6,15 +6,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.*;
+import javax.swing.GroupLayout;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
 import sg.edu.nus.cs2103t.omnitask.controller.Controller;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 
+@SuppressWarnings("serial")
 public class UIMainImpl extends JFrame implements UI {
 	
 	private Controller controller;

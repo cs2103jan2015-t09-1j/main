@@ -39,7 +39,13 @@ public class IOJSONImpl extends IO {
 	        lines += line + "\n";
 	    }
 	    in.close();
-		
+	    
+	    //#wksim attempt to solve empty textfile issue 
+	    if((line = reader.readLine()) == null) {
+			return gson.fromJson(lines, new TypeToken<ArrayList<Task>>(){}.getType());
+		}
+	    //########## to no avail.
+	    
 		// convert json to ArrayList
 		return gson.fromJson(lines, new TypeToken<ArrayList<Task>>(){}.getType());
 	}

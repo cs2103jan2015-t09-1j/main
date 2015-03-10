@@ -2,19 +2,16 @@ package sg.edu.nus.cs2103t.omnitask.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 
 import sg.edu.nus.cs2103t.omnitask.logic.Data;
-import sg.edu.nus.cs2103t.omnitask.logic.DataJSONImpl;
+import sg.edu.nus.cs2103t.omnitask.logic.DataImpl;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
-import sg.edu.nus.cs2103t.omnitask.model.Storage;
+import sg.edu.nus.cs2103t.omnitask.model.Task;
 import sg.edu.nus.cs2103t.omnitask.parser.Parser;
 import sg.edu.nus.cs2103t.omnitask.parser.ParserMainImpl;
-import sg.edu.nus.cs2103t.omnitask.ui.UIMainImpl;
-import sg.edu.nus.cs2103t.omnitask.ui.UIPrototypeImpl;
-import sg.edu.nus.cs2103t.omnitask.ui.UI;
 import sg.edu.nus.cs2103t.omnitask.storage.IO;
-import sg.edu.nus.cs2103t.omnitask.storage.IOImpl;
+import sg.edu.nus.cs2103t.omnitask.ui.UI;
+import sg.edu.nus.cs2103t.omnitask.ui.UIMainImpl;
 
 public class ControllerMainImpl extends Controller {
 	
@@ -22,11 +19,7 @@ public class ControllerMainImpl extends Controller {
 	
 	protected Parser parser;
 	
-	protected Commands commands;
-	
 	protected Data data;
-	
-	IOImpl io = new IOImpl();
 	
 	@Override
 	public void start(String[] args) {
@@ -43,27 +36,15 @@ public class ControllerMainImpl extends Controller {
 			return;
 		}
 		
-		// Prompt to create file if it does not exist.
-		// Exit program if file does not exist and user does not want to create it
-		try {		
-			io.CheckIfFileExistAndCreateIfDoesNot(storageFile);
+		// Initialize data logic (which would create the storage file if needed)
+		// Exit application if fails
+		try {
+			data = new DataImpl(storageFile);
 		} catch (IOException ex) {
 			ui.showError("No permission to access file.");
 			ui.exit();
 			return;
 		}
-		
-		
-		// Continue initializing components
-		String jsonData="";
-		try {
-			jsonData = io.readFromFile(storageFile);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		data = new DataJSONImpl(storageFile,jsonData);
-		commands = new CommandsMainImpl(ui, data);
 		
 		// Pass control to UI to receive user input
 		ui.start();
@@ -76,8 +57,48 @@ public class ControllerMainImpl extends Controller {
 		if (commandInput == null) {
 			ui.showError("Invalid command entered. Please try again.");
 		} else {
-			commands.processCommand(commandInput);
+			processCommand(commandInput);
 		}
+	}
+	
+	// TODO: Make this abstract in Controller.java?
+	public void processCommand(CommandInput commandInput) {
+		// TODO: switch only support constants, maybe bad idea to use it here as it cause magic string
+		switch (commandInput.getCommandName()) {
+			case "add":
+				processAddCommand(commandInput);
+				break;
+				
+			case "display":
+				processDisplayCommand(commandInput);
+				break;
+				
+			default:
+				new Exception("Not implemented").printStackTrace();
+		}
+	}
+
+	// TODO: Make this abstract in Controller.java?
+	private void processAddCommand(CommandInput commandInput) {
+		Task task = data.addTask(commandInput);
+		
+		// TODO: Fix magic string
+		if (task != null) {
+			ui.showMessage("Task \"" + task.getName() + "\" added successfully!");
+		} else {
+			ui.showMessage("Failed to add task \"" + commandInput.getName() + "\".");
+		}
+		updateTaskListings();
+	}
+	
+	// TODO: Make this abstract in Controller.java?
+	private void processDisplayCommand(CommandInput commandInput) {
+		updateTaskListings();
+	}
+	
+	// Update UI
+	private void updateTaskListings() {
+		ui.updateTaskListings(data.getTasks());
 	}
 
 	private File checkForAndInitArgument(String[] args) {

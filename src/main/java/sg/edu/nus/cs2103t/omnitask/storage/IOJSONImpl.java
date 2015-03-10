@@ -11,21 +11,25 @@ import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 
-import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-public class IOImpl extends IO{
+public class IOJSONImpl extends IO {
 	public File storageFile;
+	
 	public Gson gson;
-	public ArrayList<Task> tasks;
 
-	public IOImpl() {
+	public IOJSONImpl(File storageFile) throws IOException {
+		this.storageFile = storageFile;
+		this.gson = new Gson();
+		
+		IO.CheckIfFileExistAndCreateIfDoesNot(storageFile);
 	}
 	
 	@Override
-	public String readFromFile(File storageFile) throws IOException {
+	public ArrayList<Task> readFromFile() throws IOException {
 		String lines = "";
 		
 		InputStream in = Files.newInputStream(storageFile.toPath());
@@ -35,27 +39,19 @@ public class IOImpl extends IO{
 	        lines += line + "\n";
 	    }
 	    in.close();
-	    
-	    return lines;
+		
+		// convert json to ArrayList
+		return gson.fromJson(lines, new TypeToken<ArrayList<Task>>(){}.getType());
 	}
 	
 	@Override
-	public void saveToFile(Task task) throws IOException {
+	public void saveToFile(ArrayList<Task> tasks) throws IOException {
 		String json = gson.toJson(tasks);
 		
 		OutputStream out = new BufferedOutputStream(Files.newOutputStream(storageFile.toPath(), StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING));
 		out.write((json).getBytes());
 		out.flush();
 		out.close();
-	}
-	
-	
-	public boolean CheckIfFileExistAndCreateIfDoesNot(File file) throws IOException {
-		if (!file.exists()) {
-			Files.createFile(file.toPath());
-		}
-		
-		return true;
 	}
 
 	@Override

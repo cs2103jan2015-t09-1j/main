@@ -10,7 +10,7 @@ public abstract class Data {
 	
 	public abstract Task addTask(CommandInput commandInput);
 	
-	public abstract boolean deleteTask(long id);
+	public abstract boolean deleteTask(CommandInput commandInput);
 	
-	public abstract boolean updateTask(long id,String taskName);
+	public abstract boolean updateTask(CommandInput commandInput);
 }

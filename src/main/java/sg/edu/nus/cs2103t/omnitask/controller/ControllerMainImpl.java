@@ -110,7 +110,7 @@ public class ControllerMainImpl extends Controller {
 	@Override
 	public void processDeleteCommand(CommandInput commandInput) {
 
-		if (data.deleteTask(commandInput.getId())) {
+		if (data.deleteTask(commandInput)) {
 			ui.showMessage("Task \"" + commandInput.getId()
 					+ "\" deleted successfully!");
 		} else {
@@ -124,7 +124,7 @@ public class ControllerMainImpl extends Controller {
 	@Override
 	public void processUpdateCommand(CommandInput commandInput) {
 
-		if (data.updateTask(commandInput.getId(), commandInput.getName())) {
+		if (data.updateTask(commandInput)) {
 			ui.showMessage("Task \"" + commandInput.getId()
 					+ "\" updated successfully!");
 		} else {

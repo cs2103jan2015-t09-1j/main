@@ -7,7 +7,6 @@ import java.lang.Object;
 public class ParserMainImpl extends Parser {
 
 private static final String STARTDATE_INDICATOR = "from";
-private static final String DUEDATE_INDICATOR = "by";
 private static final String ENDDATE_INDICATOR = "to";
 
 @Override
@@ -16,8 +15,9 @@ private static final String ENDDATE_INDICATOR = "to";
 		// to parse text modularly
 		String[] inputSplit = input.split(" ");
 		org.joda.time.format.DateTimeFormatter fmt = DateTimeFormat.forPattern("MM dd yyyy");
-		String beforeParse = new String();
-
+		String sDbeforeParse = new String();
+        String eDbeforeParse = new String();
+        
 		// need to add !inputSplit[0].equals(Commands.COMMAND_DELETE) for
 		// subsequent commands to validate if user input a valid command
 		if (!inputSplit[0].toLowerCase().equals(CommandInput.COMMAND_ADD)
@@ -32,25 +32,23 @@ private static final String ENDDATE_INDICATOR = "to";
 		if (inputSplit[0].toLowerCase().equals(CommandInput.COMMAND_ADD)) {
 			String name = "";
 			for (int i = 1; i < inputSplit.length; i++) {
-				if(!inputSplit[i].equals(STARTDATE_INDICATOR) && !inputSplit[i].equals(DUEDATE_INDICATOR)){//recognize date time in string
+				if(!inputSplit[i].equals(STARTDATE_INDICATOR) 
+						&& !inputSplit[i].equals(ENDDATE_INDICATOR)
+						&& !inputSplit[i-1].equals(STARTDATE_INDICATOR)
+						&& !inputSplit[i-1].equals(ENDDATE_INDICATOR)){//recognize date time in string
 				name += inputSplit[i] + " ";
 				}
-				else if(inputSplit[i].equals(STARTDATE_INDICATOR)){
-						beforeParse = inputSplit[i+1];
-						commandInput.setStartDate(fmt.parseDateTime(beforeParse));
-						if(inputSplit[i+2].equals(ENDDATE_INDICATOR)){
-							beforeParse = inputSplit[i+3];
-							commandInput.setEndDate(fmt.parseDateTime(beforeParse));
-						}
-						break;
-					}
-				else{
-					beforeParse = inputSplit[i+1];
-					commandInput.setEndDate(fmt.parseDateTime(beforeParse));
-					break;
+				else if(inputSplit[i-1].equals(STARTDATE_INDICATOR)){
+					sDbeforeParse = inputSplit[i];
+				}
+				else if(inputSplit[i-1].equals(ENDDATE_INDICATOR)){
+					eDbeforeParse = inputSplit[i];
 				}
 			}
 			commandInput.setName(name.trim());
+			commandInput.setStartDate(DateTime.now());
+			//commandInput.setStartDate(DateTime.parse(sDbeforeParse, fmt));
+			//commandInput.setEndDate(DateTime.parse(eDbeforeParse, fmt));
 		}
 
 		// this is to parse command specific to delete

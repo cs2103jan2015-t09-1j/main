@@ -12,14 +12,14 @@ import sg.edu.nus.cs2103t.omnitask.storage.IOJSONImpl;
 public class DataImpl extends Data {
 
 	private File storageFile;
-	
+
 	private ArrayList<Task> tasks;
-	
+
 	protected IO io;
-	
+
 	public DataImpl(File storageFile) throws IOException {
 		this.storageFile = storageFile;
-		
+
 		this.io = new IOJSONImpl(this.storageFile);
 		this.tasks = io.readFromFile();
 	}
@@ -28,7 +28,7 @@ public class DataImpl extends Data {
 	public ArrayList<Task> getTasks() {
 		return tasks;
 	}
-	
+
 	// Get new unique id which can be used for a new task
 	private long getNewId() {
 		long taskId = 1;
@@ -36,7 +36,7 @@ public class DataImpl extends Data {
 		if (tasks.size() > 0) {
 			taskId = tasks.get(tasks.size() - 1).getId() + 1;
 		}
-		
+
 		return taskId;
 	}
 
@@ -47,23 +47,23 @@ public class DataImpl extends Data {
 		Task task = new Task();
 		task.setId(getNewId());
 		task.setName(commandInput.getName());
-		
+
 		// Add the task to our "local cache"
 		tasks.add(task);
-		
+
 		// Commit it to storage
 		try {
 			io.saveToFile(tasks);
 		} catch (IOException ex) {
 			// TODO: Handle error
 			ex.printStackTrace();
-			
+
 			// Reverse change
-			tasks.remove(tasks.size()-1);
-			
+			tasks.remove(tasks.size() - 1);
+
 			return null;
 		}
-		
+
 		return task;
 	}
 
@@ -71,14 +71,14 @@ public class DataImpl extends Data {
 	public boolean deleteTask(long id) {
 		Task taskToRemove = null;
 		int indexToRemove = -1;
-	
-		for (int i=0; i < tasks.size(); i++) {
+
+		for (int i = 0; i < tasks.size(); i++) {
 			if (tasks.get(i).getId() == id) {
 				taskToRemove = tasks.remove(i);
 				indexToRemove = i;
 			}
 		}
-			
+
 		if (taskToRemove != null) {
 			// Commit it to storage
 			try {
@@ -86,33 +86,39 @@ public class DataImpl extends Data {
 			} catch (IOException ex) {
 				// TODO: Handle error
 				ex.printStackTrace();
-				
+
 				// Reverse change
 				tasks.add(indexToRemove, taskToRemove);
-				
+
 				return false;
 			}
 		} else {
 			return false;
 		}
-		
+
 		return true;
 	}
 
 	@Override
 	public boolean updateTask(long id, String taskName) {
-		int taskIdToUpdate=-1;
-		String tmpTaskName  = "" ;
-			
-		for (int i=0; i < tasks.size(); i++) {
+		int taskIdToUpdate = -1;
+		String tmpTaskName = "";
+
+		for (int i = 0; i < tasks.size(); i++) {
 			if (tasks.get(i).getId() == id) {
-				//store the task name from the file in a variable incase need to revert below
-				//
-				tasks.get(i).setName(taskName);
-				taskIdToUpdate=i;
+				// store the task name from the file in a variable incase need
+				// to revert below
+				tmpTaskName = tasks.get(i).getName();
+
+				// if input is not null, update new name
+				if (!taskName.equals("")) {
+					tasks.get(i).setName(taskName);
+				}
+
+				taskIdToUpdate = i;
 			}
 		}
-			
+
 		if (taskIdToUpdate != -1) {
 			// Commit it to storage
 			try {
@@ -120,17 +126,18 @@ public class DataImpl extends Data {
 			} catch (IOException ex) {
 				// TODO: Handle error
 				ex.printStackTrace();
-				
+
 				// Reverse change
-				//do a reverse of update
-				
+				// do a reverse of update
+				tasks.get(taskIdToUpdate).setName(tmpTaskName);
+
 				return false;
 			}
 		} else {
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 }

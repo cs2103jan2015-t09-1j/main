@@ -47,6 +47,10 @@ public class DataImpl extends Data {
 		Task task = new Task();
 		task.setId(getNewId());
 		task.setName(commandInput.getName());
+		task.setStartDate(commandInput.getStartDate());
+		task.setEndDate(commandInput.getEndDate());
+		task.setStartTime(commandInput.getStartTime());
+		task.setEndTime(commandInput.getEndTime());
 
 		// Add the task to our "local cache"
 		tasks.add(task);
@@ -68,16 +72,18 @@ public class DataImpl extends Data {
 	}
 
 	@Override
-	public boolean deleteTask(long id) {
+	public boolean deleteTask(CommandInput commandInput) {
 		Task taskToRemove = null;
 		int indexToRemove = -1;
 
 		for (int i = 0; i < tasks.size(); i++) {
-			if (tasks.get(i).getId() == id) {
+			if (tasks.get(i).getId() == commandInput.getId()) {
 				taskToRemove = tasks.remove(i);
 				indexToRemove = i;
 			}
 		}
+
+		updateTaskId(); // Reassign taskId to the tasks Arraylist
 
 		if (taskToRemove != null) {
 			// Commit it to storage
@@ -99,21 +105,35 @@ public class DataImpl extends Data {
 		return true;
 	}
 
+	// Reassign taskId to the tasks arraylist
+	private void updateTaskId() {
+		for (int i = 0; i < tasks.size(); i++) {
+			tasks.get(i).setId(i + 1);
+		}
+	}
+
 	@Override
-	public boolean updateTask(long id, String taskName) {
+	public boolean editTask(CommandInput commandInput) {
+		// lacking startDate, endDate, startTime, endTime
 		int taskIdToUpdate = -1;
 		String tmpTaskName = "";
 
 		for (int i = 0; i < tasks.size(); i++) {
-			if (tasks.get(i).getId() == id) {
-				// store the task name from the file in a variable in case need
+
+			if (tasks.get(i).getId() == commandInput.getId()) {
+				// store the task name from the file in a variable incase need
+
 				// to revert below
 				tmpTaskName = tasks.get(i).getName();
 
 				// if input is not null, update new name
-				if (!taskName.equals("")) {
-					tasks.get(i).setName(taskName);
+				if (!commandInput.getName().equals("")) {
+					tasks.get(i).setName(commandInput.getName());
 				}
+				// task.setStartDate(commandInput.getStartDate());
+				// task.setEndDate(commandInput.getEndDate());
+				// task.setStartTime(commandInput.getStartTime());
+				// task.setEndTime(commandInput.getEndTime());
 
 				taskIdToUpdate = i;
 			}

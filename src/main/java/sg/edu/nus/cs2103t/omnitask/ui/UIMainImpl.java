@@ -2,20 +2,28 @@ package sg.edu.nus.cs2103t.omnitask.ui;
 
 import java.awt.Container;
 import java.awt.EventQueue;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.GroupLayout;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
 import sg.edu.nus.cs2103t.omnitask.controller.Controller;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
+
+import com.tulskiy.keymaster.common.HotKey;
+import com.tulskiy.keymaster.common.HotKeyListener;
+import com.tulskiy.keymaster.common.Provider;
 
 @SuppressWarnings("serial")
 public class UIMainImpl extends JFrame implements UI {
@@ -48,6 +56,8 @@ public class UIMainImpl extends JFrame implements UI {
 	@Override
 	public void start() {
 		setupUI();
+		
+		setupHotkeys();
         
 		EventQueue.invokeLater(new Runnable() {
             @Override
@@ -61,6 +71,23 @@ public class UIMainImpl extends JFrame implements UI {
 		
 		// Make sure input is focused
 		inputField.grabFocus();
+	}
+	
+	private void setupHotkeys() {
+		Provider provider = Provider.getCurrentProvider(false);
+		provider.register(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.SHIFT_DOWN_MASK | KeyEvent.META_DOWN_MASK), new HotKeyListener(){
+
+			@Override
+			public void onHotKey(HotKey arg0) {
+				// TODO: Replace deprecated methods
+				if (isShowing()) {
+					hide();
+				} else {
+					show();
+				}
+			}
+			
+		});
 	}
 	
 	private void setupUI() {

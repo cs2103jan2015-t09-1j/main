@@ -92,11 +92,49 @@ public class ParserMainImpl extends Parser {
 			long updateId;
 			updateId = Long.parseLong(inputSplit[1]);
 			commandInput.setId(updateId);
-			String name = "";
+			String taskName = "";
+//			String name = "";
+//			for (int i = 2; i < inputSplit.length; i++) {
+//				taskName += inputSplit[i] + " ";
+//			}
+			
+			
 			for (int i = 2; i < inputSplit.length; i++) {
-				name += inputSplit[i] + " ";
+				if (inArray(DATE_INDICATORS, inputSplit[i])) {
+					taskName = joinStringArray(inputSplit, 2, i);
+					
+					// Parse date using Natty
+					com.joestelmach.natty.Parser parser = new com.joestelmach.natty.Parser();
+					List<DateGroup> groups = parser.parse(input);
+					for (DateGroup group : groups) {
+						// If there are 2 dates, means it's to and from
+						// If no specific time is specified by user, set the time to 00:00:00, retaining the dates
+						if (group.getDates().size() == 2) {
+							commandInput.setStartDate(new DateTime(group.getDates().get(0).getTime()));
+							if (!isTimeSpecifiedByUser(group.getSyntaxTree().getChild(0))) {
+								commandInput.setStartDate(commandInput.getStartDate().withMillisOfDay(0));
+							}
+							
+							commandInput.setEndDate(new DateTime(group.getDates().get(1).getTime()));
+							if (!isTimeSpecifiedByUser(group.getSyntaxTree().getChild(1))) {
+								commandInput.setEndDate(commandInput.getEndDate().withMillisOfDay(0));
+							}
+						} else {
+							commandInput.setEndDate(new DateTime(group.getDates().get(0).getTime()));
+							if (!isTimeSpecifiedByUser(group.getSyntaxTree().getChild(0))) {
+								commandInput.setEndDate(commandInput.getEndDate().withMillisOfDay(0));
+							}
+						}
+					}
+					
+					break;
+				}
 			}
-			commandInput.setName(name.trim());
+			
+//			if (taskName.equals("")) {
+//				taskName = joinStringArray(inputSplit, 1, inputSplit.length);
+//			}
+			commandInput.setName(taskName.trim());
 		}
 
 		if (inputSplit[0].toLowerCase().equals(CommandInput.COMMAND_EXIT)) {

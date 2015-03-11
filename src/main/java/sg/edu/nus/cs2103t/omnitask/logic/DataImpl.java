@@ -128,10 +128,12 @@ public class DataImpl extends Data {
 				if (!commandInput.getName().equals("")) {
 					tasks.get(i).setName(commandInput.getName());
 				}
-				// task.setStartDate(commandInput.getStartDate());
-				// task.setEndDate(commandInput.getEndDate());
-				// task.setStartTime(commandInput.getStartTime());
-				// task.setEndTime(commandInput.getEndTime());
+				if(commandInput.getStartDate()!=null) {
+					tasks.get(i).setStartDate(commandInput.getStartDate());
+				}
+				if(commandInput.getEndDate()!=null) {
+					tasks.get(i).setEndDate(commandInput.getEndDate());
+				}
 
 				taskIdToUpdate = i;
 			}

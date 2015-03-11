@@ -1,11 +1,19 @@
 package sg.edu.nus.cs2103t.omnitask.ui;
 
+import java.awt.AWTException;
 import java.awt.Container;
 import java.awt.EventQueue;
+import java.awt.Image;
+import java.awt.SystemTray;
 import java.awt.Toolkit;
+import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +35,10 @@ import com.tulskiy.keymaster.common.Provider;
 
 @SuppressWarnings("serial")
 public class UIMainImpl extends JFrame implements UI {
+	
+	private static Image image = Toolkit.getDefaultToolkit().getImage("tray.png");
+
+	private static TrayIcon trayIcon = new TrayIcon(image, "OmniTask");
 	
 	private Controller controller;
 	
@@ -57,6 +69,8 @@ public class UIMainImpl extends JFrame implements UI {
 	public void start() {
 		setupUI();
 		
+		setupTray();
+		
 		setupHotkeys();
         
 		EventQueue.invokeLater(new Runnable() {
@@ -78,7 +92,6 @@ public class UIMainImpl extends JFrame implements UI {
 	private HotKeyListener showHideHotkeyListener = new HotKeyListener() {
 		@Override
 		public void onHotKey(HotKey arg0) {
-			// TODO: Replace deprecated methods
 			if (isShowing()) {
 				hideWindow();
 			} else {
@@ -87,11 +100,95 @@ public class UIMainImpl extends JFrame implements UI {
 		}
 	};
 	
+	private void setupTray() {
+		if (SystemTray.isSupported()) {
+			trayIcon.setImageAutoSize(true);
+			trayIcon.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					showWindow();
+				}
+			});
+			trayIcon.addMouseListener(new MouseListener() {
+
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					// TODO Auto-generated method stub
+					showWindow();
+					showMessage("To exit OmniTask, type \"exit\" below.");
+				}
+
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void mousePressed(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+			});
+		}
+	}
+	
+	private void showTray() {
+		if (SystemTray.isSupported()) {
+			SystemTray tray = SystemTray.getSystemTray();
+
+			try {
+				if (tray.getTrayIcons().length == 0) {
+					tray.add(trayIcon);
+					trayIcon.displayMessage("OmniTask", "Click here or press Win + Shift + O to show OmniTask", TrayIcon.MessageType.INFO);
+				}
+			} catch (AWTException e) {
+				System.err.println("TrayIcon could not be added.");
+			}
+		}
+	}
+	
+	private void hideTray() {
+		if (SystemTray.isSupported()) {
+			SystemTray tray = SystemTray.getSystemTray();
+			
+			tray.remove(trayIcon);
+		}
+	}
+	
 	private void setupUI() {
 		setTitle("OmniTask");
         setSize(800, 600);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(HIDE_ON_CLOSE);
+        addComponentListener(new ComponentAdapter() {
+        	public void componentHidden(ComponentEvent e) {
+        		hideWindow();
+        		
+        		showTray();
+        	}
+        	
+        	public void componentShown(ComponentEvent e) {
+        		showWindow();
+        		
+        		hideTray();
+        		
+        		// Make sure input is focused
+        		inputField.grabFocus();
+        	}
+        });
         
         taskTable = new JTable(new TaskTableModel());
         
@@ -156,14 +253,15 @@ public class UIMainImpl extends JFrame implements UI {
 	}
 
 	private void hideWindow() {
-		setVisible(false);
+		if (isVisible()) {
+			setVisible(false);
+		}
 	}
 	
 	private void showWindow() {
-		setVisible(true);
-		
-		// Make sure input is focused
-		inputField.grabFocus();
+		if (!isVisible()) {
+			setVisible(true);
+		}
 	}
 	
 	@Override

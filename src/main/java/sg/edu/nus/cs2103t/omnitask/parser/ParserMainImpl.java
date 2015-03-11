@@ -97,8 +97,7 @@ public class ParserMainImpl extends Parser {
 //			for (int i = 2; i < inputSplit.length; i++) {
 //				taskName += inputSplit[i] + " ";
 //			}
-			
-			
+					
 			for (int i = 2; i < inputSplit.length; i++) {
 				if (inArray(DATE_INDICATORS, inputSplit[i])) {
 					taskName = joinStringArray(inputSplit, 2, i);
@@ -131,9 +130,9 @@ public class ParserMainImpl extends Parser {
 				}
 			}
 			
-//			if (taskName.equals("")) {
-//				taskName = joinStringArray(inputSplit, 1, inputSplit.length);
-//			}
+			if (taskName.equals("")) {
+				taskName = joinStringArray(inputSplit, 2, inputSplit.length);
+			}
 			commandInput.setName(taskName.trim());
 		}
 

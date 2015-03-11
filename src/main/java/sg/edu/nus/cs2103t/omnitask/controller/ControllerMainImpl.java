@@ -28,12 +28,13 @@ public class ControllerMainImpl extends Controller {
 		parser = new ParserMainImpl();
 
 		// Get file from argument
-		File storageFile = checkForAndInitArgument(args);
-
-		// Check if we have the filename from the argument, quit if not
-		if (storageFile == null) {
-			ui.exit();
-			return;
+		File storageFile = null;
+		
+		// Use default filename if no argument specified
+		if (args.length == 0) {
+			storageFile = new File("storage.txt");
+		} else {
+			storageFile = new File(args[0]);
 		}
 
 		// Initialize data logic (which would create the storage file if needed)
@@ -146,16 +147,6 @@ public class ControllerMainImpl extends Controller {
 	// Update UI
 	private void updateTaskListings() {
 		ui.updateTaskListings(data.getTasks());
-	}
-
-	private File checkForAndInitArgument(String[] args) {
-		// Print error if argument is not given
-		if (args.length == 0) {
-			ui.showError("Please specify a text file as an argument.");
-			return null;
-		}
-
-		return new File(args[0]);
 	}
 
 }

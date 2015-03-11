@@ -48,6 +48,7 @@ public class ParserMainImpl extends Parser {
 					List<DateGroup> groups = parser.parse(input);
 					for (DateGroup group : groups) {
 						// If there are 2 dates, means it's to and from
+						// If no specific time is specified by user, set the time to 00:00:00, retaining the dates
 						if (group.getDates().size() == 2) {
 							commandInput.setStartDate(new DateTime(group.getDates().get(0).getTime()));
 							if (!isTimeSpecifiedByUser(group.getSyntaxTree().getChild(0))) {

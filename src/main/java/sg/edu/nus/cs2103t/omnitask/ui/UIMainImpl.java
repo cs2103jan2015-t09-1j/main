@@ -97,10 +97,14 @@ public class UIMainImpl extends JFrame implements UI {
         
         // TODO: Make code more decoupled?
         TableColumn column = null;
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             column = taskTable.getColumnModel().getColumn(i);
             if (i == 0) {
-                column.setPreferredWidth(10);
+                column.setPreferredWidth(15);
+            } else if (i == 1) {
+                column.setPreferredWidth(15);
+            } else if (i == 3) {
+                column.setPreferredWidth(100);
             } else {
                 column.setPreferredWidth(600);
             }
@@ -171,7 +175,7 @@ public class UIMainImpl extends JFrame implements UI {
 	
 	private class TaskTableModel extends AbstractTableModel {
 		// TODO: Decouple this line somehow?
-		private String[] columnNames = new String[]{"id", "name"};
+		private String[] columnNames = new String[]{"id", "priority", "name", "deadline"};
 
 		@Override
 		public int getColumnCount() {
@@ -192,7 +196,15 @@ public class UIMainImpl extends JFrame implements UI {
 			if (col == 0) {
 				return tasks.get(row).getId();
 			} else if (col == 1) {
+				return tasks.get(row).getPriority()+1;
+			} else if (col == 2) {
 				return tasks.get(row).getName();
+			} else if (col == 3) {
+				if (tasks.get(row).getEndDate() != null) {
+					return tasks.get(row).getEndDate().toString();
+				} else {
+					return "";
+				}
 			} else {
 				new Exception("Not implemented.").printStackTrace();
 				return null;

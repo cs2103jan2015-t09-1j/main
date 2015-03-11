@@ -13,6 +13,8 @@ public class Task {
 	
 	private long id;
 	
+	private int priority;
+	
 	private String name;
 	
 	// TODO: Might want to change this to an enum
@@ -59,6 +61,14 @@ public class Task {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+	
+	public int getPriority() {
+		return priority;
+	}
+
+	public void setPriority(int priority) {
+		this.priority = priority;
 	}
 
 	public String getName() {

@@ -97,16 +97,16 @@ public class UIMainImpl extends JFrame implements UI {
         
         // TODO: Make code more decoupled?
         TableColumn column = null;
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             column = taskTable.getColumnModel().getColumn(i);
             if (i == 0) {
                 column.setPreferredWidth(15);
             } else if (i == 1) {
                 column.setPreferredWidth(15);
             } else if (i == 3) {
-                column.setPreferredWidth(100);
+                column.setPreferredWidth(200);
             } else {
-                column.setPreferredWidth(600);
+                column.setPreferredWidth(400);
             }
         }
         

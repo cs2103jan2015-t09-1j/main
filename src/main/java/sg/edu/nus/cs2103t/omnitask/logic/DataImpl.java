@@ -45,6 +45,9 @@ public class DataImpl extends Data {
 	public Task addTask(CommandInput commandInput) {
 		// Create new task object
 		Task task = new Task();
+		if(commandInput.getName().isEmpty()){
+			return null;
+		}
 		task.setId(getNewId());
 		task.setName(commandInput.getName());
 		task.setStartDate(commandInput.getStartDate());
@@ -117,8 +120,10 @@ public class DataImpl extends Data {
 		String tmpTaskName = "";
 
 		for (int i = 0; i < tasks.size(); i++) {
+
 			if (tasks.get(i).getId() == commandInput.getId()) {
 				// store the task name from the file in a variable incase need
+
 				// to revert below
 				tmpTaskName = tasks.get(i).getName();
 

@@ -12,7 +12,7 @@ import org.joda.time.DateTime;
 
 public class ParserMainImpl extends Parser {
 
-	private static final String[] DATE_INDICATORS = new String[]{"from", "by", "due"};
+	private static final String[] DATE_INDICATORS = new String[]{"from", "by", "due", "to", "on"};
 
 	@Override
 	public CommandInput parseUserInput(String input) {
@@ -78,7 +78,7 @@ public class ParserMainImpl extends Parser {
 			commandInput.setName(taskName.trim());
 		}
 
-		// this is to parse command specific to delete
+		// parse for delete command
 
 		if (inputSplit[0].toLowerCase().equals(CommandInput.COMMAND_DELETE)) {
 			long deleteId;
@@ -97,8 +97,7 @@ public class ParserMainImpl extends Parser {
 //			for (int i = 2; i < inputSplit.length; i++) {
 //				taskName += inputSplit[i] + " ";
 //			}
-			
-			
+					
 			for (int i = 2; i < inputSplit.length; i++) {
 				if (inArray(DATE_INDICATORS, inputSplit[i])) {
 					taskName = joinStringArray(inputSplit, 2, i);
@@ -131,9 +130,9 @@ public class ParserMainImpl extends Parser {
 				}
 			}
 			
-//			if (taskName.equals("")) {
-//				taskName = joinStringArray(inputSplit, 1, inputSplit.length);
-//			}
+			if (taskName.equals("")) {
+				taskName = joinStringArray(inputSplit, 2, inputSplit.length);
+			}
 			commandInput.setName(taskName.trim());
 		}
 

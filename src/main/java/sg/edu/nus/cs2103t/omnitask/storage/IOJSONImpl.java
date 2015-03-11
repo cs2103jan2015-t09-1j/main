@@ -11,9 +11,13 @@ import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 
+import org.joda.time.DateTime;
+
+import sg.edu.nus.cs2103t.omnitask.DateTimeConverter;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 public class IOJSONImpl extends IO {
@@ -23,7 +27,9 @@ public class IOJSONImpl extends IO {
 
 	public IOJSONImpl(File storageFile) throws IOException {
 		this.storageFile = storageFile;
-		this.gson = new Gson();
+		this.gson = new GsonBuilder()
+					.registerTypeAdapter(new TypeToken<DateTime>(){}.getType(), new DateTimeConverter())
+					.create();
 		
 		IO.CheckIfFileExistAndCreateIfDoesNot(storageFile);
 	}
@@ -41,11 +47,21 @@ public class IOJSONImpl extends IO {
 	    in.close();
 	    
 	    // return empty arraylist if file has zero items
-	    if (lines.equals(""))
-	    	return new ArrayList<Task>();
+	    ArrayList<Task> tasks = new ArrayList<Task>();
 	    
 		// convert json to ArrayList
-		return gson.fromJson(lines, new TypeToken<ArrayList<Task>>(){}.getType());
+	    try {
+	    	ArrayList<Task> tasksFromFile = gson.fromJson(lines, new TypeToken<ArrayList<Task>>(){}.getType());
+	    	if (tasksFromFile != null) {
+	    		tasks = tasksFromFile;
+	    	}
+	    } catch (Exception e) {
+	    	// TODO: This is unacceptable, warn user first!
+	    	// File is most likely corrupted, start over
+	    	saveToFile(new ArrayList<Task>());
+	    }
+	    
+	    return tasks;
 	}
 	
 	@Override

@@ -20,10 +20,6 @@ public class CommandInput {
 
 	private DateTime endDate;
 
-	private DateTime startTime;
-
-	private DateTime endTime;
-
 	private long id;
 
 	private String name;
@@ -33,13 +29,13 @@ public class CommandInput {
 
 	public CommandInput(String commandName) {
 		super();
-		this.commandName = commandName;
+		this.commandName = commandName.toLowerCase();
 	}
 
 	// TODO: Add more constructors for mostly used combination of fields
 	public CommandInput(String commandName, String name) {
 		super();
-		this.commandName = commandName;
+		this.commandName = commandName.toLowerCase();
 		this.name = name;
 	}
 
@@ -48,7 +44,7 @@ public class CommandInput {
 	}
 
 	public void setCommandName(String commandName) {
-		this.commandName = commandName;
+		this.commandName = commandName.toLowerCase();
 	}
 
 	public DateTime getStartDate() {
@@ -65,22 +61,6 @@ public class CommandInput {
 
 	public void setEndDate(DateTime endDate) {
 		this.endDate = endDate;
-	}
-
-	public DateTime getStartTime() {
-		return startTime;
-	}
-
-	public void setStartTime(DateTime startTime) {
-		this.startTime = startTime;
-	}
-
-	public DateTime getEndTime() {
-		return endTime;
-	}
-
-	public void setEndTime(DateTime endTime) {
-		this.endTime = endTime;
 	}
 
 	public long getId() {
@@ -110,8 +90,7 @@ public class CommandInput {
 	@Override
 	public String toString() {
 		return "CommandInput [commandName=" + commandName + ", startDate="
-				+ startDate + ", endDate=" + endDate + ", startTime="
-				+ startTime + ", endTime=" + endTime + ", id=" + id + ", name="
+				+ startDate + ", endDate=" + endDate + ", id=" + id + ", name="
 				+ name + ", type=" + type + "]";
 	}
 

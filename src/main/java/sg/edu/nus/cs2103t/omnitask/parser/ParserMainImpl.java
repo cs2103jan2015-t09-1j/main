@@ -12,7 +12,7 @@ import org.joda.time.DateTime;
 
 public class ParserMainImpl extends Parser {
 
-	private static final String[] DATE_INDICATORS = new String[]{"from", "by", "due"};
+	private static final String[] DATE_INDICATORS = new String[]{"from", "by", "due", "to", "on"};
 
 	@Override
 	public CommandInput parseUserInput(String input) {

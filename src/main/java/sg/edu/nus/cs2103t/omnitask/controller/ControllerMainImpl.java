@@ -94,14 +94,18 @@ public class ControllerMainImpl extends Controller {
 	@Override
 	public void processAddCommand(CommandInput commandInput) {
 		Task task = data.addTask(commandInput);
-
+		
 		// TODO: Fix magic string
 		if (task != null) {
 			ui.showMessage("Task \"" + task.getName()
 					+ "\" added successfully!");
 		} else {
-			ui.showMessage("Failed to add task \"" + commandInput.getName()
+			if(commandInput.getName().isEmpty()){
+				ui.showMessage("Failed to add task. Please fill in the task name!");
+			}else{
+				ui.showMessage("Failed to add task \"" + commandInput.getName()
 					+ "\".");
+			}
 		}
 		updateTaskListings();
 	}

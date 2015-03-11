@@ -45,6 +45,9 @@ public class DataImpl extends Data {
 	public Task addTask(CommandInput commandInput) {
 		// Create new task object
 		Task task = new Task();
+		if(commandInput.getName().isEmpty()){
+			return null;
+		}
 		task.setId(getNewId());
 		task.setName(commandInput.getName());
 		task.setStartDate(commandInput.getStartDate());

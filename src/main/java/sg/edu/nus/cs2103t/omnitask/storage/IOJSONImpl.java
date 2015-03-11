@@ -41,11 +41,21 @@ public class IOJSONImpl extends IO {
 	    in.close();
 	    
 	    // return empty arraylist if file has zero items
-	    if (lines.equals(""))
-	    	return new ArrayList<Task>();
+	    ArrayList<Task> tasks = new ArrayList<Task>();
 	    
 		// convert json to ArrayList
-		return gson.fromJson(lines, new TypeToken<ArrayList<Task>>(){}.getType());
+	    try {
+	    	ArrayList<Task> tasksFromFile = gson.fromJson(lines, new TypeToken<ArrayList<Task>>(){}.getType());
+	    	if (tasksFromFile != null) {
+	    		tasks = tasksFromFile;
+	    	}
+	    } catch (Exception e) {
+	    	// TODO: This is unacceptable, warn user first!
+	    	// File is most likely corrupted, start over
+	    	saveToFile(new ArrayList<Task>());
+	    }
+	    
+	    return tasks;
 	}
 	
 	@Override

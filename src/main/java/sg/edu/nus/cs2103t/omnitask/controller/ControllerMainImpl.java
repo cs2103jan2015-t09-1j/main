@@ -58,12 +58,12 @@ public class ControllerMainImpl extends Controller {
 		if (commandInput == null) {
 			ui.showError("Invalid command entered. Please try again.");
 		} else {
-			processCommand(commandInput);
+			switchCommand(commandInput);
 		}
 	}
 
 	@Override
-	public void processCommand(CommandInput commandInput) {
+	public void switchCommand(CommandInput commandInput) {
 		// TODO: switch only support constants, maybe bad idea to use it here as
 		// it cause magic string
 		switch (commandInput.getCommandName()) {

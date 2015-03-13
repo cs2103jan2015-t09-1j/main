@@ -5,7 +5,7 @@ import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 public abstract class Controller {
 	public abstract void start(String[] args);
 
-	public abstract void processCommand(CommandInput commandInput);
+	public abstract void switchCommand(CommandInput commandInput);
 
 	public abstract void processAddCommand(CommandInput commandInput);
 

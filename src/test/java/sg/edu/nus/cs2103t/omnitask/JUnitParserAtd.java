@@ -2,6 +2,7 @@ package sg.edu.nus.cs2103t.omnitask;
 
 import static org.junit.Assert.*;
 
+import org.joda.time.DateTime;
 import org.junit.Test;
 
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
@@ -19,6 +20,22 @@ public class JUnitParserAtd {
 		assertNotNull(commandInput);
 		assertEquals(commandInput.getCommandName(), CommandInput.COMMAND_ADD);
 		assertEquals(commandInput.getName(), "Hello");
+		
+		// Test parsing of "add" and "task name", "due" parameter
+		commandInput = parseUserInputHelper("add Hello due 15 August 2015");
+		assertNotNull(commandInput);
+		assertEquals(commandInput.getCommandName(), CommandInput.COMMAND_ADD);
+		assertEquals(commandInput.getName(), "Hello");
+		assertEquals(commandInput.getEndDate().dayOfMonth().get(), 15);
+		assertEquals(commandInput.getEndDate().monthOfYear().get(), 8);
+		assertEquals(commandInput.getEndDate().year().get(), 2015);
+		
+		// Test parsing of "add" and "task name", "due" (relative date) parameter
+		commandInput = parseUserInputHelper("add Hello due tomorrow");
+		assertNotNull(commandInput);
+		assertEquals(commandInput.getCommandName(), CommandInput.COMMAND_ADD);
+		assertEquals(commandInput.getName(), "Hello");
+		assertEquals(commandInput.getEndDate().dayOfYear().get(), DateTime.now().plusDays(1).dayOfYear().get());
 	}
 	
 	private CommandInput parseUserInputHelper(String input) {

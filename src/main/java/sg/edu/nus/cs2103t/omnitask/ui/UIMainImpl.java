@@ -41,7 +41,7 @@ public class UIMainImpl implements UI {
 	private ViewController viewController;
 
 	private static Image image = Toolkit.getDefaultToolkit().getImage(
-			"tray.png");
+			"src/main/resources/tray.png");
 
 	private static TrayIcon trayIcon = new TrayIcon(image, "OmniTask");
 

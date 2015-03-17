@@ -102,6 +102,7 @@ public class UIMainImpl implements UI {
 			primaryStage.setMinWidth(WINDOW_WIDTH);
 			primaryStage.setMinHeight(WINDOW_HEIGHT);
 			primaryStage.setTitle("OmniTask");
+			primaryStage.getIcons().add(new javafx.scene.image.Image("tray.png"));
 
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				@Override

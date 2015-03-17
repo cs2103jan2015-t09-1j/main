@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane xmlns:fx="http://javafx.com/fxml" hgap="5" fx:id="taskCellItem">
+	<padding><Insets top="5" right="5" bottom="5" left="5"/></padding>
+	<columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" maxWidth="50.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" maxWidth="50.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" prefWidth="200.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="250.0" maxWidth="250.0" />
+    </columnConstraints>
+
+   	<Label fx:id="taskId"
+   		GridPane.columnIndex="0" GridPane.rowIndex="0" />
+   		
+   	<Label fx:id="taskPriority"
+   		GridPane.columnIndex="1" GridPane.rowIndex="0" />
+   		
+   	<Label fx:id="taskName"
+   		GridPane.columnIndex="2" GridPane.rowIndex="0" />
+   		
+   	<Label fx:id="taskDue"
+   		GridPane.columnIndex="3" GridPane.rowIndex="0" />
+
+</GridPane>

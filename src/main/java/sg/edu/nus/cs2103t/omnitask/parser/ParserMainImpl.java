@@ -45,7 +45,7 @@ public class ParserMainImpl extends Parser {
 					
 					// Parse date using Natty
 					com.joestelmach.natty.Parser parser = new com.joestelmach.natty.Parser();
-					List<DateGroup> groups = parser.parse(input);
+					List<DateGroup> groups = parser.parse(joinStringArray(inputSplit, i, inputSplit.length));
 					for (DateGroup group : groups) {
 						// If there are 2 dates, means it's to and from
 						// If no specific time is specified by user, set the time to 00:00:00, retaining the dates

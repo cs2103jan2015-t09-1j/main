@@ -273,26 +273,4 @@ public class UIMainImpl implements UI {
 		viewController.updateListView(tasks);
 	}
 
-	/*
-	 * private class TaskTableModel extends AbstractTableModel { // TODO:
-	 * Decouple this line somehow? private String[] columnNames = new
-	 * String[]{"id", "priority", "name", "deadline"};
-	 * 
-	 * @Override public int getColumnCount() { return columnNames.length; }
-	 * 
-	 * public String getColumnName(int col) { return columnNames[col]; }
-	 * 
-	 * @Override public int getRowCount() { return tasks.size(); }
-	 * 
-	 * @Override public Object getValueAt(int row, int col) { if (col == 0) {
-	 * return tasks.get(row).getId(); } else if (col == 1) { return
-	 * tasks.get(row).getPriority()+1; } else if (col == 2) { return
-	 * tasks.get(row).getName(); } else if (col == 3) { if
-	 * (tasks.get(row).getEndDate() != null) { return
-	 * tasks.get(row).getEndDate().toString(); } else { return ""; } } else {
-	 * new Exception("Not implemented.").printStackTrace(); return null; } }
-	 * 
-	 * }
-	 */
-
 }

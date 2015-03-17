@@ -143,7 +143,7 @@ public class UIMainImpl implements UI {
 	
 	private void setupHotkeys() {
 		Provider provider = Provider.getCurrentProvider(false);
-		provider.register(KeyStroke.getKeyStroke('O', InputEvent.SHIFT_DOWN_MASK), showHideHotkeyListener);
+		provider.register(KeyStroke.getKeyStroke('O', InputEvent.SHIFT_DOWN_MASK | InputEvent.CTRL_DOWN_MASK), showHideHotkeyListener);
 	}
 
 	private HotKeyListener showHideHotkeyListener = new HotKeyListener() {
@@ -227,7 +227,7 @@ public class UIMainImpl implements UI {
 							tray.add(trayIcon);
 							trayIcon.displayMessage(
 									"OmniTask",
-									"Click here or press Win + Shift + O to show OmniTask",
+									"Click here or press Ctrl + Shift + O to show OmniTask",
 									TrayIcon.MessageType.INFO);
 						}
 					} catch (AWTException e) {

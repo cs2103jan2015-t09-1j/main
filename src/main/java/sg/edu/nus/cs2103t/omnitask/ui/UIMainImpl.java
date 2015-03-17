@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 import java.util.List;
 
 import javafx.application.Platform;
@@ -92,6 +91,7 @@ public class UIMainImpl implements UI {
 					"layout.fxml"));
 			Parent root = (Parent) loader.load();
 			viewController = (ViewController) loader.getController();
+			viewController.setController(controller);
 
 			Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 			scene.getStylesheets().add(
@@ -257,6 +257,7 @@ public class UIMainImpl implements UI {
 		provider.stop();
 		
 		Platform.exit();
+		System.exit(0);
 	}
 
 	private void hideWindow() {

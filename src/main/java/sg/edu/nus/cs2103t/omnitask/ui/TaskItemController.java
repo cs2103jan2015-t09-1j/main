@@ -134,6 +134,13 @@ public class TaskItemController {
 		} else {
 			taskDue.setText(formattedDate);
 		}
+		
+		if (task.getEndDate() != null && task.getEndDate().isBeforeNow()) {
+			taskId.setTextFill(Color.RED);
+			taskPriority.setTextFill(Color.RED);
+			taskName.setTextFill(Color.RED);
+			taskDue.setTextFill(Color.RED);
+		}
 	}
 	
 	public GridPane getView() {

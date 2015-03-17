@@ -24,6 +24,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import sg.edu.nus.cs2103t.omnitask.controller.Controller;
+import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 
 import com.tulskiy.keymaster.common.HotKey;
@@ -81,7 +82,7 @@ public class UIMainImpl implements UI {
 
 		primaryStage.show();
 
-		controller.processUserInput("display");
+		controller.processUserInput(CommandInput.COMMAND_DISPLAY);
 		showMessage("Welcome to OmniTask. Type 'help' to get help.");
 	}
 

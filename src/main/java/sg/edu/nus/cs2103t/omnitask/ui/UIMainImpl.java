@@ -63,7 +63,7 @@ public class UIMainImpl implements UI {
 		if (viewController != null) {
 			viewController.showError(msg);
 		} else {
-			System.out.println("Error: " + msg);
+			System.err.println("Error: " + msg);
 		}
 	}
 

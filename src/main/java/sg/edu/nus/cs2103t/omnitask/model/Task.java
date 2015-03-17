@@ -7,10 +7,6 @@ public class Task {
 	
 	private DateTime endDate;
 	
-	private DateTime startTime;
-	
-	private DateTime endTime;
-	
 	private long id;
 	
 	private int priority;
@@ -37,22 +33,6 @@ public class Task {
 
 	public void setEndDate(DateTime endDate) {
 		this.endDate = endDate;
-	}
-
-	public DateTime getStartTime() {
-		return startTime;
-	}
-
-	public void setStartTime(DateTime startTime) {
-		this.startTime = startTime;
-	}
-
-	public DateTime getEndTime() {
-		return endTime;
-	}
-
-	public void setEndTime(DateTime endTime) {
-		this.endTime = endTime;
 	}
 
 	public long getId() {
@@ -90,7 +70,7 @@ public class Task {
 	@Override
 	public String toString() {
 		return "Task [startDate=" + startDate + ", endDate=" + endDate
-				+ ", startTime=" + startTime + ", endTime=" + endTime + ", id="
+				+ ", id="
 				+ id + ", name=" + name + ", type=" + type + "]";
 	}
 }

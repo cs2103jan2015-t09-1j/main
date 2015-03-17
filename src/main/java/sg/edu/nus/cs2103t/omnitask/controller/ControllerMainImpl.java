@@ -21,10 +21,13 @@ public class ControllerMainImpl extends Controller {
 
 	protected Data data;
 
+	public void setUi(UI ui) {
+		this.ui = ui;
+	}
+
 	@Override
 	public void start(String[] args) {
 		// Initialize components
-		ui = new UIMainImpl(this);
 		parser = new ParserMainImpl();
 
 		// Get file from argument

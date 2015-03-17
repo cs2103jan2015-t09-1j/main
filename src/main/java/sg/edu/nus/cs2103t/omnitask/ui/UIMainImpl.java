@@ -100,6 +100,7 @@ public class UIMainImpl implements UI {
 
 			primaryStage.setMinWidth(WINDOW_WIDTH);
 			primaryStage.setMinHeight(WINDOW_HEIGHT);
+			primaryStage.setTitle("OmniTask");
 
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				@Override

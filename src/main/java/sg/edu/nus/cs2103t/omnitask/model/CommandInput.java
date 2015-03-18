@@ -22,6 +22,8 @@ public class CommandInput {
 
 	private long id;
 	
+	private boolean recurrence;
+	
 	private int priority;
 
 	private String name;
@@ -73,6 +75,14 @@ public class CommandInput {
 		this.id = id;
 	}
 	
+	public boolean isRecurrance() {
+		return recurrence;
+	}
+
+	public void setRecurrance(boolean recurrence) {
+		this.recurrence = recurrence;
+	}
+
 	public int getPriority() {
 		return priority;
 	}

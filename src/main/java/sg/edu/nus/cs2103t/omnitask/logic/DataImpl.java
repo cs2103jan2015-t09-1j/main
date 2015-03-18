@@ -8,6 +8,7 @@ import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 import sg.edu.nus.cs2103t.omnitask.storage.IO;
 import sg.edu.nus.cs2103t.omnitask.storage.IOJSONImpl;
+import java.util.UUID;
 
 public class DataImpl extends Data {
 
@@ -29,7 +30,7 @@ public class DataImpl extends Data {
 		return tasks;
 	}
 
-	// Get new unique id which can be used for a new task
+	// Get new "viewing" taskId which can be used for a new task
 	private long getNewId() {
 		long taskId = 1;
 		ArrayList<Task> tasks = getTasks();
@@ -49,6 +50,8 @@ public class DataImpl extends Data {
 			return null;
 		}
 		task.setId(getNewId());
+		UUID uuid = UUID.randomUUID();
+		task.setUuid(uuid);
 		task.setName(commandInput.getName());
 		task.setStartDate(commandInput.getStartDate());
 		task.setEndDate(commandInput.getEndDate());

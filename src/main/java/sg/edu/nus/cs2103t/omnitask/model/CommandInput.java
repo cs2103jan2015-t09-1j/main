@@ -75,11 +75,11 @@ public class CommandInput {
 		this.id = id;
 	}
 	
-	public boolean isRecurrance() {
+	public boolean isRecurrence() {
 		return recurrence;
 	}
 
-	public void setRecurrance(boolean recurrence) {
+	public void setRecurrence(boolean recurrence) {
 		this.recurrence = recurrence;
 	}
 

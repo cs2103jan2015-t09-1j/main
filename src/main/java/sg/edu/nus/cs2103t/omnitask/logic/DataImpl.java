@@ -4,11 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import sg.edu.nus.cs2103t.omnitask.Logger;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 import sg.edu.nus.cs2103t.omnitask.storage.IO;
 import sg.edu.nus.cs2103t.omnitask.storage.IOJSONImpl;
+
 import java.util.UUID;
+
+import org.joda.time.DateTime;
 
 public class DataImpl extends Data {
 
@@ -46,28 +50,18 @@ public class DataImpl extends Data {
 	public Task addTask(CommandInput commandInput) {
 		// Create new task object
 		Task task = new Task();
-		if(commandInput.getName().isEmpty()){
+		if (commandInput.getName().isEmpty()) {
 			return null;
 		}
 		
-		// Block of setters - Consideration for SLAP.
-		task.setId(getNewId());
-		UUID uuid = UUID.randomUUID();
-		task.setUuid(uuid);
-		task.setName(commandInput.getName());
-		task.setPriority(commandInput.getPriority());
-		task.setStartDate(commandInput.getStartDate());
-		task.setEndDate(commandInput.getEndDate());
-		
-//		if(commandInput.isRecurrence()){
-//			task.setId(getNewId());
-//			UUID uuid = UUID.randomUUID();
-//			task.setUuid(uuid);
-//			task.setName(commandInput.getName());
-//			task.setPriority(commandInput.getPriority());
-//			task.setRecurrence(1);
-//			task.setEndDate(commandInput.getEndDate());
-//		}
+		// code waiting for Recurring task implementation
+		// if(commandInput.isRecurrence()){
+		// task.setRecurrence(1);
+		// addAttributes(commandInput, task);
+		// } else
+
+		// add id, uuid, name, priority, start&end date to task
+		addAttributes(commandInput, task);
 
 		// Add the task to our "local cache"
 		tasks.add(task);
@@ -78,6 +72,7 @@ public class DataImpl extends Data {
 		} catch (IOException ex) {
 			// TODO: Handle error
 			ex.printStackTrace();
+			printError("IO Exception");
 
 			// Reverse change
 			tasks.remove(tasks.size() - 1);
@@ -86,6 +81,16 @@ public class DataImpl extends Data {
 		}
 
 		return task;
+	}
+
+	private void addAttributes(CommandInput commandInput, Task task) {
+		UUID uuid = UUID.randomUUID();
+		task.setUuid(uuid);
+		task.setId(getNewId());
+		task.setName(commandInput.getName());
+		task.setPriority(commandInput.getPriority());
+		task.setStartDate(commandInput.getStartDate());
+		task.setEndDate(commandInput.getEndDate());
 	}
 
 	@Override
@@ -109,6 +114,7 @@ public class DataImpl extends Data {
 			} catch (IOException ex) {
 				// TODO: Handle error
 				ex.printStackTrace();
+				printError("IO Exception");
 
 				// Reverse change
 				tasks.add(indexToRemove, taskToRemove);
@@ -143,16 +149,8 @@ public class DataImpl extends Data {
 				// to revert below
 				tmpTaskName = tasks.get(i).getName();
 
-				// if input is not null, update new name
-				if (!commandInput.getName().equals("")) {
-					tasks.get(i).setName(commandInput.getName());
-				}
-				if(commandInput.getStartDate()!=null) {
-					tasks.get(i).setStartDate(commandInput.getStartDate());
-				}
-				if(commandInput.getEndDate()!=null) {
-					tasks.get(i).setEndDate(commandInput.getEndDate());
-				}
+				// edit name, priority, start&end date
+				editAttributes(commandInput, i);
 
 				taskIdToUpdate = i;
 			}
@@ -165,6 +163,7 @@ public class DataImpl extends Data {
 			} catch (IOException ex) {
 				// TODO: Handle error
 				ex.printStackTrace();
+				printError("IO Exception");
 
 				// Reverse change
 				// do a reverse of update
@@ -177,6 +176,27 @@ public class DataImpl extends Data {
 		}
 
 		return true;
+	}
+
+	// edit name, priority, start&end date
+	private void editAttributes(CommandInput commandInput, int i) {
+		if (!commandInput.getName().equals("")) {
+			tasks.get(i).setName(commandInput.getName());
+		}
+		if (commandInput.getPriority() != 0) {
+			tasks.get(i).setPriority(commandInput.getPriority());
+		}
+		if (commandInput.getStartDate() != null) {
+			tasks.get(i).setStartDate(commandInput.getStartDate());
+		}
+		if (commandInput.getEndDate() != null) {
+			tasks.get(i).setEndDate(commandInput.getEndDate());
+		}
+	}
+
+	private void printError(String msg) {
+		System.err.println(DateTime.now() + ": " + msg);
+		Logger.writeError(msg);
 	}
 
 }

@@ -23,6 +23,8 @@ import javafx.stage.WindowEvent;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
+import org.joda.time.DateTime;
+
 import sg.edu.nus.cs2103t.omnitask.controller.Controller;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
@@ -63,8 +65,16 @@ public class UIMainImpl implements UI {
 		if (viewController != null) {
 			viewController.showError(msg);
 		} else {
-			System.err.println("Error: " + msg);
+			printError("Error: " + msg);
 		}
+	}
+	
+	private void printDebug(String msg) {
+		System.out.println(DateTime.now() + ": " + msg);
+	}
+	
+	private void printError(String msg) {
+		System.err.println(DateTime.now() + ": " + msg);
 	}
 
 	@Override
@@ -115,6 +125,8 @@ public class UIMainImpl implements UI {
 
 				@Override
 				public void handle(WindowEvent event) {
+					printDebug("OmniTask Window Hidden");
+					
 					hideWindow();
 
 					showTray();
@@ -126,6 +138,8 @@ public class UIMainImpl implements UI {
 
 				@Override
 				public void handle(WindowEvent event) {
+					printDebug("OmniTask Window Shown");
+					
 					showWindow();
 
 					hideTray();
@@ -137,6 +151,8 @@ public class UIMainImpl implements UI {
 			});
 			
 			Platform.setImplicitExit(false);
+			
+			printDebug("UI Setup Complete.");
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -169,6 +185,7 @@ public class UIMainImpl implements UI {
 			trayIcon.setImageAutoSize(true);
 			trayIcon.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					printDebug("Tray actionPerformed event triggered.");
 					Platform.runLater(new Runnable() {
 						@Override
 						public void run() {
@@ -181,6 +198,7 @@ public class UIMainImpl implements UI {
 
 				@Override
 				public void mouseClicked(MouseEvent e) {
+					printDebug("Tray mouseClicked event triggered.");
 					Platform.runLater(new Runnable() {
 						@Override
 						public void run() {
@@ -214,6 +232,8 @@ public class UIMainImpl implements UI {
 				}
 
 			});
+			
+			printDebug("Tray Setup Complete.");
 		}
 	}
 
@@ -233,7 +253,7 @@ public class UIMainImpl implements UI {
 									TrayIcon.MessageType.INFO);
 						}
 					} catch (AWTException e) {
-						System.err.println("TrayIcon could not be added.");
+						printError("TrayIcon could not be added.");
 					}
 				}
 			}

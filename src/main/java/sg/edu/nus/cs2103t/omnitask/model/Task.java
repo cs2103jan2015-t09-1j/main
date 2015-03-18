@@ -14,6 +14,8 @@ public class Task {
 	
 	private int priority;
 	
+	private boolean recurrence;
+	
 	private String name;
 	
 	// TODO: Might want to change this to an enum
@@ -60,6 +62,14 @@ public class Task {
 
 	public void setPriority(int priority) {
 		this.priority = priority;
+	}
+
+	public boolean isRecurrence() {
+		return recurrence;
+	}
+
+	public void setRecurrence(boolean recurrence) {
+		this.recurrence = recurrence;
 	}
 
 	public String getName() {

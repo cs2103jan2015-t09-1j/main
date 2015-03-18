@@ -58,6 +58,16 @@ public class DataImpl extends Data {
 		task.setPriority(commandInput.getPriority());
 		task.setStartDate(commandInput.getStartDate());
 		task.setEndDate(commandInput.getEndDate());
+		
+//		if(commandInput.isRecurrence()){
+//			task.setId(getNewId());
+//			UUID uuid = UUID.randomUUID();
+//			task.setUuid(uuid);
+//			task.setName(commandInput.getName());
+//			task.setPriority(commandInput.getPriority());
+//			task.setRecurrence(1);
+//			task.setEndDate(commandInput.getEndDate());
+//		}
 
 		// Add the task to our "local cache"
 		tasks.add(task);

@@ -49,6 +49,8 @@ public class DataImpl extends Data {
 		if(commandInput.getName().isEmpty()){
 			return null;
 		}
+		
+		// Block of setters - Consideration for SLAP.
 		task.setId(getNewId());
 		UUID uuid = UUID.randomUUID();
 		task.setUuid(uuid);

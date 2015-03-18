@@ -111,7 +111,7 @@ public class ViewController {
 			boolean found = false;
 			
 			for (Task task2 : this.tasks) {
-				if (task1.getId() == task2.getId()) {
+				if (task1.getUuid().equals(task2.getUuid())) {
 					found = true;
 					break;
 				}
@@ -129,7 +129,7 @@ public class ViewController {
 			boolean found = false;
 			
 			for (Task task2 : tasks) {
-				if (task1.getId() == task2.getId()) {
+				if (task1.getUuid().equals(task2.getUuid())) {
 					found = true;
 					
 					// Replace

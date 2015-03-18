@@ -53,6 +53,7 @@ public class DataImpl extends Data {
 		UUID uuid = UUID.randomUUID();
 		task.setUuid(uuid);
 		task.setName(commandInput.getName());
+		task.setPriority(commandInput.getPriority());
 		task.setStartDate(commandInput.getStartDate());
 		task.setEndDate(commandInput.getEndDate());
 

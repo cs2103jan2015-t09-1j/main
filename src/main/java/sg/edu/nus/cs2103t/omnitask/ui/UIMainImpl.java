@@ -25,6 +25,7 @@ import javax.swing.SwingUtilities;
 
 import org.joda.time.DateTime;
 
+import sg.edu.nus.cs2103t.omnitask.Logger;
 import sg.edu.nus.cs2103t.omnitask.controller.Controller;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
@@ -71,10 +72,12 @@ public class UIMainImpl implements UI {
 	
 	private void printDebug(String msg) {
 		System.out.println(DateTime.now() + ": " + msg);
+		Logger.writeDebug(msg);
 	}
 	
 	private void printError(String msg) {
 		System.err.println(DateTime.now() + ": " + msg);
+		Logger.writeError(msg);
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package sg.edu.nus.cs2103t.omnitask.model;
 
 import org.joda.time.DateTime;
+import java.util.UUID;
 
 public class Task {
 	private DateTime startDate;
@@ -8,6 +9,8 @@ public class Task {
 	private DateTime endDate;
 	
 	private long id;
+	
+	private UUID uuid;
 	
 	private int priority;
 	
@@ -43,6 +46,14 @@ public class Task {
 		this.id = id;
 	}
 	
+	public UUID getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(UUID uuid) {
+		this.uuid = uuid;
+	}
+
 	public int getPriority() {
 		return priority;
 	}

@@ -14,6 +14,8 @@ public abstract class Controller {
 	public abstract void processDeleteCommand(CommandInput commandInput);
 
 	public abstract void processEditCommand(CommandInput commandInput);
+	
+	public abstract void processSearchCommand(CommandInput commandInput);
 
 	public abstract void processUserInput(String input);
 }

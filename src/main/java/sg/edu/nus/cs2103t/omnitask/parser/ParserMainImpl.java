@@ -44,10 +44,13 @@ public class ParserMainImpl extends Parser {
 				&& !inputSplit[0].toLowerCase().equals(
 						commandTypes.edit.toString())
 				&& !inputSplit[0].toLowerCase().equals(
+						commandTypes.search.toString())	
+				&& !inputSplit[0].toLowerCase().equals(
 						commandTypes.exit.toString())) {
 			return null;
 			}
 		
+		//set the name of the command by using the commandInput constructor
 		CommandInput commandInput = new CommandInput(inputSplit[0]);
 												//CommandInput.COMMAND_ADD
 		if (commandInput.getCommandName().equals(commandTypes.add.toString())) {
@@ -148,7 +151,17 @@ public class ParserMainImpl extends Parser {
 				taskName = joinStringArray(inputSplit, 2, inputSplit.length);
 			}
 			commandInput.setName(taskName.trim());
+			//commandInput.setCommandName(commandName);
 		}
+		
+		
+		//parse for search command
+		
+		if (inputSplit[0].toLowerCase().equals(commandTypes.search.toString())) {
+				commandInput.setName(inputSplit[1]);
+		}
+		
+		
 												//CommandInput.COMMAND_EXIT
 		if (inputSplit[0].toLowerCase().equals(commandTypes.exit.toString())) {
 			commandInput.setName("exit");

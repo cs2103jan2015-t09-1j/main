@@ -21,7 +21,8 @@ public class CommandInput {
 		display,
 		delete,
 		edit,
-		exit
+		exit,
+		search
 	}
 	
 		

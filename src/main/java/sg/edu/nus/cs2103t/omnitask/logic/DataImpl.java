@@ -53,7 +53,7 @@ public class DataImpl extends Data {
 		if (commandInput.getName().isEmpty()) {
 			return null;
 		}
-		
+
 		// code waiting for Recurring task implementation
 		// if(commandInput.isRecurrence()){
 		// task.setRecurrence(1);
@@ -197,6 +197,34 @@ public class DataImpl extends Data {
 	private void printError(String msg) {
 		System.err.println(DateTime.now() + ": " + msg);
 		Logger.writeError(msg);
+	}
+
+	@Override
+	public ArrayList<Task> searchTask(CommandInput commandInput) {
+
+		ArrayList<Task> searchTaskResult = new ArrayList<Task>();
+		ArrayList<Task> fullTaskList = new ArrayList<Task>();
+
+		String searchKey = commandInput.getName();
+
+		try {
+			fullTaskList = io.readFromFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			printError("Unable to read from file @ dataImpl search function! ");
+		}
+		//make sure the search key is not empty if its empty searchTaskResult will have size of 0
+		if (!commandInput.getName().equals("")) {
+			for (int i = 0; i < fullTaskList.size(); i++) {
+				if (fullTaskList.get(i).getName().toLowerCase()
+						.contains(searchKey)) {
+					searchTaskResult.add(fullTaskList.get(i));
+				}
+			}
+		}
+
+		return searchTaskResult;
 	}
 
 }

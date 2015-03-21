@@ -2,6 +2,7 @@ package sg.edu.nus.cs2103t.omnitask.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.logic.DataImpl;
@@ -86,6 +87,10 @@ public class ControllerMainImpl extends Controller {
 			processEditCommand(commandInput);
 			break;
 		
+		case "search":
+			processSearchCommand(commandInput);
+			break;
+			
 		case "exit":
 			ui.exit();
 			break;
@@ -150,6 +155,27 @@ public class ControllerMainImpl extends Controller {
 	// Update UI
 	private void updateTaskListings() {
 		ui.updateTaskListings(data.getTasks());
+	}
+	
+	private void updateSearchTaskListing(ArrayList<Task> searchResult){
+		ui.updateTaskListings(searchResult);
+	}
+
+	@Override
+	public void processSearchCommand(CommandInput commandInput) {
+		
+		ArrayList<Task> searchTaskResult = data.searchTask(commandInput);
+
+		if(searchTaskResult.size()!=0){
+			updateSearchTaskListing(searchTaskResult);
+		}else{
+			if(commandInput.getName().isEmpty()){
+				ui.showMessage("Search failed. Please key in the search key!");
+			}else{
+				ui.showMessage("Search did not find any matching task content.");
+			}
+		}
+		
 	}
 
 }

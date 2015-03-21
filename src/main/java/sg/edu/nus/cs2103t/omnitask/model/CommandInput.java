@@ -4,7 +4,7 @@ import org.joda.time.DateTime;
 
 // CommandInput object holds the parsed user commands parsed by Parser
 public class CommandInput {
-	public static String COMMAND_ADD = "add";
+	/*public static String COMMAND_ADD = "add";
 
 	public static String COMMAND_DISPLAY = "display";
 
@@ -13,7 +13,18 @@ public class CommandInput {
 	public static String COMMAND_EDIT = "edit";
 	
 	public static String COMMAND_EXIT = "exit";
-
+	 */
+	
+	
+	public static enum CommandType{
+		add,
+		display,
+		delete,
+		edit,
+		exit
+	}
+	
+		
 	private String commandName;
 
 	private DateTime startDate;
@@ -29,7 +40,15 @@ public class CommandInput {
 	private String name;
 
 	// TODO: Might want to change this to an enum
-	private int type;
+	private CommandType type;
+	
+	public CommandType getType() {
+		return type;
+	}
+
+	public void setType(CommandType type) {
+		this.type = type;
+	}
 
 	public CommandInput(String commandName) {
 		super();
@@ -99,19 +118,19 @@ public class CommandInput {
 		this.name = name;
 	}
 
-	public int getType() {
+	/*public int getType() {
 		return type;
 	}
 
 	public void setType(int type) {
 		this.type = type;
-	}
+	}*/
 
 	@Override
 	public String toString() {
 		return "CommandInput [commandName=" + commandName + ", startDate="
 				+ startDate + ", endDate=" + endDate + ", id=" + id + ", name="
-				+ name + ", type=" + type + "]";
+				+ name + ", type=" + type.toString() + "]";
 	}
 
 

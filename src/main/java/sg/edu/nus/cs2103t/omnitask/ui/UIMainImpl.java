@@ -50,6 +50,8 @@ public class UIMainImpl implements UI {
 	private static TrayIcon trayIcon = new TrayIcon(image, "OmniTask");
 
 	private Controller controller;
+	
+	private static CommandInput.CommandType commandTypes;
 
 	public UIMainImpl(Controller controller, Stage primaryStage) {
 		this.controller = controller;
@@ -94,8 +96,8 @@ public class UIMainImpl implements UI {
 		setupHotkeys();
 
 		primaryStage.show();
-
-		controller.processUserInput(CommandInput.COMMAND_DISPLAY);
+										//CommandInput.COMMAND_DISPLAY
+		controller.processUserInput(commandTypes.display.toString());
 		showMessage("Welcome to OmniTask. Type 'help' to get help.");
 	}
 

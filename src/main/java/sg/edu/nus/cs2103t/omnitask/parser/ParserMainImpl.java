@@ -13,7 +13,8 @@ import org.joda.time.DateTime;
 public class ParserMainImpl extends Parser {
 
 	private static final String[] DATE_INDICATORS = new String[]{"from", "by", "due", "to", "on"};
-
+	private static CommandInput.CommandType commandTypes; 
+	
 	@Override
 	public CommandInput parseUserInput(String input) {
 		// TODO: Fix prototype implementation, need to think of the proper way
@@ -22,7 +23,8 @@ public class ParserMainImpl extends Parser {
 
 		// need to add !inputSplit[0].equals(Commands.COMMAND_DELETE) for
 		// subsequent commands to validate if user input a valid command
-		if (!inputSplit[0].toLowerCase().equals(CommandInput.COMMAND_ADD)
+		/*
+		 * if (!inputSplit[0].toLowerCase().equals(CommandInput.COMMAND_ADD)
 				&& !inputSplit[0].toLowerCase().equals(
 						CommandInput.COMMAND_DISPLAY)
 				&& !inputSplit[0].toLowerCase().equals(
@@ -32,11 +34,23 @@ public class ParserMainImpl extends Parser {
 				&& !inputSplit[0].toLowerCase().equals(
 						CommandInput.COMMAND_EXIT)) {
 			return null;
-		}
+		*/
+			
+		if (!inputSplit[0].toLowerCase().equals(commandTypes.add.toString())
+				&& !inputSplit[0].toLowerCase().equals(
+						commandTypes.display.toString())
+				&& !inputSplit[0].toLowerCase().equals(
+						commandTypes.delete.toString())
+				&& !inputSplit[0].toLowerCase().equals(
+						commandTypes.edit.toString())
+				&& !inputSplit[0].toLowerCase().equals(
+						commandTypes.exit.toString())) {
+			return null;
+			}
 		
 		CommandInput commandInput = new CommandInput(inputSplit[0]);
-		
-		if (commandInput.getCommandName().equals(CommandInput.COMMAND_ADD)) {
+												//CommandInput.COMMAND_ADD
+		if (commandInput.getCommandName().equals(commandTypes.add.toString())) {
 			String taskName = "";
 			
 			for (int i = 1; i < inputSplit.length; i++) {
@@ -79,16 +93,16 @@ public class ParserMainImpl extends Parser {
 		}
 
 		// parse for delete command
-
-		if (inputSplit[0].toLowerCase().equals(CommandInput.COMMAND_DELETE)) {
+												//CommandInput.COMMAND_DELETE
+		if (inputSplit[0].toLowerCase().equals(commandTypes.delete.toString())) {
 			long deleteId;
 			deleteId = Long.parseLong(inputSplit[1]);
 			commandInput.setId(deleteId);
 		}
 
 		// parse for update command
-
-		if (inputSplit[0].toLowerCase().equals(CommandInput.COMMAND_EDIT)) {
+												//CommandInput.COMMAND_EDIT
+		if (inputSplit[0].toLowerCase().equals(commandTypes.edit.toString())) {
 			long updateId;
 			updateId = Long.parseLong(inputSplit[1]);
 			commandInput.setId(updateId);
@@ -135,8 +149,8 @@ public class ParserMainImpl extends Parser {
 			}
 			commandInput.setName(taskName.trim());
 		}
-
-		if (inputSplit[0].toLowerCase().equals(CommandInput.COMMAND_EXIT)) {
+												//CommandInput.COMMAND_EXIT
+		if (inputSplit[0].toLowerCase().equals(commandTypes.exit.toString())) {
 			commandInput.setName("exit");
 		}
 

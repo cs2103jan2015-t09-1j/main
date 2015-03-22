@@ -97,8 +97,11 @@ public class ParserMainImpl extends Parser {
 			CommandInput commandInput = new CommandInput(CommandType.SEARCH);
 			commandInput.setCommandType(CommandType.SEARCH);
 			
+			
+			if(inputSplit.length>1)
 			commandInput.setName(inputSplit[1]);
 			
+				
 			return new CommandSearchImpl(commandInput);
 		}
 

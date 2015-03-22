@@ -31,17 +31,25 @@ public class CommandEditImpl extends Command {
 
 			}
 
-			if (data.editTask(tasks.get(indexOfRetrieved))) {
-				ui.showMessage("Task \"" + commandInput.getId()
-						+ "\" updated successfully!");
-			} else {
+			try {
+				if (data.editTask(tasks.get(indexOfRetrieved))) {
+					ui.showMessage("Task \"" + commandInput.getId()
+							+ "\" updated successfully!");
+					return true;
+				} else {
+
+				}
+			} catch (ArrayIndexOutOfBoundsException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 				ui.showMessage("Unable to update Task \""
 						+ commandInput.getId()
 						+ "\". Please choose a valid id!");
+				
 			}
 		}
-		// return true to update listing
-		return true;
+		
+		return false;
 	}
 
 	public static CommandInput.CommandType GetCommandTypeFromString(String str) {

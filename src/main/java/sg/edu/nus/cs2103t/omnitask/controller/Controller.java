@@ -1,21 +1,184 @@
 package sg.edu.nus.cs2103t.omnitask.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import sg.edu.nus.cs2103t.omnitask.logic.Data;
+import sg.edu.nus.cs2103t.omnitask.logic.DataImpl;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
+import sg.edu.nus.cs2103t.omnitask.model.Task;
+import sg.edu.nus.cs2103t.omnitask.parser.Parser;
+import sg.edu.nus.cs2103t.omnitask.parser.ParserMainImpl;
+import sg.edu.nus.cs2103t.omnitask.storage.IO;
+import sg.edu.nus.cs2103t.omnitask.ui.UI;
+import sg.edu.nus.cs2103t.omnitask.ui.UIMainImpl;
 
-public abstract class Controller {
-	public abstract void start(String[] args);
+public class Controller {
+	private static Controller controller;
 
-	public abstract void switchCommand(CommandInput commandInput);
+	protected UI ui;
 
-	public abstract void processAddCommand(CommandInput commandInput);
+	protected Parser parser;
 
-	public abstract void processDisplayCommand(CommandInput commandInput);
-
-	public abstract void processDeleteCommand(CommandInput commandInput);
-
-	public abstract void processEditCommand(CommandInput commandInput);
+	protected Data data;
 	
-	public abstract void processSearchCommand(CommandInput commandInput);
+	private Controller() {
+		
+	}
+	
+	public static Controller GetSingleton() {
+		if (controller == null) controller = new Controller();
+		
+		return controller;
+	}
 
-	public abstract void processUserInput(String input);
+	public void setUi(UI ui) {
+		this.ui = ui;
+	}
+
+	public void start(String[] args) {
+		// Initialize components
+		parser = new ParserMainImpl();
+
+		// Get file from argument
+		File storageFile = null;
+		
+		// Use default filename if no argument specified
+		if (args.length == 0) {
+			storageFile = new File("storage.txt");
+		} else {
+			storageFile = new File(args[0]);
+		}
+
+		// Initialize data logic (which would create the storage file if needed)
+		// Exit application if fails
+		try {
+			data = new DataImpl(storageFile);
+		} catch (IOException ex) {
+			ui.showError("No permission to access file.");
+			ui.exit();
+			return;
+		}
+
+		// Pass control to UI to receive user input
+		ui.start();
+	}
+	
+	public void processUserInput(String input) {
+		CommandInput commandInput = parser.parseUserInput(input);
+
+		if (commandInput == null) {
+			ui.showError("Invalid command entered. Please try again.");
+		} else {
+			switchCommand(commandInput);
+		}
+	}
+
+	private void switchCommand(CommandInput commandInput) {
+		// TODO: switch only support constants, maybe bad idea to use it here as
+		// it cause magic string
+		switch (commandInput.getCommandName()) {
+		case "add":
+			processAddCommand(commandInput);
+			break;
+
+		case "display":
+			processDisplayCommand(commandInput);
+			break;
+
+		case "delete":
+			processDeleteCommand(commandInput);
+			break;
+
+		case "edit":
+			processEditCommand(commandInput);
+			break;
+		
+		case "search":
+			processSearchCommand(commandInput);
+			break;
+			
+		case "exit":
+			ui.exit();
+			break;
+
+		default:
+			new Exception("Not implemented").printStackTrace();
+		}
+	}
+
+	private void processAddCommand(CommandInput commandInput) {
+		Task task = data.addTask(commandInput);
+		
+		// TODO: Fix magic string
+		if (task != null) {
+			ui.showMessage("Task \"" + task.getName()
+					+ "\" added successfully!");
+		} else {
+			if(commandInput.getName().isEmpty()){
+				ui.showMessage("Failed to add task. Please fill in the task name!");
+			}else{
+				ui.showMessage("Failed to add task \"" + commandInput.getName()
+					+ "\".");
+			}
+		}
+		updateTaskListings();
+	}
+
+	private void processDisplayCommand(CommandInput commandInput) {
+		updateTaskListings();
+	}
+
+	private void processDeleteCommand(CommandInput commandInput) {
+
+		if (data.deleteTask(commandInput)) {
+			ui.showMessage("Task \"" + commandInput.getId()
+					+ "\" deleted successfully!");
+		} else {
+			ui.showMessage("Unable to delete Task \"" + commandInput.getId()
+					+ "\". Please choose a valid id!");
+		}
+
+		updateTaskListings();
+	}
+
+	private void processEditCommand(CommandInput commandInput) {
+
+		if (data.editTask(commandInput)) {
+			ui.showMessage("Task \"" + commandInput.getId()
+					+ "\" updated successfully!");
+		} else {
+			ui.showMessage("Unable to update Task \"" + commandInput.getId()
+					+ "\". Please choose a valid id!");
+		}
+
+		updateTaskListings();
+	}
+
+	// Update UI
+	private void updateTaskListings() {
+		ui.updateTaskListings(data.getTasks());
+	}
+	
+	private void updateSearchTaskListing(ArrayList<Task> searchResult){
+		ui.updateTaskListings(searchResult);
+	}
+
+	private void processSearchCommand(CommandInput commandInput) {
+		
+		ArrayList<Task> searchTaskResult = data.searchTask(commandInput);
+
+		if(searchTaskResult.size()!=0){
+			updateSearchTaskListing(searchTaskResult);
+		}else{
+			if(commandInput.getName().isEmpty()){
+				ui.showMessage("Search failed. Please key in the search key!");
+			}else{
+				ui.showMessage("Search did not find any matching task content.");
+			}
+		}
+		
+	}
+
 }

@@ -2,7 +2,7 @@ package sg.edu.nus.cs2103t.omnitask;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import sg.edu.nus.cs2103t.omnitask.controller.ControllerMainImpl;
+import sg.edu.nus.cs2103t.omnitask.controller.Controller;
 import sg.edu.nus.cs2103t.omnitask.ui.UI;
 import sg.edu.nus.cs2103t.omnitask.ui.UIMainImpl;
 import sg.edu.nus.cs2103t.omnitask.ui.UIPrototypeImpl;
@@ -21,7 +21,7 @@ public class Main extends Application {
 			}
 		}
 		
-		ControllerMainImpl controller = new ControllerMainImpl();
+		Controller controller = Controller.GetSingleton();
 		
 		if (forceCommandLine) {
 			controller.setUi(new UIPrototypeImpl(controller));

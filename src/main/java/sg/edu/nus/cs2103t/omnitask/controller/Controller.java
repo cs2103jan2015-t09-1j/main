@@ -13,6 +13,7 @@ import sg.edu.nus.cs2103t.omnitask.parser.ParserMainImpl;
 import sg.edu.nus.cs2103t.omnitask.storage.IO;
 import sg.edu.nus.cs2103t.omnitask.ui.UI;
 import sg.edu.nus.cs2103t.omnitask.ui.UIMainImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandAddImpl;
 
 public class Controller {
 	private static Controller controller;
@@ -76,54 +77,40 @@ public class Controller {
 	}
 
 	private void switchCommand(CommandInput commandInput) {
-		// TODO: switch only support constants, maybe bad idea to use it here as
-		// it cause magic string
-		switch (commandInput.getCommandName()) {
-		case "add":
-			processAddCommand(commandInput);
-			break;
-
-		case "display":
-			processDisplayCommand(commandInput);
-			break;
-
-		case "delete":
-			processDeleteCommand(commandInput);
-			break;
-
-		case "edit":
-			processEditCommand(commandInput);
-			break;
-		
-		case "search":
-			processSearchCommand(commandInput);
-			break;
+		switch (commandInput.getCommandType()) {
+			case ADD:
+				processAddCommand(commandInput);
+				break;
+	
+			case DISPLAY:
+				processDisplayCommand(commandInput);
+				break;
+	
+			case DELETE:
+				processDeleteCommand(commandInput);
+				break;
+	
+			case EDIT:
+				processEditCommand(commandInput);
+				break;
 			
-		case "exit":
-			ui.exit();
-			break;
-
-		default:
-			new Exception("Not implemented").printStackTrace();
+			case SEARCH:
+				processSearchCommand(commandInput);
+				break;
+				
+			case EXIT:
+				ui.exit();
+				break;
+	
+			default:
+				new Exception("Not implemented").printStackTrace();
 		}
 	}
 
 	private void processAddCommand(CommandInput commandInput) {
-		Task task = data.addTask(commandInput);
-		
-		// TODO: Fix magic string
-		if (task != null) {
-			ui.showMessage("Task \"" + task.getName()
-					+ "\" added successfully!");
-		} else {
-			if(commandInput.getName().isEmpty()){
-				ui.showMessage("Failed to add task. Please fill in the task name!");
-			}else{
-				ui.showMessage("Failed to add task \"" + commandInput.getName()
-					+ "\".");
-			}
+		if (CommandAddImpl.GetSingleton().processCommand(ui, data, commandInput)) {
+			updateTaskListings();
 		}
-		updateTaskListings();
 	}
 
 	private void processDisplayCommand(CommandInput commandInput) {
@@ -157,6 +144,7 @@ public class Controller {
 	}
 
 	// Update UI
+	// TODO: Controller should not be calling UI, UI should subsribed to data changes in Controller
 	private void updateTaskListings() {
 		ui.updateTaskListings(data.getTasks());
 	}

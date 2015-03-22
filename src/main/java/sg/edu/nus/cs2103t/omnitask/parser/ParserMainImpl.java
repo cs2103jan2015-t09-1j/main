@@ -1,6 +1,9 @@
 package sg.edu.nus.cs2103t.omnitask.parser;
 
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
+import sg.edu.nus.cs2103t.omnitask.model.CommandInput.CommandType;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandAddImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplayImpl;
 
 import com.joestelmach.natty.DateGroup;
 
@@ -20,40 +23,22 @@ public class ParserMainImpl extends Parser {
 		// TODO: Fix prototype implementation, need to think of the proper way
 		// to parse text modularly
 		String[] inputSplit = input.split(" ");
-
-		// need to add !inputSplit[0].equals(Commands.COMMAND_DELETE) for
-		// subsequent commands to validate if user input a valid command
-		/*
-		 * if (!inputSplit[0].toLowerCase().equals(CommandInput.COMMAND_ADD)
-				&& !inputSplit[0].toLowerCase().equals(
-						CommandInput.COMMAND_DISPLAY)
-				&& !inputSplit[0].toLowerCase().equals(
-						CommandInput.COMMAND_DELETE)
-				&& !inputSplit[0].toLowerCase().equals(
-						CommandInput.COMMAND_EDIT)
-				&& !inputSplit[0].toLowerCase().equals(
-						CommandInput.COMMAND_EXIT)) {
-			return null;
-		*/
-			
-		if (!inputSplit[0].toLowerCase().equals(commandTypes.add.toString())
-				&& !inputSplit[0].toLowerCase().equals(
-						commandTypes.display.toString())
-				&& !inputSplit[0].toLowerCase().equals(
-						commandTypes.delete.toString())
-				&& !inputSplit[0].toLowerCase().equals(
-						commandTypes.edit.toString())
-				&& !inputSplit[0].toLowerCase().equals(
-						commandTypes.search.toString())	
-				&& !inputSplit[0].toLowerCase().equals(
-						commandTypes.exit.toString())) {
-			return null;
-			}
 		
-		//set the name of the command by using the commandInput constructor
-		CommandInput commandInput = new CommandInput(inputSplit[0]);
-												//CommandInput.COMMAND_ADD
-		if (commandInput.getCommandName().equals(commandTypes.add.toString())) {
+		// Get commandName from the first word in user input
+		// TODO: Need SLAP?
+		String commandName = inputSplit[0].toLowerCase();
+		
+		CommandInput commandInput = new CommandInput();
+		
+		if (CommandDisplayImpl.GetSingleton().getCommandTypeFromString(commandName) == CommandType.DISPLAY) {
+			commandInput.setCommandType(CommandType.DISPLAY);
+		}
+		
+		// TODO: Add exit command
+		
+		// TODO: Not sure if the parsing should be done in Command class itself. Hmm...
+		if (CommandAddImpl.GetSingleton().getCommandTypeFromString(commandName) == CommandType.ADD) {
+			commandInput.setCommandType(CommandType.ADD);
 			String taskName = "";
 			
 			for (int i = 1; i < inputSplit.length; i++) {
@@ -97,7 +82,8 @@ public class ParserMainImpl extends Parser {
 
 		// parse for delete command
 												//CommandInput.COMMAND_DELETE
-		if (inputSplit[0].toLowerCase().equals(commandTypes.delete.toString())) {
+		if (inputSplit[0].toLowerCase().equals(commandTypes.DELETE.toString())) {
+			commandInput.setCommandType(CommandType.DELETE);
 			long deleteId;
 			deleteId = Long.parseLong(inputSplit[1]);
 			commandInput.setId(deleteId);
@@ -105,7 +91,8 @@ public class ParserMainImpl extends Parser {
 
 		// parse for update command
 												//CommandInput.COMMAND_EDIT
-		if (inputSplit[0].toLowerCase().equals(commandTypes.edit.toString())) {
+		if (inputSplit[0].toLowerCase().equals(commandTypes.EDIT.toString())) {
+			commandInput.setCommandType(CommandType.EDIT);
 			long updateId;
 			updateId = Long.parseLong(inputSplit[1]);
 			commandInput.setId(updateId);
@@ -157,14 +144,21 @@ public class ParserMainImpl extends Parser {
 		
 		//parse for search command
 		
-		if (inputSplit[0].toLowerCase().equals(commandTypes.search.toString())) {
+		if (inputSplit[0].toLowerCase().equals(commandTypes.SEARCH.toString())) {
+			commandInput.setCommandType(CommandType.SEARCH);
 				commandInput.setName(inputSplit[1]);
 		}
 		
 		
 												//CommandInput.COMMAND_EXIT
-		if (inputSplit[0].toLowerCase().equals(commandTypes.exit.toString())) {
+		if (inputSplit[0].toLowerCase().equals(commandTypes.EXIT.toString())) {
+			commandInput.setCommandType(CommandType.EXIT);
 			commandInput.setName("exit");
+		}
+		
+		// If command type is null, return a null object to indicate invalid command to caller
+		if (commandInput.getCommandType() == null) {
+			return null;
 		}
 
 		return commandInput;

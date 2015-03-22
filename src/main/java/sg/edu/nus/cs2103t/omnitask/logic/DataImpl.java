@@ -47,11 +47,18 @@ public class DataImpl extends Data {
 
 	// Not thread-safe
 	@Override
-	public Task addTask(CommandInput commandInput) {
+	public boolean addTask(Task task) throws TaskNoNameException, IOException {
 		// Create new task object
-		Task task = new Task();
-		if (commandInput.getName().isEmpty()) {
-			return null;
+		if (task.getName().isEmpty()) {
+			throw new TaskNoNameException();
+		}
+		
+		// When adding task, always get new id
+		task.setId(getNewId());
+		
+		// Assign randomUUID to task if it is null
+		if (task.getUuid() == null) {
+			task.setUuid(UUID.randomUUID());
 		}
 
 		// code waiting for Recurring task implementation
@@ -60,9 +67,6 @@ public class DataImpl extends Data {
 		// addAttributes(commandInput, task);
 		// } else
 
-		// add id, uuid, name, priority, start&end date to task
-		addAttributes(commandInput, task);
-
 		// Add the task to our "local cache"
 		tasks.add(task);
 
@@ -70,17 +74,13 @@ public class DataImpl extends Data {
 		try {
 			io.saveToFile(tasks);
 		} catch (IOException ex) {
-			// TODO: Handle error
-			ex.printStackTrace();
-			printError("IO Exception");
-
 			// Reverse change
 			tasks.remove(tasks.size() - 1);
 
-			return null;
+			throw ex;
 		}
 
-		return task;
+		return true;
 	}
 
 	private void addAttributes(CommandInput commandInput, Task task) {

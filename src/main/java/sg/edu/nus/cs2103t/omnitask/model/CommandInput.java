@@ -4,29 +4,18 @@ import org.joda.time.DateTime;
 
 // CommandInput object holds the parsed user commands parsed by Parser
 public class CommandInput {
-	/*public static String COMMAND_ADD = "add";
 
-	public static String COMMAND_DISPLAY = "display";
-
-	public static String COMMAND_DELETE = "delete";
-
-	public static String COMMAND_EDIT = "edit";
-	
-	public static String COMMAND_EXIT = "exit";
-	 */
-	
-	
-	public static enum CommandType{
-		add,
-		display,
-		delete,
-		edit,
-		exit,
-		search
+	public static enum CommandType {
+		INVALID,
+		ADD,
+		DISPLAY,
+		DELETE,
+		EDIT,
+		EXIT,
+		SEARCH
 	}
 	
-		
-	private String commandName;
+	private CommandType commandType;
 
 	private DateTime startDate;
 
@@ -40,35 +29,15 @@ public class CommandInput {
 
 	private String name;
 
-	// TODO: Might want to change this to an enum
-	private CommandType type;
+	public CommandInput() {
+	}
 	
-	public CommandType getType() {
-		return type;
+	public CommandType getCommandType() {
+		return commandType;
 	}
 
-	public void setType(CommandType type) {
-		this.type = type;
-	}
-
-	public CommandInput(String commandName) {
-		super();
-		this.commandName = commandName.toLowerCase();
-	}
-
-	// TODO: Add more constructors for mostly used combination of fields
-	public CommandInput(String commandName, String name) {
-		super();
-		this.commandName = commandName.toLowerCase();
-		this.name = name;
-	}
-
-	public String getCommandName() {
-		return commandName;
-	}
-
-	public void setCommandName(String commandName) {
-		this.commandName = commandName.toLowerCase();
+	public void setCommandType(CommandType commandType) {
+		this.commandType = commandType;
 	}
 
 	public DateTime getStartDate() {
@@ -129,9 +98,9 @@ public class CommandInput {
 
 	@Override
 	public String toString() {
-		return "CommandInput [commandName=" + commandName + ", startDate="
+		return "CommandInput [commandType=" + commandType.toString() + ", startDate="
 				+ startDate + ", endDate=" + endDate + ", id=" + id + ", name="
-				+ name + ", type=" + type.toString() + "]";
+				+ name + "]";
 	}
 
 

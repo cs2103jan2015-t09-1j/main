@@ -96,8 +96,7 @@ public class UIMainImpl implements UI {
 		setupHotkeys();
 
 		primaryStage.show();
-										//CommandInput.COMMAND_DISPLAY
-		controller.processUserInput(commandTypes.display.toString());
+		controller.processUserInput(commandTypes.DISPLAY.toString());
 		showMessage("Welcome to OmniTask. Type 'help' to get help.");
 	}
 

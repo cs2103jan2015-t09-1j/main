@@ -123,40 +123,34 @@ public class DataImpl extends Data {
 //	}
 
 	@Override
-	public boolean deleteTask(CommandInput commandInput) {
+	public boolean deleteTask(Task task) {
 		assertInited();
 		
-		Task taskToRemove = null;
-		int indexToRemove = -1;
+		//int indexToRemove = (int) task.getId();
 
-		for (int i = 0; i < tasks.size(); i++) {
-			if (tasks.get(i).getId() == commandInput.getId()) {
-				taskToRemove = tasks.remove(i);
-				indexToRemove = i;
-			}
-		}
+//		for (int i = 0; i < tasks.size(); i++) {
+//			if (tasks.get(i).getId() == task.getId()) {
+//				taskToRemove = tasks.remove(i);
+//				indexToRemove = i;
+//			}
+//		}
 
-		updateTaskId(); // Reassign taskId to the tasks Arraylist
+		// Commit it to storage
+		try {
+			io.saveToFile(tasks);
+			updateTaskId();
+			return true;
+		} catch (IOException ex) {
+			// TODO: Handle error
+			ex.printStackTrace();
+			printError("IO Exception");
 
-		if (taskToRemove != null) {
-			// Commit it to storage
-			try {
-				io.saveToFile(tasks);
-			} catch (IOException ex) {
-				// TODO: Handle error
-				ex.printStackTrace();
-				printError("IO Exception");
+			// Reverse change
+			//tasks.add(indexToRemove, task);
 
-				// Reverse change
-				tasks.add(indexToRemove, taskToRemove);
-
-				return false;
-			}
-		} else {
 			return false;
 		}
-
-		return true;
+		 // Reassign taskId to the tasks Arraylist
 	}
 
 	// Reassign taskId to the tasks arraylist

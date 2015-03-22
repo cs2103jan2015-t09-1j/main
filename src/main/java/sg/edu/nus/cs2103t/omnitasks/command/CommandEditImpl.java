@@ -22,7 +22,7 @@ public class CommandEditImpl extends Command {
 	@Override
 	public boolean processCommand(UI ui, Data data) {
 		ArrayList<Task> tasks = data.getTasks();
-		int indexOfRetrieved = -1;
+		int indexOfRetrieved=-1;
 		for (int i = 0; i < tasks.size(); i++) {
 			if (tasks.get(i).getId() == commandInput.getId()) {
 				// edit name, priority, start&end date
@@ -30,25 +30,23 @@ public class CommandEditImpl extends Command {
 				indexOfRetrieved = i;
 
 			}
-
-			try {
-				if (data.editTask(tasks.get(indexOfRetrieved))) {
-					ui.showMessage("Task \"" + commandInput.getId()
-							+ "\" updated successfully!");
-					return true;
-				} else {
-
-				}
-			} catch (ArrayIndexOutOfBoundsException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				ui.showMessage("Unable to update Task \""
-						+ commandInput.getId()
-						+ "\". Please choose a valid id!");
-				
-			}
 		}
-		
+
+		try {
+			if (data.editTask(tasks.get(indexOfRetrieved))) {
+				ui.showMessage("Task \"" + commandInput.getId()
+						+ "\" updated successfully!");
+				return true;
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			ui.showMessage("Unable to update Task \""
+					+ commandInput.getId()
+					+ "\". Please choose a valid id!");
+
+		}
+
 		return false;
 	}
 

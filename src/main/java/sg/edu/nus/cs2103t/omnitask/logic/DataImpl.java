@@ -112,15 +112,15 @@ public class DataImpl extends Data {
 		return true;
 	}
 
-	private void addAttributes(CommandInput commandInput, Task task) {
-		UUID uuid = UUID.randomUUID();
-		task.setUuid(uuid);
-		task.setId(getNewId());
-		task.setName(commandInput.getName());
-		task.setPriority(commandInput.getPriority());
-		task.setStartDate(commandInput.getStartDate());
-		task.setEndDate(commandInput.getEndDate());
-	}
+//	private void addAttributes(CommandInput commandInput, Task task) {
+//		UUID uuid = UUID.randomUUID();
+//		task.setUuid(uuid);
+//		task.setId(getNewId());
+//		task.setName(commandInput.getName());
+//		task.setPriority(commandInput.getPriority());
+//		task.setStartDate(commandInput.getStartDate());
+//		task.setEndDate(commandInput.getEndDate());
+//	}
 
 	@Override
 	public boolean deleteTask(CommandInput commandInput) {
@@ -169,7 +169,7 @@ public class DataImpl extends Data {
 	}
 
 	@Override
-	public boolean editTask(CommandInput commandInput) {
+	public boolean editTask(Task task) {
 		assertInited();
 		
 		// lacking startDate, endDate, startTime, endTime
@@ -178,14 +178,11 @@ public class DataImpl extends Data {
 
 		for (int i = 0; i < tasks.size(); i++) {
 
-			if (tasks.get(i).getId() == commandInput.getId()) {
+			if (tasks.get(i).getId() == task.getId()) {
 				// store the task name from the file in a variable incase need
 
 				// to revert below
 				tmpTaskName = tasks.get(i).getName();
-
-				// edit name, priority, start&end date
-				editAttributes(commandInput, i);
 
 				taskIdToUpdate = i;
 			}

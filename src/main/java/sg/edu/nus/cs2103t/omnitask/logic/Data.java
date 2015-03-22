@@ -20,7 +20,7 @@ public abstract class Data {
 
 	public abstract boolean deleteTask(CommandInput commandInput);
 
-	public abstract boolean editTask(CommandInput commandInput);
+	public abstract boolean editTask(Task task);
 	
 	public abstract ArrayList<Task> searchTask(CommandInput commandInput);
 }

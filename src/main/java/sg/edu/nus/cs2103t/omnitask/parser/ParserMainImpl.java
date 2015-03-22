@@ -10,6 +10,8 @@ import sg.edu.nus.cs2103t.omnitask.model.CommandInput.CommandType;
 import sg.edu.nus.cs2103t.omnitasks.command.Command;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandAddImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplayImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandExitImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandEditImpl;
 
 import com.joestelmach.natty.DateGroup;
 
@@ -35,6 +37,12 @@ public class ParserMainImpl extends Parser {
 		}
 		
 		// TODO: Add exit command
+		if(CommandExitImpl.GetCommandTypeFromString(commandName) == CommandType.EXIT){
+			CommandInput commandInput = new CommandInput(CommandType.EXIT);
+			commandInput.setCommandType(CommandType.EXIT);
+			
+			return new CommandExitImpl(commandInput);
+		}
 		
 		// TODO: Not sure if the parsing should be done in Command class itself. Hmm...
 		if (CommandAddImpl.GetCommandTypeFromString(commandName) == CommandType.ADD) {

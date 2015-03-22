@@ -29,6 +29,7 @@ import sg.edu.nus.cs2103t.omnitask.Logger;
 import sg.edu.nus.cs2103t.omnitask.controller.Controller;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplayImpl;
 
 import com.tulskiy.keymaster.common.HotKey;
 import com.tulskiy.keymaster.common.HotKeyListener;
@@ -96,7 +97,7 @@ public class UIMainImpl implements UI {
 		setupHotkeys();
 
 		primaryStage.show();
-		controller.processUserInput(commandTypes.DISPLAY.toString());
+		controller.processUserInput(CommandDisplayImpl.COMMAND_ALIASES[0]);
 		showMessage("Welcome to OmniTask. Type 'help' to get help.");
 	}
 

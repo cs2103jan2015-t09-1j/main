@@ -10,7 +10,7 @@ import sg.edu.nus.cs2103t.omnitask.ui.UI;
 
 public class CommandAddImpl implements Command {
 	
-	private static String[] commandAliases = new String[]{"add", "new"};
+	public static String[] COMMAND_ALIASES = new String[]{"add", "new"};
 	
 	private static CommandAddImpl command;
 	
@@ -26,7 +26,7 @@ public class CommandAddImpl implements Command {
 	
 	@Override
 	public CommandInput.CommandType getCommandTypeFromString(String str) {
-		for (String command : commandAliases) {
+		for (String command : COMMAND_ALIASES) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
 				return CommandInput.CommandType.ADD;
 			}

@@ -10,7 +10,7 @@ import sg.edu.nus.cs2103t.omnitask.ui.UI;
 
 public class CommandDisplayImpl implements Command {
 	
-	private static String[] commandAliases = new String[]{"display", "show"};
+	public static String[] COMMAND_ALIASES = new String[]{"display", "show"};
 	
 	private static CommandDisplayImpl command;
 	
@@ -26,7 +26,7 @@ public class CommandDisplayImpl implements Command {
 	
 	@Override
 	public CommandInput.CommandType getCommandTypeFromString(String str) {
-		for (String command : commandAliases) {
+		for (String command : COMMAND_ALIASES) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
 				return CommandInput.CommandType.DISPLAY;
 			}

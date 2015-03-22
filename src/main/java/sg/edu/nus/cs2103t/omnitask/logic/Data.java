@@ -18,7 +18,7 @@ public abstract class Data {
 
 	public abstract boolean addTask(Task task) throws TaskNoNameException, IOException;
 
-	public abstract boolean deleteTask(CommandInput commandInput);
+	public abstract boolean deleteTask(Task task);
 
 	public abstract boolean editTask(Task task);
 	

@@ -24,14 +24,17 @@ public class CommandSearchImpl extends Command {
 		fullTaskList = data.searchTask(commandInput);
 		String searchKey = commandInput.getName();
 		
-		if (!commandInput.getName().equals("")) {
+		if (commandInput.getName()!=null) {
 			for (int i = 0; i < fullTaskList.size(); i++) {
 				if (fullTaskList.get(i).getName().toLowerCase().contains(searchKey)) {
 					searchTaskResult.add(fullTaskList.get(i));
 				}
 			}
+			ui.updateTaskListings(searchTaskResult);
+		}else{
+			ui.showMessage("Please fill in the search key!");
 		}
-		ui.updateTaskListings(searchTaskResult);
+		
 		
 		//return false to update the task listing with search result and not default 
 		return false;

@@ -11,7 +11,8 @@ import sg.edu.nus.cs2103t.omnitasks.command.Command;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandAddImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplayImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandExitImpl;
-import sg.edu.nus.cs2103t.omnitasks.command.CommandEditImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandSearchImpl;
+//import sg.edu.nus.cs2103t.omnitasks.command.CommandEditImpl;
 
 import com.joestelmach.natty.DateGroup;
 
@@ -88,6 +89,16 @@ public class ParserMainImpl extends Parser {
 			commandInput.setName(taskName.trim());
 			
 			return new CommandAddImpl(commandInput);
+		}
+		
+		//search task command
+		if (CommandSearchImpl.GetCommandTypeFromString(commandName) == CommandType.SEARCH) {
+			CommandInput commandInput = new CommandInput(CommandType.SEARCH);
+			commandInput.setCommandType(CommandType.SEARCH);
+			
+			commandInput.setName(inputSplit[1]);
+			
+			return new CommandSearchImpl(commandInput);
 		}
 
 		// TODO: Port to new architecture to make it work

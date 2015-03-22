@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.application.Platform;
@@ -56,12 +57,12 @@ public class UIMainImpl implements UI {
 		this.primaryStage = primaryStage;
 	}
 
-	@Override
+	//@Override
 	public void showMessage(String msg) {
 		viewController.showMessage(msg);
 	}
 
-	@Override
+	//@Override
 	public void showError(String msg) {
 		if (viewController != null) {
 			viewController.showError(msg);
@@ -80,12 +81,12 @@ public class UIMainImpl implements UI {
 		Logger.writeError(msg);
 	}
 
-	@Override
+	//@Override
 	public void start() {
 		setupUI();
 
 		SwingUtilities.invokeLater(new Runnable() {
-			@Override
+			//@Override
 			public void run() {
 				setupTray();
 			}
@@ -117,7 +118,7 @@ public class UIMainImpl implements UI {
 			primaryStage.getIcons().add(new javafx.scene.image.Image("tray.png"));
 
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-				@Override
+				//@Override
 				public void handle(WindowEvent arg0) {
 					primaryStage.hide();
 				}
@@ -125,7 +126,7 @@ public class UIMainImpl implements UI {
 
 			primaryStage.setOnHidden(new EventHandler<WindowEvent>() {
 
-				@Override
+				//@Override
 				public void handle(WindowEvent event) {
 					printDebug("OmniTask Window Hidden");
 					
@@ -138,7 +139,7 @@ public class UIMainImpl implements UI {
 
 			primaryStage.setOnShown(new EventHandler<WindowEvent>() {
 
-				@Override
+				//@Override
 				public void handle(WindowEvent event) {
 					printDebug("OmniTask Window Shown");
 					
@@ -167,10 +168,10 @@ public class UIMainImpl implements UI {
 	}
 
 	private HotKeyListener showHideHotkeyListener = new HotKeyListener() {
-		@Override
+		//@Override
 		public void onHotKey(HotKey arg0) {
 			Platform.runLater(new Runnable() {
-				@Override
+				//@Override
 				public void run() {
 					if (primaryStage.isShowing()) {
 						hideWindow();
@@ -189,7 +190,7 @@ public class UIMainImpl implements UI {
 				public void actionPerformed(ActionEvent e) {
 					printDebug("Tray actionPerformed event triggered.");
 					Platform.runLater(new Runnable() {
-						@Override
+						//@Override
 						public void run() {
 							showWindow();
 						}
@@ -198,36 +199,36 @@ public class UIMainImpl implements UI {
 			});
 			trayIcon.addMouseListener(new MouseListener() {
 
-				@Override
+				//@Override
 				public void mouseClicked(MouseEvent e) {
 					printDebug("Tray mouseClicked event triggered.");
 					Platform.runLater(new Runnable() {
-						@Override
+						//@Override
 						public void run() {
 							showWindow();
 						}
 					});
 				}
 
-				@Override
+				//@Override
 				public void mouseEntered(MouseEvent e) {
 					// TODO Auto-generated method stub
 
 				}
 
-				@Override
+				//@Override
 				public void mouseExited(MouseEvent e) {
 					// TODO Auto-generated method stub
 
 				}
 
-				@Override
+				//@Override
 				public void mousePressed(MouseEvent e) {
 					// TODO Auto-generated method stub
 
 				}
 
-				@Override
+				//@Override
 				public void mouseReleased(MouseEvent e) {
 					// TODO Auto-generated method stub
 
@@ -241,7 +242,7 @@ public class UIMainImpl implements UI {
 
 	private void showTray() {
 		SwingUtilities.invokeLater(new Runnable() {
-			@Override
+			//@Override
 			public void run() {
 				if (SystemTray.isSupported()) {
 					SystemTray tray = SystemTray.getSystemTray();
@@ -264,7 +265,7 @@ public class UIMainImpl implements UI {
 
 	private void hideTray() {
 		SwingUtilities.invokeLater(new Runnable() {
-			@Override
+			//@Override
 			public void run() {
 				if (SystemTray.isSupported()) {
 					SystemTray tray = SystemTray.getSystemTray();
@@ -275,7 +276,7 @@ public class UIMainImpl implements UI {
 		});
 	}
 
-	@Override
+	//@Override
 	public void exit() {
 		Provider provider = Provider.getCurrentProvider(false);
 		provider.reset();
@@ -293,9 +294,9 @@ public class UIMainImpl implements UI {
 		primaryStage.show();
 	}
 
-	@Override
+	//@Override
 	public void updateTaskListings(List<Task> tasks) {
 		viewController.updateListView(tasks);
 	}
-
+	
 }

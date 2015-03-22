@@ -233,15 +233,17 @@ public class DataImpl extends Data {
 		System.err.println(DateTime.now() + ": " + msg);
 		Logger.writeError(msg);
 	}
-
+	
+	
+	//only incharge of fetching full task list from the storage and pass it to  CommandSearchImpl for processing
 	@Override
 	public ArrayList<Task> searchTask(CommandInput commandInput) {
 		assertInited();
 		
-		ArrayList<Task> searchTaskResult = new ArrayList<Task>();
+		
 		ArrayList<Task> fullTaskList = new ArrayList<Task>();
 
-		String searchKey = commandInput.getName();
+		
 
 		try {
 			fullTaskList = io.readFromFile();
@@ -251,16 +253,9 @@ public class DataImpl extends Data {
 			printError("Unable to read from file @ dataImpl search function! ");
 		}
 		//make sure the search key is not empty if its empty searchTaskResult will have size of 0
-		if (!commandInput.getName().equals("")) {
-			for (int i = 0; i < fullTaskList.size(); i++) {
-				if (fullTaskList.get(i).getName().toLowerCase()
-						.contains(searchKey)) {
-					searchTaskResult.add(fullTaskList.get(i));
-				}
-			}
-		}
+		
 
-		return searchTaskResult;
+		return fullTaskList;
 	}
 
 }

@@ -80,10 +80,7 @@ public class Controller {
 	private void updateTaskListings() {
 		ui.updateTaskListings(data.getTasks());
 	}
-	
-	private void updateSearchTaskListing(ArrayList<Task> searchResult){
-		ui.updateTaskListings(searchResult);
-	}
+
 
 	// TODO: Migrate to new architecture
 	/*private void processAddCommand(CommandInput commandInput) {

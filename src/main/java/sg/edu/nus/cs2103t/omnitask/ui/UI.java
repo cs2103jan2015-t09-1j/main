@@ -1,5 +1,6 @@
 package sg.edu.nus.cs2103t.omnitask.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.cs2103t.omnitask.model.Task;
@@ -14,4 +15,5 @@ public interface UI {
 	public void exit();
 	
 	public void updateTaskListings(List<Task> tasks);
+	
 }

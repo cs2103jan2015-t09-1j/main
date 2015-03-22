@@ -1,5 +1,6 @@
 package sg.edu.nus.cs2103t.omnitask.ui;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -36,7 +37,7 @@ public class ViewController {
     protected void initialize() {
 		listView.setItems(tasks);
 	    listView.setCellFactory(new Callback<ListView<Task>, javafx.scene.control.ListCell<Task>>() {
-	        @Override
+	       // @Override
 	        public ListCell<Task> call(ListView<Task> listView) {
 	            return new ListViewCell();
 	        }
@@ -95,7 +96,7 @@ public class ViewController {
 	public void sortTasks() {
 		Collections.sort(tasks, new Comparator<Task>() {
 
-			@Override
+			//@Override
 			public int compare(Task t1, Task t2) {
 				return taskSorterComparator(t1, t2);
 			}
@@ -161,4 +162,5 @@ public class ViewController {
 		    }
 		}
 	}
+
 }

@@ -1,5 +1,6 @@
 package sg.edu.nus.cs2103t.omnitask.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -18,12 +19,12 @@ public class UIPrototypeImpl implements UI {
 		input = new Scanner(System.in);
 	}
 	
-	@Override
+	//@Override
 	public void showError(String msg) {
 		System.out.println("Error: " + msg);
 	}
 
-	@Override
+	//@Override
 	public void showMessage(String msg) {
 		System.out.println(msg);
 	}
@@ -36,7 +37,7 @@ public class UIPrototypeImpl implements UI {
 		return input.nextLine();
 	}
 	
-	@Override
+	//@Override
 	public void start() {
 		showMessage("Welcome to OmniTask.");
 		
@@ -54,13 +55,13 @@ public class UIPrototypeImpl implements UI {
 		}
 	}
 	
-	@Override
+	//@Override
 	public void exit() {
 		input.close();
 		System.exit(0);
 	}
 
-	@Override
+	//@Override
 	public void updateTaskListings(List<Task> tasks) {
 		showMessage("List of tasks: ");
 		
@@ -68,4 +69,5 @@ public class UIPrototypeImpl implements UI {
 			showMessage(task.getId() + " - " + task.getName());
 		}
 	}
+
 }

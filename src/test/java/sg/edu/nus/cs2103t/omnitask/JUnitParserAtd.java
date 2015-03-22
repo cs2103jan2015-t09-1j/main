@@ -1,44 +1,45 @@
 package sg.edu.nus.cs2103t.omnitask;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
 
-import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput.CommandType;
 import sg.edu.nus.cs2103t.omnitask.parser.Parser;
 import sg.edu.nus.cs2103t.omnitask.parser.ParserMainImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.Command;
 
 public class JUnitParserAtd {
 	@Test
 	public void TestParseUserInput() {
-		CommandInput commandInput = null;
+		Command command = null;
 		
 		// Test parsing of "add" and "task name" parameter
-		commandInput = parseUserInputHelper("add Hello");
-		assertNotNull(commandInput);
-		assertEquals(commandInput.getCommandType(), CommandType.ADD);
-		assertEquals(commandInput.getName(), "Hello");
+		command = parseUserInputHelper("add Hello");
+		assertNotNull(command);
+		assertEquals(command.getCommandInput().getCommandType(), CommandType.ADD);
+		assertEquals(command.getCommandInput().getName(), "Hello");
 		
 		// Test parsing of "add" and "task name", "due" parameter
-		commandInput = parseUserInputHelper("add Hello due 15 August 2015");
-		assertNotNull(commandInput);
-		assertEquals(commandInput.getCommandType(), CommandType.ADD);
-		assertEquals(commandInput.getName(), "Hello");
-		assertEquals(commandInput.getEndDate().dayOfMonth().get(), 15);
-		assertEquals(commandInput.getEndDate().monthOfYear().get(), 8);
-		assertEquals(commandInput.getEndDate().year().get(), 2015);
+		command = parseUserInputHelper("add Hello due 15 August 2015");
+		assertNotNull(command);
+		assertEquals(command.getCommandInput().getCommandType(), CommandType.ADD);
+		assertEquals(command.getCommandInput().getName(), "Hello");
+		assertEquals(command.getCommandInput().getEndDate().dayOfMonth().get(), 15);
+		assertEquals(command.getCommandInput().getEndDate().monthOfYear().get(), 8);
+		assertEquals(command.getCommandInput().getEndDate().year().get(), 2015);
 		
 		// Test parsing of "add" and "task name", "due" (relative date) parameter
-		commandInput = parseUserInputHelper("add Hello due tomorrow");
-		assertNotNull(commandInput);
-		assertEquals(commandInput.getCommandType(), CommandType.ADD);
-		assertEquals(commandInput.getName(), "Hello");
-		assertEquals(commandInput.getEndDate().dayOfYear().get(), DateTime.now().plusDays(1).dayOfYear().get());
+		command = parseUserInputHelper("add Hello due tomorrow");
+		assertNotNull(command);
+		assertEquals(command.getCommandInput().getCommandType(), CommandType.ADD);
+		assertEquals(command.getCommandInput().getName(), "Hello");
+		assertEquals(command.getCommandInput().getEndDate().dayOfYear().get(), DateTime.now().plusDays(1).dayOfYear().get());
 	}
 	
-	private CommandInput parseUserInputHelper(String input) {
+	private Command parseUserInputHelper(String input) {
 		Parser parser = new ParserMainImpl();
 		return parser.parseUserInput(input);
 	}

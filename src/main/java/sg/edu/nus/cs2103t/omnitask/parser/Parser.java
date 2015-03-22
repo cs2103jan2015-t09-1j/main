@@ -1,7 +1,7 @@
 package sg.edu.nus.cs2103t.omnitask.parser;
 
-import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
+import sg.edu.nus.cs2103t.omnitasks.command.Command;
 
 public abstract class Parser {
-	public abstract CommandInput parseUserInput(String input);
+	public abstract Command parseUserInput(String input);
 }

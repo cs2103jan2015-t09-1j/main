@@ -6,14 +6,11 @@ import java.util.ArrayList;
 
 import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.logic.DataImpl;
-import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 import sg.edu.nus.cs2103t.omnitask.parser.Parser;
 import sg.edu.nus.cs2103t.omnitask.parser.ParserMainImpl;
-import sg.edu.nus.cs2103t.omnitask.storage.IO;
 import sg.edu.nus.cs2103t.omnitask.ui.UI;
-import sg.edu.nus.cs2103t.omnitask.ui.UIMainImpl;
-import sg.edu.nus.cs2103t.omnitasks.command.CommandAddImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.Command;
 
 public class Controller {
 	private static Controller controller;
@@ -55,7 +52,7 @@ public class Controller {
 		// Initialize data logic (which would create the storage file if needed)
 		// Exit application if fails
 		try {
-			data = new DataImpl(storageFile);
+			data = DataImpl.GetSingleton().init(storageFile);
 		} catch (IOException ex) {
 			ui.showError("No permission to access file.");
 			ui.exit();
@@ -67,47 +64,29 @@ public class Controller {
 	}
 	
 	public void processUserInput(String input) {
-		CommandInput commandInput = parser.parseUserInput(input);
+		Command command = parser.parseUserInput(input);
 
-		if (commandInput == null) {
+		if (command == null) {
 			ui.showError("Invalid command entered. Please try again.");
 		} else {
-			switchCommand(commandInput);
+			// if command is successful, update ui
+			if (command.processCommand(ui, data)) {
+				updateTaskListings();
+			}
 		}
 	}
-
-	private void switchCommand(CommandInput commandInput) {
-		switch (commandInput.getCommandType()) {
-			case ADD:
-				processAddCommand(commandInput);
-				break;
 	
-			case DISPLAY:
-				processDisplayCommand(commandInput);
-				break;
+	// TODO: Controller should not be calling UI, UI should subsribed to data changes in Controller
+	private void updateTaskListings() {
+		ui.updateTaskListings(data.getTasks());
+	}
 	
-			case DELETE:
-				processDeleteCommand(commandInput);
-				break;
-	
-			case EDIT:
-				processEditCommand(commandInput);
-				break;
-			
-			case SEARCH:
-				processSearchCommand(commandInput);
-				break;
-				
-			case EXIT:
-				ui.exit();
-				break;
-	
-			default:
-				new Exception("Not implemented").printStackTrace();
-		}
+	private void updateSearchTaskListing(ArrayList<Task> searchResult){
+		ui.updateTaskListings(searchResult);
 	}
 
-	private void processAddCommand(CommandInput commandInput) {
+	// TODO: Migrate to new architecture
+	/*private void processAddCommand(CommandInput commandInput) {
 		if (CommandAddImpl.GetSingleton().processCommand(ui, data, commandInput)) {
 			updateTaskListings();
 		}
@@ -143,16 +122,6 @@ public class Controller {
 		updateTaskListings();
 	}
 
-	// Update UI
-	// TODO: Controller should not be calling UI, UI should subsribed to data changes in Controller
-	private void updateTaskListings() {
-		ui.updateTaskListings(data.getTasks());
-	}
-	
-	private void updateSearchTaskListing(ArrayList<Task> searchResult){
-		ui.updateTaskListings(searchResult);
-	}
-
 	private void processSearchCommand(CommandInput commandInput) {
 		
 		ArrayList<Task> searchTaskResult = data.searchTask(commandInput);
@@ -167,6 +136,6 @@ public class Controller {
 			}
 		}
 		
-	}
+	}*/
 
 }

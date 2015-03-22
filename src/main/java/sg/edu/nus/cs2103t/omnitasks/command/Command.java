@@ -2,14 +2,25 @@ package sg.edu.nus.cs2103t.omnitasks.command;
 
 import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
-import sg.edu.nus.cs2103t.omnitask.model.CommandInput.CommandType;
 import sg.edu.nus.cs2103t.omnitask.ui.UI;
 
-public interface Command {
+public abstract class Command {
 	
-	public CommandType getCommandTypeFromString(String str);
+	protected CommandInput commandInput;
 	
+	public Command(CommandInput commandInput) {
+		this.commandInput = commandInput;
+	}
+	
+	public CommandInput getCommandInput() {
+		return commandInput;
+	}
+
+	public void setCommandInput(CommandInput commandInput) {
+		this.commandInput = commandInput;
+	}
+
 	// TODO: This class shouldn't be calling UI directly
-	public boolean processCommand(UI ui, Data data, CommandInput commandInput);
+	public abstract boolean processCommand(UI ui, Data data);
 	
 }

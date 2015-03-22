@@ -3,6 +3,9 @@ package sg.edu.nus.cs2103t.omnitask.logic;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.UUID;
+
+import org.joda.time.DateTime;
 
 import sg.edu.nus.cs2103t.omnitask.Logger;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
@@ -10,32 +13,56 @@ import sg.edu.nus.cs2103t.omnitask.model.Task;
 import sg.edu.nus.cs2103t.omnitask.storage.IO;
 import sg.edu.nus.cs2103t.omnitask.storage.IOJSONImpl;
 
-import java.util.UUID;
-
-import org.joda.time.DateTime;
-
 public class DataImpl extends Data {
 
+	private static DataImpl data;
+	
 	private File storageFile;
 
 	private ArrayList<Task> tasks;
 
 	protected IO io;
+	
+	private boolean inited;
 
-	public DataImpl(File storageFile) throws IOException {
+	public static DataImpl GetSingleton() {
+		if (data == null) {
+			data = new DataImpl();
+		}
+		
+		return data;
+	}
+	
+	private DataImpl() {
+
+	}
+	
+	public DataImpl init(File storageFile) throws IOException {
 		this.storageFile = storageFile;
-
-		this.io = new IOJSONImpl(this.storageFile);
-		this.tasks = io.readFromFile();
+		
+		io = new IOJSONImpl(this.storageFile);
+		tasks = io.readFromFile();
+		
+		inited = true;
+		
+		return this;
+	}
+	
+	private void assertInited() {
+		assert inited;
 	}
 
 	@Override
 	public ArrayList<Task> getTasks() {
+		assertInited();
+		
 		return tasks;
 	}
 
 	// Get new "viewing" taskId which can be used for a new task
 	private long getNewId() {
+		assertInited();
+		
 		long taskId = 1;
 		ArrayList<Task> tasks = getTasks();
 		if (tasks.size() > 0) {
@@ -48,6 +75,8 @@ public class DataImpl extends Data {
 	// Not thread-safe
 	@Override
 	public boolean addTask(Task task) throws TaskNoNameException, IOException {
+		assertInited();
+		
 		// Create new task object
 		if (task.getName().isEmpty()) {
 			throw new TaskNoNameException();
@@ -95,6 +124,8 @@ public class DataImpl extends Data {
 
 	@Override
 	public boolean deleteTask(CommandInput commandInput) {
+		assertInited();
+		
 		Task taskToRemove = null;
 		int indexToRemove = -1;
 
@@ -130,6 +161,8 @@ public class DataImpl extends Data {
 
 	// Reassign taskId to the tasks arraylist
 	private void updateTaskId() {
+		assertInited();
+		
 		for (int i = 0; i < tasks.size(); i++) {
 			tasks.get(i).setId(i + 1);
 		}
@@ -137,6 +170,8 @@ public class DataImpl extends Data {
 
 	@Override
 	public boolean editTask(CommandInput commandInput) {
+		assertInited();
+		
 		// lacking startDate, endDate, startTime, endTime
 		int taskIdToUpdate = -1;
 		String tmpTaskName = "";
@@ -201,7 +236,8 @@ public class DataImpl extends Data {
 
 	@Override
 	public ArrayList<Task> searchTask(CommandInput commandInput) {
-
+		assertInited();
+		
 		ArrayList<Task> searchTaskResult = new ArrayList<Task>();
 		ArrayList<Task> fullTaskList = new ArrayList<Task>();
 

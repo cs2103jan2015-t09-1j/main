@@ -1,25 +1,24 @@
 package sg.edu.nus.cs2103t.omnitask.parser;
 
-import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
-import sg.edu.nus.cs2103t.omnitask.model.CommandInput.CommandType;
-import sg.edu.nus.cs2103t.omnitasks.command.CommandAddImpl;
-import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplayImpl;
-
-import com.joestelmach.natty.DateGroup;
-
-import java.lang.Object;
 import java.util.List;
 
 import org.antlr.runtime.tree.Tree;
 import org.joda.time.DateTime;
 
+import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
+import sg.edu.nus.cs2103t.omnitask.model.CommandInput.CommandType;
+import sg.edu.nus.cs2103t.omnitasks.command.Command;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandAddImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplayImpl;
+
+import com.joestelmach.natty.DateGroup;
+
 public class ParserMainImpl extends Parser {
 
 	private static final String[] DATE_INDICATORS = new String[]{"from", "by", "due", "to", "on"};
-	private static CommandInput.CommandType commandTypes; 
 	
 	@Override
-	public CommandInput parseUserInput(String input) {
+	public Command parseUserInput(String input) {
 		// TODO: Fix prototype implementation, need to think of the proper way
 		// to parse text modularly
 		String[] inputSplit = input.split(" ");
@@ -28,17 +27,18 @@ public class ParserMainImpl extends Parser {
 		// TODO: Need SLAP?
 		String commandName = inputSplit[0].toLowerCase();
 		
-		CommandInput commandInput = new CommandInput();
-		
-		if (CommandDisplayImpl.GetSingleton().getCommandTypeFromString(commandName) == CommandType.DISPLAY) {
+		if (CommandDisplayImpl.GetCommandTypeFromString(commandName) == CommandType.DISPLAY) {
+			CommandInput commandInput = new CommandInput(CommandType.DISPLAY);
 			commandInput.setCommandType(CommandType.DISPLAY);
+			
+			return new CommandDisplayImpl(commandInput);
 		}
 		
 		// TODO: Add exit command
 		
 		// TODO: Not sure if the parsing should be done in Command class itself. Hmm...
-		if (CommandAddImpl.GetSingleton().getCommandTypeFromString(commandName) == CommandType.ADD) {
-			commandInput.setCommandType(CommandType.ADD);
+		if (CommandAddImpl.GetCommandTypeFromString(commandName) == CommandType.ADD) {
+			CommandInput commandInput = new CommandInput(CommandType.ADD);
 			String taskName = "";
 			
 			for (int i = 1; i < inputSplit.length; i++) {
@@ -78,8 +78,12 @@ public class ParserMainImpl extends Parser {
 			}
 			
 			commandInput.setName(taskName.trim());
+			
+			return new CommandAddImpl(commandInput);
 		}
 
+		// TODO: Port to new architecture to make it work
+		/*
 		// parse for delete command
 												//CommandInput.COMMAND_DELETE
 		if (inputSplit[0].toLowerCase().equals(commandTypes.DELETE.toString())) {
@@ -155,13 +159,10 @@ public class ParserMainImpl extends Parser {
 			commandInput.setCommandType(CommandType.EXIT);
 			commandInput.setName("exit");
 		}
+		*/
 		
-		// If command type is null, return a null object to indicate invalid command to caller
-		if (commandInput.getCommandType() == null) {
-			return null;
-		}
-
-		return commandInput;
+		// base case, return null
+		return null;
 	}
 	
 	// Do case-insensitive search of word in array

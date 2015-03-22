@@ -8,36 +8,17 @@ import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 import sg.edu.nus.cs2103t.omnitask.ui.UI;
 
-public class CommandAddImpl implements Command {
-	
+public class CommandAddImpl extends Command {
+
 	public static String[] COMMAND_ALIASES = new String[]{"add", "new"};
 	
-	private static CommandAddImpl command;
-	
-	private CommandAddImpl() {
-		
-	}
-
-	public static CommandAddImpl GetSingleton() {
-		if (command == null) command = new CommandAddImpl();
-		
-		return command;
-	}
-	
-	@Override
-	public CommandInput.CommandType getCommandTypeFromString(String str) {
-		for (String command : COMMAND_ALIASES) {
-			if (command.toLowerCase().equals(str.toLowerCase())) {
-				return CommandInput.CommandType.ADD;
-			}
-		}
-		
-		return CommandInput.CommandType.INVALID;
+	public CommandAddImpl(CommandInput commandInput) {
+		super(commandInput);
 	}
 	
 	// TODO: This class shouldn't be calling UI directly
 	@Override
-	public boolean processCommand(UI ui, Data data, CommandInput commandInput) {
+	public boolean processCommand(UI ui, Data data) {
 		Task task = new Task();
 		Utils.addAttributes(commandInput, task);
 		
@@ -57,6 +38,16 @@ public class CommandAddImpl implements Command {
 		ui.showMessage("Failed to add task \"" + commandInput.getName() + "\".");
 		
 		return false;
+	}
+	
+	public static CommandInput.CommandType GetCommandTypeFromString(String str) {
+		for (String command : COMMAND_ALIASES) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.ADD;
+			}
+		}
+		
+		return CommandInput.CommandType.INVALID;
 	}
 	
 }

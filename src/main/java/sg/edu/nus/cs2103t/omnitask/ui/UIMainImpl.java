@@ -27,7 +27,6 @@ import org.joda.time.DateTime;
 
 import sg.edu.nus.cs2103t.omnitask.Logger;
 import sg.edu.nus.cs2103t.omnitask.controller.Controller;
-import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplayImpl;
 
@@ -51,8 +50,6 @@ public class UIMainImpl implements UI {
 	private static TrayIcon trayIcon = new TrayIcon(image, "OmniTask");
 
 	private Controller controller;
-	
-	private static CommandInput.CommandType commandTypes;
 
 	public UIMainImpl(Controller controller, Stage primaryStage) {
 		this.controller = controller;

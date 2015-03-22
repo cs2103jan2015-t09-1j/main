@@ -32,6 +32,10 @@ public class CommandInput {
 	public CommandInput() {
 	}
 	
+	public CommandInput(CommandType commandType) {
+		this.commandType = commandType;
+	}
+	
 	public CommandType getCommandType() {
 		return commandType;
 	}

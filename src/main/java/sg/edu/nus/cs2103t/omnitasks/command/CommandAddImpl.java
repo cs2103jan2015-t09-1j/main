@@ -9,8 +9,6 @@ import sg.edu.nus.cs2103t.omnitask.model.Task;
 import sg.edu.nus.cs2103t.omnitask.ui.UI;
 
 public class CommandAddImpl extends Command {
-
-	public static String[] COMMAND_ALIASES = new String[]{"add", "new"};
 	
 	public CommandAddImpl(CommandInput commandInput) {
 		super(commandInput);
@@ -38,16 +36,6 @@ public class CommandAddImpl extends Command {
 		ui.showMessage("Failed to add task \"" + commandInput.getName() + "\".");
 		
 		return false;
-	}
-	
-	public static CommandInput.CommandType GetCommandTypeFromString(String str) {
-		for (String command : COMMAND_ALIASES) {
-			if (command.toLowerCase().equals(str.toLowerCase())) {
-				return CommandInput.CommandType.ADD;
-			}
-		}
-		
-		return CommandInput.CommandType.INVALID;
 	}
 	
 }

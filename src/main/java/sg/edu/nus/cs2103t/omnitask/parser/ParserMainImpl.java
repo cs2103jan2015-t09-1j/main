@@ -13,6 +13,7 @@ import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplayImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandExitImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandSearchImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandEditImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.Utils;
 
 import com.joestelmach.natty.DateGroup;
 
@@ -30,7 +31,7 @@ public class ParserMainImpl extends Parser {
 		// TODO: Need SLAP?
 		String commandName = inputSplit[0].toLowerCase();
 		
-		if (CommandDisplayImpl.GetCommandTypeFromString(commandName) == CommandType.DISPLAY) {
+		if (Utils.GetCommandTypeFromString(commandName) == CommandType.DISPLAY) {
 			CommandInput commandInput = new CommandInput(CommandType.DISPLAY);
 			commandInput.setCommandType(CommandType.DISPLAY);
 			
@@ -38,7 +39,7 @@ public class ParserMainImpl extends Parser {
 		}
 		
 		// TODO: Add exit command
-		if(CommandExitImpl.GetCommandTypeFromString(commandName) == CommandType.EXIT){
+		if(Utils.GetCommandTypeFromString(commandName) == CommandType.EXIT){
 			CommandInput commandInput = new CommandInput(CommandType.EXIT);
 			commandInput.setCommandType(CommandType.EXIT);
 			
@@ -46,7 +47,7 @@ public class ParserMainImpl extends Parser {
 		}
 		
 		// TODO: Not sure if the parsing should be done in Command class itself. Hmm...
-		if (CommandAddImpl.GetCommandTypeFromString(commandName) == CommandType.ADD) {
+		if (Utils.GetCommandTypeFromString(commandName) == CommandType.ADD) {
 			CommandInput commandInput = new CommandInput(CommandType.ADD);
 			String taskName = "";
 			
@@ -93,7 +94,7 @@ public class ParserMainImpl extends Parser {
 		
 
 		//search task command
-		if (CommandSearchImpl.GetCommandTypeFromString(commandName) == CommandType.SEARCH) {
+		if (Utils.GetCommandTypeFromString(commandName) == CommandType.SEARCH) {
 			CommandInput commandInput = new CommandInput(CommandType.SEARCH);
 			commandInput.setCommandType(CommandType.SEARCH);
 			
@@ -102,7 +103,7 @@ public class ParserMainImpl extends Parser {
 			return new CommandSearchImpl(commandInput);
 		}
 
-		if (CommandEditImpl.GetCommandTypeFromString(commandName) == CommandType.EDIT) {
+		if (Utils.GetCommandTypeFromString(commandName) == CommandType.EDIT) {
 			CommandInput commandInput = new CommandInput(CommandType.EDIT);
 			String taskName = "";
 			long updateId;

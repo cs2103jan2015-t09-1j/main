@@ -8,8 +8,6 @@ import sg.edu.nus.cs2103t.omnitask.model.Task;
 import sg.edu.nus.cs2103t.omnitask.ui.UI;
 
 public class CommandSearchImpl extends Command {
-
-	public static String[] COMMAND_ALIASES = new String[]{"search", "find"};
 	
 	public CommandSearchImpl(CommandInput commandInput) {
 		super(commandInput);
@@ -38,15 +36,4 @@ public class CommandSearchImpl extends Command {
 		//return false to update the task listing with search result and not default 
 		return false;
 	}
-	
-	public static CommandInput.CommandType GetCommandTypeFromString(String str) {
-		for (String command : COMMAND_ALIASES) {
-			if (command.toLowerCase().equals(str.toLowerCase())) {
-				return CommandInput.CommandType.SEARCH;
-			}
-		}
-		
-		return CommandInput.CommandType.INVALID;
-	}
-	
 }

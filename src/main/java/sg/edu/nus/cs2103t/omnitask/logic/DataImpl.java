@@ -38,6 +38,10 @@ public class DataImpl extends Data {
 	}
 	
 	public DataImpl init(File storageFile) throws IOException {
+		if (inited) {
+			return this;
+		}
+		
 		this.storageFile = storageFile;
 		
 		io = new IOJSONImpl(this.storageFile);

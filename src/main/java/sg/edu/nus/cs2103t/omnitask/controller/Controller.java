@@ -4,25 +4,31 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import sg.edu.nus.cs2103t.omnitask.Main;
 import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.logic.DataImpl;
-import sg.edu.nus.cs2103t.omnitask.model.Task;
 import sg.edu.nus.cs2103t.omnitask.parser.Parser;
 import sg.edu.nus.cs2103t.omnitask.parser.ParserMainImpl;
-import sg.edu.nus.cs2103t.omnitask.ui.UI;
 import sg.edu.nus.cs2103t.omnitasks.command.Command;
+import sg.edu.nus.cs2103t.omnitasks.command.Command.CommandResultListener;
 
 public class Controller {
 	private static Controller controller;
-
-	protected UI ui;
 
 	protected Parser parser;
 
 	protected Data data;
 	
-	private Controller() {
+	protected ArrayList<OnMessageListener> onMessageListeners;
+	
+	public static interface OnMessageListener {
+		void onResultMessage(String msg);
 		
+		void onErrorMessage(String msg);
+	}
+	
+	private Controller() {
+		onMessageListeners = new ArrayList<OnMessageListener>();
 	}
 	
 	public static Controller GetSingleton() {
@@ -31,8 +37,24 @@ public class Controller {
 		return controller;
 	}
 
-	public void setUi(UI ui) {
-		this.ui = ui;
+	public void addOnMessageListener(OnMessageListener listener) {
+		onMessageListeners.add(listener);
+	}
+	
+	public void removeOnMessageListener(OnMessageListener listener) {
+		onMessageListeners.remove(listener);
+	}
+	
+	private void showResult(String msg) {
+		for (OnMessageListener listener : onMessageListeners) {
+			listener.onResultMessage(msg);
+		}
+	}
+	
+	private void showError(String msg) {
+		for (OnMessageListener listener : onMessageListeners) {
+			listener.onErrorMessage(msg);
+		}
 	}
 
 	public void start(String[] args) {
@@ -54,85 +76,32 @@ public class Controller {
 		try {
 			data = DataImpl.GetSingleton().init(storageFile);
 		} catch (IOException ex) {
-			ui.showError("No permission to access file.");
-			ui.exit();
+			System.err.println("No permission to access file.");
+			Main.Exit();
 			return;
 		}
-
-		// Pass control to UI to receive user input
-		ui.start();
 	}
 	
 	public void processUserInput(String input) {
 		Command command = parser.parseUserInput(input);
 
 		if (command == null) {
-			ui.showError("Invalid command entered. Please try again.");
+			showError("Invalid command entered. Please try again.");
 		} else {
-			// if command is successful, update ui
-			if (command.processCommand(ui, data)) {
-				updateTaskListings();
-			}
+			command.processCommand(data, new CommandResultListener() {
+
+				@Override
+				public void onSuccess(String msg) {
+					showResult(msg);
+				}
+
+				@Override
+				public void onFailure(String msg) {
+					showError(msg);
+				}
+				
+			});
 		}
 	}
-	
-	// TODO: Controller should not be calling UI, UI should subsribed to data changes in Controller
-	private void updateTaskListings() {
-		ui.updateTaskListings(data.getTasks());
-	}
-
-
-	// TODO: Migrate to new architecture
-	/*private void processAddCommand(CommandInput commandInput) {
-		if (CommandAddImpl.GetSingleton().processCommand(ui, data, commandInput)) {
-			updateTaskListings();
-		}
-	}
-
-	private void processDisplayCommand(CommandInput commandInput) {
-		updateTaskListings();
-	}
-
-	private void processDeleteCommand(CommandInput commandInput) {
-
-		if (data.deleteTask(commandInput)) {
-			ui.showMessage("Task \"" + commandInput.getId()
-					+ "\" deleted successfully!");
-		} else {
-			ui.showMessage("Unable to delete Task \"" + commandInput.getId()
-					+ "\". Please choose a valid id!");
-		}
-
-		updateTaskListings();
-	}
-
-	private void processEditCommand(CommandInput commandInput) {
-
-		if (data.editTask(commandInput)) {
-			ui.showMessage("Task \"" + commandInput.getId()
-					+ "\" updated successfully!");
-		} else {
-			ui.showMessage("Unable to update Task \"" + commandInput.getId()
-					+ "\". Please choose a valid id!");
-		}
-
-		updateTaskListings();
-	}
-
-	private void processSearchCommand(CommandInput commandInput) {
-		
-		ArrayList<Task> searchTaskResult = data.searchTask(commandInput);
-
-		if(searchTaskResult.size()!=0){
-			updateSearchTaskListing(searchTaskResult);
-		}else{
-			if(commandInput.getName().isEmpty()){
-				ui.showMessage("Search failed. Please key in the search key!");
-			}else{
-				ui.showMessage("Search did not find any matching task content.");
-			}
-		}
-		
-	}*/
 
 }

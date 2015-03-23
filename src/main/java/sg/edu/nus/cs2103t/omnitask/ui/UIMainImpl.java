@@ -11,7 +11,6 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.List;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -28,9 +27,11 @@ import org.joda.time.DateTime;
 
 import sg.edu.nus.cs2103t.omnitask.Logger;
 import sg.edu.nus.cs2103t.omnitask.controller.Controller;
+import sg.edu.nus.cs2103t.omnitask.controller.Controller.OnMessageListener;
+import sg.edu.nus.cs2103t.omnitask.logic.Data.DataUpdatedListener;
+import sg.edu.nus.cs2103t.omnitask.logic.DataImpl;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplayImpl;
-import sg.edu.nus.cs2103t.omnitasks.command.Utils;
 
 import com.tulskiy.keymaster.common.HotKey;
 import com.tulskiy.keymaster.common.HotKeyListener;
@@ -58,13 +59,11 @@ public class UIMainImpl implements UI {
 		this.primaryStage = primaryStage;
 	}
 
-	//@Override
-	public void showMessage(String msg) {
+	private void showMessage(String msg) {
 		viewController.showMessage(msg);
 	}
 
-	//@Override
-	public void showError(String msg) {
+	private void showError(String msg) {
 		if (viewController != null) {
 			viewController.showError(msg);
 		} else {
@@ -84,6 +83,12 @@ public class UIMainImpl implements UI {
 
 	//@Override
 	public void start() {
+		// Subscribe to Data changes
+		DataImpl.GetSingleton().addDataUpdatedListener(dataUpdatedListener);
+		
+		// Subscribe to messages by Controller
+		controller.addOnMessageListener(onMessageListener);
+		
 		setupUI();
 
 		SwingUtilities.invokeLater(new Runnable() {
@@ -284,7 +289,6 @@ public class UIMainImpl implements UI {
 		provider.stop();
 		
 		Platform.exit();
-		System.exit(0);
 	}
 
 	private void hideWindow() {
@@ -295,9 +299,27 @@ public class UIMainImpl implements UI {
 		primaryStage.show();
 	}
 
-	//@Override
-	public void updateTaskListings(List<Task> tasks) {
-		viewController.updateListView(tasks);
-	}
+	private DataUpdatedListener dataUpdatedListener = new DataUpdatedListener() {
+
+		@Override
+		public void dataUpdated(ArrayList<Task> tasks) {
+			viewController.updateListView(tasks);
+		}
+		
+	};
+	
+	private OnMessageListener onMessageListener = new OnMessageListener() {
+
+		@Override
+		public void onResultMessage(String msg) {
+			showMessage(msg);
+		}
+
+		@Override
+		public void onErrorMessage(String msg) {
+			showError(msg);
+		}
+		
+	};
 	
 }

@@ -14,6 +14,26 @@ public abstract class Data {
 		}
 	}
 	
+	public static interface DataUpdatedListener {
+		void dataUpdated(ArrayList<Task> tasks);
+	}
+	
+	protected ArrayList<DataUpdatedListener> dataUpdatedListeners;
+	
+	protected Data() {
+		dataUpdatedListeners = new ArrayList<DataUpdatedListener>();
+	}
+	
+	public void addDataUpdatedListener(DataUpdatedListener listener) {
+		dataUpdatedListeners.add(listener);
+	}
+	
+	public void removeDataUpdatedListener(DataUpdatedListener listener) {
+		dataUpdatedListeners.remove(listener);
+	}
+	
+	public abstract void notifyDataChanged();
+	
 	public abstract ArrayList<Task> getTasks();
 
 	public abstract boolean addTask(Task task) throws TaskNoNameException, IOException;

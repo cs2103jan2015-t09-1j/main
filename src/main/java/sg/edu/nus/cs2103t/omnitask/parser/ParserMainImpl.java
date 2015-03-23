@@ -11,10 +11,9 @@ import sg.edu.nus.cs2103t.omnitasks.command.Command;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandAddImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandDeleteImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplayImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandEditImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandExitImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandSearchImpl;
-import sg.edu.nus.cs2103t.omnitasks.command.CommandEditImpl;
-import sg.edu.nus.cs2103t.omnitasks.command.Utils;
 
 import com.joestelmach.natty.DateGroup;
 
@@ -39,7 +38,6 @@ public class ParserMainImpl extends Parser {
 			return new CommandDisplayImpl(commandInput);
 		}
 		
-		// TODO: Add exit command
 		if(CommandExitImpl.GetCommandTypeFromString(commandName) == CommandType.EXIT){
 			CommandInput commandInput = new CommandInput(CommandType.EXIT);
 			commandInput.setCommandType(CommandType.EXIT);

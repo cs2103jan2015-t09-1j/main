@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
-import sg.edu.nus.cs2103t.omnitask.ui.UI;
 
 public class CommandSearchImpl extends Command {
 	
@@ -16,9 +15,8 @@ public class CommandSearchImpl extends Command {
 		// TODO Auto-generated constructor stub
 	}
 	
-	// TODO: This class shouldn't be calling UI directly
 	@Override
-	public boolean processCommand(UI ui, Data data) {
+	public void processCommand(Data data, CommandResultListener listener) {
 		//process search functions done here
 		ArrayList<Task> searchTaskResult = new ArrayList<Task>();
 		ArrayList<Task> fullTaskList = new ArrayList<Task>();
@@ -32,17 +30,18 @@ public class CommandSearchImpl extends Command {
 					searchTaskResult.add(fullTaskList.get(i));
 				}
 			}
-			ui.updateTaskListings(searchTaskResult);
+			// TODO: Faruq: I am breaking search at the moment to implement observer pattern
+			//ui.updateTaskListings(searchTaskResult);
 		}else{
-			ui.showMessage("Please fill in the search key!");
+			listener.onFailure("Please fill in the search key!");
 		}
 		
 		
 		//return false to update the task listing with search result and not default 
-		return false;
+		return;
 	}
 	
 	public static CommandInput.CommandType GetCommandTypeFromString(String str) {
-		return Utils.getCommandTypeForEveryClass(str, COMMAND_ALIASES_SEARCH, CommandInput.CommandType.ADD);
+		return Utils.getCommandTypeForEveryClass(str, COMMAND_ALIASES_SEARCH, CommandInput.CommandType.SEARCH);
 	}
 }

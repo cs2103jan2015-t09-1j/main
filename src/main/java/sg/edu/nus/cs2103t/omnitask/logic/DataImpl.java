@@ -34,7 +34,7 @@ public class DataImpl extends Data {
 	}
 	
 	private DataImpl() {
-
+		super();
 	}
 	
 	public DataImpl init(File storageFile) throws IOException {
@@ -112,6 +112,8 @@ public class DataImpl extends Data {
 
 			throw ex;
 		}
+		
+		notifyDataChanged();
 
 		return true;
 	}
@@ -143,7 +145,6 @@ public class DataImpl extends Data {
 		try {
 			io.saveToFile(tasks);
 			updateTaskId();
-			return true;
 		} catch (IOException ex) {
 			// TODO: Handle error
 			ex.printStackTrace();
@@ -155,6 +156,10 @@ public class DataImpl extends Data {
 			return false;
 		}
 		 // Reassign taskId to the tasks Arraylist
+		
+		notifyDataChanged();
+		
+		return true;
 	}
 
 	// Reassign taskId to the tasks arraylist
@@ -205,23 +210,9 @@ public class DataImpl extends Data {
 			return false;
 		}
 
+		notifyDataChanged();
+		
 		return true;
-	}
-
-	// edit name, priority, start&end date
-	private void editAttributes(CommandInput commandInput, int i) {
-		if (!commandInput.getName().equals("")) {
-			tasks.get(i).setName(commandInput.getName());
-		}
-		if (commandInput.getPriority() != 0) {
-			tasks.get(i).setPriority(commandInput.getPriority());
-		}
-		if (commandInput.getStartDate() != null) {
-			tasks.get(i).setStartDate(commandInput.getStartDate());
-		}
-		if (commandInput.getEndDate() != null) {
-			tasks.get(i).setEndDate(commandInput.getEndDate());
-		}
 	}
 
 	private void printError(String msg) {
@@ -251,6 +242,13 @@ public class DataImpl extends Data {
 		
 
 		return fullTaskList;
+	}
+
+	@Override
+	public void notifyDataChanged() {
+		for (DataUpdatedListener listener : dataUpdatedListeners) {
+			listener.dataUpdated(tasks);
+		}
 	}
 
 }

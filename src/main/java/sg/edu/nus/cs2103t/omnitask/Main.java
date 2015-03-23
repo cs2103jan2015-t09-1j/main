@@ -3,10 +3,14 @@ package sg.edu.nus.cs2103t.omnitask;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import sg.edu.nus.cs2103t.omnitask.controller.Controller;
+import sg.edu.nus.cs2103t.omnitask.ui.UI;
 import sg.edu.nus.cs2103t.omnitask.ui.UIMainImpl;
 import sg.edu.nus.cs2103t.omnitask.ui.UIPrototypeImpl;
 
 public class Main extends Application {
+	
+	private static UI ui;
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -21,14 +25,19 @@ public class Main extends Application {
 		}
 		
 		Controller controller = Controller.GetSingleton();
+		controller.start(getParameters().getRaw().toArray(new String[]{}));
 		
 		if (forceCommandLine) {
-			controller.setUi(new UIPrototypeImpl(controller));
+			ui = new UIPrototypeImpl(controller);
 		} else {
-			controller.setUi(new UIMainImpl(controller, primaryStage));
+			ui = new UIMainImpl(controller, primaryStage);
 		}
 		
-		controller.start(getParameters().getRaw().toArray(new String[]{}));
+		ui.start();
 	}
 
+	public static void Exit() {
+		ui.exit();
+		System.exit(0);
+	}
 }

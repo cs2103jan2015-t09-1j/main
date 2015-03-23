@@ -2,11 +2,16 @@ package sg.edu.nus.cs2103t.omnitasks.command;
 
 import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
-import sg.edu.nus.cs2103t.omnitask.ui.UI;
 
 public abstract class Command {
 	
 	protected CommandInput commandInput;
+	
+	public static interface CommandResultListener {
+		void onSuccess(String msg);
+		
+		void onFailure(String msg);
+	}
 	
 	public Command(CommandInput commandInput) {
 		this.commandInput = commandInput;
@@ -20,7 +25,6 @@ public abstract class Command {
 		this.commandInput = commandInput;
 	}
 
-	// TODO: This class shouldn't be calling UI directly
-	public abstract boolean processCommand(UI ui, Data data);
+	public abstract void processCommand(Data data, CommandResultListener listener);
 	
 }

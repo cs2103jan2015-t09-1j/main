@@ -10,6 +10,9 @@ import sg.edu.nus.cs2103t.omnitask.model.Task;
 import sg.edu.nus.cs2103t.omnitask.ui.UI;
 
 public class CommandEditImpl extends Command {
+	
+	public static String[] COMMAND_ALIASES_EDIT = new String[] { "edit", "change",
+	"update" };
 
 	public CommandEditImpl(CommandInput commandInput) {
 		super(commandInput);
@@ -45,5 +48,9 @@ public class CommandEditImpl extends Command {
 		}
 
 		return false;
+	}
+	
+	public static CommandInput.CommandType GetCommandTypeFromString(String str) {
+		return Utils.getCommandTypeForEveryClass(str, COMMAND_ALIASES_EDIT, CommandInput.CommandType.ADD);
 	}
 }

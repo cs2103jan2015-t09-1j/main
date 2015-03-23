@@ -9,7 +9,7 @@ import sg.edu.nus.cs2103t.omnitask.ui.UI;
 
 public class CommandDeleteImpl extends Command {
 
-	public static String[] COMMAND_ALIASES = new String[]{"delete", "remove"};
+	public static String[] COMMAND_ALIASES_DELETE = new String[]{"delete", "remove"};
 	
 	public CommandDeleteImpl(CommandInput commandInput) {
 		super(commandInput);
@@ -40,12 +40,6 @@ public class CommandDeleteImpl extends Command {
 	}
 	
 	public static CommandInput.CommandType GetCommandTypeFromString(String str) {
-		for (String command : COMMAND_ALIASES) {
-			if (command.toLowerCase().equals(str.toLowerCase())) {
-				return CommandInput.CommandType.DELETE;
-			}
-		}
-		
-		return CommandInput.CommandType.INVALID;
+		return Utils.getCommandTypeForEveryClass(str, COMMAND_ALIASES_DELETE, CommandInput.CommandType.ADD);
 	}
 }

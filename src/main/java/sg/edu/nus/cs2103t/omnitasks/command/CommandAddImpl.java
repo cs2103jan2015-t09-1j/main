@@ -10,6 +10,8 @@ import sg.edu.nus.cs2103t.omnitask.ui.UI;
 
 public class CommandAddImpl extends Command {
 	
+	public static String[] COMMAND_ALIASES_ADD = new String[]{"add", "new"};
+	
 	public CommandAddImpl(CommandInput commandInput) {
 		super(commandInput);
 	}
@@ -36,6 +38,10 @@ public class CommandAddImpl extends Command {
 		ui.showMessage("Failed to add task \"" + commandInput.getName() + "\".");
 		
 		return false;
+	}
+	
+	public static CommandInput.CommandType GetCommandTypeFromString(String str) {
+		return Utils.getCommandTypeForEveryClass(str, COMMAND_ALIASES_ADD, CommandInput.CommandType.ADD);
 	}
 	
 }

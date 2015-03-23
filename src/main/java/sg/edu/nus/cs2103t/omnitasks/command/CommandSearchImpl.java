@@ -9,6 +9,8 @@ import sg.edu.nus.cs2103t.omnitask.ui.UI;
 
 public class CommandSearchImpl extends Command {
 	
+	public static String[] COMMAND_ALIASES_SEARCH = new String[]{"search", "find"};
+	
 	public CommandSearchImpl(CommandInput commandInput) {
 		super(commandInput);
 		// TODO Auto-generated constructor stub
@@ -38,5 +40,9 @@ public class CommandSearchImpl extends Command {
 		
 		//return false to update the task listing with search result and not default 
 		return false;
+	}
+	
+	public static CommandInput.CommandType GetCommandTypeFromString(String str) {
+		return Utils.getCommandTypeForEveryClass(str, COMMAND_ALIASES_SEARCH, CommandInput.CommandType.ADD);
 	}
 }

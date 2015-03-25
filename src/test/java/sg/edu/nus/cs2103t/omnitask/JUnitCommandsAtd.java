@@ -35,14 +35,12 @@ public class JUnitCommandsAtd {
 		Command command = new CommandEditImpl(commandInput);
 		command.processCommand(data, new CommandResultListener() {
 
-			@Override
 			public void onSuccess(String msg) {
 				assertNotNull(data.getTasks().get(0));
 				assertEquals(data.getTasks().get(0).getId(), 1);
 				assertEquals(data.getTasks().get(0).getName(), "Hello Edited");
 			}
 
-			@Override
 			public void onFailure(String msg) {
 				throw new AssertionError("Command should not fail at all!");
 			}
@@ -71,14 +69,12 @@ public class JUnitCommandsAtd {
 		Command command = new CommandAddImpl(commandInput);
 		command.processCommand(data, new CommandResultListener() {
 
-			@Override
 			public void onSuccess(String msg) {
 				assertNotNull(data.getTasks().get(0));
 				assertEquals(data.getTasks().get(0).getId(), 1);
 				assertEquals(data.getTasks().get(0).getName(), name);
 			}
 
-			@Override
 			public void onFailure(String msg) {
 				throw new AssertionError("Command should not fail at all!");
 			}

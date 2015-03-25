@@ -30,20 +30,24 @@ public class JUnitParserAtd {
 		
 		
 		// Test parsing of "add" and "task name", "due" parameter
-		command = parseUserInputHelper("add Hello due 15 August 2015");
+		//This is also a test combining multiple inputs
+		//commandType indicator + task name + dateTime indicator + dateTime
+		command = parseUserInputHelper("add Hello due 31 August 2015");
 		assertNotNull(command);
 		assertEquals(command.getCommandInput().getCommandType(), CommandType.ADD);
 		assertEquals(command.getCommandInput().getName(), "Hello");
-		assertEquals(command.getCommandInput().getEndDate().dayOfMonth().get(), 15);
+		assertEquals(command.getCommandInput().getEndDate().dayOfMonth().get(), 31);
 		assertEquals(command.getCommandInput().getEndDate().monthOfYear().get(), 8);
 		assertEquals(command.getCommandInput().getEndDate().year().get(), 2015);
 		
 		//Test parsing of "add" and "task name", "by" parameter
-		command = parseUserInputHelper("add Hello by 15 August 2015");
+		//day of month is expected to be 1-31
+		//32 is a boundary value for testing
+		command = parseUserInputHelper("add Hello by 32 August 2015");
 		assertNotNull(command);
 		assertEquals(command.getCommandInput().getCommandType(), CommandType.ADD);
 		assertEquals(command.getCommandInput().getName(), "Hello");
-		assertEquals(command.getCommandInput().getEndDate().dayOfMonth().get(), 15);
+		assertEquals(command.getCommandInput().getEndDate().dayOfMonth().get(), 32);
 		assertEquals(command.getCommandInput().getEndDate().monthOfYear().get(), 8);
 		assertEquals(command.getCommandInput().getEndDate().year().get(), 2015);
 		
@@ -100,6 +104,7 @@ public class JUnitParserAtd {
 		assertNotNull(command);
 		assertEquals(command.getCommandInput().getCommandType(), CommandType.SEARCH);
 		assertEquals(command.getCommandInput().getName(), "Hello");
+		//Equivalent partition [add],[delete],[display],[edit],[exit] and [search]
 	}
 	
 	private Command parseUserInputHelper(String input) {

@@ -9,6 +9,7 @@ import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.logic.DataImpl;
 import sg.edu.nus.cs2103t.omnitask.parser.Parser;
 import sg.edu.nus.cs2103t.omnitask.parser.ParserMainImpl;
+import sg.edu.nus.cs2103t.omnitask.storage.IOJSONImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.Command;
 import sg.edu.nus.cs2103t.omnitasks.command.Command.CommandResultListener;
 
@@ -74,7 +75,7 @@ public class Controller {
 		// Initialize data logic (which would create the storage file if needed)
 		// Exit application if fails
 		try {
-			data = DataImpl.GetSingleton().init(storageFile);
+			data = DataImpl.GetSingleton().init(new IOJSONImpl(storageFile));
 		} catch (IOException ex) {
 			System.err.println("No permission to access file.");
 			Main.Exit();

@@ -16,8 +16,6 @@ import sg.edu.nus.cs2103t.omnitask.storage.IOJSONImpl;
 public class DataImpl extends Data {
 
 	private static DataImpl data;
-	
-	private File storageFile;
 
 	private ArrayList<Task> tasks;
 
@@ -37,14 +35,12 @@ public class DataImpl extends Data {
 		super();
 	}
 	
-	public DataImpl init(File storageFile) throws IOException {
+	public DataImpl init(IO io) throws IOException {
 		if (inited) {
 			return this;
 		}
 		
-		this.storageFile = storageFile;
-		
-		io = new IOJSONImpl(this.storageFile);
+		this.io = io;
 		tasks = io.readFromFile();
 		
 		inited = true;

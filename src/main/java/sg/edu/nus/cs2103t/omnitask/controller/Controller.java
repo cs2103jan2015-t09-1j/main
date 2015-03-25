@@ -90,12 +90,10 @@ public class Controller {
 		} else {
 			command.processCommand(data, new CommandResultListener() {
 
-				@Override
 				public void onSuccess(String msg) {
 					showResult(msg);
 				}
 
-				@Override
 				public void onFailure(String msg) {
 					showError(msg);
 				}

@@ -45,8 +45,4 @@ public class CommandEditImpl extends Command {
 
 		return;
 	}
-	
-	public static CommandInput.CommandType GetCommandTypeFromString(String str) {
-		return Utils.getCommandTypeForEveryClass(str, COMMAND_ALIASES_EDIT, CommandInput.CommandType.EDIT);
-	}
 }

@@ -36,9 +36,4 @@ public class CommandAddImpl extends Command {
 		
 		return;
 	}
-	
-	public static CommandInput.CommandType GetCommandTypeFromString(String str) {
-		return Utils.getCommandTypeForEveryClass(str, COMMAND_ALIASES_ADD, CommandInput.CommandType.ADD);
-	}
-	
 }

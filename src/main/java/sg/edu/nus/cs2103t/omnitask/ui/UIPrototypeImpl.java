@@ -68,7 +68,6 @@ public class UIPrototypeImpl implements UI {
 	
 	private DataUpdatedListener dataUpdatedListener = new DataUpdatedListener() {
 
-		@Override
 		public void dataUpdated(ArrayList<Task> tasks) {
 			showMessage("List of tasks: ");
 			
@@ -81,12 +80,10 @@ public class UIPrototypeImpl implements UI {
 
 	private OnMessageListener onMessageListener = new OnMessageListener() {
 
-		@Override
 		public void onResultMessage(String msg) {
 			showMessage(msg);
 		}
 
-		@Override
 		public void onErrorMessage(String msg) {
 			showError(msg);
 		}

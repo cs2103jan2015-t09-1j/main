@@ -40,8 +40,4 @@ public class CommandSearchImpl extends Command {
 		//return false to update the task listing with search result and not default 
 		return;
 	}
-	
-	public static CommandInput.CommandType GetCommandTypeFromString(String str) {
-		return Utils.getCommandTypeForEveryClass(str, COMMAND_ALIASES_SEARCH, CommandInput.CommandType.SEARCH);
-	}
 }

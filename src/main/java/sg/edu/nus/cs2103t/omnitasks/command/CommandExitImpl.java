@@ -17,8 +17,4 @@ public class CommandExitImpl extends Command {
 		Main.Exit();
 		return;
 	}
-	
-	public static CommandInput.CommandType GetCommandTypeFromString(String str) {
-		return Utils.getCommandTypeForEveryClass(str, COMMAND_ALIASES_EXIT, CommandInput.CommandType.EXIT);
-	}
 }

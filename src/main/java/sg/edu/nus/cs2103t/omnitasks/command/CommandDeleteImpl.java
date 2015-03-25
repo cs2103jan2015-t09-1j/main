@@ -35,8 +35,4 @@ public class CommandDeleteImpl extends Command {
 		}
 		return;
 	}
-	
-	public static CommandInput.CommandType GetCommandTypeFromString(String str) {
-		return Utils.getCommandTypeForEveryClass(str, COMMAND_ALIASES_DELETE, CommandInput.CommandType.DELETE);
-	}
 }

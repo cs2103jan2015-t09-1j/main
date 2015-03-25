@@ -16,8 +16,4 @@ public class CommandDisplayImpl extends Command {
 		data.notifyDataChanged();
 		return;
 	}
-	
-	public static CommandInput.CommandType GetCommandTypeFromString(String str) {
-		return Utils.getCommandTypeForEveryClass(str, COMMAND_ALIASES_DISPLAY, CommandInput.CommandType.DISPLAY);
-	}
 }

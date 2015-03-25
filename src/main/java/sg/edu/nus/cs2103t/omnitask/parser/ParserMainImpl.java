@@ -39,14 +39,14 @@ public class ParserMainImpl extends Parser {
 			return new CommandDisplayImpl(commandInput);
 		}
 		
-		if(Utils.getCommandTypeFromString(commandName) == CommandType.EXIT){
+		if (Utils.getCommandTypeFromString(commandName) == CommandType.EXIT) {
 			CommandInput commandInput = new CommandInput(CommandType.EXIT);
 			commandInput.setCommandType(CommandType.EXIT);
 			
 			return new CommandExitImpl(commandInput);
 		}
 		
-		if(Utils.getCommandTypeFromString(commandName) == CommandType.DELETE){
+		if (Utils.getCommandTypeFromString(commandName) == CommandType.DELETE) {
 			CommandInput commandInput = new CommandInput(CommandType.DELETE);
 			commandInput.setCommandType(CommandType.DELETE);
 
@@ -177,85 +177,6 @@ public class ParserMainImpl extends Parser {
 			return new CommandEditImpl(commandInput);
 
 		}
-
-		// TODO: Port to new architecture to make it work
-		/*
-		// parse for delete command
-												//CommandInput.COMMAND_DELETE
-		if (inputSplit[0].toLowerCase().equals(commandTypes.DELETE.toString())) {
-			commandInput.setCommandType(CommandType.DELETE);
-			long deleteId;
-			deleteId = Long.parseLong(inputSplit[1]);
-			commandInput.setId(deleteId);
-		}
-
-		// parse for update command
-												//CommandInput.COMMAND_EDIT
-		if (inputSplit[0].toLowerCase().equals(commandTypes.EDIT.toString())) {
-			commandInput.setCommandType(CommandType.EDIT);
-			long updateId;
-			updateId = Long.parseLong(inputSplit[1]);
-			commandInput.setId(updateId);
-			String taskName = "";
-//			String name = "";
-//			for (int i = 2; i < inputSplit.length; i++) {
-//				taskName += inputSplit[i] + " ";
-//			}
-					
-			for (int i = 2; i < inputSplit.length; i++) {
-				if (inArray(DATE_INDICATORS, inputSplit[i])) {
-					taskName = joinStringArray(inputSplit, 2, i);
-					
-					// Parse date using Natty
-					com.joestelmach.natty.Parser parser = new com.joestelmach.natty.Parser();
-					List<DateGroup> groups = parser.parse(input);
-					for (DateGroup group : groups) {
-						// If there are 2 dates, means it's to and from
-						// If no specific time is specified by user, set the time to 00:00:00, retaining the dates
-						if (group.getDates().size() == 2) {
-							commandInput.setStartDate(new DateTime(group.getDates().get(0).getTime()));
-							if (!isTimeSpecifiedByUser(group.getSyntaxTree().getChild(0))) {
-								commandInput.setStartDate(commandInput.getStartDate().withMillisOfDay(0));
-							}
-							
-							commandInput.setEndDate(new DateTime(group.getDates().get(1).getTime()));
-							if (!isTimeSpecifiedByUser(group.getSyntaxTree().getChild(1))) {
-								commandInput.setEndDate(commandInput.getEndDate().withMillisOfDay(0));
-							}
-						} else {
-							commandInput.setEndDate(new DateTime(group.getDates().get(0).getTime()));
-							if (!isTimeSpecifiedByUser(group.getSyntaxTree().getChild(0))) {
-								commandInput.setEndDate(commandInput.getEndDate().withMillisOfDay(0));
-							}
-						}
-					}
-					
-					break;
-				}
-			}
-			
-			if (taskName.equals("")) {
-				taskName = joinStringArray(inputSplit, 2, inputSplit.length);
-			}
-			commandInput.setName(taskName.trim());
-			//commandInput.setCommandName(commandName);
-		}
-		
-		
-		//parse for search command
-		
-		if (inputSplit[0].toLowerCase().equals(commandTypes.SEARCH.toString())) {
-			commandInput.setCommandType(CommandType.SEARCH);
-				commandInput.setName(inputSplit[1]);
-		}
-		
-		
-												//CommandInput.COMMAND_EXIT
-		if (inputSplit[0].toLowerCase().equals(commandTypes.EXIT.toString())) {
-			commandInput.setCommandType(CommandType.EXIT);
-			commandInput.setName("exit");
-		}
-		*/
 		
 		// base case, return null
 		return null;

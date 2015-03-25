@@ -92,7 +92,7 @@ public class ViewController {
 		return (int) (task1.getId() - task2.getId());
 	}
 	
-	public void sortTasks() {
+	public void sortTasks(List<Task> tasks) {
 		Collections.sort(tasks, new Comparator<Task>() {
 
 			//@Override
@@ -104,49 +104,12 @@ public class ViewController {
 	}
 	
 	public void updateListView(List<Task> tasks) {
-		// Search for added tasks
-		int newTaskSize = tasks.size();
-		for (int i = 0; i < newTaskSize; i++) {
-			Task task1 = tasks.get(i);
-			boolean found = false;
-			
-			for (Task task2 : this.tasks) {
-				if (task1.getUuid().equals(task2.getUuid())) {
-					found = true;
-					break;
-				}
-			}
-			
-			if (!found) {
-				this.tasks.add(task1);
-			}
-		}
-				
-		// Search for deleted tasks, meanwhile if task is updated, update to new object
-		int oldTaskSize = this.tasks.size();
-		for (int i = 0; i < oldTaskSize; i++) {
-			Task task1 = this.tasks.get(i);
-			boolean found = false;
-			
-			for (Task task2 : tasks) {
-				if (task1.getUuid().equals(task2.getUuid())) {
-					found = true;
-					
-					// Replace
-					this.tasks.set(i, task2);
-					break;
-				}
-			}
-			
-			if (!found) {
-				this.tasks.remove(i--);
-				oldTaskSize--;
-			}
-		}
-		
 		// Sort tasks again
 		// ...while it may be counter productive to sort every time, the sorting is fast if it is already (mostly) sorted
-		sortTasks();
+		sortTasks(tasks);
+		
+		this.tasks.clear();
+		this.tasks.addAll(tasks);
 	}
 	
 	private class ListViewCell extends ListCell<Task> {

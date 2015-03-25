@@ -22,7 +22,7 @@ public class IOStubImpl extends IO {
 	
 	@Override
 	public ArrayList<Task> readFromFile() {
-	    return tasks;
+	    return (ArrayList<Task>) tasks.clone();
 	}
 	
 	@Override

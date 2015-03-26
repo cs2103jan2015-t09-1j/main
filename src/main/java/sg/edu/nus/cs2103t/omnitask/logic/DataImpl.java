@@ -20,34 +20,34 @@ public class DataImpl extends Data {
 	private ArrayList<Task> tasks;
 
 	protected IO io;
-	
+
 	private boolean inited;
 
 	public static DataImpl GetSingleton() {
 		if (data == null) {
 			data = new DataImpl();
 		}
-		
+
 		return data;
 	}
-	
+
 	private DataImpl() {
 		super();
 	}
-	
+
 	public DataImpl init(IO io) throws IOException {
 		if (inited) {
 			return this;
 		}
-		
+
 		this.io = io;
 		tasks = io.readFromFile();
-		
+
 		inited = true;
-		
+
 		return this;
 	}
-	
+
 	private void assertInited() {
 		assert inited;
 	}
@@ -55,14 +55,14 @@ public class DataImpl extends Data {
 	@Override
 	public ArrayList<Task> getTasks() {
 		assertInited();
-		
+
 		return tasks;
 	}
 
 	// Get new "viewing" taskId which can be used for a new task
 	private long getNewId() {
 		assertInited();
-		
+
 		long taskId = 1;
 		ArrayList<Task> tasks = getTasks();
 		if (tasks.size() > 0) {
@@ -76,15 +76,15 @@ public class DataImpl extends Data {
 	@Override
 	public boolean addTask(Task task) throws TaskNoNameException, IOException {
 		assertInited();
-		
+
 		// Create new task object
 		if (task.getName().trim().isEmpty()) {
 			throw new TaskNoNameException();
 		}
-		
+
 		// When adding task, always get new id
 		task.setId(getNewId());
-		
+
 		// Assign randomUUID to task if it is null
 		if (task.getUuid() == null) {
 			task.setUuid(UUID.randomUUID());
@@ -108,34 +108,22 @@ public class DataImpl extends Data {
 
 			throw ex;
 		}
-		
+
 		notifyDataChanged();
 
 		return true;
 	}
 
-//	private void addAttributes(CommandInput commandInput, Task task) {
-//		UUID uuid = UUID.randomUUID();
-//		task.setUuid(uuid);
-//		task.setId(getNewId());
-//		task.setName(commandInput.getName());
-//		task.setPriority(commandInput.getPriority());
-//		task.setStartDate(commandInput.getStartDate());
-//		task.setEndDate(commandInput.getEndDate());
-//	}
-
 	@Override
-	public boolean deleteTask(Task task) {
+	public boolean deleteTask(Task taskToRemove) {
 		assertInited();
-		
-		//int indexToRemove = (int) task.getId();
 
-//		for (int i = 0; i < tasks.size(); i++) {
-//			if (tasks.get(i).getId() == task.getId()) {
-//				taskToRemove = tasks.remove(i);
-//				indexToRemove = i;
-//			}
-//		}
+		int indexToRemove = -1;
+
+		if (tasks.contains(taskToRemove)) {
+			indexToRemove = tasks.indexOf(taskToRemove);
+			tasks.remove(taskToRemove);
+		}
 
 		// Commit it to storage
 		try {
@@ -147,21 +135,20 @@ public class DataImpl extends Data {
 			printError("IO Exception");
 
 			// Reverse change
-			//tasks.add(indexToRemove, task);
+			tasks.add(indexToRemove, taskToRemove);
 
 			return false;
 		}
-		 // Reassign taskId to the tasks Arraylist
-		
+
 		notifyDataChanged();
-		
+
 		return true;
 	}
 
 	// Reassign taskId to the tasks arraylist
 	private void updateTaskId() {
 		assertInited();
-		
+
 		for (int i = 0; i < tasks.size(); i++) {
 			tasks.get(i).setId(i + 1);
 		}
@@ -170,19 +157,15 @@ public class DataImpl extends Data {
 	@Override
 	public boolean editTask(Task task) {
 		assertInited();
-		
-		// lacking startDate, endDate, startTime, endTime
+
 		int taskIdToUpdate = -1;
 		String tmpTaskName = "";
 
 		for (int i = 0; i < tasks.size(); i++) {
-
 			if (tasks.get(i).getId() == task.getId()) {
 				// store the task name from the file in a variable incase need
-
 				// to revert below
 				tmpTaskName = tasks.get(i).getName();
-
 				taskIdToUpdate = i;
 			}
 		}
@@ -207,7 +190,7 @@ public class DataImpl extends Data {
 		}
 
 		notifyDataChanged();
-		
+
 		return true;
 	}
 
@@ -215,17 +198,14 @@ public class DataImpl extends Data {
 		System.err.println(DateTime.now() + ": " + msg);
 		Logger.writeError(msg);
 	}
-	
-	
-	//only incharge of fetching full task list from the storage and pass it to  CommandSearchImpl for processing
+
+	// Only in-charge of fetching full task list from the storage and pass it to
+	// CommandSearchImpl for processing
 	@Override
 	public ArrayList<Task> searchTask(CommandInput commandInput) {
 		assertInited();
-		
-		
-		ArrayList<Task> fullTaskList = new ArrayList<Task>();
 
-		
+		ArrayList<Task> fullTaskList = new ArrayList<Task>();
 
 		try {
 			fullTaskList = io.readFromFile();
@@ -234,8 +214,8 @@ public class DataImpl extends Data {
 			e.printStackTrace();
 			printError("Unable to read from file @ dataImpl search function! ");
 		}
-		//make sure the search key is not empty if its empty searchTaskResult will have size of 0
-		
+		// make sure the search key is not empty if its empty searchTaskResult
+		// will have size of 0
 
 		return fullTaskList;
 	}

@@ -74,7 +74,7 @@ public class DataStubImpl extends Data {
 		assertInited();
 		
 		// Create new task object
-		if (task.getName().isEmpty()) {
+		if (task.getName().trim().isEmpty()) {
 			throw new TaskNoNameException();
 		}
 		

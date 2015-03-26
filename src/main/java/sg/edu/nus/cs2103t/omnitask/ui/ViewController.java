@@ -117,7 +117,10 @@ public class ViewController {
 		public void updateItem(Task task, boolean empty) {
 		    super.updateItem(task, empty);
 		    
-		    if (task != null) {
+		    if (empty || task == null) {
+		        setGraphic(null);
+		        setText(null);
+		    } else if (task != null) {
 		    	TaskItemController data = new TaskItemController();
 		        data.setData(task);
 		        setGraphic(data.getView());

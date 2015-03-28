@@ -31,8 +31,8 @@ public class CommandSearchImpl extends Command {
 					searchTaskResult.add(fullTaskList.get(i));
 				}
 			}
-			// TODO: Faruq: Need an API on UI side to show search results
-			//ui.updateTaskListings(searchTaskResult);
+			
+			ui.showSearchResults(searchTaskResult);
 			return true;
 		}else{
 			ui.showError("Please fill in the search key!");

@@ -1,5 +1,9 @@
 package sg.edu.nus.cs2103t.omnitask.ui;
 
+import java.util.ArrayList;
+
+import sg.edu.nus.cs2103t.omnitask.model.Task;
+
 
 public abstract class UI {
 	
@@ -22,6 +26,10 @@ public abstract class UI {
 	public abstract void showError(String msg);
 
 	public abstract void showMessage(String msg);
+	
+	public abstract void showHelp(String msg);
+	
+	public abstract void showSearchResults(ArrayList<Task> tasks);
 
 	public abstract void start();
 	

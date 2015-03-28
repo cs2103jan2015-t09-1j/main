@@ -69,5 +69,17 @@ public class UIPrototypeImpl extends UI {
         
     };
 
+	@Override
+	public void showHelp(String msg) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void showSearchResults(ArrayList<Task> tasks) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }

@@ -1,5 +1,9 @@
 package sg.edu.nus.cs2103t.omnitask.ui;
 
+import java.util.ArrayList;
+
+import sg.edu.nus.cs2103t.omnitask.model.Task;
+
 public class UIStubImpl extends UI {
 
 	@Override
@@ -24,6 +28,18 @@ public class UIStubImpl extends UI {
 	public void exit() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void showHelp(String msg) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void showSearchResults(ArrayList<Task> tasks) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

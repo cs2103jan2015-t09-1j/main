@@ -42,5 +42,5 @@ public abstract class Data {
 
 	public abstract boolean editTask(Task task);
 	
-	public abstract ArrayList<Task> searchTask(CommandInput commandInput);
+	public abstract ArrayList<Task> searchTask();
 }

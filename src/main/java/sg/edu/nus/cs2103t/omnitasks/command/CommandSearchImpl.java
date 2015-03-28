@@ -21,7 +21,7 @@ public class CommandSearchImpl extends Command {
 		ArrayList<Task> searchTaskResult = new ArrayList<Task>();
 		ArrayList<Task> fullTaskList = new ArrayList<Task>();
 		
-		fullTaskList = data.searchTask(commandInput);
+		fullTaskList = data.searchTask();
 		String searchKey = commandInput.getName();
 		
 		if (commandInput.getName()!=null) {

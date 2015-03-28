@@ -202,7 +202,7 @@ public class DataImpl extends Data {
 	// Only in-charge of fetching full task list from the storage and pass it to
 	// CommandSearchImpl for processing
 	@Override
-	public ArrayList<Task> searchTask(CommandInput commandInput) {
+	public ArrayList<Task> searchTask() {
 		assertInited();
 
 		ArrayList<Task> fullTaskList = new ArrayList<Task>();

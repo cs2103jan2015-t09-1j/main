@@ -122,7 +122,7 @@ public class DataStubImpl extends Data {
 	}
 
 	@Override
-	public ArrayList<Task> searchTask(CommandInput commandInput) {
+	public ArrayList<Task> searchTask() {
 		assertInited();
 		
 		return null;

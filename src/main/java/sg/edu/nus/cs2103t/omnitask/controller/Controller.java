@@ -12,7 +12,6 @@ import sg.edu.nus.cs2103t.omnitask.storage.IOJSONImpl;
 import sg.edu.nus.cs2103t.omnitask.ui.UI;
 import sg.edu.nus.cs2103t.omnitask.ui.UI.CommandReceivedListener;
 import sg.edu.nus.cs2103t.omnitasks.command.Command;
-import sg.edu.nus.cs2103t.omnitasks.command.Command.CommandResultListener;
 
 public class Controller {
 	private static Controller controller;
@@ -75,17 +74,7 @@ public class Controller {
 		if (command == null) {
 			ui.showError("Invalid command entered. Please try again.");
 		} else {
-			command.processCommand(data, new CommandResultListener() {
-
-				public void onSuccess(String msg) {
-					ui.showMessage(msg);
-				}
-
-				public void onFailure(String msg) {
-					ui.showError(msg);
-				}
-				
-			});
+			command.processCommand(data, ui);
 		}
 	}
 

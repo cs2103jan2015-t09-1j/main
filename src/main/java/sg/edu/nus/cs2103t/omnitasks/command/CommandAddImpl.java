@@ -6,6 +6,7 @@ import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.logic.Data.TaskNoNameException;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
+import sg.edu.nus.cs2103t.omnitask.ui.UI;
 
 public class CommandAddImpl extends Command {
 	
@@ -16,15 +17,15 @@ public class CommandAddImpl extends Command {
 	}
 	
 	@Override
-	public void processCommand(Data data, CommandResultListener listener) {
+	public boolean processCommand(Data data, UI ui) {
 		Task task = new Task();
 		Utils.addAttributes(commandInput, task);
 		
 		// TODO: Fix magic string
 		try {
 			if (data.addTask(task)) {
-				listener.onSuccess("Task \"" + task.getName() + "\" added successfully!");
-				return;
+				ui.showMessage("Task \"" + task.getName() + "\" added successfully!");
+				return true;
 			}
 		} catch (TaskNoNameException e) {
 			
@@ -32,8 +33,8 @@ public class CommandAddImpl extends Command {
 			e.printStackTrace();
 		}
 		
-		listener.onFailure("Failed to add task \"" + commandInput.getName() + "\".");
+		ui.showError("Failed to add task \"" + commandInput.getName() + "\".");
 		
-		return;
+		return false;
 	}
 }

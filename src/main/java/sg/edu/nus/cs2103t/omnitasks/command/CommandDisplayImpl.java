@@ -2,6 +2,7 @@ package sg.edu.nus.cs2103t.omnitasks.command;
 
 import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
+import sg.edu.nus.cs2103t.omnitask.ui.UI;
 
 public class CommandDisplayImpl extends Command {
 	
@@ -12,8 +13,8 @@ public class CommandDisplayImpl extends Command {
 	}
 	
 	@Override
-	public void processCommand(Data data, CommandResultListener listener) {
+	public boolean processCommand(Data data, UI ui) {
 		data.notifyDataChanged();
-		return;
+		return true;
 	}
 }

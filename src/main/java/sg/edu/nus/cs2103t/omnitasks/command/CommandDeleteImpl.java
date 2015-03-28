@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
+import sg.edu.nus.cs2103t.omnitask.ui.UI;
 
 public class CommandDeleteImpl extends Command {
 
@@ -16,7 +17,7 @@ public class CommandDeleteImpl extends Command {
 	}
 
 	@Override
-	public void processCommand(Data data, CommandResultListener listener) {
+	public boolean processCommand(Data data, UI ui) {
 		ArrayList<Task> tasks = data.getTasks();
 		Task taskToRemove = null;
 
@@ -30,12 +31,14 @@ public class CommandDeleteImpl extends Command {
 		}
 
 		if (data.deleteTask(taskToRemove) && taskToRemove != null) {
-			listener.onSuccess("Task \"" + commandInput.getId()
+			ui.showMessage("Task \"" + commandInput.getId()
 					+ "\" deleted successfully!");
+			return true;
 		} else {
-			listener.onFailure("Unable to delete Task \""
+			ui.showError("Unable to delete Task \""
 					+ commandInput.getId() + "\". Please choose a valid id!");
 		}
-		return;
+		
+		return false;
 	}
 }

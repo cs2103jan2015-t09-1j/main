@@ -1,17 +1,17 @@
 package sg.edu.nus.cs2103t.omnitask;
 
-import java.io.IOException;
+import static org.junit.Assert.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import java.io.IOException;
 
 import org.junit.Test;
 
 import sg.edu.nus.cs2103t.omnitask.logic.DataStubImpl;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput.CommandType;
+import sg.edu.nus.cs2103t.omnitask.ui.UI;
+import sg.edu.nus.cs2103t.omnitask.ui.UIStubImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.Command;
-import sg.edu.nus.cs2103t.omnitasks.command.Command.CommandResultListener;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandAddImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandEditImpl;
 
@@ -20,48 +20,46 @@ public class JUnitCommandsAtd {
 	// Test add command, make sure it is added successfully
 	@Test
 	public void TestCommandAdd() {
+		UI ui = new UIStubImpl();
 		DataStubImpl data = initData();
-		addOneTaskShouldPass(data, "Hello Add");
+		addOneTaskShouldPass(data, ui, "Hello Add");
 	}
 	
 	// Test add command, make sure empty string will not add successfully
 	@Test
 	public void TestCommandAddFail1() {
+		UI ui = new UIStubImpl();
 		DataStubImpl data = initData();
-		addOneTaskShouldFail(data, "");
+		addOneTaskShouldFail(data, ui, "");
 	}
 	
 	// Test add command, make sure empty (untrimmed) string will not add successfully
 	@Test
 	public void TestCommandAddFail2() {
+		UI ui = new UIStubImpl();
 		DataStubImpl data = initData();
-		addOneTaskShouldFail(data, " ");
+		addOneTaskShouldFail(data, ui, " ");
 	}
 	
 	// Test edit command, make sure edited tasks are saved properly
 	@Test
 	public void TestCommandEdit() {
-		final DataStubImpl data = initData();
-		addOneTaskShouldPass(data, "Hello Edit");
+		UI ui = new UIStubImpl();
+		DataStubImpl data = initData();
+		
+		addOneTaskShouldPass(data, ui, "Hello Edit");
 		
 		CommandInput commandInput = new CommandInput(CommandType.EDIT);
 		commandInput.setId(1);
 		commandInput.setName("Hello Edited");
 		
 		Command command = new CommandEditImpl(commandInput);
-		command.processCommand(data, new CommandResultListener() {
-
-			public void onSuccess(String msg) {
-				assertNotNull(data.getTasks().get(0));
-				assertEquals(data.getTasks().get(0).getId(), 1);
-				assertEquals(data.getTasks().get(0).getName(), "Hello Edited");
-			}
-
-			public void onFailure(String msg) {
-				throw new AssertionError("Command should not fail at all!");
-			}
-			
-		});
+		boolean success = command.processCommand(data, ui);
+		
+		assertTrue(success);
+		assertNotNull(data.getTasks().get(0));
+		assertEquals(data.getTasks().get(0).getId(), 1);
+		assertEquals(data.getTasks().get(0).getName(), "Hello Edited");
 	}
 	
 	private DataStubImpl initData() {
@@ -79,43 +77,28 @@ public class JUnitCommandsAtd {
 	}
 	
 	// Assert if fail
-	private void addOneTaskShouldPass(final DataStubImpl data, final String name) {
+	private void addOneTaskShouldPass(DataStubImpl data, UI ui, String name) {
 		CommandInput commandInput = new CommandInput(CommandType.ADD);
 		commandInput.setName(name);
 		
 		Command command = new CommandAddImpl(commandInput);
-		command.processCommand(data, new CommandResultListener() {
-
-			public void onSuccess(String msg) {
-				assertNotNull(data.getTasks().get(0));
-				assertEquals(data.getTasks().get(0).getId(), 1);
-				assertEquals(data.getTasks().get(0).getName(), name);
-			}
-
-			public void onFailure(String msg) {
-				throw new AssertionError("Command should not fail at all!");
-			}
-			
-		});
+		boolean success = command.processCommand(data, ui);
+		
+		assertTrue(success);
+		assertNotNull(data.getTasks().get(0));
+		assertEquals(data.getTasks().get(0).getId(), 1);
+		assertEquals(data.getTasks().get(0).getName(), name);
 	}
 	
 	// Assert if pass
-	private void addOneTaskShouldFail(final DataStubImpl data, final String name) {
+	private void addOneTaskShouldFail(DataStubImpl data, UI ui, String name) {
 		CommandInput commandInput = new CommandInput(CommandType.ADD);
 		commandInput.setName(name);
 		
 		Command command = new CommandAddImpl(commandInput);
-		command.processCommand(data, new CommandResultListener() {
-
-			public void onSuccess(String msg) {
-				throw new AssertionError("Command should not pass at all!");
-			}
-
-			public void onFailure(String msg) {
-				
-			}
-			
-		});
+		boolean success = command.processCommand(data, ui);
+		
+		assertFalse(success);
 	}
 	
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
+import sg.edu.nus.cs2103t.omnitask.ui.UI;
 
 public class CommandSearchImpl extends Command {
 	
@@ -16,7 +17,7 @@ public class CommandSearchImpl extends Command {
 	}
 	
 	@Override
-	public void processCommand(Data data, CommandResultListener listener) {
+	public boolean processCommand(Data data, UI ui) {
 		//process search functions done here
 		ArrayList<Task> searchTaskResult = new ArrayList<Task>();
 		ArrayList<Task> fullTaskList = new ArrayList<Task>();
@@ -30,14 +31,15 @@ public class CommandSearchImpl extends Command {
 					searchTaskResult.add(fullTaskList.get(i));
 				}
 			}
-			// TODO: Faruq: I am breaking search at the moment to implement observer pattern
+			// TODO: Faruq: Need an API on UI side to show search results
 			//ui.updateTaskListings(searchTaskResult);
+			return true;
 		}else{
-			listener.onFailure("Please fill in the search key!");
+			ui.showError("Please fill in the search key!");
 		}
 		
 		
 		//return false to update the task listing with search result and not default 
-		return;
+		return false;
 	}
 }

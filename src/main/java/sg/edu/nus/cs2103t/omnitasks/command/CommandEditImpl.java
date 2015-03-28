@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
+import sg.edu.nus.cs2103t.omnitask.ui.UI;
 
 public class CommandEditImpl extends Command {
 	
@@ -16,7 +17,7 @@ public class CommandEditImpl extends Command {
 	}
 
 	@Override
-	public void processCommand(Data data, CommandResultListener listener) {
+	public boolean processCommand(Data data, UI ui) {
 		ArrayList<Task> tasks = data.getTasks();
 		int indexOfRetrieved=-1;
 		for (int i = 0; i < tasks.size(); i++) {
@@ -30,19 +31,19 @@ public class CommandEditImpl extends Command {
 
 		try {
 			if (data.editTask(tasks.get(indexOfRetrieved))) {
-				listener.onSuccess("Task \"" + commandInput.getId()
+				ui.showMessage("Task \"" + commandInput.getId()
 						+ "\" updated successfully!");
-				return;
+				return true;
 			}
 		} catch (ArrayIndexOutOfBoundsException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			listener.onFailure("Unable to update Task \""
+			ui.showError("Unable to update Task \""
 					+ commandInput.getId()
 					+ "\". Please choose a valid id!");
 
 		}
 
-		return;
+		return false;
 	}
 }

@@ -3,29 +3,23 @@ package sg.edu.nus.cs2103t.omnitask.ui;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import sg.edu.nus.cs2103t.omnitask.controller.Controller;
-import sg.edu.nus.cs2103t.omnitask.controller.Controller.OnMessageListener;
 import sg.edu.nus.cs2103t.omnitask.logic.Data.DataUpdatedListener;
 import sg.edu.nus.cs2103t.omnitask.logic.DataImpl;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 
-public class UIPrototypeImpl implements UI {
+public class UIPrototypeImpl extends UI {
 
 	private Scanner input;
 	
-	private Controller controller;
-	
-	public UIPrototypeImpl(Controller controller) {
-		this.controller = controller;
-		
+	public UIPrototypeImpl() {
 		input = new Scanner(System.in);
 	}
 	
-	private void showError(String msg) {
+	public void showError(String msg) {
 		System.out.println("Error: " + msg);
 	}
 
-	private void showMessage(String msg) {
+	public void showMessage(String msg) {
 		System.out.println(msg);
 	}
 	
@@ -39,12 +33,9 @@ public class UIPrototypeImpl implements UI {
 	
 	//@Override
 	public void start() {
-		// Subscribe to Data changes
-		DataImpl.GetSingleton().addDataUpdatedListener(dataUpdatedListener);
-		
-		// Subscribe to messages by Controller
-		controller.addOnMessageListener(onMessageListener);
-		
+        // Subscribe to Data changes
+        DataImpl.GetSingleton().addDataUpdatedListener(dataUpdatedListener);
+
 		showMessage("Welcome to OmniTask.");
 		
 		String userInput = "";
@@ -57,7 +48,7 @@ public class UIPrototypeImpl implements UI {
 			userInput = getUserInput();
 			
 			// Process user input by passing it to controller
-			controller.processUserInput(userInput);
+			invokeCommandReceivedListener(userInput);
 		}
 	}
 	
@@ -66,28 +57,17 @@ public class UIPrototypeImpl implements UI {
 		input.close();
 	}
 	
-	private DataUpdatedListener dataUpdatedListener = new DataUpdatedListener() {
+    private DataUpdatedListener dataUpdatedListener = new DataUpdatedListener() {
 
-		public void dataUpdated(ArrayList<Task> tasks) {
-			showMessage("List of tasks: ");
-			
-			for (Task task : tasks) {
-				showMessage(task.getId() + " - " + task.getName());
-			}
-		}
-		
-	};
+        public void dataUpdated(ArrayList<Task> tasks) {
+            showMessage("List of tasks: ");
+            
+            for (Task task : tasks) {
+                showMessage(task.getId() + " - " + task.getName());
+            }
+        }
+        
+    };
 
-	private OnMessageListener onMessageListener = new OnMessageListener() {
-
-		public void onResultMessage(String msg) {
-			showMessage(msg);
-		}
-
-		public void onErrorMessage(String msg) {
-			showError(msg);
-		}
-		
-	};
 	
 }

@@ -2,7 +2,6 @@ package sg.edu.nus.cs2103t.omnitask.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import sg.edu.nus.cs2103t.omnitask.Main;
 import sg.edu.nus.cs2103t.omnitask.logic.Data;
@@ -10,6 +9,8 @@ import sg.edu.nus.cs2103t.omnitask.logic.DataImpl;
 import sg.edu.nus.cs2103t.omnitask.parser.Parser;
 import sg.edu.nus.cs2103t.omnitask.parser.ParserMainImpl;
 import sg.edu.nus.cs2103t.omnitask.storage.IOJSONImpl;
+import sg.edu.nus.cs2103t.omnitask.ui.UI;
+import sg.edu.nus.cs2103t.omnitask.ui.UI.CommandReceivedListener;
 import sg.edu.nus.cs2103t.omnitasks.command.Command;
 import sg.edu.nus.cs2103t.omnitasks.command.Command.CommandResultListener;
 
@@ -20,16 +21,9 @@ public class Controller {
 
 	protected Data data;
 	
-	protected ArrayList<OnMessageListener> onMessageListeners;
-	
-	public static interface OnMessageListener {
-		void onResultMessage(String msg);
-		
-		void onErrorMessage(String msg);
-	}
+	protected UI ui;
 	
 	private Controller() {
-		onMessageListeners = new ArrayList<OnMessageListener>();
 	}
 	
 	public static Controller GetSingleton() {
@@ -37,25 +31,17 @@ public class Controller {
 		
 		return controller;
 	}
+	
+	public void setUi(UI ui) {
+		this.ui = ui;
+		this.ui.setCommandReceivedListener(new CommandReceivedListener() {
 
-	public void addOnMessageListener(OnMessageListener listener) {
-		onMessageListeners.add(listener);
-	}
-	
-	public void removeOnMessageListener(OnMessageListener listener) {
-		onMessageListeners.remove(listener);
-	}
-	
-	private void showResult(String msg) {
-		for (OnMessageListener listener : onMessageListeners) {
-			listener.onResultMessage(msg);
-		}
-	}
-	
-	private void showError(String msg) {
-		for (OnMessageListener listener : onMessageListeners) {
-			listener.onErrorMessage(msg);
-		}
+			@Override
+			public void onCommandReceived(String userInput) {
+				processUserInput(userInput);
+			}
+			
+		});
 	}
 
 	public void start(String[] args) {
@@ -83,20 +69,20 @@ public class Controller {
 		}
 	}
 	
-	public void processUserInput(String input) {
+	private void processUserInput(String input) {
 		Command command = parser.parseUserInput(input);
 
 		if (command == null) {
-			showError("Invalid command entered. Please try again.");
+			ui.showError("Invalid command entered. Please try again.");
 		} else {
 			command.processCommand(data, new CommandResultListener() {
 
 				public void onSuccess(String msg) {
-					showResult(msg);
+					ui.showMessage(msg);
 				}
 
 				public void onFailure(String msg) {
-					showError(msg);
+					ui.showError(msg);
 				}
 				
 			});

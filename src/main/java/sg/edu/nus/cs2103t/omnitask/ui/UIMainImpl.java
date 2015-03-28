@@ -26,8 +26,6 @@ import javax.swing.SwingUtilities;
 import org.joda.time.DateTime;
 
 import sg.edu.nus.cs2103t.omnitask.Logger;
-import sg.edu.nus.cs2103t.omnitask.controller.Controller;
-import sg.edu.nus.cs2103t.omnitask.controller.Controller.OnMessageListener;
 import sg.edu.nus.cs2103t.omnitask.logic.Data.DataUpdatedListener;
 import sg.edu.nus.cs2103t.omnitask.logic.DataImpl;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
@@ -37,7 +35,7 @@ import com.tulskiy.keymaster.common.HotKey;
 import com.tulskiy.keymaster.common.HotKeyListener;
 import com.tulskiy.keymaster.common.Provider;
 
-public class UIMainImpl implements UI {
+public class UIMainImpl extends UI {
 
 	private static double WINDOW_WIDTH = 800;
 
@@ -52,18 +50,15 @@ public class UIMainImpl implements UI {
 
 	private static TrayIcon trayIcon = new TrayIcon(image, "OmniTask");
 
-	private Controller controller;
-
-	public UIMainImpl(Controller controller, Stage primaryStage) {
-		this.controller = controller;
+	public UIMainImpl(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 	}
 
-	private void showMessage(String msg) {
+	public void showMessage(String msg) {
 		viewController.showMessage(msg);
 	}
 
-	private void showError(String msg) {
+	public void showError(String msg) {
 		if (viewController != null) {
 			viewController.showError(msg);
 		} else {
@@ -86,9 +81,6 @@ public class UIMainImpl implements UI {
 		// Subscribe to Data changes
 		DataImpl.GetSingleton().addDataUpdatedListener(dataUpdatedListener);
 		
-		// Subscribe to messages by Controller
-		controller.addOnMessageListener(onMessageListener);
-		
 		setupUI();
 
 		SwingUtilities.invokeLater(new Runnable() {
@@ -101,7 +93,7 @@ public class UIMainImpl implements UI {
 		setupHotkeys();
 
 		primaryStage.show();
-		controller.processUserInput(CommandDisplayImpl.COMMAND_ALIASES_DISPLAY[0]);
+		invokeCommandReceivedListener(CommandDisplayImpl.COMMAND_ALIASES_DISPLAY[0]);
 		showMessage("Welcome to OmniTask. Type 'help' to get help.");
 	}
 
@@ -111,7 +103,7 @@ public class UIMainImpl implements UI {
 					"layout.fxml"));
 			Parent root = (Parent) loader.load();
 			viewController = (ViewController) loader.getController();
-			viewController.setController(controller);
+			viewController.setUI(this);
 
 			Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 			scene.getStylesheets().add(
@@ -303,18 +295,6 @@ public class UIMainImpl implements UI {
 
 		public void dataUpdated(ArrayList<Task> tasks) {
 			viewController.updateListView(tasks);
-		}
-		
-	};
-	
-	private OnMessageListener onMessageListener = new OnMessageListener() {
-
-		public void onResultMessage(String msg) {
-			showMessage(msg);
-		}
-
-		public void onErrorMessage(String msg) {
-			showError(msg);
 		}
 		
 	};

@@ -28,11 +28,12 @@ public class Main extends Application {
 		controller.start(getParameters().getRaw().toArray(new String[]{}));
 		
 		if (forceCommandLine) {
-			ui = new UIPrototypeImpl(controller);
+			ui = new UIPrototypeImpl();
 		} else {
-			ui = new UIMainImpl(controller, primaryStage);
+			ui = new UIMainImpl(primaryStage);
 		}
 		
+		controller.setUi(ui);
 		ui.start();
 	}
 

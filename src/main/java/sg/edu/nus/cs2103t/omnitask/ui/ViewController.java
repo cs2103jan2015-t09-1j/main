@@ -13,12 +13,11 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
-import sg.edu.nus.cs2103t.omnitask.controller.Controller;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 
 public class ViewController {
 	
-	private Controller controller;
+	private UI ui;
 	
 	@FXML private ListView<Task> listView;
 	
@@ -43,8 +42,8 @@ public class ViewController {
 	    });
 	}
 
-	public void setController(Controller controller) {
-		this.controller = controller;
+	public void setUI(UI ui) {
+		this.ui = ui;
 	}
 
 	public void showMessage(String msg) {
@@ -61,7 +60,7 @@ public class ViewController {
 	
 	@FXML protected void onOmniBarEnter(ActionEvent event) {
 		if (!omniBar.getText().trim().equals("")) {
-			controller.processUserInput(omniBar.getText());
+			ui.invokeCommandReceivedListener(omniBar.getText());
 			omniBar.setText("");
 		}
     }

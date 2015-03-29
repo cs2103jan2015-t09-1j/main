@@ -23,26 +23,40 @@ public class ViewController {
 	
 	private UI ui;
 	
+	@FXML private Text viewModeText;
+	
 	@FXML private ListView<Task> listView;
 	
 	@FXML private Text outputText;
 	
 	@FXML private TextField omniBar;
 	
-	private ObservableList<Task> tasks;
+	private ObservableList<Task> allTasks;
+	
+	private ObservableList<Task> searchedTasks;
+	
+	private String searchKeyword;
 	
 	private ArrayList<String> commandHistory;
 	
 	private int currentCommandHistoryIndex = -1;
 	
+	public static enum ViewMode {
+		ALL,
+		SEARCH
+	}
+	
+	private ViewMode viewMode = ViewMode.ALL;
+	
 	public ViewController() {
-		tasks = FXCollections.observableArrayList();
+		allTasks = FXCollections.observableArrayList();
+		searchedTasks = FXCollections.observableArrayList();
 		commandHistory = new ArrayList<String>();
 	}
 	
 	@FXML
     protected void initialize() {
-		listView.setItems(tasks);
+		setViewMode(ViewMode.ALL);
 	    listView.setCellFactory(new Callback<ListView<Task>, javafx.scene.control.ListCell<Task>>() {
 	       // @Override
 	        public ListCell<Task> call(ListView<Task> listView) {
@@ -191,13 +205,55 @@ public class ViewController {
 		});
 	}
 	
-	public void updateListView(List<Task> tasks) {
-		// Sort tasks again
-		// ...while it may be counter productive to sort every time, the sorting is fast if it is already (mostly) sorted
+	public void setAllTasks(List<Task> tasks) {
 		sortTasks(tasks);
 		
-		this.tasks.clear();
-		this.tasks.addAll(tasks);
+		this.allTasks.clear();
+		this.allTasks.addAll(tasks);
+		
+		// If we are in search view mode, delete the task which is no longer found, edit the one existing inside
+		if (viewMode == ViewMode.SEARCH) {
+			for (int i = 0; i < searchedTasks.size(); i++) {
+				Task task = searchedTasks.get(i);
+				int indexInAllTasks = this.allTasks.indexOf(task);
+				
+				if (indexInAllTasks == -1) {
+					searchedTasks.remove(i--);
+				} else {
+					// This is a pretty slow operation :(
+					searchedTasks.set(i, this.allTasks.get(indexInAllTasks));
+				}
+			}
+		}
+	}
+	
+	public void setSearchedTasks(String searchKeyword, List<Task> tasks) {
+		this.searchKeyword = searchKeyword;
+		
+		sortTasks(tasks);
+		
+		this.searchedTasks.clear();
+		this.searchedTasks.addAll(tasks);
+	}
+	
+	public void setViewMode(ViewMode viewMode) {
+		if (viewMode == ViewMode.ALL) {
+			listView.setItems(allTasks);
+		} else if (viewMode == ViewMode.SEARCH) {
+			listView.setItems(searchedTasks);
+		}
+		
+		this.viewMode = viewMode;
+		
+		updateViewModeText();
+	}
+	
+	private void updateViewModeText() {
+		if (viewMode == ViewMode.ALL) {
+			viewModeText.setText("All Tasks");
+		} else if (viewMode == ViewMode.SEARCH) {
+			viewModeText.setText("Search results for \"" + searchKeyword + "\"");
+		}
 	}
 	
 	private class ListViewCell extends ListCell<Task> {

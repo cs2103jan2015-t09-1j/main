@@ -37,13 +37,19 @@ public class UIStubImpl extends UI {
 	}
 
 	@Override
-	public void showSearchResults(ArrayList<Task> tasks) {
+	public void showSearchResults(String keyword, ArrayList<Task> tasks) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void closeHelp() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void showAllTasks() {
 		// TODO Auto-generated method stub
 		
 	}

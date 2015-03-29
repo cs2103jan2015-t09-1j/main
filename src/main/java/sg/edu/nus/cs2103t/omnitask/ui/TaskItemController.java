@@ -144,10 +144,8 @@ public class TaskItemController {
 		
 		taskName.setText(task.getName());
 		
-		if(task.getPriority()!=null){
-		taskPriority.setText(formatPriorityString(task.convertPriorityToNum(task.getPriority())));
-		taskPriority.setStyle("-fx-font-weight: bold; -fx-border-radius: 5; -fx-background-radius: 5; -fx-background-color:" + formatPriorityColor(task.convertPriorityToNum(task.getPriority())) + ";");
-		}
+		taskPriority.setText(formatPriorityString(task.getPriority()));
+		taskPriority.setStyle("-fx-font-weight: bold; -fx-border-radius: 5; -fx-background-radius: 5; -fx-background-color:" + formatPriorityColor(task.getPriority()) + ";");
 		
 		String formattedDate = formatDate(task);
 		if (formattedDate == null) {

@@ -25,6 +25,9 @@ public class TaskItemController {
 	
 	@FXML private Label taskDue;
 	
+	final private static String[] priorityColors = new String[]{"none", "#0099CC", "#FF8800", "#CC0000"};
+	final private static String[] priorityStrings = new String[]{"", "low", "med", "high"};
+	
 	public TaskItemController() {
 	    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("taskCellItemLayout.fxml"));
 	    fxmlLoader.setController(this);
@@ -120,12 +123,29 @@ public class TaskItemController {
 		}
 	}
 	
+	private String formatPriorityString(int priority) {
+		if (priority < 4) {
+			return priorityStrings[priority];
+		}
+		
+		return priorityStrings[0];
+	}
+	
+	private String formatPriorityColor(int priority) {
+		if (priority < 4) {
+			return priorityColors[priority];
+		}
+		
+		return priorityColors[0];
+	}
+	
 	public void setData(Task task) {
 		taskId.setText(task.getId() + "");
 		
-		taskPriority.setText(task.getPriority() + "");
-		
 		taskName.setText(task.getName());
+		
+		taskPriority.setText(formatPriorityString(task.getPriority()));
+		taskPriority.setStyle("-fx-font-weight: bold; -fx-border-radius: 5; -fx-background-radius: 5; -fx-background-color:" + formatPriorityColor(task.getPriority()) + ";");
 		
 		String formattedDate = formatDate(task);
 		if (formattedDate == null) {

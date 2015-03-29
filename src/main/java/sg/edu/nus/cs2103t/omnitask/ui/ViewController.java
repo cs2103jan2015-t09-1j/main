@@ -155,7 +155,7 @@ public class ViewController {
 				|| ((task1.getEndDate() != null && task2.getEndDate() != null) 
 						&& task1.getEndDate().equals(task2.getEndDate()))) {
 			if (task1.getPriority() != task2.getPriority()) {
-				return task1.getPriority() - task2.getPriority();
+				return task2.getPriority() - task1.getPriority();
 			}
 		} else if (task1.getEndDate() == null || task2.getEndDate() == null) {
 			if (task1.getEndDate() == null) {

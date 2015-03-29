@@ -13,6 +13,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import sg.edu.nus.cs2103t.omnitask.model.Task;
+import sg.edu.nus.cs2103t.omnitask.model.Task.Priority;
 
 public class TaskItemController {
 	@FXML private GridPane taskCellItem;
@@ -123,17 +124,17 @@ public class TaskItemController {
 		}
 	}
 	
-	private String formatPriorityString(int priority) {
-		if (priority < 4) {
-			return priorityStrings[priority];
+	private String formatPriorityString(Priority priority) {
+		if (priority != null && priority.ordinal() < 4) {
+			return priorityStrings[priority.ordinal()];
 		}
 		
 		return priorityStrings[0];
 	}
 	
-	private String formatPriorityColor(int priority) {
-		if (priority < 4) {
-			return priorityColors[priority];
+	private String formatPriorityColor(Priority priority) {
+		if (priority != null && priority.ordinal() < 4) {
+			return priorityColors[priority.ordinal()];
 		}
 		
 		return priorityColors[0];
@@ -144,10 +145,8 @@ public class TaskItemController {
 		
 		taskName.setText(task.getName());
 		
-		if(task.getPriority()!=null){
-		taskPriority.setText(formatPriorityString(task.convertPriorityToNum(task.getPriority())));
-		taskPriority.setStyle("-fx-font-weight: bold; -fx-border-radius: 5; -fx-background-radius: 5; -fx-background-color:" + formatPriorityColor(task.convertPriorityToNum(task.getPriority())) + ";");
-		}
+		taskPriority.setText(formatPriorityString(task.getPriority()));
+		taskPriority.setStyle("-fx-font-weight: bold; -fx-border-radius: 5; -fx-background-radius: 5; -fx-background-color:" + formatPriorityColor(task.getPriority()) + ";");
 		
 		String formattedDate = formatDate(task);
 		if (formattedDate == null) {

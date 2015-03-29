@@ -70,28 +70,6 @@ public class Task {
 		this.priority = priority;
 	}
 	
-	public int convertPriorityToNum(Priority priority){
-		int prioNum=0;
-		switch (priority) {
-		case NONE:
-			prioNum=0;
-			break;
-		case LOW:
-			prioNum=1;
-			break;
-		case MEDIUM:
-			prioNum=2;
-			break;
-		case HIGH:
-			prioNum=3;
-			break;
-		default:
-			prioNum=0;
-			break;
-		}
-		return prioNum;
-	}
-
 	public boolean isRecurrence() {
 		return recurrence;
 	}

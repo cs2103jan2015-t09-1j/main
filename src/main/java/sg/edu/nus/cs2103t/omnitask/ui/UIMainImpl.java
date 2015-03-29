@@ -13,6 +13,8 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,6 +28,7 @@ import javax.swing.SwingUtilities;
 import org.joda.time.DateTime;
 
 import sg.edu.nus.cs2103t.omnitask.Logger;
+import sg.edu.nus.cs2103t.omnitask.Main;
 import sg.edu.nus.cs2103t.omnitask.logic.Data.DataUpdatedListener;
 import sg.edu.nus.cs2103t.omnitask.logic.DataImpl;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
@@ -114,11 +117,23 @@ public class UIMainImpl extends UI {
 			primaryStage.setMinHeight(WINDOW_HEIGHT);
 			primaryStage.setTitle("OmniTask");
 			primaryStage.getIcons().add(new javafx.scene.image.Image("tray.png"));
+			
+			primaryStage.iconifiedProperty().addListener(new ChangeListener<Boolean>() {
+
+				@Override
+				public void changed(ObservableValue<? extends Boolean> prop, Boolean oldValue, Boolean newValue) {
+					// newValue is true if window is minimized
+					if (newValue) {
+						primaryStage.hide();
+					}
+				}
+				
+			});
 
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				//@Override
 				public void handle(WindowEvent arg0) {
-					primaryStage.hide();
+					Main.Exit();
 				}
 			});
 
@@ -289,6 +304,7 @@ public class UIMainImpl extends UI {
 
 	private void showWindow() {
 		primaryStage.show();
+		primaryStage.setIconified(false);
 	}
 
 	private DataUpdatedListener dataUpdatedListener = new DataUpdatedListener() {

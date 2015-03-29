@@ -39,6 +39,24 @@ public class Controller {
 			public void onCommandReceived(String userInput) {
 				processUserInput(userInput);
 			}
+
+			@Override
+			public String doAutoComplete(String userInput) {
+				// TODO Implement this properly
+				// Basic example: If "del" is in userInput, return "delete"
+				// Implementation could be as sophisticated as needed
+				
+				// Sample (Bad!) Implementation:
+				if (userInput.trim().equals("d") || userInput.trim().equals("de") || userInput.trim().equals("del")) {
+					return "delete ";
+				}
+				
+				if (userInput.trim().equals("ex") || userInput.trim().equals("exi")) {
+					return "exit";
+				}
+				
+				return userInput;
+			}
 			
 		});
 	}

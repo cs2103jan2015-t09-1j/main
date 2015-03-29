@@ -81,9 +81,19 @@ public class ViewController {
 	@FXML protected void onOmniBarKeyPressed(KeyEvent event) {
 		if (event.getCode() == KeyCode.UP) {
 			cyclePrevHistory();
+			event.consume();
 		} else if (event.getCode() == KeyCode.DOWN) {
 			cycleNextHistory();
+			event.consume();
+		} else if (event.getCode() == KeyCode.TAB) {
+			doAutoComplete();
+			event.consume();
 		}
+	}
+	
+	private void doAutoComplete() {
+		omniBar.setText(ui.invokeDoAutocompleteListener(omniBar.getText()));
+		putOmniBarCaretAtEnd();
 	}
 	
 	private void cyclePrevHistory() {

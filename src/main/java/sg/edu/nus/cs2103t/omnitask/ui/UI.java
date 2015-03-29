@@ -11,6 +11,8 @@ public abstract class UI {
 	
 	public static interface CommandReceivedListener {
 		void onCommandReceived(String userInput);
+		
+		String doAutoComplete(String userInput);
 	}
 
 	public void setCommandReceivedListener(CommandReceivedListener commandReceivedListener) {
@@ -21,6 +23,14 @@ public abstract class UI {
 		if (commandReceivedListener != null) {
 			commandReceivedListener.onCommandReceived(userInput);
 		}
+	}
+	
+	protected String invokeDoAutocompleteListener(String userInput) {
+		if (commandReceivedListener != null) {
+			return commandReceivedListener.doAutoComplete(userInput);
+		}
+		
+		return userInput;
 	}
 	
 	public abstract void showError(String msg);

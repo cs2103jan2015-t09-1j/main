@@ -1,9 +1,11 @@
 package sg.edu.nus.cs2103t.omnitask.ui;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,6 +13,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
@@ -27,8 +31,13 @@ public class ViewController {
 	
 	private ObservableList<Task> tasks;
 	
+	private ArrayList<String> commandHistory;
+	
+	private int currentCommandHistoryIndex = -1;
+	
 	public ViewController() {
 		tasks = FXCollections.observableArrayList();
+		commandHistory = new ArrayList<String>();
 	}
 	
 	@FXML
@@ -61,9 +70,79 @@ public class ViewController {
 	@FXML protected void onOmniBarEnter(ActionEvent event) {
 		if (!omniBar.getText().trim().equals("")) {
 			ui.invokeCommandReceivedListener(omniBar.getText());
+			
+			commandHistory.add(omniBar.getText());
+			currentCommandHistoryIndex = -1;
+			
 			omniBar.setText("");
 		}
     }
+	
+	@FXML protected void onOmniBarKeyPressed(KeyEvent event) {
+		if (event.getCode() == KeyCode.UP) {
+			cyclePrevHistory();
+		} else if (event.getCode() == KeyCode.DOWN) {
+			cycleNextHistory();
+		}
+	}
+	
+	private void cyclePrevHistory() {
+		if (currentCommandHistoryIndex == 0) {
+			putOmniBarCaretAtEnd();
+			return;
+		}
+		
+		cycleHandleHistory();
+		
+		if (currentCommandHistoryIndex == -1 && commandHistory.size() > 0) {
+			currentCommandHistoryIndex = commandHistory.size();
+		}
+		
+		omniBar.setText(commandHistory.get(--currentCommandHistoryIndex));
+		putOmniBarCaretAtEnd();
+	}
+	
+	private void cycleNextHistory() {
+		if (currentCommandHistoryIndex == -1) {
+			putOmniBarCaretAtEnd();
+			return;
+		}
+		
+		cycleHandleHistory();
+		
+		if (currentCommandHistoryIndex >= commandHistory.size() - 1) {
+			currentCommandHistoryIndex = -1;
+			omniBar.setText("");
+			putOmniBarCaretAtEnd();
+			return;
+		}
+		
+		omniBar.setText(commandHistory.get(++currentCommandHistoryIndex));
+		putOmniBarCaretAtEnd();
+	}
+	
+	private void cycleHandleHistory() {
+		if (omniBar.getText().trim().isEmpty()) {
+			return;
+		}
+		
+		if (currentCommandHistoryIndex == -1) {
+			commandHistory.add(omniBar.getText());
+		} else {
+			commandHistory.set(currentCommandHistoryIndex, omniBar.getText());
+		}
+	}
+	
+	private void putOmniBarCaretAtEnd() {
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				omniBar.end();
+			}
+			
+		});
+	}
 	
 	// Sort task list according to 3 fields: due date, priority, id 
 	// General explanation for algorithm:

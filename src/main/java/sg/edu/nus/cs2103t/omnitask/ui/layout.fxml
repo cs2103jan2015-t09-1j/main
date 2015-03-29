@@ -27,6 +27,7 @@
 	<TextField 
 		fx:id="omniBar"
         GridPane.columnIndex="0" GridPane.rowIndex="2"
-        onAction="#onOmniBarEnter" />
+        onAction="#onOmniBarEnter"
+        onKeyPressed="#onOmniBarKeyPressed" />
 
 </GridPane>

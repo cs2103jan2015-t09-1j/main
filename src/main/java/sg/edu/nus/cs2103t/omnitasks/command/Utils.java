@@ -9,7 +9,16 @@ public class Utils {
 	
 	public static void addAttributes(CommandInput commandInput, Task task) {
 		task.setName(commandInput.getName());
-		task.setPriority(commandInput.getPriority());
+		
+		
+		//there exits 2 enums of priority in Task and CommandInput passing between this 2 resulted in conflict
+		//using int function instead to set priority
+		//cant be used -> task.setPriority(commandInput.getPriority());
+		if(commandInput.getPriority()!=null){
+		int prioNum=commandInput.convertPriorityToNum((commandInput.getPriority()));
+		task.setPriorityByNum(prioNum);
+		}
+		
 		task.setStartDate(commandInput.getStartDate());
 		task.setEndDate(commandInput.getEndDate());
 	}
@@ -18,8 +27,10 @@ public class Utils {
 		if (!commandInput.getName().equals("")) {
 			tasks.get(i).setName(commandInput.getName());
 		}
-		if (commandInput.getPriority() != 0) {
-			tasks.get(i).setPriority(commandInput.getPriority());
+		if (commandInput.getPriority() != null) {
+			int prioNum=commandInput.convertPriorityToNum((commandInput.getPriority()));
+			tasks.get(i).setPriorityByNum(prioNum);
+			//tasks.get(i).setPriority(commandInput.getPriority());
 		}
 		if (commandInput.getStartDate() != null) {
 			tasks.get(i).setStartDate(commandInput.getStartDate());

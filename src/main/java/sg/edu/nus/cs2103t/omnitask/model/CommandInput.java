@@ -15,6 +15,10 @@ public class CommandInput {
 		SEARCH
 	}
 	
+	public static enum Priority {
+		NONE, LOW, MEDIUM, HIGH
+	}
+	
 	private CommandType commandType;
 
 	private DateTime startDate;
@@ -25,7 +29,7 @@ public class CommandInput {
 	
 	private boolean recurrence;
 	
-	private int priority;
+	private Priority priority;
 
 	private String name;
 
@@ -76,14 +80,36 @@ public class CommandInput {
 		this.recurrence = recurrence;
 	}
 
-	public int getPriority() {
+	public Priority getPriority() {
 		return priority;
 	}
 
-	public void setPriority(int priority) {
+	public void setPriority(Priority priority) {
 		this.priority = priority;
 	}
-
+	
+	public int convertPriorityToNum(Priority priority){
+		int prioNum=0;
+		switch (priority) {
+		case NONE:
+			prioNum=0;
+			break;
+		case LOW:
+			prioNum=1;
+			break;
+		case MEDIUM:
+			prioNum=2;
+			break;
+		case HIGH:
+			prioNum=3;
+			break;
+		default:
+			prioNum=0;
+			break;
+		}
+		return prioNum;
+	}
+	
 	public String getName() {
 		return name;
 	}

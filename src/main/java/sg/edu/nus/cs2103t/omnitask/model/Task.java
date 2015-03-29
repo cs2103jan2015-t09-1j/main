@@ -1,6 +1,7 @@
 package sg.edu.nus.cs2103t.omnitask.model;
 
 import org.joda.time.DateTime;
+
 import java.util.UUID;
 
 public class Task {
@@ -69,28 +70,6 @@ public class Task {
 		this.priority = priority;
 	}
 	
-	public int convertPriorityToNum(Priority priority){
-		int prioNum=0;
-		switch (priority) {
-		case NONE:
-			prioNum=0;
-			break;
-		case LOW:
-			prioNum=1;
-			break;
-		case MEDIUM:
-			prioNum=2;
-			break;
-		case HIGH:
-			prioNum=3;
-			break;
-		default:
-			prioNum=0;
-			break;
-		}
-		return prioNum;
-	}
-
 	public boolean isRecurrence() {
 		return recurrence;
 	}
@@ -140,6 +119,30 @@ public class Task {
 			break;
 		}		
 	}
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((uuid == null) ? 0 : uuid.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Task other = (Task) obj;
+		if (uuid == null) {
+			if (other.uuid != null)
+				return false;
+		} else if (!uuid.equals(other.uuid))
+			return false;
+		return true;
+	}
 	
 }

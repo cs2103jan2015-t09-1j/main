@@ -32,7 +32,8 @@ public class CommandSearchImpl extends Command {
 				}
 			}
 			
-			ui.showSearchResults(searchTaskResult);
+			ui.showSearchResults(searchKey, searchTaskResult);
+			ui.showMessage("Type \"show all\" to show all tasks.");
 			return true;
 		}else{
 			ui.showError("Please fill in the search key!");

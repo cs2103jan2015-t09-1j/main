@@ -36,6 +36,7 @@ import sg.edu.nus.cs2103t.omnitask.Main;
 import sg.edu.nus.cs2103t.omnitask.logic.Data.DataUpdatedListener;
 import sg.edu.nus.cs2103t.omnitask.logic.DataImpl;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
+import sg.edu.nus.cs2103t.omnitask.ui.ViewController.ViewMode;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplayImpl;
 
 import com.tulskiy.keymaster.common.HotKey;
@@ -344,7 +345,7 @@ public class UIMainImpl extends UI {
 	private DataUpdatedListener dataUpdatedListener = new DataUpdatedListener() {
 
 		public void dataUpdated(ArrayList<Task> tasks) {
-			viewController.updateListView(tasks);
+			viewController.setAllTasks(tasks);
 		}
 		
 	};
@@ -360,10 +361,14 @@ public class UIMainImpl extends UI {
 		helpStage.hide();
 	}
 
+	public void showAllTasks() {
+		viewController.setViewMode(ViewMode.ALL);
+	}
+	
 	@Override
-	public void showSearchResults(ArrayList<Task> tasks) {
-		// TODO Auto-generated method stub
-		
+	public void showSearchResults(String keyword, ArrayList<Task> tasks) {
+		viewController.setSearchedTasks(keyword, tasks);
+		viewController.setViewMode(ViewMode.SEARCH);
 	}
 	
 }

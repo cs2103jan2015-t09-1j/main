@@ -14,6 +14,7 @@ public class CommandDisplayImpl extends Command {
 	
 	@Override
 	public boolean processCommand(Data data, UI ui) {
+		ui.showAllTasks();
 		data.notifyDataChanged();
 		return true;
 	}

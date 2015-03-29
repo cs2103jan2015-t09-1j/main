@@ -42,4 +42,10 @@ public class UIStubImpl extends UI {
 		
 	}
 
+	@Override
+	public void closeHelp() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -39,6 +39,8 @@ public abstract class UI {
 	
 	public abstract void showHelp(String msg);
 	
+	public abstract void closeHelp();
+	
 	public abstract void showSearchResults(ArrayList<Task> tasks);
 
 	public abstract void start();

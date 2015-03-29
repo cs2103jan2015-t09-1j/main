@@ -81,5 +81,11 @@ public class UIPrototypeImpl extends UI {
 		
 	}
 
+	@Override
+	public void closeHelp() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }

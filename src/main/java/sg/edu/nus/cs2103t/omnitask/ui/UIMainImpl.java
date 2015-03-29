@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
@@ -19,7 +20,10 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 import javax.swing.KeyStroke;
@@ -47,12 +51,16 @@ public class UIMainImpl extends UI {
 	private Stage primaryStage;
 
 	private ViewController viewController;
+	
+	private Stage helpStage;
+	
+	private HelpViewController helpViewController;
 
 	private static Image image = Toolkit.getDefaultToolkit().getImage(
 			"src/main/resources/tray.png");
 
 	private static TrayIcon trayIcon = new TrayIcon(image, "OmniTask");
-
+	
 	public UIMainImpl(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 	}
@@ -166,10 +174,36 @@ public class UIMainImpl extends UI {
 
 			});
 			
+			setupHelpWindow();
+			
 			Platform.setImplicitExit(false);
 			
 			printDebug("UI Setup Complete.");
 		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+	
+	private void setupHelpWindow() {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("helpLayout.fxml"));
+			Parent root = (Parent) loader.load();
+			helpViewController = (HelpViewController) loader.getController();
+			helpViewController.setUI(this);
+			
+			helpStage = new Stage();
+			helpStage.initStyle(StageStyle.UNDECORATED);
+	        helpStage.setScene(new Scene(root, 350, 600));
+	        
+	        helpStage.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
+	            public void handle(KeyEvent event) {
+	                if (event.getCode() == KeyCode.ESCAPE) {
+	                	closeHelp();
+	                }
+	            }
+	        });
+		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
@@ -317,8 +351,13 @@ public class UIMainImpl extends UI {
 
 	@Override
 	public void showHelp(String msg) {
-		// TODO Auto-generated method stub
-		
+		helpViewController.setContent(msg);
+		helpStage.show();
+	}
+	
+	@Override
+	public void closeHelp() {
+		helpStage.hide();
 	}
 
 	@Override

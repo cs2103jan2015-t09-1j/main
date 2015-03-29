@@ -194,10 +194,12 @@ public class ViewController {
 	public void updateListView(List<Task> tasks) {
 		// Sort tasks again
 		// ...while it may be counter productive to sort every time, the sorting is fast if it is already (mostly) sorted
+
 		sortTasks(tasks);
 		
 		this.tasks.clear();
 		this.tasks.addAll(tasks);
+
 	}
 	
 	private class ListViewCell extends ListCell<Task> {

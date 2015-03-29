@@ -14,6 +14,7 @@ import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplayImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandEditImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandExitImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandSearchImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandHelpImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.Utils;
 
 import com.joestelmach.natty.DateGroup;
@@ -116,6 +117,18 @@ public class ParserMainImpl extends Parser {
 			
 				
 			return new CommandSearchImpl(commandInput);
+		}
+		
+		//help command
+		if (Utils.getCommandTypeFromString(commandName) == CommandType.HELP) {
+			CommandInput commandInput = new CommandInput(CommandType.HELP);
+			commandInput.setCommandType(CommandType.HELP);
+			
+			
+			if(inputSplit.length>1)
+			commandInput.setName(inputSplit[1]);
+					
+			return new CommandHelpImpl(commandInput);
 		}
 
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.EDIT) {

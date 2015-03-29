@@ -12,7 +12,8 @@ public class CommandInput {
 		DELETE,
 		EDIT,
 		EXIT,
-		SEARCH
+		SEARCH,
+		HELP
 	}
 	
 	public static enum Priority {

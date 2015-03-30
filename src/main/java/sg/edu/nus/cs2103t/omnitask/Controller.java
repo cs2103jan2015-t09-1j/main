@@ -2,6 +2,7 @@ package sg.edu.nus.cs2103t.omnitask;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -31,32 +32,7 @@ public class Controller extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		// Initialize UI
 		ui = new UIMainImpl(primaryStage);
-		ui.setCommandReceivedListener(new CommandReceivedListener() {
-
-			@Override
-			public void onCommandReceived(String userInput) {
-				processUserInput(userInput);
-			}
-
-			@Override
-			public String doAutoComplete(String userInput) {
-				// TODO Implement this properly
-				// Basic example: If "del" is in userInput, return "delete"
-				// Implementation could be as sophisticated as needed
-				
-				// Sample (Bad!) Implementation:
-				if (userInput.trim().equals("d") || userInput.trim().equals("de") || userInput.trim().equals("del")) {
-					return "delete ";
-				}
-				
-				if (userInput.trim().equals("ex") || userInput.trim().equals("exi")) {
-					return "exit";
-				}
-				
-				return userInput;
-			}
-			
-		});
+		ui.setCommandReceivedListener(commandReceivedListener);
 		
 		// Initialize other components
 		parser = new ParserMainImpl();
@@ -95,6 +71,43 @@ public class Controller extends Application {
 			command.processCommand(data, ui);
 		}
 	}
+	
+	private ArrayList<String> generatePossibleAutoComplete(String userInput) {
+		ArrayList<String> possibleAutoComplete = new ArrayList<String>();
+		
+		// TODO Implement this properly
+		// Basic example: If "del" is in userInput, return "delete"
+		// Implementation could be as sophisticated as needed
+		
+		// Sample (Bad!) Implementation:
+		if (userInput.trim().equals("d") || userInput.trim().equals("de") || userInput.trim().equals("del")) {
+			possibleAutoComplete.add("delete ");
+		}
+		
+		if (userInput.trim().equals("e") || userInput.trim().equals("ed") || userInput.trim().equals("edi")) {
+			possibleAutoComplete.add("edit");
+		}
+		
+		if (userInput.trim().equals("e") || userInput.trim().equals("ex") || userInput.trim().equals("exi")) {
+			possibleAutoComplete.add("exit");
+		}
+		
+		return possibleAutoComplete;
+	}
+	
+	CommandReceivedListener commandReceivedListener = new CommandReceivedListener() {
+
+		@Override
+		public void onCommandReceived(String userInput) {
+			processUserInput(userInput);
+		}
+
+		@Override
+		public ArrayList<String> doAutoComplete(String userInput) {
+			return generatePossibleAutoComplete(userInput);
+		}
+		
+	};
 	
 	public static void Exit() {
 		ui.exit();

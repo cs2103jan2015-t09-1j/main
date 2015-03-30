@@ -12,7 +12,7 @@ public abstract class UI {
 	public static interface CommandReceivedListener {
 		void onCommandReceived(String userInput);
 		
-		String doAutoComplete(String userInput);
+		ArrayList<String> doAutoComplete(String userInput);
 	}
 
 	public void setCommandReceivedListener(CommandReceivedListener commandReceivedListener) {
@@ -25,12 +25,12 @@ public abstract class UI {
 		}
 	}
 	
-	protected String invokeDoAutocompleteListener(String userInput) {
+	protected ArrayList<String> invokeDoAutocompleteListener(String userInput) {
 		if (commandReceivedListener != null) {
 			return commandReceivedListener.doAutoComplete(userInput);
 		}
 		
-		return userInput;
+		return new ArrayList<String>();
 	}
 	
 	public abstract void showError(String msg);

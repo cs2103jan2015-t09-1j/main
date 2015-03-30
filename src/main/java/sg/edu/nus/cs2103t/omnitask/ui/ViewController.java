@@ -106,8 +106,11 @@ public class ViewController {
 	}
 	
 	private void doAutoComplete() {
-		omniBar.setText(ui.invokeDoAutocompleteListener(omniBar.getText()));
-		putOmniBarCaretAtEnd();
+		ArrayList<String> autocomplete = ui.invokeDoAutocompleteListener(omniBar.getText());
+		if (autocomplete.size() > 0) {
+			omniBar.setText(autocomplete.get(0));
+			putOmniBarCaretAtEnd();
+		}
 	}
 	
 	private void cyclePrevHistory() {

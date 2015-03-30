@@ -97,12 +97,10 @@ public class Controller extends Application {
 	
 	CommandReceivedListener commandReceivedListener = new CommandReceivedListener() {
 
-		@Override
 		public void onCommandReceived(String userInput) {
 			processUserInput(userInput);
 		}
 
-		@Override
 		public ArrayList<String> doAutoComplete(String userInput) {
 			return generatePossibleAutoComplete(userInput);
 		}

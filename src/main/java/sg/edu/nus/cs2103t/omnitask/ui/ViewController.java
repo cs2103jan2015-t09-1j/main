@@ -163,7 +163,7 @@ public class ViewController {
 	private void putOmniBarCaretAtEnd() {
 		Platform.runLater(new Runnable() {
 
-			@Override
+		
 			public void run() {
 				omniBar.end();
 			}

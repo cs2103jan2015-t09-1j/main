@@ -7,14 +7,15 @@ import org.joda.time.DateTime;
 
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput.CommandType;
+import sg.edu.nus.cs2103t.omnitask.model.CommandInput.Priority;
 import sg.edu.nus.cs2103t.omnitasks.command.Command;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandAddImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandDeleteImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplayImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandEditImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandExitImpl;
-import sg.edu.nus.cs2103t.omnitasks.command.CommandSearchImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandHelpImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandSearchImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandUndoImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.Utils;
 
@@ -23,12 +24,13 @@ import com.joestelmach.natty.DateGroup;
 public class ParserMainImpl extends Parser {
 
 	private static final String[] DATE_INDICATORS = new String[]{"from", "by", "due", "to", "on"};
-	
+	private static final String[] PRIORITY_INDICATORS = new String[]{"^h", "^m", "^l"};
 	@Override
 	public Command parseUserInput(String input) {
 		// TODO: Fix prototype implementation, need to think of the proper way
 		// to parse text modularly
 		String[] inputSplit = input.split(" ");
+		int priorityIndex = 0;
 		
 		// Get commandName from the first word in user input
 		// TODO: Need SLAP?
@@ -71,6 +73,34 @@ public class ParserMainImpl extends Parser {
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.ADD) {
 			CommandInput commandInput = new CommandInput(CommandType.ADD);
 			String taskName = "";
+			
+			//detect for priority
+			for(int j=1; j<inputSplit.length; j++){
+				if (inArray(PRIORITY_INDICATORS, inputSplit[j])){
+					priorityIndex = j;
+					if (inputSplit[j].equals("^h")){
+						commandInput.setPriority(Priority.HIGH);
+					}
+					else if(inputSplit[j].equals("^m")){
+						commandInput.setPriority(Priority.MEDIUM);
+					}
+					else{
+						commandInput.setPriority(Priority.LOW);
+					}
+					//remove priority after setting
+					if(priorityIndex>=inputSplit.length-1){
+						inputSplit[inputSplit.length-1]="";
+					}
+					else{
+					for (int k = priorityIndex; k<inputSplit.length-1; k++){
+						inputSplit[k]=inputSplit[k+1];
+					}
+					inputSplit[inputSplit.length-1]="";
+					}
+					break;
+				}
+			}
+		
 			
 			for (int i = 1; i < inputSplit.length; i++) {
 				if (inArray(DATE_INDICATORS, inputSplit[i])) {
@@ -202,7 +232,7 @@ public class ParserMainImpl extends Parser {
 		// base case, return null
 		return null;
 	}
-	
+
 	// Do case-insensitive search of word in array
 	private boolean inArray(String[] haystack, String needle) {
 		for (int i = 0; i < haystack.length; i++) {

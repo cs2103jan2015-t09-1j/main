@@ -129,7 +129,7 @@ public class UIMainImpl extends UI {
 			
 			primaryStage.iconifiedProperty().addListener(new ChangeListener<Boolean>() {
 
-				@Override
+				
 				public void changed(ObservableValue<? extends Boolean> prop, Boolean oldValue, Boolean newValue) {
 					// newValue is true if window is minimized
 					if (newValue) {

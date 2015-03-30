@@ -43,5 +43,7 @@ public abstract class Data {
 
 	public abstract boolean editTask(Task task);
 	
+	public abstract boolean undo();
+	
 	public abstract ArrayList<Task> searchTask();
 }

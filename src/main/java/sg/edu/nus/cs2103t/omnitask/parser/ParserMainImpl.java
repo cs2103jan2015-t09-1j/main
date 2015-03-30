@@ -15,6 +15,7 @@ import sg.edu.nus.cs2103t.omnitasks.command.CommandEditImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandExitImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandSearchImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandHelpImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandUndoImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.Utils;
 
 import com.joestelmach.natty.DateGroup;
@@ -38,6 +39,13 @@ public class ParserMainImpl extends Parser {
 			commandInput.setCommandType(CommandType.DISPLAY);
 			
 			return new CommandDisplayImpl(commandInput);
+		}
+		
+		if (Utils.getCommandTypeFromString(commandName) == CommandType.UNDO) {
+			CommandInput commandInput = new CommandInput(CommandType.UNDO);
+			commandInput.setCommandType(CommandType.UNDO);
+			
+			return new CommandUndoImpl(commandInput);
 		}
 		
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.EXIT) {

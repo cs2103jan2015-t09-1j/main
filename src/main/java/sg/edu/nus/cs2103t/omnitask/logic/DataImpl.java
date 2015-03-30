@@ -62,7 +62,8 @@ public class DataImpl extends Data {
 		return tasks;
 	}
 	
-	public Stack<ArrayList<Task>> getSaveState() {
+	private Stack<ArrayList<Task>> getSaveState() {
+		
 		return saveState;
 	}
 
@@ -83,7 +84,7 @@ public class DataImpl extends Data {
 	@Override
 	public boolean addTask(Task task) throws TaskNoNameException, IOException {
 		assertInited();
-
+		saveState.push(tasks);
 		// Create new task object
 		if (task.getName().trim().isEmpty()) {
 			throw new TaskNoNameException();
@@ -97,7 +98,7 @@ public class DataImpl extends Data {
 			task.setUuid(UUID.randomUUID());
 		}
 
-		saveState.push(getTasks());
+
 		// Add the task to our "local cache"
 		tasks.add(task);
 
@@ -119,7 +120,7 @@ public class DataImpl extends Data {
 	@Override
 	public boolean deleteTask(Task taskToRemove) {
 		assertInited();
-		//saveState.push(getTasks());
+		saveState.push(tasks);
 
 		int indexToRemove = -1;
 
@@ -160,7 +161,7 @@ public class DataImpl extends Data {
 	@Override
 	public boolean editTask(Task task) {
 		assertInited();
-		//saveState.push(getTasks());
+		saveState.push(tasks);
 
 		int taskIdToUpdate = -1;
 		String tmpTaskName = "";
@@ -229,6 +230,24 @@ public class DataImpl extends Data {
 		for (DataUpdatedListener listener : dataUpdatedListeners) {
 			listener.dataUpdated(tasks);
 		}
+	}
+
+	@Override
+	public boolean undo() {
+		tasks = saveState.peek();
+		saveState.pop();
+		
+		try {
+			io.saveToFile(tasks);
+		} catch (IOException ex) {
+			// TODO: Handle error
+			ex.printStackTrace();
+			printError("IO Exception");
+
+		}
+		
+		notifyDataChanged();
+		return true;
 	}
 
 }

@@ -128,4 +128,11 @@ public class DataStubImpl extends Data {
 		return null;
 	}
 
+	@Override
+	public boolean undo() {
+		return true;
+		// TODO Auto-generated method stub
+		
+	}
+
 }

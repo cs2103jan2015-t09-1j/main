@@ -1,6 +1,6 @@
 package sg.edu.nus.cs2103t.omnitasks.command;
 
-import sg.edu.nus.cs2103t.omnitask.Main;
+import sg.edu.nus.cs2103t.omnitask.Controller;
 import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.ui.UI;
@@ -15,7 +15,7 @@ public class CommandExitImpl extends Command {
 	
 	@Override
 	public boolean processCommand(Data data, UI ui) {
-		Main.Exit();
+		Controller.Exit();
 		return true;
 	}
 }

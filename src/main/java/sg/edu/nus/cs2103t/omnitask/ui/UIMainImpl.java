@@ -31,8 +31,8 @@ import javax.swing.SwingUtilities;
 
 import org.joda.time.DateTime;
 
+import sg.edu.nus.cs2103t.omnitask.Controller;
 import sg.edu.nus.cs2103t.omnitask.Logger;
-import sg.edu.nus.cs2103t.omnitask.Main;
 import sg.edu.nus.cs2103t.omnitask.logic.Data.DataUpdatedListener;
 import sg.edu.nus.cs2103t.omnitask.logic.DataImpl;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
@@ -142,7 +142,7 @@ public class UIMainImpl extends UI {
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				//@Override
 				public void handle(WindowEvent arg0) {
-					Main.Exit();
+					Controller.Exit();
 				}
 			});
 

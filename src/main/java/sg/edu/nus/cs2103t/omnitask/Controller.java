@@ -1,39 +1,37 @@
-package sg.edu.nus.cs2103t.omnitask.controller;
+package sg.edu.nus.cs2103t.omnitask;
 
 import java.io.File;
 import java.io.IOException;
 
-import sg.edu.nus.cs2103t.omnitask.Main;
+import javafx.application.Application;
+import javafx.stage.Stage;
 import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.logic.DataImpl;
 import sg.edu.nus.cs2103t.omnitask.parser.Parser;
 import sg.edu.nus.cs2103t.omnitask.parser.ParserMainImpl;
 import sg.edu.nus.cs2103t.omnitask.storage.IOJSONImpl;
 import sg.edu.nus.cs2103t.omnitask.ui.UI;
+import sg.edu.nus.cs2103t.omnitask.ui.UIMainImpl;
 import sg.edu.nus.cs2103t.omnitask.ui.UI.CommandReceivedListener;
 import sg.edu.nus.cs2103t.omnitasks.command.Command;
 
-public class Controller {
-	private static Controller controller;
-
+public class Controller extends Application {
+	
 	protected Parser parser;
 
 	protected Data data;
 	
-	protected UI ui;
+	private static UI ui;
 	
-	private Controller() {
+	public static void main(String[] args) {
+		launch(args);
 	}
-	
-	public static Controller GetSingleton() {
-		if (controller == null) controller = new Controller();
-		
-		return controller;
-	}
-	
-	public void setUi(UI ui) {
-		this.ui = ui;
-		this.ui.setCommandReceivedListener(new CommandReceivedListener() {
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		// Initialize UI
+		ui = new UIMainImpl(primaryStage);
+		ui.setCommandReceivedListener(new CommandReceivedListener() {
 
 			@Override
 			public void onCommandReceived(String userInput) {
@@ -59,16 +57,15 @@ public class Controller {
 			}
 			
 		});
-	}
-
-	public void start(String[] args) {
-		// Initialize components
+		
+		// Initialize other components
 		parser = new ParserMainImpl();
 
 		// Get file from argument
 		File storageFile = null;
 		
 		// Use default filename if no argument specified
+		String[] args = getParameters().getRaw().toArray(new String[]{});
 		if (args.length == 0) {
 			storageFile = new File("storage.txt");
 		} else {
@@ -81,11 +78,14 @@ public class Controller {
 			data = DataImpl.GetSingleton().init(new IOJSONImpl(storageFile));
 		} catch (IOException ex) {
 			System.err.println("No permission to access file.");
-			Main.Exit();
+			Controller.Exit();
 			return;
 		}
+		
+		// Start UI
+		ui.start();
 	}
-	
+
 	private void processUserInput(String input) {
 		Command command = parser.parseUserInput(input);
 
@@ -94,6 +94,11 @@ public class Controller {
 		} else {
 			command.processCommand(data, ui);
 		}
+	}
+	
+	public static void Exit() {
+		ui.exit();
+		System.exit(0);
 	}
 
 }

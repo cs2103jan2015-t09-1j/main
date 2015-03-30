@@ -77,6 +77,12 @@ public class Utils {
 				return CommandInput.CommandType.SEARCH;
 			}
 		}
+		
+		for (String command : CommandHelpImpl.COMMAND_ALIASES_HELP) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.HELP;
+			}
+		}
 	
 		return CommandInput.CommandType.INVALID;
 	}

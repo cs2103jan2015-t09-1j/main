@@ -205,6 +205,7 @@ public class ViewController {
 		});
 	}
 	
+
 	public void setAllTasks(List<Task> tasks) {
 		sortTasks(tasks);
 		
@@ -254,6 +255,7 @@ public class ViewController {
 		} else if (viewMode == ViewMode.SEARCH) {
 			viewModeText.setText("Search results for \"" + searchKeyword + "\"");
 		}
+
 	}
 	
 	private class ListViewCell extends ListCell<Task> {

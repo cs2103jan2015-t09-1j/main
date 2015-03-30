@@ -15,8 +15,13 @@ public class CommandUndoImpl extends Command {
 	
 	@Override
 	public boolean processCommand(Data data, UI ui) {
-		data.undo();
-		ui.showMessage("Undo completed!");
-		return true;
+		if(data.undo()){
+			ui.showMessage("Undo completed!");
+			return true;
+		}
+		else {
+			ui.showMessage("You have no previous entries");
+			return false;
+		}
 	}
 }

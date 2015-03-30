@@ -2,6 +2,7 @@ package sg.edu.nus.cs2103t.omnitask.logic;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Stack;
 
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
@@ -35,7 +36,7 @@ public abstract class Data {
 	public abstract void notifyDataChanged();
 	
 	public abstract ArrayList<Task> getTasks();
-
+	
 	public abstract boolean addTask(Task task) throws TaskNoNameException, IOException;
 
 	public abstract boolean deleteTask(Task task);

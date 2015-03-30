@@ -45,7 +45,7 @@ public class DataImpl extends Data {
 
 		this.io = io;
 		tasks = io.readFromFile();
-
+		saveState = new Stack<ArrayList<Task>>();
 		inited = true;
 
 		return this;
@@ -97,7 +97,7 @@ public class DataImpl extends Data {
 			task.setUuid(UUID.randomUUID());
 		}
 
-		//saveState.push(getTasks());
+		saveState.push(getTasks());
 		// Add the task to our "local cache"
 		tasks.add(task);
 

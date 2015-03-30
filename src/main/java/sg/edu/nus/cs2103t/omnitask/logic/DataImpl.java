@@ -3,6 +3,7 @@ package sg.edu.nus.cs2103t.omnitask.logic;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.UUID;
 
 import org.joda.time.DateTime;
@@ -18,7 +19,9 @@ public class DataImpl extends Data {
 	private static DataImpl data;
 
 	private ArrayList<Task> tasks;
-
+	
+	private Stack<ArrayList<Task>> saveState;
+	
 	protected IO io;
 
 	private boolean inited;
@@ -58,6 +61,10 @@ public class DataImpl extends Data {
 
 		return tasks;
 	}
+	
+	public Stack<ArrayList<Task>> getSaveState() {
+		return saveState;
+	}
 
 	// Get new "viewing" taskId which can be used for a new task
 	private long getNewId() {
@@ -90,12 +97,7 @@ public class DataImpl extends Data {
 			task.setUuid(UUID.randomUUID());
 		}
 
-		// code waiting for Recurring task implementation
-		// if(commandInput.isRecurrence()){
-		// task.setRecurrence(1);
-		// addAttributes(commandInput, task);
-		// } else
-
+		//saveState.push(getTasks());
 		// Add the task to our "local cache"
 		tasks.add(task);
 
@@ -117,6 +119,7 @@ public class DataImpl extends Data {
 	@Override
 	public boolean deleteTask(Task taskToRemove) {
 		assertInited();
+		//saveState.push(getTasks());
 
 		int indexToRemove = -1;
 
@@ -157,6 +160,7 @@ public class DataImpl extends Data {
 	@Override
 	public boolean editTask(Task task) {
 		assertInited();
+		//saveState.push(getTasks());
 
 		int taskIdToUpdate = -1;
 		String tmpTaskName = "";

@@ -22,6 +22,8 @@ public class DataImpl extends Data {
 
 	private Stack<ArrayList<Task>> saveState;
 
+	private Stack<ArrayList<Task>> redoStack;
+	
 	private ArrayList<Task> redoList;
 
 	protected IO io;
@@ -47,6 +49,7 @@ public class DataImpl extends Data {
 
 		this.io = io;
 		tasks = io.readFromFile();
+		redoStack = new Stack<ArrayList<Task>>();
 		saveState = new Stack<ArrayList<Task>>();
 		inited = true;
 
@@ -241,6 +244,7 @@ public class DataImpl extends Data {
 			return false;
 		} else {
 			redoList = tasks;
+			redoStack.push(redoList);
 			tasks = saveState.pop();
 
 			try {
@@ -260,11 +264,11 @@ public class DataImpl extends Data {
 
 	@Override
 	public boolean redo() {
-		if (redoList.isEmpty()) {
+		if (redoStack.empty()) {
 			return false;
 		} else {
 
-			tasks = redoList;
+			tasks = redoStack.pop();
 
 			try {
 				io.saveToFile(tasks);

@@ -255,4 +255,10 @@ public class DataImpl extends Data {
 		}
 	}
 
+	@Override
+	public boolean redo() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

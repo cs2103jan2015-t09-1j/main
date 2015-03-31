@@ -15,6 +15,7 @@ import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplayImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandEditImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandExitImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandHelpImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandRedoImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandSearchImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandUndoImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.Utils;
@@ -48,6 +49,13 @@ public class ParserMainImpl extends Parser {
 			commandInput.setCommandType(CommandType.UNDO);
 			
 			return new CommandUndoImpl(commandInput);
+		}
+		
+		if (Utils.getCommandTypeFromString(commandName) == CommandType.REDO) {
+			CommandInput commandInput = new CommandInput(CommandType.REDO);
+			commandInput.setCommandType(CommandType.REDO);
+			
+			return new CommandRedoImpl(commandInput);
 		}
 		
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.EXIT) {

@@ -31,6 +31,7 @@ public class ParserMainImpl extends Parser {
 		// to parse text modularly
 		String[] inputSplit = input.split(" ");
 		int priorityIndex = 0;
+		boolean prioritySent = false;
 		
 		// Get commandName from the first word in user input
 		// TODO: Need SLAP?
@@ -87,6 +88,7 @@ public class ParserMainImpl extends Parser {
 					else{
 						commandInput.setPriority(Priority.LOW);
 					}
+					prioritySent = true;
 					//remove priority after setting
 					if(priorityIndex>=inputSplit.length-1){
 						inputSplit[inputSplit.length-1]="";
@@ -99,6 +101,10 @@ public class ParserMainImpl extends Parser {
 					}
 					break;
 				}
+			}
+			//set priority to none if not detected
+			if (prioritySent == false){
+				commandInput.setPriority(Priority.NONE);
 			}
 		
 			

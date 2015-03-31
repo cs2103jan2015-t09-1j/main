@@ -1,5 +1,7 @@
 package sg.edu.nus.cs2103t.omnitasks.command;
 
+import java.io.IOException;
+
 import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput.CommandType;
@@ -18,7 +20,7 @@ public class CommandHelpImpl extends Command {
 	// TODO: This class shouldn't be calling UI directly
 	@Override
 	public boolean processCommand(Data data, UI ui) {
-		String specificCommandDescription = "";
+		String commandDescription = "";
 		String specificCommandName = "";
 		if (commandInput.getName() != null) {
 
@@ -32,41 +34,42 @@ public class CommandHelpImpl extends Command {
 					break;
 				}
 			}
-			
+
 			if (exist) {
 
-				switch (specificCommandName) {
-				case "ADD":
-					specificCommandDescription = "add description";
-					break;
-				case "DISPLAY":
-					specificCommandDescription = "display description";
-					break;
-				case "DELETE":
-					specificCommandDescription = "delete description";
-					break;
-				case "EDIT":
-					specificCommandDescription = "edit description";
-					break;
-				case "SEARCH":
-					specificCommandDescription = "search description";
-					break;
-				case "EXIT":
-					specificCommandDescription = "Exits the program";
-					break;
+				/*
+				 * switch (specificCommandName) { case "ADD": commandDescription
+				 * = "add description"; break; case "DISPLAY":
+				 * commandDescription = "display description"; break; case
+				 * "DELETE": commandDescription = "delete description"; break;
+				 * case "EDIT": commandDescription = "edit description"; break;
+				 * case "SEARCH": commandDescription = "search description";
+				 * break; case "EXIT": commandDescription = "Exits the program";
+				 * break; }
+				 */
+				try {
+					commandDescription = data.getHelpDescriptors(specificCommandName);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				ui.showHelp(specificCommandDescription);
-			}else{
+
+				ui.showHelp(commandDescription);
+			} else {
 				ui.showError("the specific command you entered does not exist in this system!");
 			}
-			
-			
-		}else{
+
+		} else {
 			// general help description
-			specificCommandDescription = "general help";
-			ui.showHelp(specificCommandDescription);
+			try {
+				commandDescription = data.getHelpDescriptors("OVERVIEW");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			ui.showHelp(commandDescription);
 		}
-		
+
 		// returning false to not execute update listing
 		return false;
 	}

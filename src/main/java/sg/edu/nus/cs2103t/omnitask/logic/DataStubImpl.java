@@ -128,4 +128,10 @@ public class DataStubImpl extends Data {
 		return null;
 	}
 
+	@Override
+	public String getHelpDescriptors(String helpType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

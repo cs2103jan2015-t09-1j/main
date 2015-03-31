@@ -227,4 +227,9 @@ public class DataImpl extends Data {
 		}
 	}
 
+	@Override
+	public String getHelpDescriptors(String helpType) throws IOException {
+			return io.readFromHelpFile(helpType);
+	}
+
 }

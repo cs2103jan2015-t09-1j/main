@@ -79,12 +79,13 @@ public class DataImpl extends Data {
 		assertInited();
 
 		long taskId = 1;
-		ArrayList<Task> tasks = getTasks();
-		if (tasks.size() > 0) {
-			taskId = tasks.get(tasks.size() - 1).getId() + 1;
+		for (Task task : tasks) {
+			if (task.getId() > taskId) {
+				taskId = task.getId();
+			}
 		}
 
-		return taskId;
+		return ++taskId;
 	}
 
 	// Not thread-safe

@@ -20,11 +20,15 @@ public class DataImpl extends Data {
 
 	private ArrayList<Task> tasks;
 
-	private Stack<ArrayList<Task>> saveState;
+	private Stack<ArrayList<Task>> previousState;
 
 	private Stack<ArrayList<Task>> redoStack;
 
 	private ArrayList<Task> redoList;
+	
+	private ArrayList<Task> currentList;
+	
+	private ArrayList<Task> previousList;
 
 	protected IO io;
 
@@ -50,7 +54,7 @@ public class DataImpl extends Data {
 		this.io = io;
 		tasks = io.readFromFile();
 		redoStack = new Stack<ArrayList<Task>>();
-		saveState = new Stack<ArrayList<Task>>();
+		previousState = new Stack<ArrayList<Task>>();
 		inited = true;
 
 		return this;
@@ -67,11 +71,11 @@ public class DataImpl extends Data {
 		return tasks;
 	}
 
-	private Stack<ArrayList<Task>> getSaveState() {
-		ArrayList<Task> currentTasks = getTasks();
-		saveState.push((ArrayList<Task>) currentTasks.clone());
+	private Stack<ArrayList<Task>> getPreviousState() {
+		previousList = getTasks();
+		previousState.push((ArrayList<Task>) previousList.clone());
 
-		return saveState;
+		return previousState;
 	}
 
 	// Get new "viewing" taskId which can be used for a new task
@@ -92,7 +96,7 @@ public class DataImpl extends Data {
 	@Override
 	public boolean addTask(Task task) throws TaskNoNameException, IOException {
 		assertInited();
-		getSaveState();
+		getPreviousState();
 		// Create new task object
 		if (task.getName().trim().isEmpty()) {
 			throw new TaskNoNameException();
@@ -127,7 +131,7 @@ public class DataImpl extends Data {
 	@Override
 	public boolean deleteTask(Task taskToRemove) {
 		assertInited();
-		getSaveState();
+		getPreviousState();
 
 		int indexToRemove = -1;
 
@@ -168,7 +172,7 @@ public class DataImpl extends Data {
 	@Override
 	public boolean editTask(Task task) {
 		assertInited();
-		getSaveState();
+		getPreviousState();
 
 		int taskIdToUpdate = -1;
 		String tmpTaskName = "";
@@ -241,13 +245,20 @@ public class DataImpl extends Data {
 
 	@Override
 	public boolean undo() {
-		if (saveState.empty()) {
+		if (previousState.empty()) {
 			return false;
 		} else {
 
+			//saving the current state into currentList
+			currentList = (ArrayList<Task>) tasks.clone();
 			redoList = tasks;
+			
+			//pushing to redoStack to save multiple states
 			redoStack.push(redoList);
-			tasks = saveState.pop();
+			
+			//overwrite current state with previous state
+			previousList = previousState.peek();
+			tasks = previousState.pop();
 
 			try {
 				io.saveToFile(tasks);
@@ -271,6 +282,7 @@ public class DataImpl extends Data {
 			return false;
 		} else {
 
+			previousState.push(previousList);
 			tasks = redoStack.pop();
 
 			try {

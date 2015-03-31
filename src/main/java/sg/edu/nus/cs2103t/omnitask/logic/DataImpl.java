@@ -3,6 +3,7 @@ package sg.edu.nus.cs2103t.omnitask.logic;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.UUID;
 
 import org.joda.time.DateTime;
@@ -18,6 +19,12 @@ public class DataImpl extends Data {
 	private static DataImpl data;
 
 	private ArrayList<Task> tasks;
+
+	private Stack<ArrayList<Task>> saveState;
+
+	private Stack<ArrayList<Task>> redoStack;
+	
+	private ArrayList<Task> redoList;
 
 	protected IO io;
 
@@ -42,7 +49,8 @@ public class DataImpl extends Data {
 
 		this.io = io;
 		tasks = io.readFromFile();
-
+		redoStack = new Stack<ArrayList<Task>>();
+		saveState = new Stack<ArrayList<Task>>();
 		inited = true;
 
 		return this;
@@ -59,24 +67,32 @@ public class DataImpl extends Data {
 		return tasks;
 	}
 
+	private Stack<ArrayList<Task>> getSaveState() {
+		ArrayList<Task> currentTasks = getTasks();
+		saveState.push((ArrayList<Task>) currentTasks.clone());
+
+		return saveState;
+	}
+
 	// Get new "viewing" taskId which can be used for a new task
 	private long getNewId() {
 		assertInited();
 
 		long taskId = 1;
-		ArrayList<Task> tasks = getTasks();
-		if (tasks.size() > 0) {
-			taskId = tasks.get(tasks.size() - 1).getId() + 1;
+		for (Task task : tasks) {
+			if (task.getId() > taskId) {
+				taskId = task.getId();
+			}
 		}
 
-		return taskId;
+		return ++taskId;
 	}
 
 	// Not thread-safe
 	@Override
 	public boolean addTask(Task task) throws TaskNoNameException, IOException {
 		assertInited();
-
+		getSaveState();
 		// Create new task object
 		if (task.getName().trim().isEmpty()) {
 			throw new TaskNoNameException();
@@ -89,12 +105,6 @@ public class DataImpl extends Data {
 		if (task.getUuid() == null) {
 			task.setUuid(UUID.randomUUID());
 		}
-
-		// code waiting for Recurring task implementation
-		// if(commandInput.isRecurrence()){
-		// task.setRecurrence(1);
-		// addAttributes(commandInput, task);
-		// } else
 
 		// Add the task to our "local cache"
 		tasks.add(task);
@@ -117,6 +127,7 @@ public class DataImpl extends Data {
 	@Override
 	public boolean deleteTask(Task taskToRemove) {
 		assertInited();
+		getSaveState();
 
 		int indexToRemove = -1;
 
@@ -157,6 +168,7 @@ public class DataImpl extends Data {
 	@Override
 	public boolean editTask(Task task) {
 		assertInited();
+		getSaveState();
 
 		int taskIdToUpdate = -1;
 		String tmpTaskName = "";
@@ -228,8 +240,54 @@ public class DataImpl extends Data {
 	}
 
 	@Override
+
 	public String getHelpDescriptors(String helpType) throws IOException {
 			return io.readFromHelpFile(helpType);
+	}
+	public boolean undo() {
+		if (saveState.empty()) {
+			return false;
+		} else {
+			redoList = tasks;
+			redoStack.push(redoList);
+			tasks = saveState.pop();
+
+			try {
+				io.saveToFile(tasks);
+			} catch (IOException ex) {
+				// TODO: Handle error
+				ex.printStackTrace();
+				printError("IO Exception");
+
+			}
+
+			notifyDataChanged();
+			return true;
+
+		}
+	}
+
+	@Override
+	public boolean redo() {
+		if (redoStack.empty()) {
+			return false;
+		} else {
+
+			tasks = redoStack.pop();
+
+			try {
+				io.saveToFile(tasks);
+			} catch (IOException ex) {
+				// TODO: Handle error
+				ex.printStackTrace();
+				printError("IO Exception");
+
+			}
+
+			notifyDataChanged();
+			return true;
+		}
+
 	}
 
 }

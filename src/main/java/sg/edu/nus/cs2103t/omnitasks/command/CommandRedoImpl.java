@@ -5,17 +5,23 @@ import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.ui.UI;
 
-public class CommandExitImpl extends Command {
+public class CommandRedoImpl extends Command {
 	
-	public static String[] COMMAND_ALIASES_EXIT = new String[]{"exit", "close"};
+	public static String[] COMMAND_ALIASES_REDO = new String[]{"redo"};
 	
-	public CommandExitImpl(CommandInput commandInput) {
+	public CommandRedoImpl(CommandInput commandInput) {
 		super(commandInput);
 	}
 	
 	@Override
 	public boolean processCommand(Data data, UI ui) {
-		Controller.Exit();
-		return true;
+		if(data.redo()){
+			ui.showMessage("Redo completed!");
+			return true;
+		}
+		else {
+			ui.showMessage("You have no Redo entries");
+			return false;
+		}
 	}
 }

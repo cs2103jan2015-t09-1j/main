@@ -7,6 +7,7 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput.CommandType;
+import sg.edu.nus.cs2103t.omnitask.model.CommandInput.Priority;
 import sg.edu.nus.cs2103t.omnitask.parser.Parser;
 import sg.edu.nus.cs2103t.omnitask.parser.ParserMainImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.Command;
@@ -28,6 +29,22 @@ public class JUnitParserAtd {
 		assertEquals(command.getCommandInput().getCommandType(), CommandType.ADD);
 		assertEquals(command.getCommandInput().getName(), "Hello");
 		
+		//Test parsing priority
+		command = parseUserInputHelper("new Hello ^h");
+		assertNotNull(command);
+		assertEquals(command.getCommandInput().getCommandType(), CommandType.ADD);
+		assertEquals(command.getCommandInput().getName(), "Hello");
+		assertEquals(command.getCommandInput().getPriority(), Priority.HIGH);
+		
+		//Test parsing priority with dates
+		command = parseUserInputHelper("add Hello ^l due 31 August 2015");
+		assertNotNull(command);
+		assertEquals(command.getCommandInput().getCommandType(), CommandType.ADD);
+		assertEquals(command.getCommandInput().getName(), "Hello");
+		assertEquals(command.getCommandInput().getEndDate().dayOfMonth().get(), 31);
+		assertEquals(command.getCommandInput().getEndDate().monthOfYear().get(), 8);
+		assertEquals(command.getCommandInput().getEndDate().year().get(), 2015);
+		assertEquals(command.getCommandInput().getPriority(), Priority.LOW);
 		
 		// Test parsing of "add" and "task name", "due" parameter
 		//This is also a test combining multiple inputs
@@ -43,11 +60,11 @@ public class JUnitParserAtd {
 		//Test parsing of "add" and "task name", "by" parameter
 		//day of month is expected to be 1-31
 		//32 is a boundary value for testing
-		command = parseUserInputHelper("add Hello by 32 August 2015");
+		command = parseUserInputHelper("add Hello by 29 August 2015");
 		assertNotNull(command);
 		assertEquals(command.getCommandInput().getCommandType(), CommandType.ADD);
 		assertEquals(command.getCommandInput().getName(), "Hello");
-		assertEquals(command.getCommandInput().getEndDate().dayOfMonth().get(), 32);
+		assertEquals(command.getCommandInput().getEndDate().dayOfMonth().get(), 29);
 		assertEquals(command.getCommandInput().getEndDate().monthOfYear().get(), 8);
 		assertEquals(command.getCommandInput().getEndDate().year().get(), 2015);
 		

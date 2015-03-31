@@ -31,8 +31,8 @@ import javax.swing.SwingUtilities;
 
 import org.joda.time.DateTime;
 
+import sg.edu.nus.cs2103t.omnitask.Controller;
 import sg.edu.nus.cs2103t.omnitask.Logger;
-import sg.edu.nus.cs2103t.omnitask.Main;
 import sg.edu.nus.cs2103t.omnitask.logic.Data.DataUpdatedListener;
 import sg.edu.nus.cs2103t.omnitask.logic.DataImpl;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
@@ -129,7 +129,7 @@ public class UIMainImpl extends UI {
 			
 			primaryStage.iconifiedProperty().addListener(new ChangeListener<Boolean>() {
 
-				@Override
+				
 				public void changed(ObservableValue<? extends Boolean> prop, Boolean oldValue, Boolean newValue) {
 					// newValue is true if window is minimized
 					if (newValue) {
@@ -142,7 +142,7 @@ public class UIMainImpl extends UI {
 			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 				//@Override
 				public void handle(WindowEvent arg0) {
-					Main.Exit();
+					Controller.Exit();
 				}
 			});
 

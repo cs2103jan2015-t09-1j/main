@@ -129,9 +129,21 @@ public class DataStubImpl extends Data {
 	}
 
 	@Override
+
 	public String getHelpDescriptors(String helpType) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	public boolean undo() {
+		return true;
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean redo() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

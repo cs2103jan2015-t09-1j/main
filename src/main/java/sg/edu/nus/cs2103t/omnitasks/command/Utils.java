@@ -83,6 +83,18 @@ public class Utils {
 				return CommandInput.CommandType.HELP;
 			}
 		}
+		
+		for (String command : CommandUndoImpl.COMMAND_ALIASES_UNDO) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.UNDO;
+			}
+		}
+		
+		for (String command : CommandRedoImpl.COMMAND_ALIASES_REDO) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.REDO;
+			}
+		}
 	
 		return CommandInput.CommandType.INVALID;
 	}

@@ -89,6 +89,12 @@ public class Utils {
 				return CommandInput.CommandType.UNDO;
 			}
 		}
+		
+		for (String command : CommandRedoImpl.COMMAND_ALIASES_REDO) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.REDO;
+			}
+		}
 	
 		return CommandInput.CommandType.INVALID;
 	}

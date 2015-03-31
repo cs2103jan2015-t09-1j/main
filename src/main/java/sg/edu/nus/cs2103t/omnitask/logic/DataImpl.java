@@ -22,6 +22,8 @@ public class DataImpl extends Data {
 
 	private Stack<ArrayList<Task>> saveState;
 
+	private ArrayList<Task> redoList;
+
 	protected IO io;
 
 	private boolean inited;
@@ -238,6 +240,7 @@ public class DataImpl extends Data {
 		if (saveState.empty()) {
 			return false;
 		} else {
+			redoList = tasks;
 			tasks = saveState.pop();
 
 			try {
@@ -257,8 +260,25 @@ public class DataImpl extends Data {
 
 	@Override
 	public boolean redo() {
-		// TODO Auto-generated method stub
-		return false;
+		if (redoList.isEmpty()) {
+			return false;
+		} else {
+
+			tasks = redoList;
+
+			try {
+				io.saveToFile(tasks);
+			} catch (IOException ex) {
+				// TODO: Handle error
+				ex.printStackTrace();
+				printError("IO Exception");
+
+			}
+
+			notifyDataChanged();
+			return true;
+		}
+
 	}
 
 }

@@ -64,7 +64,7 @@ public class DataImpl extends Data {
 
 	private Stack<ArrayList<Task>> getSaveState() {
 		ArrayList<Task> currentTasks = getTasks();
-		saveState.push(currentTasks);
+		saveState.push((ArrayList<Task>) currentTasks.clone());
 
 		return saveState;
 	}
@@ -238,7 +238,7 @@ public class DataImpl extends Data {
 		if (saveState.empty()) {
 			return false;
 		} else {
-			ArrayList<Task> tasks = saveState.pop();
+			tasks = saveState.pop();
 
 			try {
 				io.saveToFile(tasks);

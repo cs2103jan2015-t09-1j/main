@@ -22,7 +22,7 @@ import sg.edu.nus.cs2103t.omnitasks.command.Utils;
 
 import com.joestelmach.natty.DateGroup;
 
-public class ParserMainImpl extends Parser {
+public class ParserMainImpl<joinStringArray> extends Parser {
 
 	private static final String[] DATE_INDICATORS = new String[]{"from", "by", "due", "to", "on"};
 	private static final String[] PRIORITY_INDICATORS = new String[]{"^h", "^m", "^l"};
@@ -31,8 +31,6 @@ public class ParserMainImpl extends Parser {
 		// TODO: Fix prototype implementation, need to think of the proper way
 		// to parse text modularly
 		String[] inputSplit = input.split(" ");
-		int priorityIndex = 0;
-		boolean prioritySent = false;
 		
 		// Get commandName from the first word in user input
 		// TODO: Need SLAP?
@@ -83,38 +81,7 @@ public class ParserMainImpl extends Parser {
 			CommandInput commandInput = new CommandInput(CommandType.ADD);
 			String taskName = "";
 			
-			//detect for priority
-			for(int j=1; j<inputSplit.length; j++){
-				if (inArray(PRIORITY_INDICATORS, inputSplit[j])){
-					priorityIndex = j;
-					if (inputSplit[j].equals("^h")){
-						commandInput.setPriority(Priority.HIGH);
-					}
-					else if(inputSplit[j].equals("^m")){
-						commandInput.setPriority(Priority.MEDIUM);
-					}
-					else{
-						commandInput.setPriority(Priority.LOW);
-					}
-					prioritySent = true;
-					//remove priority after setting
-					if(priorityIndex>=inputSplit.length-1){
-						inputSplit[inputSplit.length-1]="";
-					}
-					else{
-					for (int k = priorityIndex; k<inputSplit.length-1; k++){
-						inputSplit[k]=inputSplit[k+1];
-					}
-					inputSplit[inputSplit.length-1]="";
-					}
-					break;
-				}
-			}
-			//set priority to none if not detected
-			if (prioritySent == false){
-				commandInput.setPriority(Priority.NONE);
-			}
-		
+			detectPrio(inputSplit, commandInput);
 			
 			for (int i = 1; i < inputSplit.length; i++) {
 				if (inArray(DATE_INDICATORS, inputSplit[i])) {
@@ -189,6 +156,8 @@ public class ParserMainImpl extends Parser {
 			long updateId;
 			updateId = Long.parseLong(inputSplit[1]);
 			commandInput.setId(updateId);
+			
+			detectPrio(inputSplit, commandInput);
 						
 			for (int i = 1; i < inputSplit.length; i++) {
 				if (inArray(DATE_INDICATORS, inputSplit[i])) {
@@ -266,6 +235,43 @@ public class ParserMainImpl extends Parser {
 		}
 		
 		return str.trim();
+	}
+	
+	private void detectPrio(String[] inputSplit, CommandInput commandInput){
+		int priorityIndex = 0;
+		boolean prioritySent = false;
+		
+		//detect for priority
+		for(int j=1; j<inputSplit.length; j++){
+			if (inArray(PRIORITY_INDICATORS, inputSplit[j])){
+				priorityIndex = j;
+				if (inputSplit[j].equals("^h")){
+					commandInput.setPriority(Priority.HIGH);
+				}
+				else if(inputSplit[j].equals("^m")){
+					commandInput.setPriority(Priority.MEDIUM);
+				}
+				else{
+					commandInput.setPriority(Priority.LOW);
+				}
+				prioritySent = true;
+				//remove priority after setting
+				if(priorityIndex>=inputSplit.length-1){
+					inputSplit[inputSplit.length-1]="";
+				}
+				else{
+				for (int k = priorityIndex; k<inputSplit.length-1; k++){
+					inputSplit[k]=inputSplit[k+1];
+				}
+				inputSplit[inputSplit.length-1]="";
+				}
+				break;
+			}
+		}
+		//set priority to none if not detected
+		if (prioritySent == false){
+			commandInput.setPriority(Priority.NONE);
+		}
 	}
 	
 	private boolean isTimeSpecifiedByUser(Tree tree) {

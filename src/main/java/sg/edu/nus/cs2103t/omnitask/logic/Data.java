@@ -47,6 +47,10 @@ public abstract class Data {
 	
 	public abstract ArrayList<Task> searchTask();
 
+
+	public abstract String getHelpDescriptors(String helpType) throws IOException;
+
 	public abstract boolean redo();
+
 	
 }

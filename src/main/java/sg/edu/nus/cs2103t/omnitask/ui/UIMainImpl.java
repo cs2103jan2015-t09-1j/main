@@ -195,7 +195,7 @@ public class UIMainImpl extends UI {
 			
 			helpStage = new Stage();
 			helpStage.initStyle(StageStyle.UNDECORATED);
-	        helpStage.setScene(new Scene(root, 350, 600));
+	        helpStage.setScene(new Scene(root, 600, 600));
 	        
 	        helpStage.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
 	            public void handle(KeyEvent event) {

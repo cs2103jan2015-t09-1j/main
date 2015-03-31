@@ -1,5 +1,6 @@
 package sg.edu.nus.cs2103t.omnitask.storage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import sg.edu.nus.cs2103t.omnitask.model.Task;
@@ -41,5 +42,11 @@ public class IOStubImpl extends IO {
 	public void redoFile() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public String readFromHelpFile(String helpType) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

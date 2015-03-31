@@ -244,6 +244,10 @@ public class DataImpl extends Data {
 	}
 
 	@Override
+
+	public String getHelpDescriptors(String helpType) throws IOException {
+			return io.readFromHelpFile(helpType);
+	}
 	public boolean undo() {
 		if (previousState.empty()) {
 			return false;

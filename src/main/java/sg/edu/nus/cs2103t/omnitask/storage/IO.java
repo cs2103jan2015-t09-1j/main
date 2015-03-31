@@ -16,6 +16,8 @@ public abstract class IO {
 	
 	public abstract void redoFile();
 	
+	public abstract String readFromHelpFile(String helpType) throws IOException; 
+	
 	public static boolean CheckIfFileExistAndCreateIfDoesNot(File file) throws IOException {
 		if (!file.exists()) {
 			Files.createFile(file.toPath());
@@ -23,5 +25,7 @@ public abstract class IO {
 		
 		return true;
 	}
+
+	
 	
 }

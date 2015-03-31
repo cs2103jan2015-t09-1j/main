@@ -20,11 +20,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+
 public class IOJSONImpl extends IO {
 	public File storageFile;
 	
 	public Gson gson;
-
+	
 	public IOJSONImpl(File storageFile) throws IOException {
 		this.storageFile = storageFile;
 		this.gson = new GsonBuilder()
@@ -84,5 +85,24 @@ public class IOJSONImpl extends IO {
 	public void redoFile() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public String readFromHelpFile(String helpType) throws IOException{
+		String commandDescription = "";
+		File helpFileData = new File("omnitext help file.txt");
+		InputStream in = Files.newInputStream(helpFileData.toPath());
+	    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+	    String line = null;
+	    while ((line = reader.readLine()) != null) {
+	        if(line.equals("<"+helpType+">")){
+	        	while((line = reader.readLine())!=null && !line.equals("</"+helpType+">")){
+	        		commandDescription += line;
+	        	}
+	        	break;
+	        }
+	    }
+	    in.close();
+		return commandDescription;
 	}
 }

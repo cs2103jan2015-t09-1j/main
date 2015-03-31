@@ -23,7 +23,7 @@ public class DataImpl extends Data {
 	private Stack<ArrayList<Task>> saveState;
 
 	private Stack<ArrayList<Task>> redoStack;
-	
+
 	private ArrayList<Task> redoList;
 
 	protected IO io;
@@ -118,7 +118,7 @@ public class DataImpl extends Data {
 
 			throw ex;
 		}
-
+		redoStack.clear();
 		notifyDataChanged();
 
 		return true;
@@ -150,7 +150,7 @@ public class DataImpl extends Data {
 
 			return false;
 		}
-
+		redoStack.clear();
 		notifyDataChanged();
 
 		return true;
@@ -200,7 +200,7 @@ public class DataImpl extends Data {
 		} else {
 			return false;
 		}
-
+		redoStack.clear();
 		notifyDataChanged();
 
 		return true;
@@ -244,6 +244,7 @@ public class DataImpl extends Data {
 		if (saveState.empty()) {
 			return false;
 		} else {
+
 			redoList = tasks;
 			redoStack.push(redoList);
 			tasks = saveState.pop();
@@ -258,6 +259,7 @@ public class DataImpl extends Data {
 			}
 
 			notifyDataChanged();
+
 			return true;
 
 		}
@@ -285,5 +287,4 @@ public class DataImpl extends Data {
 		}
 
 	}
-
 }

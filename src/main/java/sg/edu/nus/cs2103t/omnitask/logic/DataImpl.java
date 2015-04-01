@@ -87,7 +87,7 @@ public class DataImpl extends Data {
 	private long getNewId() {
 		assertInited();
 
-		long taskId = 1;
+		long taskId = 0;
 		for (Task task : tasks) {
 			if (task.getId() > taskId) {
 				taskId = task.getId();

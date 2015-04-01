@@ -7,7 +7,7 @@ import org.joda.time.DateTime;
 
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput.CommandType;
-import sg.edu.nus.cs2103t.omnitask.model.CommandInput.Priority;
+import sg.edu.nus.cs2103t.omnitask.model.Task.Priority;
 import sg.edu.nus.cs2103t.omnitasks.command.Command;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandAddImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandDeleteImpl;

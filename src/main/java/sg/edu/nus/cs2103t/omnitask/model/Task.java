@@ -1,10 +1,16 @@
 package sg.edu.nus.cs2103t.omnitask.model;
 
-import org.joda.time.DateTime;
-
 import java.util.UUID;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 public class Task {
+	final private static String[] priorityColors = new String[]{"none", "#0099CC", "#FF8800", "#CC0000"};
+	
+	final private static String[] priorityStrings = new String[]{"", "low", "med", "high"};
+	
 	public static enum Priority {
 		NONE, LOW, MEDIUM, HIGH
 	}
@@ -43,6 +49,104 @@ public class Task {
 
 	public void setEndDate(DateTime endDate) {
 		this.endDate = endDate;
+	}
+	
+	public boolean isDue() {
+		if (endDate == null) return false;
+		
+		return new DateTime().now().isAfter(endDate);
+	}
+	
+	private String formatTime(DateTime date) {
+		String timeFormat = "";
+		if (date.millisOfDay().get() != 0) {
+			timeFormat = "hh:mm a";
+		}
+		
+		if (timeFormat.equals("")) {
+			return "";
+		} 
+		
+		DateTimeFormatter fmt = DateTimeFormat.forPattern(timeFormat);
+		String formatted = fmt.print(date);
+		
+		return formatted.toUpperCase();
+	}
+	
+	public String getFormattedTimeRange() {
+		DateTime startDate = getStartDate();
+		DateTime endDate = getEndDate();
+		
+		if (startDate == null && endDate == null) {
+			return "";
+		}
+		
+		String formatted = "";
+		
+		if (startDate != null) {
+			String startDateFormatted = formatTime(startDate);
+			formatted += startDateFormatted;
+		}
+		if (endDate != null) {
+			String endDateFormatted = formatTime(endDate);
+			if (!formatted.isEmpty()) {
+				formatted += " - ";
+			}
+			formatted += endDateFormatted;
+		}
+		
+		return formatted;
+	}
+	
+	public String getFormattedDate() {
+		DateTime startDate = getStartDate();
+		DateTime endDate = getEndDate();
+		
+		if (startDate == null && endDate == null) {
+			return null;
+		}
+		
+		DateTime today = DateTime.now();
+		DateTime tomorrow = today.plusDays(1);
+		DateTimeFormatter fmt = DateTimeFormat.forPattern("dd MMM hh:mm");
+		
+		if (today.year().get() == endDate.year().get()) {
+			fmt = DateTimeFormat.forPattern("EEEE, MMMM dd");
+		} else {
+			fmt = DateTimeFormat.forPattern("EEEE, MMMM dd, YYYY");
+		}
+		
+		String endDateFormatted = fmt.print(endDate);
+		
+		if (today.getYear() == endDate.getYear() && today.getDayOfYear() == endDate.getDayOfYear()) {
+			endDateFormatted = "Today";
+		} else if (tomorrow.getYear() == endDate.getYear() && tomorrow.getDayOfYear() == endDate.getDayOfYear()) {
+			endDateFormatted = "Tomorrow";
+		}
+		
+		if (startDate == null) {
+			return endDateFormatted;
+		} else {
+			if (today.year().get() == startDate.year().get()) {
+				fmt = DateTimeFormat.forPattern("EEEE, MMMM dd");
+			} else {
+				fmt = DateTimeFormat.forPattern("EEEE, MMMM dd, YYYY");
+			}
+			
+			String startDateFormatted = fmt.print(startDate);
+			
+			if (today.getYear() == startDate.getYear() && today.getDayOfYear() == startDate.getDayOfYear()) {
+				startDateFormatted = "Today";
+			} else if (tomorrow.getYear() == startDate.getYear() && tomorrow.getDayOfYear() == startDate.getDayOfYear()) {
+				startDateFormatted = "Tomorrow";
+			}
+			
+			if (startDateFormatted.equals(endDateFormatted)) {
+				return startDateFormatted;
+			}
+			
+			return fmt.print(startDate) + " - " + endDateFormatted;
+		}
 	}
 
 	public long getId() {
@@ -118,6 +222,22 @@ public class Task {
 			this.priority = Priority.LOW;
 			break;
 		}		
+	}
+	
+	public String getPriorityString() {
+		if (priority != null && priority.ordinal() < 4) {
+			return priorityStrings[priority.ordinal()];
+		}
+		
+		return priorityStrings[0];
+	}
+	
+	public String getPriorityColor() {
+		if (priority != null && priority.ordinal() < 4) {
+			return priorityColors[priority.ordinal()];
+		}
+		
+		return priorityColors[0];
 	}
 	
 	public Task clone() {

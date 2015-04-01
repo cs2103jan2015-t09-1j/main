@@ -36,7 +36,7 @@ import sg.edu.nus.cs2103t.omnitask.Logger;
 import sg.edu.nus.cs2103t.omnitask.logic.Data.DataUpdatedListener;
 import sg.edu.nus.cs2103t.omnitask.logic.DataImpl;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
-import sg.edu.nus.cs2103t.omnitask.ui.ViewController.ViewMode;
+import sg.edu.nus.cs2103t.omnitask.ui.MainViewController.ViewMode;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplayImpl;
 
 import com.tulskiy.keymaster.common.HotKey;
@@ -51,7 +51,7 @@ public class UIMainImpl extends UI {
 
 	private Stage primaryStage;
 
-	private ViewController viewController;
+	private MainViewController viewController;
 	
 	private Stage helpStage;
 	
@@ -112,9 +112,9 @@ public class UIMainImpl extends UI {
 	private void setupUI() {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(
-					"layout.fxml"));
+					"mainLayout.fxml"));
 			Parent root = (Parent) loader.load();
-			viewController = (ViewController) loader.getController();
+			viewController = (MainViewController) loader.getController();
 			viewController.setUI(this);
 
 			Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);

@@ -17,7 +17,7 @@ public class Task {
 
 	private UUID uuid;
 
-	private Priority priority;
+	private Priority priority = Priority.NONE;
 
 	private boolean recurrence;
 

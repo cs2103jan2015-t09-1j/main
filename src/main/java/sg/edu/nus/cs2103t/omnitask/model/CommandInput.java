@@ -2,6 +2,8 @@ package sg.edu.nus.cs2103t.omnitask.model;
 
 import org.joda.time.DateTime;
 
+import sg.edu.nus.cs2103t.omnitask.model.Task.Priority;
+
 // CommandInput object holds the parsed user commands parsed by Parser
 public class CommandInput {
 
@@ -18,10 +20,6 @@ public class CommandInput {
 		REDO
 	}
 	
-	public static enum Priority {
-		NONE, LOW, MEDIUM, HIGH
-	}
-	
 	private CommandType commandType;
 
 	private DateTime startDate;
@@ -32,7 +30,7 @@ public class CommandInput {
 	
 	private boolean recurrence;
 	
-	private Priority priority;
+	private Priority priority = Priority.NONE;
 
 	private String name;
 

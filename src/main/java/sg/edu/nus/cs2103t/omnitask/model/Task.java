@@ -119,6 +119,27 @@ public class Task {
 			break;
 		}		
 	}
+	
+	public Task clone() {
+		Task task = new Task();
+		
+		if (startDate != null) {
+			task.setStartDate(new DateTime().withMillis(startDate.getMillis()));
+		}
+		if (endDate != null) {
+			task.setEndDate(new DateTime().withMillis(endDate.getMillis()));
+		}
+		task.setId(id);
+		if (uuid != null) {
+			task.setUuid(UUID.fromString(uuid.toString()));
+		}
+		task.setPriority(priority);
+		task.setRecurrence(recurrence);
+		task.setName(name);
+		task.setType(type);
+		
+		return task;
+	}
 
 	@Override
 	public int hashCode() {

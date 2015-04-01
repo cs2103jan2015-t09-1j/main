@@ -47,7 +47,7 @@ public class UIMainImpl extends UI {
 
 	private static double WINDOW_WIDTH = 800;
 
-	private static double WINDOW_HEIGHT = 600;
+	private static double WINDOW_HEIGHT = 1000;
 
 	private Stage primaryStage;
 

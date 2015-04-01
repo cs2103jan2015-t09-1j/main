@@ -80,12 +80,32 @@ public class Controller extends Application {
 		// Implementation could be as sophisticated as needed
 		
 		// Sample (Bad!) Implementation:
+		if (userInput.trim().equals("a") || userInput.trim().equals("ad") || userInput.trim().equals("add")) {
+			possibleAutoComplete.add("add");
+		}
+		
 		if (userInput.trim().equals("d") || userInput.trim().equals("de") || userInput.trim().equals("del")) {
-			possibleAutoComplete.add("delete ");
+			possibleAutoComplete.add("delete");
 		}
 		
 		if (userInput.trim().equals("e") || userInput.trim().equals("ed") || userInput.trim().equals("edi")) {
 			possibleAutoComplete.add("edit");
+		}
+		
+		if (userInput.trim().equals("r") || userInput.trim().equals("re") || userInput.trim().equals("red")) {
+			possibleAutoComplete.add("redo");
+		}
+		
+		if (userInput.trim().equals("u") || userInput.trim().equals("un") || userInput.trim().equals("und")) {
+			possibleAutoComplete.add("undo");
+		}
+		
+		if (userInput.trim().equals("s") || userInput.trim().equals("se") || userInput.trim().equals("sea") || userInput.trim().equals("sear") || userInput.trim().equals("searc")) {
+			possibleAutoComplete.add("search");
+		}
+		
+		if (userInput.trim().equals("h") || userInput.trim().equals("he") || userInput.trim().equals("hel")) {
+			possibleAutoComplete.add("help");
 		}
 		
 		if (userInput.trim().equals("e") || userInput.trim().equals("ex") || userInput.trim().equals("exi")) {

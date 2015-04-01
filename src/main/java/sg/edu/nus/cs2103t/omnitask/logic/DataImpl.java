@@ -73,7 +73,7 @@ public class DataImpl extends Data {
 			clonedTasks.add(task.clone());
 		}
 		
-		return tasks;
+		return clonedTasks;
 	}
 
 	private Stack<ArrayList<Task>> getPreviousState() {
@@ -190,6 +190,9 @@ public class DataImpl extends Data {
 				taskIdToUpdate = i;
 			}
 		}
+		
+		// Replace the task object in arraylist with the new object
+		tasks.set(taskIdToUpdate, task);
 
 		if (taskIdToUpdate != -1) {
 			// Commit it to storage

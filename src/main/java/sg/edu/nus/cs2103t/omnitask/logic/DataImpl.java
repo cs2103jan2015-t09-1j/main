@@ -68,6 +68,11 @@ public class DataImpl extends Data {
 	public ArrayList<Task> getTasks() {
 		assertInited();
 
+		ArrayList<Task> clonedTasks = new ArrayList<Task>();
+		for (Task task : tasks) {
+			clonedTasks.add(task.clone());
+		}
+		
 		return tasks;
 	}
 

@@ -22,7 +22,7 @@ import sg.edu.nus.cs2103t.omnitasks.command.Utils;
 
 import com.joestelmach.natty.DateGroup;
 
-public class ParserMainImpl<joinStringArray> extends Parser {
+public class ParserMainImpl extends Parser {
 
 	private static final String[] DATE_INDICATORS = new String[]{"from", "by", "due", "to", "on"};
 	private static final String[] PRIORITY_INDICATORS = new String[]{"^h", "^m", "^l"};

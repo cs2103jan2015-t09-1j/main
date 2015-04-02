@@ -5,9 +5,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.web.*?>
 <?import javafx.scene.layout.GridPane?>
 	
-<GridPane fx:controller="sg.edu.nus.cs2103t.omnitask.ui.ViewController" 
+<GridPane fx:controller="sg.edu.nus.cs2103t.omnitask.ui.MainViewController" 
     xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="0" vgap="0">
 	<padding><Insets top="5" right="5" bottom="5" left="5"/></padding>
 	<columnConstraints>
@@ -32,9 +33,13 @@
 			GridPane.columnIndex="1" GridPane.rowIndex="0" />
     </GridPane>
 
-	<ListView
-		fx:id="listView"
+	<WebView
+		fx:id="agendaView"
 		GridPane.columnIndex="0" GridPane.rowIndex="1" />
+		
+	<!-- <WebView
+		fx:id="floatingView"
+		GridPane.columnIndex="1" GridPane.rowIndex="1" /> -->
 		
 	<Text
 		fx:id="outputText"

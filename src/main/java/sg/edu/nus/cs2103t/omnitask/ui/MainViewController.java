@@ -4,34 +4,42 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Worker;
+import javafx.concurrent.Worker.State;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
-import javafx.util.Callback;
+import javafx.scene.web.WebView;
+import netscape.javascript.JSObject;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 
-public class ViewController {
+public class MainViewController {
 	
 	private UI ui;
 	
 	@FXML private Text viewModeText;
 	
-	@FXML private ListView<Task> listView;
+	@FXML private WebView agendaView;
+	
+	private boolean agendaViewLoaded;
+	
+	@FXML private WebView floatingTasksView;
 	
 	@FXML private Text outputText;
 	
 	@FXML private TextField omniBar;
 	
-	private ObservableList<Task> allTasks;
+	private ArrayList<Task> allTasks;
 	
 	private ObservableList<Task> searchedTasks;
 	
@@ -48,8 +56,8 @@ public class ViewController {
 	
 	private ViewMode viewMode = ViewMode.ALL;
 	
-	public ViewController() {
-		allTasks = FXCollections.observableArrayList();
+	public MainViewController() {
+		allTasks = new ArrayList<Task>();
 		searchedTasks = FXCollections.observableArrayList();
 		commandHistory = new ArrayList<String>();
 	}
@@ -57,12 +65,20 @@ public class ViewController {
 	@FXML
     protected void initialize() {
 		setViewMode(ViewMode.ALL);
-	    listView.setCellFactory(new Callback<ListView<Task>, javafx.scene.control.ListCell<Task>>() {
-	       // @Override
-	        public ListCell<Task> call(ListView<Task> listView) {
-	            return new ListViewCell();
-	        }
-	    });
+
+		agendaView.setContextMenuEnabled(false);
+		agendaView.setZoom(javafx.stage.Screen.getPrimary().getDpi() / 96);
+		agendaView.getEngine().getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
+			@Override public void changed(ObservableValue ov, State oldState, State newState) {
+				if (newState == Worker.State.SUCCEEDED) {
+					agendaViewLoaded = true;
+				}
+			}
+		});
+		
+		agendaView.getEngine().load(getClass().getResource("/agendaView.html").toExternalForm());
+		JSObject jsobj = (JSObject) agendaView.getEngine().executeScript("window");
+		jsobj.setMember("java", new Bridge());
 	}
 
 	public void setUI(UI ui) {
@@ -229,6 +245,8 @@ public class ViewController {
 				}
 			}
 		}
+		
+		refreshCards();
 	}
 	
 	public void setSearchedTasks(String searchKeyword, List<Task> tasks) {
@@ -242,9 +260,11 @@ public class ViewController {
 	
 	public void setViewMode(ViewMode viewMode) {
 		if (viewMode == ViewMode.ALL) {
-			listView.setItems(allTasks);
+			// TODO: Fix me
+			//listView.setItems(allTasks);
 		} else if (viewMode == ViewMode.SEARCH) {
-			listView.setItems(searchedTasks);
+			// TODO: Fix me
+			//listView.setItems(searchedTasks);
 		}
 		
 		this.viewMode = viewMode;
@@ -261,19 +281,29 @@ public class ViewController {
 
 	}
 	
-	private class ListViewCell extends ListCell<Task> {
-		@Override
-		public void updateItem(Task task, boolean empty) {
-		    super.updateItem(task, empty);
-		    
-		    if (empty || task == null) {
-		        setGraphic(null);
-		        setText(null);
-		    } else if (task != null) {
-		    	TaskItemController data = new TaskItemController();
-		        data.setData(task);
-		        setGraphic(data.getView());
-		    }
+	private void refreshCards() {
+		if (agendaViewLoaded) {
+			agendaView.getEngine().executeScript("refreshCards();");
+		}
+	}
+	
+	public class Bridge {
+		public String helloWorld() {
+			return "Hello! " + new Random().nextInt(100);
+		}
+		
+		public ArrayList<Task> getTasks() {
+			return allTasks;
+		}
+		
+		public void markTaskAsDone(String uuid) {
+			// TODO: Implement
+			System.out.println("markTaskAsDone: " + uuid);
+		}
+		
+		public void markTaskAsNotDone(String uuid) {
+			// TODO: Implement
+			System.out.println("markTaskAsNotDone: " + uuid);
 		}
 	}
 

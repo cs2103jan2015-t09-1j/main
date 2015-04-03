@@ -152,6 +152,8 @@ public class DataImpl extends Data {
 
 			throw ex;
 		}
+		
+		// Clear redoStack because no undo was made.
 		redoStack.clear();
 
 		return true;
@@ -183,6 +185,8 @@ public class DataImpl extends Data {
 
 			return false;
 		}
+		
+		// Clear redoStack because no undo was made.
 		redoStack.clear();
 
 		return true;
@@ -216,7 +220,7 @@ public class DataImpl extends Data {
 		String tmpTaskName = "";
 
 		for (int i = 0; i < tasks.size(); i++) {
-			if (tasks.get(i).getUuid().equals(taskToEdit.getUuid())) {
+			if (tasks.get(i).getId() == (taskToEdit.getId())) {
 				// store the task name from the file in a variable incase need
 				// to revert below
 				tmpTaskName = tasks.get(i).getName();
@@ -243,9 +247,9 @@ public class DataImpl extends Data {
 
 				return false;
 			}
-		} else {
-			return false;
 		}
+
+		// Clear redoStack because no undo was made.
 		redoStack.clear();
 
 		return true;
@@ -297,15 +301,14 @@ public class DataImpl extends Data {
 			return false;
 		} else {
 
-			// saving the current state into currentList
-			currentList = getTasks();
+			// Saving current Tasks list into redoList
 			redoList = getTasks();
-
-			// pushing to redoStack to save multiple states
+			// Pushing to redoStack ("future state") to save current state
 			redoStack.push(redoList);
 
-			// overwrite current state with previous state
+			// Getting previous state
 			previousList = previousState.peek();
+			// Overwrite current state with previous state
 			tasks.setAll(previousState.pop());
 
 			try {
@@ -327,8 +330,10 @@ public class DataImpl extends Data {
 		if (redoStack.empty()) {
 			return false;
 		} else {
-
+			previousList = getTasks();
+			// Pushing to previous state to save previous state
 			previousState.push(previousList);
+			// Overwrite current state with "future" state
 			tasks.setAll(redoStack.pop());
 
 			try {

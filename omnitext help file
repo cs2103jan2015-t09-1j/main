@@ -1,0 +1,593 @@
+<OVERVIEW>
+
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h2>OmniTask Help Menu</h2>
+
+<p><span style="font-family:lucida sans unicode,lucida grande,sans-serif;">Welcome!&nbsp;Dear user this menu collates all the available commands in OmniTask and their aliases. If you wish to look at a&nbsp;more specific description of commands, type help &lt;Command Name&gt;.</span></p>
+
+<h1 dir="ltr" style="margin-top: 24pt; margin-bottom: 0pt;"><font face="Verdana"><span style="font-size: 15px; line-height: 20.7000007629395px; white-space: pre-wrap;">Available Commands</span></font></h1>
+
+<table style="border: none; border-collapse: collapse; width: 624px;">
+	<colgroup>
+		<col width="*" />
+		<col width="*" />
+	</colgroup>
+	<tbody>
+		<tr style="height: 0px;">
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px; background-color: rgb(74, 134, 232);">
+			<p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt; text-align: center;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; color: rgb(255, 255, 255); font-weight: bold; vertical-align: baseline; white-space: pre-wrap; background-color: transparent;">Command</span></span></strong></p>
+			</td>
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px; background-color: rgb(74, 134, 232);">
+			<p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt; text-align: center;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; color: rgb(255, 255, 255); font-weight: bold; vertical-align: baseline; white-space: pre-wrap; background-color: transparent;">Format</span></span></strong></p>
+			</td>
+		</tr>
+		<tr style="height: 0px;">
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;">
+			<p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">add </span></span></strong></p>
+			</td>
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;">
+			<p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;"><strong><span style="color:#0000FF;">add</span> <span style="color:#FF8C00;">&lt;Task Name&gt;</span> <span style="color:#0000FF;">#</span><span style="color:#FF8C00;">&lt;Category&gt;</span> <span style="color:#0000FF;">due</span> <span style="color:#FF8C00;">&lt;Date/Time&gt;</span><span style="color:#0000FF;"> ^</span><span style="color:#FF8C00;">&lt;priority&gt;</span>&nbsp;</strong></p>
+			</td>
+		</tr>
+		<tr style="height: 0px;">
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;">
+			<p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">display</span></span></strong></p>
+			</td>
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;">
+			<p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;"><strong><span style="color:#0000FF;">show</span> <span style="color:#FF8C00;">&lt;Category&gt;&nbsp;</span></strong></p>
+			</td>
+		</tr>
+		<tr style="height: 0px;">
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;">
+			<p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">search</span></span></strong></p>
+			</td>
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;">
+			<p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;"><strong><span style="color:#0000FF;">search</span> <span style="color:#FF8C00;">&lt;Task Name&gt;</span> or <span style="color:#FF8C00;">&lt;Date/Time&gt;</span> or <span style="color:#FF8C00;">&lt;Category&gt;&nbsp;</span></strong></p>
+			</td>
+		</tr>
+		<tr style="height: 0px;">
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;">
+			<p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">delete</span></span></strong></p>
+			</td>
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;">
+			<p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;"><strong><span style="color:#0000FF;">delete</span> <span style="color:#FF8C00;">&lt;Task ID&gt;&nbsp;</span></strong></p>
+			</td>
+		</tr>
+		<tr style="height: 0px;">
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;">
+			<p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">edit</span></span></strong></p>
+			</td>
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;">
+			<p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;"><strong><span style="color:#0000FF;">edit</span> <span style="color:#FF8C00;">&lt;Task ID&gt;</span> <span style="color:#FF8C00;">&lt;New Task Name&gt;</span> <span style="color:#0000FF;">#</span><span style="color:#FF8C00;">&lt;Category&gt;</span> <span style="color:#0000FF;">due</span> <span style="color:#FF8C00;">&lt;Date/Time&gt;</span></strong></p>
+			</td>
+		</tr>
+		<tr style="height: 0px;">
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;">
+			<p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">undo/redo</span></span></strong></p>
+			</td>
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;">
+			<p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;"><span style="color:#0000FF;">undo</span>/<span style="color:#0000FF;">redo</span></span></span></strong></p>
+			</td>
+		</tr>
+		<tr style="height: 0px;">
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;">
+			<p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">storage</span></span></strong></p>
+			</td>
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;">
+			<p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;"><strong><span style="color:#0000FF;">storage</span> <span style="color:#FF8C00;">&lt;New Filename&gt;</span></strong></p>
+			</td>
+		</tr>
+		<tr style="height: 0px;">
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;">
+			<p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">help</span></span></strong></p>
+			</td>
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;">
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt;"><strong><font face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;"><span style="color:#0000FF;">help</span> <span style="color:#FF8C00;">&lt;Command Name&gt;</span> (specific desription on commands)</span></font></strong></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<h1 dir="ltr" style="line-height:1.3800000000000001;margin-top:24pt;margin-bottom:0pt;"><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 15px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">Using Flexible Commands</span></span></h1>
+
+<p dir="ltr" style="line-height:1.3800000000000001;margin-top:10pt;margin-bottom:10pt;"><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">OmniTask can be flexible if you choose to use different aliases to perform the same function. Table below shows the standard commands and their aliases.</span></span></p>
+
+<div dir="ltr" style="margin-left:0pt;">
+<table style="border:none;border-collapse:collapse;width:624px">
+	<colgroup>
+		<col width="*" />
+		<col width="*" />
+	</colgroup>
+	<tbody>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;background-color:#4a86e8;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;text-align: center;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; color: rgb(255, 255, 255); font-weight: bold; vertical-align: baseline; white-space: pre-wrap; background-color: transparent;">Commands</span></span></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;background-color:#4a86e8;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;text-align: center;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; color: rgb(255, 255, 255); font-weight: bold; vertical-align: baseline; white-space: pre-wrap; background-color: transparent;">Aliases</span></span></strong></p>
+			</td>
+		</tr>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">add </span></span></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">create, new</span></span></strong></p>
+			</td>
+		</tr>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">display</span></span></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">show, list</span></span></strong></p>
+			</td>
+		</tr>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">search</span></span></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">find,look</span></span></strong></p>
+			</td>
+		</tr>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">search by</span></span></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">find with,look for</span></span></strong></p>
+			</td>
+		</tr>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">delete</span></span></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">remove</span></span></strong></p>
+			</td>
+		</tr>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">edit</span></span></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">change, update</span></span></strong></p>
+			</td>
+		</tr>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">undo</span></span></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">revert, recover, back</span></span></strong></p>
+			</td>
+		</tr>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">priority</span></span></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">rank, order</span></span></strong></p>
+			</td>
+		</tr>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">storage</span></span></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">directory, location</span></span></strong></p>
+			</td>
+		</tr>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">help</span></span></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">manual</span></span></strong></p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</div>
+</body>
+</html>
+
+
+</OVERVIEW>
+<ADD>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h2>OmniTask Add Tasks</h2>
+
+<p>You can create a new task with&nbsp;specific paramters, OmniTask will support a different combination of&nbsp;parameters.&nbsp;</p>
+
+<div dir="ltr" style="margin-left:0pt;">
+<table style="border-collapse: collapse; border: none; width: 1300px;">
+	<colgroup>
+		<col width="*" />
+		<col width="*" />
+	</colgroup>
+	<tbody>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;background-color:#4a86e8;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt; text-align: center;"><font color="#ffffff" face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;"><b>Description</b></span></font></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;background-color:#4a86e8;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt; text-align: center;"><font color="#ffffff" face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;"><b>Format</b></span></font></p>
+			</td>
+			<td style="text-align: center; border: 1px solid rgb(54, 95, 145); vertical-align: top; padding: 7px; background-color: rgb(74, 134, 232);"><font color="#ffffff" face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;"><b>Example</b></span></font></td>
+		</tr>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><span style="font-family: Verdana; font-size: 13px; white-space: pre-wrap;">Add a Task without any due date/time/category</span></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span style="color: rgb(0, 0, 255);"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">add</span></span><span style="font-size: 13px; font-family: Verdana; color: rgb(201, 218, 248); vertical-align: baseline; white-space: pre-wrap;"> </span><em><span style="color: rgb(255, 140, 0);"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">&lt;Task Name&gt;</span></span></em></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="text-align: center;"><span style="color: rgb(0, 0, 255);">add&nbsp;</span><span style="color: rgb(255, 140, 0);">Assignment 1</span></span></strong></td>
+		</tr>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;">Task with a due date&nbsp;</p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7fc0-c855-44ad-bf1f7cac369c"><span style="color: rgb(0, 0, 255);"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">add</span></span><span style="font-size: 13px; font-family: Verdana; color: rgb(201, 218, 248); vertical-align: baseline; white-space: pre-wrap;"> </span><em><span style="color: rgb(255, 140, 0);"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">&lt;Task Name&gt;</span></span></em><span style="font-size: 13px; font-family: Verdana; color: rgb(234, 153, 153); vertical-align: baseline; white-space: pre-wrap;"> </span><span style="color: rgb(0, 0, 255);"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">by </span></span><em><span style="color: rgb(255, 140, 0);"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">&lt;Date&gt;</span></span></em></span></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color: rgb(0, 0, 255);">add</span>&nbsp;<span style="color: rgb(255, 140, 0);">Assignment 1 For CS2103T</span>&nbsp;<font color="#0000ff">by</font>&nbsp;<span style="color: rgb(255, 140, 0);">13th April 2015</span></strong></td>
+		</tr>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;">Task with due date and time</p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7fc5-2866-f789-aa3ad6450592"><span style="color: rgb(0, 0, 255);"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">add</span></span><span style="font-size: 13px; font-family: Verdana; color: rgb(201, 218, 248); vertical-align: baseline; white-space: pre-wrap;"> </span><span style="color: rgb(255, 140, 0);"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">&lt;Task Name&gt;</span></span><span style="color: rgb(0, 0, 255);"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;"> </span><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">by</span></span><span style="font-size: 13px; font-family: Verdana; color: rgb(201, 218, 248); vertical-align: baseline; white-space: pre-wrap;"> </span><span style="color: rgb(255, 140, 0);"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">&lt;Date&gt; &lt;Time&gt;</span></span></span></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color: rgb(0, 0, 255);">add</span>&nbsp;<span style="color: rgb(255, 140, 0);">Assignment 1 For CS2103T</span>&nbsp;<font color="#0000ff">by</font>&nbsp;<span style="color: rgb(255, 140, 0);">Sunday 3pm</span></strong></td>
+		</tr>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;">Task with a due date,time &amp; category</p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p><strong><span id="docs-internal-guid-2129a58a-7fc5-1753-3cba-bc0d616c4af5"><span style="color: rgb(0, 0, 255);"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">add</span></span><span style="font-size: 13px; font-family: Verdana; color: rgb(201, 218, 248); vertical-align: baseline; white-space: pre-wrap;"> </span><span style="color: rgb(255, 140, 0);"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">&lt;Task Name&gt;</span></span><span style="font-size: 13px; font-family: Verdana; color: rgb(234, 153, 153); vertical-align: baseline; white-space: pre-wrap;"> </span><span style="color: rgb(0, 0, 255);"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">by</span></span><span style="font-size: 13px; font-family: Verdana; color: rgb(201, 218, 248); vertical-align: baseline; white-space: pre-wrap;"> </span><span style="color: rgb(255, 140, 0);"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">&lt;Date&gt; &lt;Time&gt;</span></span></span></strong></p>
+
+			<p><strong><span style="color: rgb(0, 0, 255);"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">#</span></span><span style="color: rgb(255, 140, 0);"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">&lt;Category&gt;</span></span></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color: rgb(0, 0, 255);">add</span>&nbsp;<span style="color: rgb(255, 140, 0);">Assignment 1</span>&nbsp;<span style="color: rgb(0, 0, 255);">#</span><span style="color: rgb(255, 140, 0);">CS2103T</span>&nbsp;<span style="color: rgb(0, 0, 255);">by</span>&nbsp;<span style="color: rgb(255, 140, 0);">Sunday 2359</span></strong></td>
+		</tr>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p>Task with a due date,time.category and priority</p>
+
+			<p>Priority Levels</p>
+
+			<p>l - Low Priority Task</p>
+
+			<p>m - Mid Priority Task</p>
+
+			<p>h - High Priority Task</p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p><strong><span id="docs-internal-guid-2129a58a-7fc5-1753-3cba-bc0d616c4af5"><span style="color: rgb(0, 0, 255);"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">add</span></span><span style="font-size: 13px; font-family: Verdana; color: rgb(201, 218, 248); vertical-align: baseline; white-space: pre-wrap;"> </span><span style="color: rgb(255, 140, 0);"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">&lt;Task Name&gt;</span></span><span style="font-size: 13px; font-family: Verdana; color: rgb(234, 153, 153); vertical-align: baseline; white-space: pre-wrap;"> </span><span style="color: rgb(0, 0, 255);"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">by</span></span><span style="font-size: 13px; font-family: Verdana; color: rgb(201, 218, 248); vertical-align: baseline; white-space: pre-wrap;"> </span><span style="color: rgb(255, 140, 0);"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">&lt;Date&gt; &lt;Time&gt;</span></span></span></strong>&nbsp;&nbsp; &nbsp;</p>
+
+			<p><strong><span style="color: rgb(0, 0, 255);"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">#</span></span><span style="color: rgb(255, 140, 0);"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">&lt;Category&gt; </span></span><span style="color:#0000FF;"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">^</span></span><span style="color: rgb(255, 140, 0);"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">&lt;priority&gt;</span></span></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color: rgb(0, 0, 255);">add</span>&nbsp;<span style="color: rgb(255, 140, 0);">Assignment 1&nbsp;</span><span style="color: rgb(0, 0, 255);">#</span><span style="color: rgb(255, 140, 0);">CS2103T</span>&nbsp;<span style="color: rgb(0, 0, 255);">^</span><span style="color: rgb(255, 140, 0);">h</span></strong></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+</body>
+</html>
+
+
+</ADD>
+<DELETE>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h2>OmniTask Delete&nbsp;Tasks</h2>
+
+<p>Deleting&nbsp;task is easy by using the delete command and specifying the id to delete.&nbsp;</p>
+
+<div dir="ltr" style="margin-left:0pt;">
+<table style="border-collapse: collapse; border: none; width: 500px;">
+	<colgroup>
+		<col width="*" />
+		<col width="*" />
+	</colgroup>
+	<tbody>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;background-color:#4a86e8;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt; text-align: center;"><font color="#ffffff" face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;"><b>Description</b></span></font></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;background-color:#4a86e8;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt; text-align: center;"><font color="#ffffff" face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;"><b>Format</b></span></font></p>
+			</td>
+			<td style="text-align: center; border: 1px solid rgb(54, 95, 145); vertical-align: top; padding: 7px; background-color: rgb(74, 134, 232);"><font color="#ffffff" face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;"><b>Example</b></span></font></td>
+		</tr>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt;"><font face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;">Delete a specific task by id</span></font></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;"><font color="#0000ff">delete</font></span><span style="font-size: 13px; font-family: Verdana; color: rgb(201, 218, 248); vertical-align: baseline; white-space: pre-wrap;"> </span><em><span style="color: rgb(255, 140, 0);"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">&lt;Task ID&gt;</span></span></em></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="text-align: center;"><span style="color: rgb(0, 0, 255);">delete&nbsp;</span><span style="color: rgb(255, 140, 0);">1</span></span></strong></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+</body>
+</html>
+
+</DELETE>
+<EDIT>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h2>OmniTask Edit&nbsp;Tasks</h2>
+
+<p>You can edit tasks with&nbsp;these mutable parameters. Task Id, Task Name, Category, Date,Time and Priority&nbsp;</p>
+
+<div dir="ltr" style="margin-left:0pt;">
+<table style="border-collapse: collapse; border: none; width: 700px;">
+	<colgroup>
+		<col width="*" />
+		<col width="*" />
+	</colgroup>
+	<tbody>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;background-color:#4a86e8;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt; text-align: center;"><font color="#ffffff" face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;"><b>Description</b></span></font></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;background-color:#4a86e8;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt; text-align: center;"><font color="#ffffff" face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;"><b>Format</b></span></font></p>
+			</td>
+			<td style="text-align: center; border: 1px solid rgb(54, 95, 145); vertical-align: top; padding: 7px; background-color: rgb(74, 134, 232);"><font color="#ffffff" face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;"><b>Example</b></span></font></td>
+		</tr>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt;">Edit specific tasks title</p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span style="color:#0000FF;">edit</span> <span style="color:#FF8C00;">&lt;Task ID&gt; &lt;New Task Name&gt;</span></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color:#0000FF;">edit</span> <span style="color:#FF8C00;">1 Hello World!</span></strong></td>
+		</tr>
+		<tr>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">Edit task details with due date/time &amp; category</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color:#0000FF;">edit</span> &lt;<span style="color:#FF8C00;">Task ID&gt; &lt;New Task Name&gt;</span> <span style="color:#0000FF;">#</span><span style="color:#FF8C00;">&lt;Category&gt;</span> <span style="color:#0000FF;">due</span> <span style="color:#FF8C00;">&lt;Date/Time&gt;</span></strong></td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color:#0000FF;">edit</span> <span style="color:#FF8C00;">1</span> <span style="color:#0000FF;">#</span><span style="color:#FF8C00;">CS2103T</span> <span style="color:#0000FF;">due</span> <span style="color:#FF8C00;">Friday</span></strong></td>
+		</tr>
+		<tr>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">Edit task priority</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color:#0000FF;">edit</span> <span style="color:#FF8C00;">&lt;Task ID&gt;</span> <span style="color:#0000FF;">^</span><span style="color:#FF8C00;">&lt;Priority&gt;</span>&nbsp;</strong></td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color:#0000FF;">edit</span> <span style="color:#FF8C00;">1</span> <span style="color:#0000FF;">^</span><span style="color:#FF8C00;">2</span></strong></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+</body>
+</html>
+
+</EDIT>
+<DISPLAY>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h2>OmniTask&nbsp;Show&nbsp;Tasks</h2>
+
+<p>You can filter task that are more important to you by using the show command.</p>
+
+<div dir="ltr" style="margin-left:0pt;">
+<table style="border-collapse: collapse; border: none; width: 700px;">
+	<colgroup>
+		<col width="*" />
+		<col width="*" />
+	</colgroup>
+	<tbody>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;background-color:#4a86e8;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt; text-align: center;"><strong><font color="#ffffff" face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;">Description</span></font></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;background-color:#4a86e8;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt; text-align: center;"><strong><font color="#ffffff" face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;">Format</span></font></strong></p>
+			</td>
+			<td style="text-align: center; border: 1px solid rgb(54, 95, 145); vertical-align: top; padding: 7px; background-color: rgb(74, 134, 232);"><strong><font color="#ffffff" face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;">Example</span></font></strong></td>
+		</tr>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt;">Display all Tasks</p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span style="color:#0000FF;">show all</span></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><font color="#0000ff">show all</font></strong></td>
+		</tr>
+		<tr>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">Display tasks from a category&nbsp;</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color:#0000FF;">show</span> <span style="color:#FF8C00;">&lt;Category&gt;</span></strong></td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color:#0000FF;">show</span> <span style="color:#FF8C00;">CS2013T</span></strong></td>
+		</tr>
+		<tr>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">Display archived tasks&nbsp;</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><span style="color:#0000FF;"><strong>show archive&nbsp;</strong></span></td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><span style="color:#0000FF;"><strong>show archive</strong></span></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+</body>
+</html>
+
+</DISPLAY>
+<SEARCH>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h2>OmniTask&nbsp;Search&nbsp;Tasks</h2>
+
+<p>If you need to look for something urgently&nbsp;just use the search command to find what you want in a split second.</p>
+
+<div dir="ltr" style="margin-left:0pt;">
+<table style="border-collapse: collapse; border: none; width: 700px;">
+	<colgroup>
+		<col width="*" />
+		<col width="*" />
+	</colgroup>
+	<tbody>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;background-color:#4a86e8;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt; text-align: center;"><strong><font color="#ffffff" face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;">Description</span></font></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;background-color:#4a86e8;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt; text-align: center;"><strong><font color="#ffffff" face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;">Format</span></font></strong></p>
+			</td>
+			<td style="text-align: center; border: 1px solid rgb(54, 95, 145); vertical-align: top; padding: 7px; background-color: rgb(74, 134, 232);"><strong><font color="#ffffff" face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;">Example</span></font></strong></td>
+		</tr>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt;">Search task by name</p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span style="color:#0000FF;">search</span><span style="color:#FF8C00;"> &lt;Task Name&gt;</span></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color:#0000FF;">search</span> <span style="color:#FF8C00;">john birthday</span></strong></td>
+		</tr>
+		<tr>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">Search task by due date&nbsp;</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color:#0000FF;">search</span> <span style="color:#FF8C00;">&lt;Date/Time&gt;</span></strong></td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color:#0000FF;">search</span> <span style="color:#FF8C00;">13th April 2015</span></strong></td>
+		</tr>
+		<tr>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">Search task by category&nbsp;</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color:#0000FF;">search</span><span style="color:#FF8C00;">&lt;Category&gt;</span></strong></td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color:#0000FF;">search</span> <span style="color:#FF8C00;">CS2013T</span></strong></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+</body>
+</html>
+
+</SEARCH>
+<STORAGE>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h2>OmniTask Change Storage&nbsp;Location</h2>
+
+<p>If you are running out of space fret not omnitask allows you to set the&nbsp;desired&nbsp;storage location to store OmniTask files.&nbsp;</p>
+
+<div dir="ltr" style="margin-left:0pt;">
+<table style="border-collapse: collapse; border: none; width: 700px;">
+	<colgroup>
+		<col width="*" />
+		<col width="*" />
+	</colgroup>
+	<tbody>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;background-color:#4a86e8;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt; text-align: center;"><strong><font color="#ffffff" face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;">Description</span></font></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;background-color:#4a86e8;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt; text-align: center;"><strong><font color="#ffffff" face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;">Format</span></font></strong></p>
+			</td>
+			<td style="text-align: center; border: 1px solid rgb(54, 95, 145); vertical-align: top; padding: 7px; background-color: rgb(74, 134, 232);"><strong><font color="#ffffff" face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;">Example</span></font></strong></td>
+		</tr>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt;">Set storage location (Direct path)</p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span style="color:#0000FF;">storage</span> <span style="color:#FF8C00;">&lt;Direct Path&gt;</span></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color:#0000FF;">storage</span><span style="color:#FF8C00;"> C:\Program Files\Data</span></strong></td>
+		</tr>
+		<tr>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">Set storage location (Relative&nbsp;path)&nbsp;</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color:#0000FF;">storage</span> <span style="color:#FF8C00;">&lt;Relative Path&gt;</span></strong></td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color:#0000FF;">storage</span><span style="color:#FF8C00;"> \Program Files\Data</span></strong></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+</body>
+</html>
+
+</STORAGE>
+<REDO>
+<UNDO>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h2>OmniTask Undo/Redo</h2>
+
+<p>Make a mistake? just use the undo command to revert the changes you made earlier on!&nbsp;</p>
+
+<p>Decide not to undo? no problem you can redo a command!</p>
+
+<div dir="ltr" style="margin-left:0pt;">
+<table style="border-collapse: collapse; border: none; width: 700px;">
+	<colgroup>
+		<col width="*" />
+		<col width="*" />
+	</colgroup>
+	<tbody>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;background-color:#4a86e8;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt; text-align: center;"><strong><font color="#ffffff" face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;">Description</span></font></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;background-color:#4a86e8;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt; text-align: center;"><strong><font color="#ffffff" face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;">Format</span></font></strong></p>
+			</td>
+			<td style="text-align: center; border: 1px solid rgb(54, 95, 145); vertical-align: top; padding: 7px; background-color: rgb(74, 134, 232);"><strong><font color="#ffffff" face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;">Example</span></font></strong></td>
+		</tr>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt;">Undo previous changes</p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span style="color:#0000FF;">undo</span></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><font color="#0000ff"><b>undo</b></font></td>
+		</tr>
+		<tr>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">Redo previous undo&nbsp;</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><font color="#0000ff"><b>redo</b></font></td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color:#0000FF;">redo</span></strong></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+</body>
+</html>
+
+
+</UNDO>
+</REDO>
+
+
+
+

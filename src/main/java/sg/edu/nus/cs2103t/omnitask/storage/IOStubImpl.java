@@ -28,20 +28,22 @@ public class IOStubImpl extends IO {
 	}
 	
 	@Override
-	public void saveToFile(List<Task> tasks) {
+	public void saveToFile(List<Task> tasks, boolean undoable) {
 		this.tasks.clear();
 		this.tasks.addAll(tasks);
 	}
 
 	@Override
-	public void undoFile() {
+	public boolean undoFile() {
 		// TODO Auto-generated method stub
+		return true;
 		
 	}
 
 	@Override
-	public void redoFile() {
+	public boolean redoFile() {
 		// TODO Auto-generated method stub
+		return true;
 		
 	}
 

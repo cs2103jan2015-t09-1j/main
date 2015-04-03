@@ -11,11 +11,11 @@ import sg.edu.nus.cs2103t.omnitask.model.Task;
 public abstract class IO {
 	public abstract ArrayList<Task> readFromFile() throws IOException;
 	
-	public abstract void saveToFile(List<Task> tasks) throws IOException;
+	public abstract void saveToFile(List<Task> tasks, boolean undoable) throws IOException;
 	
-	public abstract void undoFile();
+	public abstract boolean undoFile() throws IOException;
 	
-	public abstract void redoFile();
+	public abstract boolean redoFile() throws IOException;
 	
 	public abstract String readFromHelpFile(String helpType) throws IOException; 
 	

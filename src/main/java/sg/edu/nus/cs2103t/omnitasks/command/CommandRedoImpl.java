@@ -1,5 +1,7 @@
 package sg.edu.nus.cs2103t.omnitasks.command;
 
+import java.io.IOException;
+
 import sg.edu.nus.cs2103t.omnitask.Controller;
 import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
@@ -15,12 +17,18 @@ public class CommandRedoImpl extends Command {
 	
 	@Override
 	public boolean processCommand(Data data, UI ui) {
-		if(data.redo()){
-			ui.showMessage("Redo completed!");
-			return true;
-		}
-		else {
-			ui.showMessage("You have no Redo entries");
+		try {
+			if(data.redo()){
+				ui.showMessage("Redo completed!");
+				return true;
+			}
+			else {
+				ui.showMessage("You have no Redo entries");
+				return false;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 			return false;
 		}
 	}

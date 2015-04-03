@@ -26,32 +26,23 @@ public class DataImpl extends Data {
 	private static DataImpl data;
 
 	private ObservableList<Task> tasks;
-	
+
 	private SortedList<Task> sortedTasks;
-
-	private Stack<ArrayList<Task>> previousState;
-
-	private Stack<ArrayList<Task>> redoStack;
-
-	private ArrayList<Task> redoList;
-	
-	private ArrayList<Task> currentList;
-	
-	private ArrayList<Task> previousList;
 
 	protected IO io;
 
 	private boolean inited;
-	
+
 	private ListChangeListener<Task> tasksChangeListener = new ListChangeListener<Task>() {
 
 		@Override
-		public void onChanged(javafx.collections.ListChangeListener.Change<? extends Task> changes) {
+		public void onChanged(
+				javafx.collections.ListChangeListener.Change<? extends Task> changes) {
 			for (DataUpdatedListener listener : dataUpdatedListeners) {
 				listener.dataUpdated(getTasks(), changes);
 			}
 		}
-		
+
 	};
 
 	public static DataImpl GetSingleton() {
@@ -76,8 +67,7 @@ public class DataImpl extends Data {
 		sortedTasks = tasks.sorted(Task.taskSorterComparator);
 		sortedTasks.addListener(tasksChangeListener);
 		tasks.addAll(io.readFromFile());
-		redoStack = new Stack<ArrayList<Task>>();
-		previousState = new Stack<ArrayList<Task>>();
+
 		inited = true;
 
 		return this;
@@ -95,15 +85,8 @@ public class DataImpl extends Data {
 		for (Task task : sortedTasks) {
 			clonedTasks.add(task.clone());
 		}
-		
+
 		return clonedTasks;
-	}
-
-	private Stack<ArrayList<Task>> getPreviousState() {
-		previousList = getTasks();
-		previousState.push((ArrayList<Task>) previousList.clone());
-
-		return previousState;
 	}
 
 	// Get new "viewing" taskId which can be used for a new task
@@ -124,7 +107,7 @@ public class DataImpl extends Data {
 	@Override
 	public boolean addTask(Task task) throws TaskNoNameException, IOException {
 		assertInited();
-		getPreviousState();
+		
 		// Create new task object
 		if (task.getName().trim().isEmpty()) {
 			throw new TaskNoNameException();
@@ -143,14 +126,14 @@ public class DataImpl extends Data {
 
 		// Commit it to storage
 		try {
-			io.saveToFile(tasks.subList(0, tasks.size()));
+			io.saveToFile(tasks.subList(0, tasks.size()), true);
 		} catch (IOException ex) {
 			// Reverse change
 			tasks.remove(tasks.size() - 1);
 
 			throw ex;
 		}
-		redoStack.clear();
+		
 
 		return true;
 	}
@@ -158,7 +141,7 @@ public class DataImpl extends Data {
 	@Override
 	public boolean deleteTask(Task taskToRemove) {
 		assertInited();
-		getPreviousState();
+		
 
 		int indexToRemove = -1;
 
@@ -170,7 +153,7 @@ public class DataImpl extends Data {
 		// Commit it to storage
 		try {
 			updateTaskId();
-			io.saveToFile(tasks);
+			io.saveToFile(tasks, true);
 		} catch (IOException ex) {
 			// TODO: Handle error
 			ex.printStackTrace();
@@ -181,7 +164,7 @@ public class DataImpl extends Data {
 
 			return false;
 		}
-		redoStack.clear();
+		
 
 		return true;
 	}
@@ -196,7 +179,7 @@ public class DataImpl extends Data {
 			task.setId(i + 1);
 			tmpTasks.add(task);
 		}
-		
+
 		tasks.clear();
 		tasks.addAll(tmpTasks);
 	}
@@ -204,8 +187,7 @@ public class DataImpl extends Data {
 	@Override
 	public boolean editTask(Task task) {
 		assertInited();
-		getPreviousState();
-
+		
 		int taskIdToUpdate = -1;
 		String tmpTaskName = "";
 
@@ -217,14 +199,14 @@ public class DataImpl extends Data {
 				taskIdToUpdate = i;
 			}
 		}
-		
+
 		// Replace the task object in arraylist with the new object
 		tasks.set(taskIdToUpdate, task);
 
 		if (taskIdToUpdate != -1) {
 			// Commit it to storage
 			try {
-				io.saveToFile(tasks);
+				io.saveToFile(tasks, true);
 			} catch (IOException ex) {
 				// TODO: Handle error
 				ex.printStackTrace();
@@ -239,7 +221,7 @@ public class DataImpl extends Data {
 		} else {
 			return false;
 		}
-		redoStack.clear();
+		
 
 		return true;
 	}
@@ -281,59 +263,50 @@ public class DataImpl extends Data {
 	public String getHelpDescriptors(String helpType) throws IOException {
 		return io.readFromHelpFile(helpType);
 	}
-	
-	public boolean undo() {
-		if (previousState.empty()) {
-			return false;
+
+	public boolean undo() throws IOException {
+		/*
+		 * if (previousState.empty()) { return false; } else {
+		 * 
+		 * //saving the current state into currentList currentList = getTasks();
+		 * redoList = getTasks();
+		 * 
+		 * //pushing to redoStack to save multiple states
+		 * redoStack.push(redoList);
+		 * 
+		 * //overwrite current state with previous state previousList =
+		 * previousState.peek(); tasks.clear();
+		 * tasks.addAll(previousState.pop());
+		 * 
+		 * try { io.saveToFile(tasks); } catch (IOException ex) { // TODO:
+		 * Handle error ex.printStackTrace(); printError("IO Exception");
+		 * 
+		 * }
+		 */
+		if (io.undoFile()) {
+			return true;			
 		} else {
-
-			//saving the current state into currentList
-			currentList = getTasks();
-			redoList = getTasks();
-			
-			//pushing to redoStack to save multiple states
-			redoStack.push(redoList);
-			
-			//overwrite current state with previous state
-			previousList = previousState.peek();
-			tasks.clear();
-			tasks.addAll(previousState.pop());
-
-			try {
-				io.saveToFile(tasks);
-			} catch (IOException ex) {
-				// TODO: Handle error
-				ex.printStackTrace();
-				printError("IO Exception");
-
-			}
-
-			return true;
-
+			return false;
 		}
 	}
 
 	@Override
-	public boolean redo() {
-		if (redoStack.empty()) {
-			return false;
+	public boolean redo() throws IOException {
+		/*
+		 * if (redoStack.empty()) { return false; } else {
+		 * 
+		 * previousState.push(previousList); tasks.clear();
+		 * tasks.addAll(redoStack.pop());
+		 * 
+		 * try { io.saveToFile(tasks); } catch (IOException ex) { // TODO:
+		 * Handle error ex.printStackTrace(); printError("IO Exception");
+		 * 
+		 * }
+		 */
+		if (io.redoFile()) {
+			return true;			
 		} else {
-
-			previousState.push(previousList);
-			tasks.clear();
-			tasks.addAll(redoStack.pop());
-
-			try {
-				io.saveToFile(tasks);
-			} catch (IOException ex) {
-				// TODO: Handle error
-				ex.printStackTrace();
-				printError("IO Exception");
-
-			}
-
-			return true;
+			return false;
 		}
-
 	}
 }

@@ -1,5 +1,7 @@
 package sg.edu.nus.cs2103t.omnitasks.command;
 
+import java.io.IOException;
+
 import sg.edu.nus.cs2103t.omnitask.Controller;
 import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
@@ -15,12 +17,18 @@ public class CommandUndoImpl extends Command {
 	
 	@Override
 	public boolean processCommand(Data data, UI ui) {
-		if(data.undo()){
-			ui.showMessage("Undo completed!");
-			return true;
-		}
-		else {
-			ui.showMessage("You have no previous entries");
+		try {
+			if(data.undo()){
+				ui.showMessage("Undo completed!");
+				return true;
+			}
+			else {
+				ui.showMessage("You have no previous entries");
+				return false;
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 			return false;
 		}
 	}

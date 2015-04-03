@@ -3,12 +3,14 @@ package sg.edu.nus.cs2103t.omnitask.logic;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Stack;
 import java.util.UUID;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
 
 import org.joda.time.DateTime;
 
@@ -24,6 +26,8 @@ public class DataImpl extends Data {
 	private static DataImpl data;
 
 	private ObservableList<Task> tasks;
+	
+	private SortedList<Task> sortedTasks;
 
 	private Stack<ArrayList<Task>> previousState;
 
@@ -69,7 +73,8 @@ public class DataImpl extends Data {
 
 		this.io = io;
 		tasks = FXCollections.observableArrayList();
-		tasks.addListener(tasksChangeListener);
+		sortedTasks = tasks.sorted(Task.taskSorterComparator);
+		sortedTasks.addListener(tasksChangeListener);
 		tasks.addAll(io.readFromFile());
 		redoStack = new Stack<ArrayList<Task>>();
 		previousState = new Stack<ArrayList<Task>>();
@@ -87,7 +92,7 @@ public class DataImpl extends Data {
 		assertInited();
 
 		ArrayList<Task> clonedTasks = new ArrayList<Task>();
-		for (Task task : tasks) {
+		for (Task task : sortedTasks) {
 			clonedTasks.add(task.clone());
 		}
 		
@@ -186,8 +191,8 @@ public class DataImpl extends Data {
 		assertInited();
 
 		ArrayList<Task> tmpTasks = new ArrayList<Task>();
-		for (int i = 0; i < tasks.size(); i++) {
-			Task task = tasks.get(i);
+		for (int i = 0; i < sortedTasks.size(); i++) {
+			Task task = sortedTasks.get(i);
 			task.setId(i + 1);
 			tmpTasks.add(task);
 		}

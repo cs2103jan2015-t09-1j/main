@@ -187,47 +187,8 @@ public class MainViewController {
 			
 		});
 	}
-	
-	// Sort task list according to 3 fields: due date, priority, id 
-	// General explanation for algorithm:
-	// 1. If both task have no end dates OR both have but equal end dates -> If priority not equal, sort by priority
-	// 2. If either of the task have no end date, place the one with no end date lower down the list (return 1) and the other, higher up (return -1
-	// 3. If both task have end dates and they're not equal, use the DateTime compareTo to resolve
-	// 4. Default case: Sort by task id
-	private int taskSorterComparator(Task task1, Task task2) {
-		if ((task1.getEndDate() == null && task2.getEndDate() == null)
-				|| ((task1.getEndDate() != null && task2.getEndDate() != null) 
-						&& task1.getEndDate().equals(task2.getEndDate()))) {
-			if (task1.getPriority() != task2.getPriority()) {
-				return task2.getPriority().ordinal() - task1.getPriority().ordinal();
-			}
-		} else if (task1.getEndDate() == null || task2.getEndDate() == null) {
-			if (task1.getEndDate() == null) {
-				return 1;
-			} else {
-				return -1;
-			}
-		} else {
-			return task1.getEndDate().compareTo(task2.getEndDate());
-		}
-		
-		return (int) (task1.getId() - task2.getId());
-	}
-	
-	public void sortTasks(List<Task> tasks) {
-		Collections.sort(tasks, new Comparator<Task>() {
-
-			//@Override
-			public int compare(Task t1, Task t2) {
-				return taskSorterComparator(t1, t2);
-			}
-			
-		});
-	}
 
 	public void updateAllTasks(List<Task> tasks, javafx.collections.ListChangeListener.Change<? extends Task> changes) {
-		sortTasks(tasks);
-		
 		if (this.allTasks.size() == 0) {
 			this.allTasks.addAll(tasks);
 		} else {
@@ -266,7 +227,7 @@ public class MainViewController {
 	public void setSearchedTasks(String searchKeyword, List<Task> tasks) {
 		this.searchKeyword = searchKeyword;
 		
-		sortTasks(tasks);
+		Collections.sort(tasks, Task.taskSorterComparator);
 		
 		this.searchedTasks.clear();
 		this.searchedTasks.addAll(tasks);

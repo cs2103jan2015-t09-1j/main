@@ -195,12 +195,19 @@ public class MainViewController {
 			while (changes.next()) {
 				for (Task task : changes.getRemoved()) {
 					//System.out.println("Removed: " + task.getId() + " - " + task.getName());
-					this.allTasks.remove(task);
+					if (tasks.indexOf(task) == -1) {
+						this.allTasks.remove(task);
+					}
 				}
 				
 				for (Task task : changes.getAddedSubList()) {
 					//System.out.println("Added: " + task.getId() + " - " + task.getName());
-					int pos = tasks.indexOf(task);
+					int pos = this.allTasks.indexOf(task);
+					if (pos != -1) {
+						this.allTasks.remove(task);
+					}
+					
+					pos = tasks.indexOf(task);
 					this.allTasks.add(pos, task);
 				}
 				

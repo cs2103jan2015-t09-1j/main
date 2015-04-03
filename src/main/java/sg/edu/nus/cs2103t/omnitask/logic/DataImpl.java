@@ -26,7 +26,7 @@ public class DataImpl extends Data {
 	private static DataImpl data;
 
 	private ObservableList<Task> tasks;
-	
+
 	private SortedList<Task> sortedTasks;
 
 	private Stack<ArrayList<Task>> previousState;
@@ -34,24 +34,25 @@ public class DataImpl extends Data {
 	private Stack<ArrayList<Task>> redoStack;
 
 	private ArrayList<Task> redoList;
-	
+
 	private ArrayList<Task> currentList;
-	
+
 	private ArrayList<Task> previousList;
 
 	protected IO io;
 
 	private boolean inited;
-	
+
 	private ListChangeListener<Task> tasksChangeListener = new ListChangeListener<Task>() {
 
 		@Override
-		public void onChanged(javafx.collections.ListChangeListener.Change<? extends Task> changes) {
+		public void onChanged(
+				javafx.collections.ListChangeListener.Change<? extends Task> changes) {
 			for (DataUpdatedListener listener : dataUpdatedListeners) {
 				listener.dataUpdated(getTasks(), changes);
 			}
 		}
-		
+
 	};
 
 	public static DataImpl GetSingleton() {
@@ -90,12 +91,12 @@ public class DataImpl extends Data {
 	@Override
 	public ArrayList<Task> getTasks() {
 		assertInited();
-		
+
 		ArrayList<Task> clonedTasks = new ArrayList<Task>();
 		for (Task task : sortedTasks) {
 			clonedTasks.add(task.clone());
 		}
-		
+
 		return clonedTasks;
 	}
 
@@ -197,7 +198,7 @@ public class DataImpl extends Data {
 			task.setId(i + 1);
 			tmpTasks.add(task);
 		}
-		
+
 		tasks.setAll(tmpTasks);
 		try {
 			io.saveToFile(tasks);
@@ -207,7 +208,7 @@ public class DataImpl extends Data {
 	}
 
 	@Override
-	public boolean editTask(Task task) {
+	public boolean editTask(Task taskToEdit) {
 		assertInited();
 		getPreviousState();
 
@@ -215,16 +216,16 @@ public class DataImpl extends Data {
 		String tmpTaskName = "";
 
 		for (int i = 0; i < tasks.size(); i++) {
-			if (tasks.get(i).getUuid().equals(task.getUuid())) {
+			if (tasks.get(i).getUuid().equals(taskToEdit.getUuid())) {
 				// store the task name from the file in a variable incase need
 				// to revert below
 				tmpTaskName = tasks.get(i).getName();
 				taskIdToUpdate = i;
 			}
 		}
-		
+
 		// Replace the task object in arraylist with the new object
-		tasks.set(taskIdToUpdate, task);
+		tasks.set(taskIdToUpdate, taskToEdit);
 
 		if (taskIdToUpdate != -1) {
 			// Commit it to storage
@@ -290,20 +291,20 @@ public class DataImpl extends Data {
 	public String getHelpDescriptors(String helpType) throws IOException {
 		return io.readFromHelpFile(helpType);
 	}
-	
+
 	public boolean undo() {
 		if (previousState.empty()) {
 			return false;
 		} else {
 
-			//saving the current state into currentList
+			// saving the current state into currentList
 			currentList = getTasks();
 			redoList = getTasks();
-			
-			//pushing to redoStack to save multiple states
+
+			// pushing to redoStack to save multiple states
 			redoStack.push(redoList);
-			
-			//overwrite current state with previous state
+
+			// overwrite current state with previous state
 			previousList = previousState.peek();
 			tasks.setAll(previousState.pop());
 
@@ -313,7 +314,7 @@ public class DataImpl extends Data {
 				// TODO: Handle error
 				ex.printStackTrace();
 				printError("IO Exception");
-
+				return false;
 			}
 
 			return true;
@@ -336,7 +337,7 @@ public class DataImpl extends Data {
 				// TODO: Handle error
 				ex.printStackTrace();
 				printError("IO Exception");
-
+				return false;
 			}
 
 			return true;

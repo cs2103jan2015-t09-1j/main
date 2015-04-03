@@ -8,9 +8,9 @@ import sg.edu.nus.cs2103t.omnitask.model.Task;
 import sg.edu.nus.cs2103t.omnitask.ui.UI;
 
 public class CommandEditImpl extends Command {
-	
-	public static String[] COMMAND_ALIASES_EDIT = new String[] { "edit", "change",
-	"update" };
+
+	public static String[] COMMAND_ALIASES_EDIT = new String[] { "edit",
+			"change", "update" };
 
 	public CommandEditImpl(CommandInput commandInput) {
 		super(commandInput);
@@ -19,18 +19,21 @@ public class CommandEditImpl extends Command {
 	@Override
 	public boolean processCommand(Data data, UI ui) {
 		ArrayList<Task> tasks = data.getTasks();
-		int indexOfRetrieved=-1;
+		Task taskToEdit = new Task();
+		int indexOfRetrieved = -1;
 		for (int i = 0; i < tasks.size(); i++) {
 			if (tasks.get(i).getId() == commandInput.getId()) {
+				taskToEdit = tasks.get(i);
+				taskToEdit.setId(commandInput.getId());
 				// edit name, priority, start&end date
-				Utils.editAttributes(commandInput, i, tasks);
+				Utils.editAttributes(commandInput, taskToEdit);
 				indexOfRetrieved = i;
 
 			}
 		}
 
 		try {
-			if (data.editTask(tasks.get(indexOfRetrieved))) {
+			if (data.editTask(taskToEdit)) {
 				ui.showMessage("Task \"" + commandInput.getId()
 						+ "\" updated successfully!");
 				return true;
@@ -38,8 +41,7 @@ public class CommandEditImpl extends Command {
 		} catch (ArrayIndexOutOfBoundsException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			ui.showError("Unable to update Task \""
-					+ commandInput.getId()
+			ui.showError("Unable to update Task \"" + commandInput.getId()
 					+ "\". Please choose a valid id!");
 
 		}

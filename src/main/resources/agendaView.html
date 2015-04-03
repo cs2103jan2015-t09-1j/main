@@ -101,7 +101,7 @@
 			if (indexChanged.length == 1) {
 				$("body").animate({
 				    scrollTop: $($(".card-action").get(indexChanged[indexChanged.length-1])).offset().top
-				}, 1000, function(){
+				}, 500, function(){
 					highlightChanged();
 				});
 			} else if (indexChanged.length != tasks.size()) {

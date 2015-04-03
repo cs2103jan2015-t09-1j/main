@@ -65,7 +65,7 @@
 					if (task.isDue()) {
 						lastDate = "Overdue!";
 					}
-					lastRow = $("#templates .row").clone();
+					lastRow = $("#templates .card-row").clone();
 					if (lastDate) {
 						lastRow.find(".group-date").text(lastDate);
 					} else {
@@ -121,18 +121,23 @@
 	</div>
 
 	<div id="templates" style="display: none;">
-		<div class="row" style="margin-bottom: -10px;">
+		<div class="card-row row" style="margin-bottom: -10px;">
 			<div class="col s12 m12">
 				<div class="card">
 					<div class="card-content">
 						<p class="group-date">Tomorrow</p>
 					</div>
-					<div class="card-action">
-						<div style="float: left;margin-right: 20px;margin-top: -5px;"><i class="mdi-toggle-check-box-outline-blank" style="font-size: 20px;"></i></div>
-						<div style="display:inline-block;">
+					<div class="row card-action">
+						<div class="col m1" style="margin-top: -5px;"><i class="mdi-toggle-check-box-outline-blank" style="font-size: 20px;"></i></div>
+						<div class="col m1">
 							<span class="id" style="color: grey;padding-left:5px;padding-right:5px;">1</span>
-							<span class="title">CS2103T Tutorial</span><span class="badge" style="margin-left: 5px; font-weight: 300; font-size: 0.8rem; color: #fff; background-color: #26a69a; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; background-clip: padding-box;">high</span>
-							<span class="date"><br><br>9:00 AM - 10:00 AM</span>
+						</div>
+						<div class="col m9">
+							<span class="title">CS2103T Tutorial</span>
+							<span class="date"><br>9:00 AM - 10:00 AM</span>
+						</div>
+						<div class="col m1">
+							<span class="badge" style="margin-left: 5px; font-weight: 300; font-size: 0.8rem; color: #fff; background-color: #26a69a; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; background-clip: padding-box;">high</span>
 						</div>
 					</div>
 				</div>

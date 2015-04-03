@@ -45,9 +45,9 @@ import com.tulskiy.keymaster.common.Provider;
 
 public class UIMainImpl extends UI {
 
-	private static double WINDOW_WIDTH = 800;
+	private static double WINDOW_WIDTH = 960;
 
-	private static double WINDOW_HEIGHT = 600;
+	private static double WINDOW_HEIGHT = 680;
 
 	private Stage primaryStage;
 

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Random;
 
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -39,7 +41,9 @@ public class MainViewController {
 	
 	@FXML private TextField omniBar;
 	
-	private ArrayList<Task> allTasks;
+	public ObservableList<Task> tasks;
+	
+	private ObservableList<Task> allTasks;
 	
 	private ObservableList<Task> searchedTasks;
 	
@@ -57,8 +61,9 @@ public class MainViewController {
 	private ViewMode viewMode = ViewMode.ALL;
 	
 	public MainViewController() {
-		allTasks = new ArrayList<Task>();
+		allTasks = FXCollections.observableArrayList();
 		searchedTasks = FXCollections.observableArrayList();
+		tasks = allTasks;
 		commandHistory = new ArrayList<String>();
 	}
 	
@@ -245,8 +250,6 @@ public class MainViewController {
 				}
 			}
 		}
-		
-		refreshCards();
 	}
 	
 	public void setSearchedTasks(String searchKeyword, List<Task> tasks) {
@@ -258,16 +261,26 @@ public class MainViewController {
 		this.searchedTasks.addAll(tasks);
 	}
 	
+	private InvalidationListener tasksInvalidationListener = new InvalidationListener() {
+		@Override
+		public void invalidated(Observable arg0) {
+			refreshCards();
+		}
+	};
+	
 	public void setViewMode(ViewMode viewMode) {
+		tasks.removeListener(tasksInvalidationListener);
+		
 		if (viewMode == ViewMode.ALL) {
-			// TODO: Fix me
-			//listView.setItems(allTasks);
+			tasks = allTasks;
 		} else if (viewMode == ViewMode.SEARCH) {
-			// TODO: Fix me
-			//listView.setItems(searchedTasks);
+			tasks = searchedTasks;
 		}
 		
+		tasks.addListener(tasksInvalidationListener);
+		
 		this.viewMode = viewMode;
+		refreshCards();
 		
 		updateViewModeText();
 	}
@@ -287,13 +300,21 @@ public class MainViewController {
 		}
 	}
 	
+	private List<Task> getTasksAsList() {
+		ArrayList<Task> tasks = new ArrayList<Task>();
+		for (Task task : this.tasks) {
+			tasks.add(task);
+		}
+		return tasks;
+	}
+	
 	public class Bridge {
 		public String helloWorld() {
 			return "Hello! " + new Random().nextInt(100);
 		}
 		
-		public ArrayList<Task> getTasks() {
-			return allTasks;
+		public List<Task> getTasks() {
+			return getTasksAsList();
 		}
 		
 		public void markTaskAsDone(String uuid) {

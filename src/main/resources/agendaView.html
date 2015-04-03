@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link type="text/css" rel="stylesheet" href="css/jquery-ui.min.css" />
 	<!--Import materialize.css-->
 	<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
 
@@ -23,14 +24,16 @@
 	</style>
 
 	<script type="text/javascript">
+		var mapUuidToRow = {};
+		
 		$(function(){
-			refreshCards([]);
+			addAllCards();
 		});
 
 		function updateCheckboxes() {
 			$(".mdi-toggle-check-box-outline-blank").unbind("click");
 			$(".mdi-toggle-check-box-outline-blank").click(function(){
-				var uuid = $(this).parent().parent().attr("id").replace("item-", "");
+				var uuid = $(this).parent().parent().attr("uuid");
 				java.markTaskAsDone(uuid);
 
 				$(this).switchClass("mdi-toggle-check-box-outline-blank", "mdi-toggle-check-box", 1000, "easeInOutQuad");
@@ -40,7 +43,7 @@
 
 			$(".mdi-toggle-check-box").unbind("click");
 			$(".mdi-toggle-check-box").click(function(){
-				var uuid = $(this).parent().parent().attr("id").replace("item-", "");
+				var uuid = $(this).parent().parent().attr("uuid");
 				java.markTaskAsNotDone(uuid);
 
 				$(this).switchClass("mdi-toggle-check-box", "mdi-toggle-check-box-outline-blank", 1000, "easeInOutQuad");
@@ -48,71 +51,228 @@
 				updateCheckboxes();
 			});
 		}
+		
+		function getSectionHeader(task) {
+			var header = task.getFormattedDate();
+			if (task.isDue()) {
+				header = "Overdue!";
+			}
+			if (!header) {
+				header = "No Due Date";
+			}
+			
+			return header;
+		}
+		
+		function getOrCreateSectionForTask(task) {
+			var header = getSectionHeader(task);
+			
+			var section = $("#content .card-row[title='" + header + "']").get(0);
+			if (section) {
+				return $(section);
+			}
+			
+			section = $("#templates .card-row").clone();
+			section.attr("title", header);
+			if (task.getEndDate()) {
+				section.attr("date", task.getEndDate().getMillis());
+			}
+			section.find(".group-date").text(header);
+			section.find(".card-action").remove();
+			
+			var el;
+			if (task.getEndDate()) {
+				$("#content .card-row").each(function() {
+					var date = parseInt($(this).attr("date"));
+					if (task.getEndDate().getMillis() > date) {
+						el = this;
+					} else {
+						return false;
+					}
+				});
+			}
+			
+			if (el) {
+				section.insertAfter($(el));
+			} else {
+				section.appendTo("#content");
+			}
+			
+			return section;
+		}
+		
+		function fillCardDetails(el, task) {
+			el.attr("uuid", task.getUuid().toString());
+			el.find(".id").text(task.getId());
+			el.find(".title").text(task.getName());
+			var date = task.getFormattedTimeRange();
+			if (date) {
+				el.find(".date").html("<br>" + date);
+			} else {
+				el.find(".date").css("display", "none");
+				el.find(".mdi-action-event").addClass("mdi-notification-event-note");
+				el.find(".mdi-action-event").removeClass("mdi-action-event");
+			}
+			el.find(".badge").text(task.getPriorityString());
+			el.find(".badge").css("background-color", task.getPriorityColor());
+			
+			mapUuidToRow[task.getUuid().toString()] = el;
+		}
+		
+		function createCard(task) {
+			java.debug("createCard()");
+			var el = $("#templates .card-action").clone();
+			fillCardDetails(el, task);
+		
+			return el;	
+		}
+		
+		function appendCardToCorrectSection(card, task, index) {
+			var section = getOrCreateSectionForTask(task);
+			var currentIndex = $("#content .card-action").index(card);
+			
+			card.detach();
+			
+			var firstChild = section.find(".card-action").get(0);
+			if (firstChild) {
+				var firstIndex = $("#content .card-action").index(firstChild);
+				var subIndex = index - firstIndex;
+				
+				java.debug("firstIndex: " + firstIndex);
+				java.debug("index: " + index);
+				java.debug("subIndex: " + subIndex);
+				
+				if (subIndex < section.find(".card-action").size()) {
+					java.debug($(section.find(".card-action").get(subIndex)).find(".title").text());
+					card.insertBefore($(section.find(".card-action").get(subIndex)));
+					return card;
+				}
+			}
+			
+			card.appendTo(section.find(".card"));
+			
+			return card;
+		}
+		
+		function isElementInViewport (el) {
 
-		function refreshCards(indexChanged) {
+		    //special bonus for those using jQuery
+		    if (typeof jQuery === "function" && el instanceof jQuery) {
+		        el = el[0];
+		    }
+		
+		    var rect = el.getBoundingClientRect();
+		
+		    return (
+		        rect.top >= 0 &&
+		        rect.left >= 0 &&
+		        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
+		        rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+		    );
+		}
+		
+		function scrollToCard(card) {
+			if (!isElementInViewport(card)) {
+				$("body").animate({
+				    scrollTop: card.offset().top
+				}, 500);
+				
+				return true;
+			}
+			
+			return false;
+		}
+		
+		function addCard(index) {
+			java.debug("addCard");
+			var task = java.getTask(index);
+			
+			var card = createCard(task);
+			
+			return appendCardToCorrectSection(card, task, index);
+		}
+		
+		function addSingleCard(index) {
+			java.debug("addSingleCard()");
+			var card = addCard(index);
+			
+			//updateCheckboxes();
+			
+			scrollToCard(card);
+			card.css("display", "none");
+			setTimeout(function(){
+				card.show("fade", "slow");
+			}, 400);
+			
+			return card;
+		}
+		
+		function editCard(uuid, index) {
+			java.debug("editCard");
+			var task = java.getTask(index);
+			var card = mapUuidToRow[uuid];
+			
+			fillCardDetails(card, task);
+			
+			return card;
+		}
+		
+		function editSingleCard(uuid, index) {
+			java.debug("editSingleCard");
+			var task = java.getTask(index);
+			var card = editCard(uuid, index);
+			
+			appendCardToCorrectSection(card, task, index);
+			
+			scrollToCard(card);
+			setTimeout(function(){
+				card.effect("highlight", "slow");
+			}, 400);
+		}		
+		
+		function removeCard(uuid) {
+			java.debug("removeCard()");
+			
+			var el = mapUuidToRow[uuid];
+			delete mapUuidToRow[uuid];
+			
+			var section = el.parent().parent().parent();
+			
+			if (section.find(".card-action").size() == 1) {
+					java.debug("section removing: " + section.find(".group-date").text());
+					section.hide("fade", "medium", function() {
+						el.remove();
+						section.remove();
+					});
+			} else {
+				el.hide("slide", "medium", function() {
+					el.remove();
+				});
+			}
+		}
+		
+		function addAllCards() {
+			java.debug("addAllCards()");
 			var tasks = java.getTasks();
 			
 			$("#content").html("");
 
-			var lastDate;
-			var lastRow;
-
 			for (i = 0; i < tasks.size(); i++) {
-				var task = tasks.get(i);
-
-				if (!lastRow || (lastDate && !(lastDate == "Overdue!" && task.isDue()) && lastDate != task.getFormattedDate())) {
-					lastDate = task.getFormattedDate();
-					if (task.isDue()) {
-						lastDate = "Overdue!";
-					}
-					lastRow = $("#templates .card-row").clone();
-					if (lastDate) {
-						lastRow.find(".group-date").text(lastDate);
-					} else {
-						lastRow.find(".group-date").text("No Due Date");
-					}
-					lastRow.find(".card-action").remove();
-					lastRow.appendTo("#content");
-				}
-
-				var el = $("#templates .card-action").clone();
-				el.attr("id", "item-" + task.getUuid().toString());
-				el.find(".id").text(task.getId());
-				el.find(".title").text(task.getName());
-				var date = task.getFormattedTimeRange();
-				if (date) {
-					el.find(".date").html("<br>" + date);
-				} else {
-					el.find(".date").css("display", "none");
-					el.find(".mdi-action-event").addClass("mdi-notification-event-note");
-					el.find(".mdi-action-event").removeClass("mdi-action-event");
-				}
-				el.find(".badge").text(task.getPriorityString());
-				el.find(".badge").css("background-color", task.getPriorityColor());
-				el.appendTo(lastRow.find(".card"));
+				var card = addCard(i);
 			}
-
-			var highlightChanged = function() {
-				for (i = 0; i < indexChanged.length; i++) {
-					$($(".card-action").get(indexChanged[i])).effect("highlight", "medium");
-				}
-			}
-
-			if (indexChanged.length == 1) {
-				$("body").animate({
-				    scrollTop: $($(".card-action").get(indexChanged[indexChanged.length-1])).offset().top
-				}, 500, function(){
-					highlightChanged();
-				});
-			} else if (indexChanged.length != tasks.size()) {
-				highlightChanged();
-			}
-
+			
+			$("#content .card-action").show();
+			
 			updateCheckboxes();
+			
+			$("body").animate({
+			    scrollTop: 0
+			}, 500);
 		}
+
 	</script>
 	
-	<!--<script type='text/javascript' src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>-->
+	<!-- <script type='text/javascript' src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script> -->
 </head>
 
 <body style="background: #f4f4f4;">

@@ -90,7 +90,7 @@ public class DataImpl extends Data {
 	@Override
 	public ArrayList<Task> getTasks() {
 		assertInited();
-
+		
 		ArrayList<Task> clonedTasks = new ArrayList<Task>();
 		for (Task task : sortedTasks) {
 			clonedTasks.add(task.clone());
@@ -144,6 +144,7 @@ public class DataImpl extends Data {
 		// Commit it to storage
 		try {
 			io.saveToFile(tasks.subList(0, tasks.size()));
+			updateTaskId();
 		} catch (IOException ex) {
 			// Reverse change
 			tasks.remove(tasks.size() - 1);
@@ -169,8 +170,8 @@ public class DataImpl extends Data {
 
 		// Commit it to storage
 		try {
-			updateTaskId();
 			io.saveToFile(tasks);
+			updateTaskId();
 		} catch (IOException ex) {
 			// TODO: Handle error
 			ex.printStackTrace();
@@ -197,8 +198,12 @@ public class DataImpl extends Data {
 			tmpTasks.add(task);
 		}
 		
-		tasks.clear();
-		tasks.addAll(tmpTasks);
+		tasks.setAll(tmpTasks);
+		try {
+			io.saveToFile(tasks);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -225,6 +230,7 @@ public class DataImpl extends Data {
 			// Commit it to storage
 			try {
 				io.saveToFile(tasks);
+				updateTaskId();
 			} catch (IOException ex) {
 				// TODO: Handle error
 				ex.printStackTrace();
@@ -272,9 +278,12 @@ public class DataImpl extends Data {
 
 	@Override
 	public void notifyDataChanged() {
-		if (tasks.size() > 0) {
-			tasks.set(0, tasks.get(0));
+		ArrayList<Task> tmpTasks = new ArrayList<Task>();
+		for (int i = 0; i < sortedTasks.size(); i++) {
+			Task task = sortedTasks.get(i);
+			tmpTasks.add(task);
 		}
+		tasks.setAll(tmpTasks);
 	}
 
 	@Override
@@ -296,8 +305,7 @@ public class DataImpl extends Data {
 			
 			//overwrite current state with previous state
 			previousList = previousState.peek();
-			tasks.clear();
-			tasks.addAll(previousState.pop());
+			tasks.setAll(previousState.pop());
 
 			try {
 				io.saveToFile(tasks);
@@ -320,8 +328,7 @@ public class DataImpl extends Data {
 		} else {
 
 			previousState.push(previousList);
-			tasks.clear();
-			tasks.addAll(redoStack.pop());
+			tasks.setAll(redoStack.pop());
 
 			try {
 				io.saveToFile(tasks);

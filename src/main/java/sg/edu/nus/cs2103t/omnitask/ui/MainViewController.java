@@ -191,24 +191,46 @@ public class MainViewController {
 	public void updateAllTasks(List<Task> tasks, javafx.collections.ListChangeListener.Change<? extends Task> changes) {
 		if (this.allTasks.size() == 0) {
 			this.allTasks.addAll(tasks);
+			if (viewMode == ViewMode.ALL) {
+				addAllCards();
+			}
 		} else {
+			int ind = 0;
 			while (changes.next()) {
+				//System.out.println("changeIndex: " + ind++);
 				for (Task task : changes.getRemoved()) {
 					//System.out.println("Removed: " + task.getId() + " - " + task.getName());
-					if (tasks.indexOf(task) == -1) {
+					int pos = tasks.indexOf(task);
+					if (pos == -1) {
+						if (viewMode == ViewMode.ALL) {
+							removeCard(task.getUuid().toString());
+						}
 						this.allTasks.remove(task);
 					}
 				}
 				
 				for (Task task : changes.getAddedSubList()) {
 					//System.out.println("Added: " + task.getId() + " - " + task.getName());
-					int pos = this.allTasks.indexOf(task);
-					if (pos != -1) {
+					boolean editing = false;
+					
+					int oldPos = this.allTasks.indexOf(task);
+					if (oldPos != -1) {
 						this.allTasks.remove(task);
+						editing = true;
 					}
 					
-					pos = tasks.indexOf(task);
+					int pos = tasks.indexOf(task);
 					this.allTasks.add(pos, task);
+					
+					if (editing && viewMode == ViewMode.ALL) {
+						if (changes.getAddedSize() > 1) {
+							editCard(task.getUuid().toString(), pos);
+						} else {
+							editSingleCard(task.getUuid().toString(), pos);
+						}
+					} else if (viewMode == ViewMode.ALL) {
+						addSingleCard(pos);
+					}
 				}
 				
 				//System.out.println("");
@@ -228,6 +250,8 @@ public class MainViewController {
 					searchedTasks.set(i, this.allTasks.get(indexInAllTasks));
 				}
 			}
+			
+			addAllCards();
 		}
 	}
 	
@@ -240,40 +264,15 @@ public class MainViewController {
 		this.searchedTasks.addAll(tasks);
 	}
 	
-	private ListChangeListener<Task> tasksChangeListener = new ListChangeListener<Task>() {
-
-		@Override
-		public void onChanged(javafx.collections.ListChangeListener.Change<? extends Task> changes) {
-			ArrayList<Integer> indexChanged = new ArrayList<Integer>();
-			while (changes.next()) {
-				for (Task task : changes.getAddedSubList()) {
-					indexChanged.add(allTasks.indexOf(task));
-				}
-			}
-			
-			int[] indexChangedArray = new int[indexChanged.size()];
-			for (int i = 0; i < indexChanged.size(); i++) {
-				indexChangedArray[i] = indexChanged.get(i);
-			}
-			
-			refreshCards(indexChangedArray);
-		}
-		
-	};
-	
 	public void setViewMode(ViewMode viewMode) {
-		tasks.removeListener(tasksChangeListener);
-		
 		if (viewMode == ViewMode.ALL) {
 			tasks = allTasks;
 		} else if (viewMode == ViewMode.SEARCH) {
 			tasks = searchedTasks;
 		}
 		
-		tasks.addListener(tasksChangeListener);
-		
 		this.viewMode = viewMode;
-		refreshCards();
+		addAllCards();
 		
 		updateViewModeText();
 	}
@@ -287,21 +286,39 @@ public class MainViewController {
 
 	}
 	
-	private void refreshCards() {
-		refreshCards(new int[]{});
+	private void addAllCards() {
+		if (agendaViewLoaded) {
+			agendaView.getEngine().executeScript("addAllCards();");
+		}
 	}
 	
-	private void refreshCards(int[] indexChanged) {
+	private void addCard(int index) {
 		if (agendaViewLoaded) {
-			String indexChangedString = "";
-			for (int index : indexChanged) {
-				indexChangedString += index + ",";
-			}
-			if (!indexChangedString.isEmpty()) {
-				indexChangedString = indexChangedString.substring(0, indexChangedString.length()-1);
-			}
-			
-			agendaView.getEngine().executeScript("refreshCards([" + indexChangedString + "]);");
+			agendaView.getEngine().executeScript("addCard(" + index + ");");
+		}
+	}
+	
+	private void addSingleCard(int index) {
+		if (agendaViewLoaded) {
+			agendaView.getEngine().executeScript("addSingleCard(" + index + ");");
+		}
+	}
+	
+	private void editCard(String uuid, int index) {
+		if (agendaViewLoaded) {
+			agendaView.getEngine().executeScript("editCard('" + uuid + "', " + index + ");");
+		}
+	}
+	
+	private void editSingleCard(String uuid, int index) {
+		if (agendaViewLoaded) {
+			agendaView.getEngine().executeScript("editSingleCard('" + uuid + "', " + index + ");");
+		}
+	}
+	
+	private void removeCard(String uuid) {
+		if (agendaViewLoaded) {
+			agendaView.getEngine().executeScript("removeCard('" + uuid + "');");
 		}
 	}
 	
@@ -313,13 +330,29 @@ public class MainViewController {
 		return tasks;
 	}
 	
+	private List<Task> getSearchedTasksAsList() {
+		ArrayList<Task> tasks = new ArrayList<Task>();
+		for (Task task : this.searchedTasks) {
+			tasks.add(task);
+		}
+		return tasks;
+	}
+	
 	public class Bridge {
 		public void debug(String msg) {
-			System.out.println(msg);
+			//System.out.println(msg);
+		}
+		
+		public Task getTask(int index) {
+			return tasks.get(index);
 		}
 		
 		public List<Task> getTasks() {
-			return getTasksAsList();
+			if (viewMode == ViewMode.ALL) {
+				return getTasksAsList();
+			} else {
+				return getSearchedTasksAsList();
+			}
 		}
 		
 		public void markTaskAsDone(String uuid) {

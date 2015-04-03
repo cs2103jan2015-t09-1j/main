@@ -35,8 +35,6 @@ public class MainViewController {
 	
 	private boolean agendaViewLoaded;
 	
-	@FXML private WebView floatingTasksView;
-	
 	@FXML private Text outputText;
 	
 	@FXML private TextField omniBar;

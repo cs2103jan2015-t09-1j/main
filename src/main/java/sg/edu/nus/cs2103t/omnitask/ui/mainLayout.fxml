@@ -37,10 +37,6 @@
 		fx:id="agendaView"
 		GridPane.columnIndex="0" GridPane.rowIndex="1" />
 		
-	<!-- <WebView
-		fx:id="floatingView"
-		GridPane.columnIndex="1" GridPane.rowIndex="1" /> -->
-		
 	<Text
 		fx:id="outputText"
         GridPane.columnIndex="0" GridPane.rowIndex="2" />

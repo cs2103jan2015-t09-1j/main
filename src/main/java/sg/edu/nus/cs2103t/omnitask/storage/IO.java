@@ -4,13 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.List;
 
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 
 public abstract class IO {
 	public abstract ArrayList<Task> readFromFile() throws IOException;
 	
-	public abstract void saveToFile(ArrayList<Task> tasks) throws IOException;
+	public abstract void saveToFile(List<Task> tasks) throws IOException;
 	
 	public abstract void undoFile();
 	

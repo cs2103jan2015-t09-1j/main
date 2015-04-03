@@ -16,7 +16,7 @@ public abstract class Data {
 	}
 	
 	public static interface DataUpdatedListener {
-		void dataUpdated(ArrayList<Task> tasks);
+		void dataUpdated(ArrayList<Task> tasks, javafx.collections.ListChangeListener.Change<? extends Task> changes);
 	}
 	
 	protected ArrayList<DataUpdatedListener> dataUpdatedListeners;

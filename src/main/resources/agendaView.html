@@ -28,6 +28,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 	
 	<script type="text/javascript" src="jquery-2.1.3.js"></script>
+	<script type="text/javascript" src="js/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="js/materialize.min.js"></script>
 
 	<style type="text/css">
@@ -68,7 +69,7 @@
 			});
 		}
 
-		function refreshCards() {
+		function refreshCards(indexChanged) {
 			var tasks = java.getTasks();
 			
 			$("#content").html("");
@@ -109,6 +110,22 @@
 				el.find(".badge").text(task.getPriorityString());
 				el.find(".badge").css("background-color", task.getPriorityColor());
 				el.appendTo(lastRow.find(".card"));
+			}
+
+			var highlightChanged = function() {
+				for (i = 0; i < indexChanged.length; i++) {
+					$($(".card-action").get(indexChanged[i])).effect("highlight", "medium");
+				}
+			}
+
+			if (indexChanged.length == 1) {
+				$("body").animate({
+				    scrollTop: $($(".card-action").get(indexChanged[indexChanged.length-1])).offset().top
+				}, 1000, function(){
+					highlightChanged();
+				});
+			} else if (indexChanged.length != tasks.size()) {
+				highlightChanged();
 			}
 
 			updateCheckboxes();

@@ -344,8 +344,8 @@ public class UIMainImpl extends UI {
 
 	private DataUpdatedListener dataUpdatedListener = new DataUpdatedListener() {
 
-		public void dataUpdated(ArrayList<Task> tasks) {
-			viewController.setAllTasks(tasks);
+		public void dataUpdated(ArrayList<Task> tasks, javafx.collections.ListChangeListener.Change<? extends Task> changes) {
+			viewController.updateAllTasks(tasks, changes);
 		}
 		
 	};

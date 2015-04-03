@@ -58,7 +58,7 @@ public class DataStubImpl extends Data {
 		assertInited();
 		
 		for (DataUpdatedListener listener : dataUpdatedListeners) {
-			listener.dataUpdated(tasks);
+			listener.dataUpdated(tasks, null);
 		}
 	}
 

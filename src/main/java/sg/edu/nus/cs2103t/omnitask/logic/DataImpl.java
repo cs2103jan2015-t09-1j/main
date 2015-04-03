@@ -6,9 +6,14 @@ import java.util.ArrayList;
 import java.util.Stack;
 import java.util.UUID;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+
 import org.joda.time.DateTime;
 
 import sg.edu.nus.cs2103t.omnitask.Logger;
+import sg.edu.nus.cs2103t.omnitask.logic.Data.DataUpdatedListener;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 import sg.edu.nus.cs2103t.omnitask.storage.IO;
@@ -18,7 +23,7 @@ public class DataImpl extends Data {
 
 	private static DataImpl data;
 
-	private ArrayList<Task> tasks;
+	private ObservableList<Task> tasks;
 
 	private Stack<ArrayList<Task>> previousState;
 
@@ -33,6 +38,17 @@ public class DataImpl extends Data {
 	protected IO io;
 
 	private boolean inited;
+	
+	private ListChangeListener<Task> tasksChangeListener = new ListChangeListener<Task>() {
+
+		@Override
+		public void onChanged(javafx.collections.ListChangeListener.Change<? extends Task> changes) {
+			for (DataUpdatedListener listener : dataUpdatedListeners) {
+				listener.dataUpdated(getTasks(), changes);
+			}
+		}
+		
+	};
 
 	public static DataImpl GetSingleton() {
 		if (data == null) {
@@ -52,7 +68,9 @@ public class DataImpl extends Data {
 		}
 
 		this.io = io;
-		tasks = io.readFromFile();
+		tasks = FXCollections.observableArrayList();
+		tasks.addListener(tasksChangeListener);
+		tasks.addAll(io.readFromFile());
 		redoStack = new Stack<ArrayList<Task>>();
 		previousState = new Stack<ArrayList<Task>>();
 		inited = true;
@@ -120,7 +138,7 @@ public class DataImpl extends Data {
 
 		// Commit it to storage
 		try {
-			io.saveToFile(tasks);
+			io.saveToFile(tasks.subList(0, tasks.size()));
 		} catch (IOException ex) {
 			// Reverse change
 			tasks.remove(tasks.size() - 1);
@@ -128,7 +146,6 @@ public class DataImpl extends Data {
 			throw ex;
 		}
 		redoStack.clear();
-		notifyDataChanged();
 
 		return true;
 	}
@@ -147,8 +164,8 @@ public class DataImpl extends Data {
 
 		// Commit it to storage
 		try {
-			io.saveToFile(tasks);
 			updateTaskId();
+			io.saveToFile(tasks);
 		} catch (IOException ex) {
 			// TODO: Handle error
 			ex.printStackTrace();
@@ -160,7 +177,6 @@ public class DataImpl extends Data {
 			return false;
 		}
 		redoStack.clear();
-		notifyDataChanged();
 
 		return true;
 	}
@@ -169,9 +185,15 @@ public class DataImpl extends Data {
 	private void updateTaskId() {
 		assertInited();
 
+		ArrayList<Task> tmpTasks = new ArrayList<Task>();
 		for (int i = 0; i < tasks.size(); i++) {
-			tasks.get(i).setId(i + 1);
+			Task task = tasks.get(i);
+			task.setId(i + 1);
+			tmpTasks.add(task);
 		}
+		
+		tasks.clear();
+		tasks.addAll(tmpTasks);
 	}
 
 	@Override
@@ -183,7 +205,7 @@ public class DataImpl extends Data {
 		String tmpTaskName = "";
 
 		for (int i = 0; i < tasks.size(); i++) {
-			if (tasks.get(i).getId() == task.getId()) {
+			if (tasks.get(i).getUuid().equals(task.getUuid())) {
 				// store the task name from the file in a variable incase need
 				// to revert below
 				tmpTaskName = tasks.get(i).getName();
@@ -213,7 +235,6 @@ public class DataImpl extends Data {
 			return false;
 		}
 		redoStack.clear();
-		notifyDataChanged();
 
 		return true;
 	}
@@ -246,31 +267,32 @@ public class DataImpl extends Data {
 
 	@Override
 	public void notifyDataChanged() {
-		for (DataUpdatedListener listener : dataUpdatedListeners) {
-			listener.dataUpdated(tasks);
+		if (tasks.size() > 0) {
+			tasks.set(0, tasks.get(0));
 		}
 	}
 
 	@Override
-
 	public String getHelpDescriptors(String helpType) throws IOException {
-			return io.readFromHelpFile(helpType);
+		return io.readFromHelpFile(helpType);
 	}
+	
 	public boolean undo() {
 		if (previousState.empty()) {
 			return false;
 		} else {
 
 			//saving the current state into currentList
-			currentList = (ArrayList<Task>) tasks.clone();
-			redoList = tasks;
+			currentList = getTasks();
+			redoList = getTasks();
 			
 			//pushing to redoStack to save multiple states
 			redoStack.push(redoList);
 			
 			//overwrite current state with previous state
 			previousList = previousState.peek();
-			tasks = previousState.pop();
+			tasks.clear();
+			tasks.addAll(previousState.pop());
 
 			try {
 				io.saveToFile(tasks);
@@ -280,8 +302,6 @@ public class DataImpl extends Data {
 				printError("IO Exception");
 
 			}
-
-			notifyDataChanged();
 
 			return true;
 
@@ -295,7 +315,8 @@ public class DataImpl extends Data {
 		} else {
 
 			previousState.push(previousList);
-			tasks = redoStack.pop();
+			tasks.clear();
+			tasks.addAll(redoStack.pop());
 
 			try {
 				io.saveToFile(tasks);
@@ -306,7 +327,6 @@ public class DataImpl extends Data {
 
 			}
 
-			notifyDataChanged();
 			return true;
 		}
 

@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.joda.time.DateTime;
 
@@ -66,7 +67,7 @@ public class IOJSONImpl extends IO {
 	}
 	
 	@Override
-	public void saveToFile(ArrayList<Task> tasks) throws IOException {
+	public void saveToFile(List<Task> tasks) throws IOException {
 		String json = gson.toJson(tasks);
 		
 		OutputStream out = new BufferedOutputStream(Files.newOutputStream(storageFile.toPath(), StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING));

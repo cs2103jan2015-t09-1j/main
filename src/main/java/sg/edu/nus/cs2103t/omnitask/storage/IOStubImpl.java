@@ -2,6 +2,7 @@ package sg.edu.nus.cs2103t.omnitask.storage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 
@@ -27,7 +28,7 @@ public class IOStubImpl extends IO {
 	}
 	
 	@Override
-	public void saveToFile(ArrayList<Task> tasks) {
+	public void saveToFile(List<Task> tasks) {
 		this.tasks.clear();
 		this.tasks.addAll(tasks);
 	}

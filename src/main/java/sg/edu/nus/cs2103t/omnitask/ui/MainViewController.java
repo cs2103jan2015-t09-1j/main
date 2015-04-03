@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Worker;
 import javafx.concurrent.Worker.State;
@@ -226,13 +224,28 @@ public class MainViewController {
 			
 		});
 	}
-	
 
-	public void setAllTasks(List<Task> tasks) {
+	public void updateAllTasks(List<Task> tasks, javafx.collections.ListChangeListener.Change<? extends Task> changes) {
 		sortTasks(tasks);
 		
-		this.allTasks.clear();
-		this.allTasks.addAll(tasks);
+		if (this.allTasks.size() == 0) {
+			this.allTasks.addAll(tasks);
+		} else {
+			while (changes.next()) {
+				for (Task task : changes.getRemoved()) {
+					//System.out.println("Removed: " + task.getId() + " - " + task.getName());
+					this.allTasks.remove(task);
+				}
+				
+				for (Task task : changes.getAddedSubList()) {
+					//System.out.println("Added: " + task.getId() + " - " + task.getName());
+					int pos = tasks.indexOf(task);
+					this.allTasks.add(pos, task);
+				}
+				
+				//System.out.println("");
+			}
+		}
 		
 		// If we are in search view mode, delete the task which is no longer found, edit the one existing inside
 		if (viewMode == ViewMode.SEARCH) {
@@ -259,15 +272,29 @@ public class MainViewController {
 		this.searchedTasks.addAll(tasks);
 	}
 	
-	private InvalidationListener tasksInvalidationListener = new InvalidationListener() {
+	private ListChangeListener<Task> tasksChangeListener = new ListChangeListener<Task>() {
+
 		@Override
-		public void invalidated(Observable arg0) {
-			refreshCards();
+		public void onChanged(javafx.collections.ListChangeListener.Change<? extends Task> changes) {
+			ArrayList<Integer> indexChanged = new ArrayList<Integer>();
+			while (changes.next()) {
+				for (Task task : changes.getAddedSubList()) {
+					indexChanged.add(allTasks.indexOf(task));
+				}
+			}
+			
+			int[] indexChangedArray = new int[indexChanged.size()];
+			for (int i = 0; i < indexChanged.size(); i++) {
+				indexChangedArray[i] = indexChanged.get(i);
+			}
+			
+			refreshCards(indexChangedArray);
 		}
+		
 	};
 	
 	public void setViewMode(ViewMode viewMode) {
-		tasks.removeListener(tasksInvalidationListener);
+		tasks.removeListener(tasksChangeListener);
 		
 		if (viewMode == ViewMode.ALL) {
 			tasks = allTasks;
@@ -275,7 +302,7 @@ public class MainViewController {
 			tasks = searchedTasks;
 		}
 		
-		tasks.addListener(tasksInvalidationListener);
+		tasks.addListener(tasksChangeListener);
 		
 		this.viewMode = viewMode;
 		refreshCards();
@@ -293,8 +320,20 @@ public class MainViewController {
 	}
 	
 	private void refreshCards() {
+		refreshCards(new int[]{});
+	}
+	
+	private void refreshCards(int[] indexChanged) {
 		if (agendaViewLoaded) {
-			agendaView.getEngine().executeScript("refreshCards();");
+			String indexChangedString = "";
+			for (int index : indexChanged) {
+				indexChangedString += index + ",";
+			}
+			if (!indexChangedString.isEmpty()) {
+				indexChangedString = indexChangedString.substring(0, indexChangedString.length()-1);
+			}
+			
+			agendaView.getEngine().executeScript("refreshCards([" + indexChangedString + "]);");
 		}
 	}
 	
@@ -307,8 +346,8 @@ public class MainViewController {
 	}
 	
 	public class Bridge {
-		public String helloWorld() {
-			return "Hello! " + new Random().nextInt(100);
+		public void debug(String msg) {
+			System.out.println(msg);
 		}
 		
 		public List<Task> getTasks() {

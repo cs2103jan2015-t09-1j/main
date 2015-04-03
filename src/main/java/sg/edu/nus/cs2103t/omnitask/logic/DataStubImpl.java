@@ -146,4 +146,10 @@ public class DataStubImpl extends Data {
 		return false;
 	}
 
+	@Override
+	public boolean markTask(Task taskToMark) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

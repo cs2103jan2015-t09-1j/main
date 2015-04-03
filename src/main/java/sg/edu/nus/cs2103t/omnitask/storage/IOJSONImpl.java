@@ -91,7 +91,7 @@ public class IOJSONImpl extends IO {
 	@Override
 	public String readFromHelpFile(String helpType) throws IOException{
 		String commandDescription = "";
-		File helpFileData = new File("omnitext help file.txt");
+		File helpFileData = new File("omnitext help file");
 		InputStream in = Files.newInputStream(helpFileData.toPath());
 	    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 	    String line = null;

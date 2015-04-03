@@ -43,14 +43,14 @@ public abstract class Data {
 
 	public abstract boolean editTask(Task taskToEdit);
 	
-	public abstract boolean undo();
+	public abstract boolean markTask(Task taskToMark);
 	
-	public abstract ArrayList<Task> searchTask();
-
-
-	public abstract String getHelpDescriptors(String helpType) throws IOException;
+	public abstract boolean undo();
 
 	public abstract boolean redo();
 
+	public abstract ArrayList<Task> searchTask();
+
+	public abstract String getHelpDescriptors(String helpType) throws IOException;	
 	
 }

@@ -17,7 +17,8 @@ public class CommandInput {
 		SEARCH,
 		HELP,
 		UNDO,
-		REDO
+		REDO,
+		MARK
 	}
 	
 	private CommandType commandType;

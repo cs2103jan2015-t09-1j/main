@@ -15,6 +15,7 @@ import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplayImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandEditImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandExitImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandHelpImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandMarkImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandRedoImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandSearchImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandUndoImpl;
@@ -73,6 +74,17 @@ public class ParserMainImpl extends Parser {
 			commandInput.setId(deleteId);
 			
 			return new CommandDeleteImpl(commandInput);
+		}
+		
+		if (Utils.getCommandTypeFromString(commandName) == CommandType.MARK) {
+			CommandInput commandInput = new CommandInput(CommandType.MARK);
+			commandInput.setCommandType(CommandType.MARK);
+
+			long markId;
+			markId = Long.parseLong(inputSplit[1]);
+			commandInput.setId(markId);
+			
+			return new CommandMarkImpl(commandInput);
 		}
 		
 		

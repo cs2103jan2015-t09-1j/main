@@ -255,6 +255,10 @@ public class DataImpl extends Data {
 		return true;
 	}
 
+	public boolean markTask(Task taskToMark) {
+		return true;
+	}
+	
 	private void printError(String msg) {
 		System.err.println(DateTime.now() + ": " + msg);
 		Logger.writeError(msg);

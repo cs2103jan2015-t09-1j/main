@@ -81,7 +81,7 @@
 				el.find(".title").text(task.getName());
 				var date = task.getFormattedTimeRange();
 				if (date) {
-					el.find(".date").html("<br><br>" + date);
+					el.find(".date").html("<br>" + date);
 				} else {
 					el.find(".date").css("display", "none");
 					el.find(".mdi-action-event").addClass("mdi-notification-event-note");
@@ -127,7 +127,7 @@
 					<div class="card-content">
 						<p class="group-date">Tomorrow</p>
 					</div>
-					<div class="row card-action">
+					<div class="row card-action" style="margin-bottom: -5px;">
 						<div class="col m1" style="margin-top: -5px;"><i class="mdi-toggle-check-box-outline-blank" style="font-size: 20px;"></i></div>
 						<div class="col m1">
 							<span class="id" style="color: grey;padding-left:5px;padding-right:5px;">1</span>

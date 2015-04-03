@@ -437,22 +437,56 @@
 
 </DISPLAY>
 <SEARCH>
-<div style="font-weight: bold">
-<h4>Search for a task</h4>
-<br>
-Command Format: 
-<br>
-<font color="blue">search</font> <font color="orange">&lt;Task Name&gt;</font> or <font color="orange">&lt;Date/Time&gt;</font> or <font color="orange">&lt;Category&gt;</font>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h2>OmniTask&nbsp;Search&nbsp;Tasks</h2>
 
-<h4>Search task by name </h4>
-<font color="blue">search</font> <font color="orange">john's birthday</font>
+<p>If you need to look for something urgently&nbsp;just use the search command to find what you want in a split second.</p>
 
-<h4>Search task by due date </h4>
-<font color="blue">search</font> <font color="orange">due 13th April 2015</font>
-
-<h4>Search task by category</h4>
-<font color="blue">search</font> <font color="orange">CS2013T</font>
+<div dir="ltr" style="margin-left:0pt;">
+<table style="border-collapse: collapse; border: none; width: 700px;">
+	<colgroup>
+		<col width="*" />
+		<col width="*" />
+	</colgroup>
+	<tbody>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;background-color:#4a86e8;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt; text-align: center;"><strong><font color="#ffffff" face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;">Description</span></font></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;background-color:#4a86e8;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt; text-align: center;"><strong><font color="#ffffff" face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;">Format</span></font></strong></p>
+			</td>
+			<td style="text-align: center; border: 1px solid rgb(54, 95, 145); vertical-align: top; padding: 7px; background-color: rgb(74, 134, 232);"><strong><font color="#ffffff" face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;">Example</span></font></strong></td>
+		</tr>
+		<tr style="height:0px">
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt;">Search task by name</p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span style="color:#0000FF;">search</span><span style="color:#FF8C00;"> &lt;Task Name&gt;</span></strong></p>
+			</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color:#0000FF;">search</span> <span style="color:#FF8C00;">john birthday</span></strong></td>
+		</tr>
+		<tr>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">Search task by due date&nbsp;</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color:#0000FF;">search</span> <span style="color:#FF8C00;">&lt;Date/Time&gt;</span></strong></td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color:#0000FF;">search</span> <span style="color:#FF8C00;">13th April 2015</span></strong></td>
+		</tr>
+		<tr>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">Search task by category&nbsp;</td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color:#0000FF;">search</span><span style="color:#FF8C00;">&lt;Category&gt;</span></strong></td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong><span style="color:#0000FF;">search</span> <span style="color:#FF8C00;">CS2013T</span></strong></td>
+		</tr>
+	</tbody>
+</table>
 </div>
+</body>
+</html>
+
 </SEARCH>
 <STORAGE>
 <html>

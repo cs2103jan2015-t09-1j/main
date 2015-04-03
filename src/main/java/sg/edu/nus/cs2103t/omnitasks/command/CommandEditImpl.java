@@ -10,7 +10,7 @@ import sg.edu.nus.cs2103t.omnitask.ui.UI;
 public class CommandEditImpl extends Command {
 
 	public static String[] COMMAND_ALIASES_EDIT = new String[] { "edit",
-			"change", "update" };
+			"change", "update", "modify" };
 
 	public CommandEditImpl(CommandInput commandInput) {
 		super(commandInput);

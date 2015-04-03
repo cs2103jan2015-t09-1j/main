@@ -10,7 +10,7 @@ import sg.edu.nus.cs2103t.omnitask.ui.UI;
 public class CommandDeleteImpl extends Command {
 
 	public static String[] COMMAND_ALIASES_DELETE = new String[] { "delete",
-			"remove" };
+			"remove", "cancel" };
 
 	public CommandDeleteImpl(CommandInput commandInput) {
 		super(commandInput);
@@ -35,10 +35,10 @@ public class CommandDeleteImpl extends Command {
 					+ "\" deleted successfully!");
 			return true;
 		} else {
-			ui.showError("Unable to delete Task \""
-					+ commandInput.getId() + "\". Please choose a valid id!");
+			ui.showError("Unable to delete Task \"" + commandInput.getId()
+					+ "\". Please choose a valid id!");
 		}
-		
+
 		return false;
 	}
 }

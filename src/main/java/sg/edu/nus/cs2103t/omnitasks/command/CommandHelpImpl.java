@@ -48,7 +48,8 @@ public class CommandHelpImpl extends Command {
 				 * break; }
 				 */
 				try {
-					commandDescription = data.getHelpDescriptors(specificCommandName);
+					commandDescription = data
+							.getHelpDescriptors(specificCommandName);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

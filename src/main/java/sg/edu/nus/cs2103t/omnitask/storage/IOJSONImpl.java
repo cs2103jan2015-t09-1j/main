@@ -31,7 +31,6 @@ public class IOJSONImpl extends IO {
 	private Stack<List<Task>> currentStack;
 	private Stack<List<Task>> undoStack;
 	private Stack<List<Task>> redoStack;
-	private List<Task> saveTasks;
 
 	public IOJSONImpl(File storageFile) throws IOException {
 		this.storageFile = storageFile;
@@ -81,9 +80,9 @@ public class IOJSONImpl extends IO {
 	public void saveToFile(List<Task> tasks, boolean isCalledByCRUD)
 			throws IOException {
 		if (isCalledByCRUD) {
-			saveTasks = tasks;
-			currentStack.push(saveTasks);
-			redoStack.clear();
+			
+			currentStack.push(tasks);
+			
 		}
 
 		String json = gson.toJson(tasks);

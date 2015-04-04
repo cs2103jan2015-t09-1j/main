@@ -130,6 +130,7 @@ public class MainViewController {
 		}
 	}
 	
+	// replace current input with prev command (if any)
 	private void cyclePrevHistory() {
 		if (currentCommandHistoryIndex == 0) {
 			putOmniBarCaretAtEnd();
@@ -140,12 +141,16 @@ public class MainViewController {
 		
 		if (currentCommandHistoryIndex == -1 && commandHistory.size() > 0) {
 			currentCommandHistoryIndex = commandHistory.size();
+		} else if (currentCommandHistoryIndex == -1 && commandHistory.size() == 0) {
+			putOmniBarCaretAtEnd();
+			return;
 		}
 		
 		omniBar.setText(commandHistory.get(--currentCommandHistoryIndex));
 		putOmniBarCaretAtEnd();
 	}
 	
+	// replace current input with next command (if any)
 	private void cycleNextHistory() {
 		if (currentCommandHistoryIndex == -1) {
 			putOmniBarCaretAtEnd();
@@ -165,6 +170,7 @@ public class MainViewController {
 		putOmniBarCaretAtEnd();
 	}
 	
+	// saves current input into commandHistory (if not empty)
 	private void cycleHandleHistory() {
 		if (omniBar.getText().trim().isEmpty()) {
 			return;

@@ -103,7 +103,9 @@
 					if (task.getEndDate().getMillis() > date) {
 						el = this;
 					} else {
-						before = true;
+						if (!el) {
+							before = true;
+						}
 						return false;
 					}
 				});

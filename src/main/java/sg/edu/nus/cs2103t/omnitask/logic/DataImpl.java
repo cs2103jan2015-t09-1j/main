@@ -261,6 +261,26 @@ public class DataImpl extends Data {
 	}
 
 	public boolean markTask(Task taskToMark) {
+		assertInited();
+		getPreviousState();
+		
+		for (int i = 0; i < tasks.size(); i++) {
+			if (tasks.get(i).getId() == (taskToMark.getId())) {
+				tasks.get(i).setCompleted(taskToMark.isCompleted());
+			}
+		}
+		
+		try {
+			io.saveToFile(tasks);
+			updateTaskId();
+		} catch (IOException ex) {
+			// TODO: Handle error
+			ex.printStackTrace();
+			printError("IO Exception");
+
+			return false;
+		}
+		
 		return true;
 	}
 	

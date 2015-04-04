@@ -26,6 +26,7 @@ public class CommandMarkImpl extends Command {
 			if (tasks.get(i).getId() == commandInput.getId()) {
 				// Copy the task into taskToRemove for Data to process
 				taskToMark = tasks.get(i);
+				taskToMark.setCompleted(commandInput.isCompleted());
 			}
 		}
 

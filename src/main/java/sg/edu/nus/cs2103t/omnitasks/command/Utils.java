@@ -112,6 +112,12 @@ public class Utils {
 				return CommandInput.CommandType.REDO;
 			}
 		}
+		
+		for (String command : CommandMarkImpl.COMMAND_ALIASES_MARK) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.MARK;
+			}
+		}
 
 		return CommandInput.CommandType.INVALID;
 	}

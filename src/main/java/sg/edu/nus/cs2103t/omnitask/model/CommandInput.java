@@ -31,6 +31,8 @@ public class CommandInput {
 	
 	private boolean recurrence;
 	
+	private boolean isCompleted;
+	
 	private Priority priority = Priority.NONE;
 
 	private String name;
@@ -133,6 +135,14 @@ public class CommandInput {
 		return "CommandInput [commandType=" + commandType.toString() + ", startDate="
 				+ startDate + ", endDate=" + endDate + ", id=" + id + ", name="
 				+ name + "]";
+	}
+
+	public boolean isCompleted() {
+		return isCompleted;
+	}
+
+	public void setCompleted(boolean isCompleted) {
+		this.isCompleted = isCompleted;
 	}
 
 

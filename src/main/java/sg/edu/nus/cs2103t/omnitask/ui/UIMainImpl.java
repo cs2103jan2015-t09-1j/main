@@ -63,10 +63,9 @@ public class UIMainImpl extends UI {
 	
 	private HelpViewController miniHelpViewController;
 
-	private static Image image = Toolkit.getDefaultToolkit().getImage(
-			"src/main/resources/tray.png");
+	private Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/tray.png"));
 
-	private static TrayIcon trayIcon = new TrayIcon(image, "OmniTask");
+	private TrayIcon trayIcon = new TrayIcon(image, "OmniTask");
 	
 	public UIMainImpl(Stage primaryStage) {
 		this.primaryStage = primaryStage;

@@ -44,6 +44,8 @@ public abstract class UI {
 	public abstract void showAllTasks();
 	
 	public abstract void showSearchResults(String keyword, ArrayList<Task> tasks);
+	
+	public abstract void redraw();
 
 	public abstract void start();
 	

@@ -370,5 +370,20 @@ public class UIMainImpl extends UI {
 		viewController.setSearchedTasks(keyword, tasks);
 		viewController.setViewMode(ViewMode.SEARCH);
 	}
+
+	@Override
+	public void redraw() {
+		final double width = primaryStage.getWidth();
+		primaryStage.setWidth(width-1);
+		
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				primaryStage.setWidth(width+1);
+			}
+			
+		});
+	}
 	
 }

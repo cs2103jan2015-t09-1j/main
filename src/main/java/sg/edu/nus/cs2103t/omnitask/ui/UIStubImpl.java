@@ -54,4 +54,10 @@ public class UIStubImpl extends UI {
 		
 	}
 
+	@Override
+	public void redraw() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

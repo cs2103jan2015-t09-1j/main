@@ -67,13 +67,13 @@
 		function getOrCreateSectionForTask(task) {
 			var header = getSectionHeader(task);
 			
-			var section = $("#content .card-row[title='" + header + "']").get(0);
+			var section = $("#content .card-row[header='" + header + "']").get(0);
 			if (section) {
 				return $(section);
 			}
 			
 			section = $("#templates .card-row").clone();
-			section.attr("title", header);
+			section.attr("header", header);
 			if (task.getEndDate()) {
 				section.attr("date", task.getEndDate().getMillis());
 			}
@@ -81,46 +81,74 @@
 			section.find(".card-action").remove();
 			
 			var el;
+			var before = false;
 			if (task.getEndDate()) {
 				$("#content .card-row").each(function() {
+					if (!$(this).attr("date")) {
+						before = true;
+						return false;
+					}
+					
 					var date = parseInt($(this).attr("date"));
+					
 					if (task.getEndDate().getMillis() > date) {
 						el = this;
 					} else {
+						before = true;
 						return false;
 					}
 				});
 			}
 			
 			if (el) {
-				section.insertAfter($(el));
+				if (before) {
+					section.insertBefore($(el));
+				} else {
+					section.insertAfter($(el));
+				}
 			} else {
-				section.appendTo("#content");
+				if (before) {
+					section.prependTo("#content");
+				} else {
+					section.appendTo("#content");
+				}
 			}
-			
+				
 			return section;
 		}
 		
 		function fillCardDetails(el, task) {
-			el.attr("uuid", task.getUuid().toString());
-			el.find(".id").text(task.getId());
-			el.find(".title").text(task.getName());
+			if (el.find(".id").attr("uuid") != task.getUuid().toString()) {
+				el.attr("uuid", task.getUuid().toString());
+			}
+			
+			if (el.find(".id").text() != task.getId()) {
+				el.find(".id").text(task.getId());
+			}
+			
+			if (el.find(".title").text() != task.getName()) {
+				el.find(".title").text(task.getName());
+			}
+			
 			var date = task.getFormattedTimeRange();
+			el.attr("date", date);
 			if (date) {
 				el.find(".date").html("<br>" + date);
 			} else {
 				el.find(".date").css("display", "none");
-				el.find(".mdi-action-event").addClass("mdi-notification-event-note");
-				el.find(".mdi-action-event").removeClass("mdi-action-event");
 			}
-			el.find(".badge").text(task.getPriorityString());
-			el.find(".badge").css("background-color", task.getPriorityColor());
+			
+			if (el.find(".badge").text() != task.getPriorityString()) {
+				el.find(".badge").text(task.getPriorityString());
+				el.find(".badge").css("background-color", task.getPriorityColor());
+			}
 			
 			mapUuidToRow[task.getUuid().toString()] = el;
+			
+			updateCheckboxes();
 		}
 		
 		function createCard(task) {
-			java.debug("createCard()");
 			var el = $("#templates .card-action").clone();
 			fillCardDetails(el, task);
 		
@@ -138,12 +166,12 @@
 				var firstIndex = $("#content .card-action").index(firstChild);
 				var subIndex = index - firstIndex;
 				
-				java.debug("firstIndex: " + firstIndex);
-				java.debug("index: " + index);
-				java.debug("subIndex: " + subIndex);
+				if (subIndex == 0) {
+					card.insertAfter(section.find(".card-content"));
+					return card;
+				}
 				
 				if (subIndex < section.find(".card-action").size()) {
-					java.debug($(section.find(".card-action").get(subIndex)).find(".title").text());
 					card.insertBefore($(section.find(".card-action").get(subIndex)));
 					return card;
 				}
@@ -154,7 +182,7 @@
 			return card;
 		}
 		
-		function isElementInViewport (el) {
+		function isElementInViewport(el) {
 
 		    //special bonus for those using jQuery
 		    if (typeof jQuery === "function" && el instanceof jQuery) {
@@ -184,7 +212,6 @@
 		}
 		
 		function addCard(index) {
-			java.debug("addCard");
 			var task = java.getTask(index);
 			
 			var card = createCard(task);
@@ -193,22 +220,18 @@
 		}
 		
 		function addSingleCard(index) {
-			java.debug("addSingleCard()");
 			var card = addCard(index);
 			
-			//updateCheckboxes();
-			
+			card.hide();
+			card.show("fade", {}, "medium", function(){
+				java.redraw();
+			});
 			scrollToCard(card);
-			card.css("display", "none");
-			setTimeout(function(){
-				card.show("fade", "slow");
-			}, 400);
 			
 			return card;
 		}
 		
 		function editCard(uuid, index) {
-			java.debug("editCard");
 			var task = java.getTask(index);
 			var card = mapUuidToRow[uuid];
 			
@@ -218,11 +241,18 @@
 		}
 		
 		function editSingleCard(uuid, index) {
-			java.debug("editSingleCard");
 			var task = java.getTask(index);
 			var card = editCard(uuid, index);
 			
+			var section = card.parent().parent().parent();
+			
 			appendCardToCorrectSection(card, task, index);
+			
+			if (section.find(".card-action").size() == 0) {
+				section.hide("fade", "medium", function() {
+					section.remove();
+				});
+			}
 			
 			scrollToCard(card);
 			setTimeout(function(){
@@ -231,15 +261,12 @@
 		}		
 		
 		function removeCard(uuid) {
-			java.debug("removeCard()");
-			
 			var el = mapUuidToRow[uuid];
 			delete mapUuidToRow[uuid];
 			
 			var section = el.parent().parent().parent();
 			
 			if (section.find(".card-action").size() == 1) {
-					java.debug("section removing: " + section.find(".group-date").text());
 					section.hide("fade", "medium", function() {
 						el.remove();
 						section.remove();
@@ -252,7 +279,6 @@
 		}
 		
 		function addAllCards() {
-			java.debug("addAllCards()");
 			var tasks = java.getTasks();
 			
 			$("#content").html("");
@@ -262,8 +288,6 @@
 			}
 			
 			$("#content .card-action").show();
-			
-			updateCheckboxes();
 			
 			$("body").animate({
 			    scrollTop: 0

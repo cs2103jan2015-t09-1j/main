@@ -340,7 +340,12 @@ public class MainViewController {
 	
 	public class Bridge {
 		public void debug(String msg) {
-			//System.out.println(msg);
+			System.out.println(msg);
+		}
+		
+		public void redraw() {
+			agendaView.requestLayout();
+			ui.redraw();
 		}
 		
 		public Task getTask(int index) {

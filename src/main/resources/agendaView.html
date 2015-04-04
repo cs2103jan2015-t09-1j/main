@@ -161,6 +161,10 @@
 		
 		function createCard(task) {
 			var el = $("#templates .card-action").clone();
+			el.find(".id").text("");
+			el.find(".title").text("");
+			el.find(".date").text("");
+			el.find(".badge").text("");
 			fillCardDetails(el, task);
 		
 			return el;	

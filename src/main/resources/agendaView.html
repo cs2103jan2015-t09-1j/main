@@ -271,7 +271,9 @@
 			
 			scrollToCard(card);
 			setTimeout(function(){
-				card.effect("highlight", "slow");
+				card.effect("highlight", "slow", function(){
+					java.redraw();
+				});
 			}, 400);
 		}		
 		
@@ -285,10 +287,12 @@
 					section.hide("fade", "medium", function() {
 						el.remove();
 						section.remove();
+						java.redraw();
 					});
 			} else {
 				el.hide("slide", "medium", function() {
 					el.remove();
+					java.redraw();
 				});
 			}
 		}

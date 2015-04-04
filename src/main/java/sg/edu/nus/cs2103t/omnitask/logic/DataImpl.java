@@ -20,6 +20,7 @@ import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 import sg.edu.nus.cs2103t.omnitask.storage.IO;
 import sg.edu.nus.cs2103t.omnitask.storage.IOJSONImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.Utils;
 
 public class DataImpl extends Data {
 
@@ -212,15 +213,19 @@ public class DataImpl extends Data {
 	}
 
 	@Override
-	public boolean editTask(Task taskToEdit) {
+	public boolean editTask(Task mutatorTask) {
 		assertInited();
 		getPreviousState();
 
 		int taskIdToUpdate = -1;
 		String tmpTaskName = "";
+		Task foundTask = new Task();
 
 		for (int i = 0; i < tasks.size(); i++) {
-			if (tasks.get(i).getId() == (taskToEdit.getId())) {
+			if (tasks.get(i).getId() == (mutatorTask.getId())) {
+				
+				foundTask = tasks.get(i);
+				Utils.editAttributes(foundTask, mutatorTask);
 				// store the task name from the file in a variable incase need
 				// to revert below
 				tmpTaskName = tasks.get(i).getName();
@@ -229,7 +234,7 @@ public class DataImpl extends Data {
 		}
 
 		// Replace the task object in arraylist with the new object
-		tasks.set(taskIdToUpdate, taskToEdit);
+		tasks.set(taskIdToUpdate, foundTask);
 
 		if (taskIdToUpdate != -1) {
 			// Commit it to storage

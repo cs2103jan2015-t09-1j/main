@@ -147,7 +147,7 @@ public class DataStubImpl extends Data {
 	}
 
 	@Override
-	public boolean markTask(Task taskToMark) {
+	public boolean markTask(Task mutatorTask) {
 		// TODO Auto-generated method stub
 		return false;
 	}

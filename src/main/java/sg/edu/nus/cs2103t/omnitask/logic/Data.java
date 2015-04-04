@@ -41,7 +41,7 @@ public abstract class Data {
 
 	public abstract boolean deleteTask(Task task);
 
-	public abstract boolean editTask(Task taskToEdit);
+	public abstract boolean editTask(Task mutatorTask);
 	
 	public abstract boolean markTask(Task taskToMark);
 	

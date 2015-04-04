@@ -24,21 +24,36 @@ public class Utils {
 		task.setEndDate(commandInput.getEndDate());
 	}
 
-	public static void editAttributes(CommandInput commandInput, Task taskToEdit) {
+	public static void makeTaskToEdit(CommandInput commandInput, Task mutatorTask) {
 		if (!commandInput.getName().equals("")) {
-			taskToEdit.setName(commandInput.getName());
+			mutatorTask.setName(commandInput.getName());
 		}
 		if (commandInput.getPriority() != null) {
 			int prioNum = commandInput.convertPriorityToNum((commandInput
 					.getPriority()));
-			taskToEdit.setPriorityByNum(prioNum);
+			mutatorTask.setPriorityByNum(prioNum);
 			// tasks.get(i).setPriority(commandInput.getPriority());
 		}
 		if (commandInput.getStartDate() != null) {
-			taskToEdit.setStartDate(commandInput.getStartDate());
+			mutatorTask.setStartDate(commandInput.getStartDate());
 		}
 		if (commandInput.getEndDate() != null) {
-			taskToEdit.setEndDate(commandInput.getEndDate());
+			mutatorTask.setEndDate(commandInput.getEndDate());
+		}
+	}
+	
+	public static void editAttributes(Task foundTask, Task mutatorTask) {
+		if (!mutatorTask.getName().equals("")) {
+			foundTask.setName(mutatorTask.getName());
+		}
+		if (mutatorTask.getPriority() != null) {
+			foundTask.setPriority(mutatorTask.getPriority());
+		}
+		if (mutatorTask.getStartDate() != null) {
+			foundTask.setStartDate(mutatorTask.getStartDate());
+		}
+		if (mutatorTask.getEndDate() != null) {
+			foundTask.setEndDate(mutatorTask.getEndDate());
 		}
 	}
 

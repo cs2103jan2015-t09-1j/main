@@ -19,21 +19,21 @@ public class CommandEditImpl extends Command {
 	@Override
 	public boolean processCommand(Data data, UI ui) {
 		ArrayList<Task> tasks = data.getTasks();
-		Task taskToEdit = new Task();
+		Task mutatorTask = new Task();
 		int indexOfRetrieved = -1;
 		for (int i = 0; i < tasks.size(); i++) {
 			if (tasks.get(i).getId() == commandInput.getId()) {
-				taskToEdit = tasks.get(i);
-				taskToEdit.setId(commandInput.getId());
+				mutatorTask = tasks.get(i);
+				mutatorTask.setId(commandInput.getId());
 				// edit name, priority, start&end date
-				Utils.editAttributes(commandInput, taskToEdit);
+				Utils.makeTaskToEdit(commandInput, mutatorTask);
 				indexOfRetrieved = i;
 
 			}
 		}
 
 		try {
-			if (data.editTask(taskToEdit)) {
+			if (data.editTask(mutatorTask)) {
 				ui.showMessage("Task \"" + commandInput.getId()
 						+ "\" updated successfully!");
 				return true;

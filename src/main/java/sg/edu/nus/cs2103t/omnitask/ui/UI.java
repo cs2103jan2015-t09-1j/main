@@ -15,6 +15,8 @@ public abstract class UI {
 		ArrayList<String> doAutoComplete(String userInput);
 		
 		boolean updateTask(Task task);
+		
+		void showMiniHelpIfAvailable(String userInput);
 	}
 
 	public void setCommandReceivedListener(CommandReceivedListener commandReceivedListener) {
@@ -45,6 +47,12 @@ public abstract class UI {
 		return false;
 	}
 	
+	public void invokeShowMiniHelpIfAvailable(String input) {
+		if (commandReceivedListener != null) {
+			commandReceivedListener.showMiniHelpIfAvailable(input);
+		}
+	}
+	
 	public abstract void showError(String msg);
 
 	public abstract void showMessage(String msg);
@@ -52,6 +60,10 @@ public abstract class UI {
 	public abstract void showHelp(String msg);
 	
 	public abstract void closeHelp();
+	
+	public abstract void showMiniHelp(String msg);
+	
+	public abstract void closeMiniHelp();
 	
 	public abstract void showAllTasks();
 	

@@ -132,6 +132,27 @@ public class Controller extends Application {
 		public boolean updateTask(Task task) {
 			return data.editTask(task);
 		}
+
+		@Override
+		public void showMiniHelpIfAvailable(String userInput) {
+			// TODO To be fixed with proper implementation adn SLAP similar to doAutoComplete?
+			
+			// Sample implementation:
+			ArrayList<String> possibleCommands = generatePossibleAutoComplete(userInput);
+			if (possibleCommands.size() > 0) {
+				try {
+					String help = data.getHelpDescriptors(possibleCommands.get(0).toUpperCase());
+					if (help != null && !help.isEmpty()) {
+						ui.showMiniHelp(help);
+					}
+				} catch (IOException ex) {
+					ex.printStackTrace();
+					ui.closeMiniHelp();
+				}
+			} else {
+				ui.closeMiniHelp();
+			}
+		}
 		
 	};
 	

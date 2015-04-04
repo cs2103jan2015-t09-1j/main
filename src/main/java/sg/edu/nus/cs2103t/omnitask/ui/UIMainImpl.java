@@ -18,10 +18,12 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
@@ -55,7 +57,11 @@ public class UIMainImpl extends UI {
 	
 	private Stage helpStage;
 	
+	private Stage miniHelpStage;
+	
 	private HelpViewController helpViewController;
+	
+	private HelpViewController miniHelpViewController;
 
 	private static Image image = Toolkit.getDefaultToolkit().getImage(
 			"src/main/resources/tray.png");
@@ -175,7 +181,33 @@ public class UIMainImpl extends UI {
 
 			});
 			
+			ChangeListener<Number> resizeAndMoveChangeListener = new ChangeListener<Number>() {
+
+				@Override
+				public void changed(
+						ObservableValue<? extends Number> observable,
+						Number oldValue, Number newValue) {
+					repositionAndResizeMiniHelpWindow();
+				}
+				
+			};
+			
+			primaryStage.widthProperty().addListener(resizeAndMoveChangeListener);
+			primaryStage.heightProperty().addListener(resizeAndMoveChangeListener);
+			primaryStage.xProperty().addListener(resizeAndMoveChangeListener);
+			primaryStage.yProperty().addListener(resizeAndMoveChangeListener);
+			
 			setupHelpWindow();
+			setupMiniHelpWindow();
+			
+			primaryStage.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
+	            public void handle(KeyEvent event) {
+	                if (event.getCode() == KeyCode.ESCAPE) {
+	                	closeHelp();
+	                	closeMiniHelp();
+	                }
+	            }
+	        });
 			
 			Platform.setImplicitExit(false);
 			
@@ -207,6 +239,54 @@ public class UIMainImpl extends UI {
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
+		}
+	}
+	
+	private void setupMiniHelpWindow() {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("miniHelpLayout.fxml"));
+			Parent root = (Parent) loader.load();
+			miniHelpViewController = (HelpViewController) loader.getController();
+			miniHelpViewController.setUI(this);
+			
+			miniHelpStage = new Stage();
+			miniHelpStage.initStyle(StageStyle.UNDECORATED);
+			miniHelpStage.setScene(new Scene(root, WINDOW_WIDTH, 400));
+			miniHelpStage.setAlwaysOnTop(true);
+			miniHelpStage.focusedProperty().addListener(new ChangeListener<Boolean>() {
+
+				@Override
+				public void changed(ObservableValue<? extends Boolean> arg0,
+						Boolean oldValue, Boolean newValue) {
+					if (newValue) {
+						primaryStage.requestFocus();
+					}
+				}
+	        	
+	        });
+			miniHelpStage.setOnShown(new EventHandler<WindowEvent>() {
+
+				@Override
+				public void handle(WindowEvent event) {
+					repositionAndResizeMiniHelpWindow();
+				}
+
+			});
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+	
+	private void repositionAndResizeMiniHelpWindow() {
+		miniHelpStage.setWidth(primaryStage.getWidth());
+		miniHelpStage.setX(primaryStage.getX());
+		
+		Rectangle2D screen = Screen.getPrimary().getVisualBounds();
+		if (primaryStage.getY() + primaryStage.getHeight() + miniHelpStage.getHeight() > screen.getHeight()) {
+			miniHelpStage.setY(primaryStage.getY() + primaryStage.getHeight() - (miniHelpStage.getHeight() + 80));
+		} else {
+			miniHelpStage.setY(primaryStage.getY() + primaryStage.getHeight());
 		}
 	}
 	
@@ -359,6 +439,17 @@ public class UIMainImpl extends UI {
 	@Override
 	public void closeHelp() {
 		helpStage.hide();
+	}
+	
+	@Override
+	public void showMiniHelp(String msg) {
+		miniHelpViewController.setContent(msg);
+		miniHelpStage.show();
+	}
+	
+	@Override
+	public void closeMiniHelp() {
+		miniHelpStage.hide();
 	}
 
 	public void showAllTasks() {

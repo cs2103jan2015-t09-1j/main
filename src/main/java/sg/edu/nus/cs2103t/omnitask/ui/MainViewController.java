@@ -80,6 +80,15 @@ public class MainViewController {
 		agendaView.getEngine().load(getClass().getResource("/agendaView.html").toExternalForm());
 		JSObject jsobj = (JSObject) agendaView.getEngine().executeScript("window");
 		jsobj.setMember("java", new Bridge());
+		
+		omniBar.textProperty().addListener(new ChangeListener<String>() {
+
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String oldValue, String newValue) {
+				ui.invokeShowMiniHelpIfAvailable(newValue);
+			}
+			
+		});
 	}
 
 	public void setUI(UI ui) {

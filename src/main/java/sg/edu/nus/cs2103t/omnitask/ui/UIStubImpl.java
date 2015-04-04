@@ -60,4 +60,16 @@ public class UIStubImpl extends UI {
 		
 	}
 
+	@Override
+	public void showMiniHelp(String msg) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void closeMiniHelp() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -13,6 +13,8 @@ public abstract class UI {
 		void onCommandReceived(String userInput);
 		
 		ArrayList<String> doAutoComplete(String userInput);
+		
+		boolean updateTask(Task task);
 	}
 
 	public void setCommandReceivedListener(CommandReceivedListener commandReceivedListener) {
@@ -31,6 +33,14 @@ public abstract class UI {
 		}
 		
 		return new ArrayList<String>();
+	}
+	
+	public boolean invokeUpdateTask(Task task) {
+		if (commandReceivedListener != null) {
+			return commandReceivedListener.updateTask(task);
+		}
+		
+		return false;
 	}
 	
 	public abstract void showError(String msg);

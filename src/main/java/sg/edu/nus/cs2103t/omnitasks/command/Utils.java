@@ -55,6 +55,7 @@ public class Utils {
 		if (mutatorTask.getEndDate() != null) {
 			foundTask.setEndDate(mutatorTask.getEndDate());
 		}
+		foundTask.setCompleted(mutatorTask.isCompleted());
 	}
 
 	public static CommandInput.CommandType getCommandTypeFromString(String str) {

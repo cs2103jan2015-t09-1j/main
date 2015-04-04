@@ -258,6 +258,7 @@ public class Task {
 		return priorityColors[0];
 	}
 
+	// When you add a new field to the class, this method needs to be updated too
 	public Task clone() {
 		Task task = new Task();
 
@@ -275,6 +276,7 @@ public class Task {
 		task.setRecurrence(recurrence);
 		task.setName(name);
 		task.setType(type);
+		task.setCompleted(isCompleted);
 
 		return task;
 	}

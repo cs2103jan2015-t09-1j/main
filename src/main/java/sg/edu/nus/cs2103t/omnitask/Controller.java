@@ -8,6 +8,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.logic.DataImpl;
+import sg.edu.nus.cs2103t.omnitask.model.Task;
 import sg.edu.nus.cs2103t.omnitask.parser.Parser;
 import sg.edu.nus.cs2103t.omnitask.parser.ParserMainImpl;
 import sg.edu.nus.cs2103t.omnitask.storage.IOJSONImpl;
@@ -123,6 +124,11 @@ public class Controller extends Application {
 
 		public ArrayList<String> doAutoComplete(String userInput) {
 			return generatePossibleAutoComplete(userInput);
+		}
+
+		@Override
+		public boolean updateTask(Task task) {
+			return data.editTask(task);
 		}
 		
 	};

@@ -29,26 +29,35 @@
 		$(function(){
 			addAllCards();
 		});
+		
+		function setCheckboxState(checkbox, checked, animated) {
+			if (checked) {
+				$(checkbox).switchClass("mdi-toggle-check-box-outline-blank", "mdi-toggle-check-box", 1000, "easeInOutQuad");
+				if (animated) {
+					$(checkbox).effect("bounce", { times: 1 }, "fast");
+				}
+			} else {
+				$(checkbox).switchClass("mdi-toggle-check-box", "mdi-toggle-check-box-outline-blank", 1000, "easeInOutQuad");
+				if (animated) {
+					$(checkbox).effect("bounce", { times: 1 }, "fast");
+				}
+			}
+		}
 
 		function updateCheckboxes() {
-			$(".mdi-toggle-check-box-outline-blank").unbind("click");
-			$(".mdi-toggle-check-box-outline-blank").click(function(){
+			$("#content .checkbox").unbind("click");
+			$("#content .checkbox").click(function(){
 				var uuid = $(this).parent().parent().attr("uuid");
-				java.markTaskAsDone(uuid);
-
-				$(this).switchClass("mdi-toggle-check-box-outline-blank", "mdi-toggle-check-box", 1000, "easeInOutQuad");
-				$(this).effect("bounce", { times: 1 }, "fast");
-				updateCheckboxes();
-			});
-
-			$(".mdi-toggle-check-box").unbind("click");
-			$(".mdi-toggle-check-box").click(function(){
-				var uuid = $(this).parent().parent().attr("uuid");
-				java.markTaskAsNotDone(uuid);
-
-				$(this).switchClass("mdi-toggle-check-box", "mdi-toggle-check-box-outline-blank", 1000, "easeInOutQuad");
-				$(this).effect("bounce", { times: 1 }, "fast");
-				updateCheckboxes();
+				//java.debug(uuid);
+				if ($(this).hasClass("mdi-toggle-check-box-outline-blank")) {
+					// checking
+					setCheckboxState(this, true, true);
+					java.markTaskAsDone(uuid);
+				} else {
+					// unchecking
+					setCheckboxState(this, false, true);
+					java.markTaskAsNotDone(uuid);
+				}
 			});
 		}
 		
@@ -118,7 +127,7 @@
 		}
 		
 		function fillCardDetails(el, task) {
-			if (el.find(".id").attr("uuid") != task.getUuid().toString()) {
+			if (el.attr("uuid") != task.getUuid().toString()) {
 				el.attr("uuid", task.getUuid().toString());
 			}
 			
@@ -142,6 +151,8 @@
 				el.find(".badge").text(task.getPriorityString());
 				el.find(".badge").css("background-color", task.getPriorityColor());
 			}
+			
+			setCheckboxState(el.find(".checkbox"), task.isCompleted(), false);
 			
 			mapUuidToRow[task.getUuid().toString()] = el;
 			
@@ -312,7 +323,7 @@
 						<p class="group-date">Tomorrow</p>
 					</div>
 					<div class="row card-action" style="margin-bottom: -5px;">
-						<div class="col m1" style="margin-top: -5px;"><i class="mdi-toggle-check-box-outline-blank" style="font-size: 20px;"></i></div>
+						<div class="col m1" style="margin-top: -5px;"><i class="checkbox mdi-toggle-check-box-outline-blank" style="font-size: 20px;"></i></div>
 						<div class="col m1">
 							<span class="id" style="color: grey;padding-left:5px;padding-right:5px;">1</span>
 						</div>

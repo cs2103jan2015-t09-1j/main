@@ -330,6 +330,16 @@ public class MainViewController {
 		return tasks;
 	}
 	
+	private Task getTaskByUuid(String uuid) {
+		for (Task task : this.tasks) {
+			if (task.getUuid().toString().equals(uuid))  {
+				return task;
+			}
+		}
+		
+		return null;
+	}
+	
 	private List<Task> getSearchedTasksAsList() {
 		ArrayList<Task> tasks = new ArrayList<Task>();
 		for (Task task : this.searchedTasks) {
@@ -360,14 +370,16 @@ public class MainViewController {
 			}
 		}
 		
-		public void markTaskAsDone(String uuid) {
-			// TODO: Implement
-			System.out.println("markTaskAsDone: " + uuid);
+		public boolean markTaskAsDone(String uuid) {
+			Task task = getTaskByUuid(uuid);
+			task.setCompleted(true);
+			return ui.invokeUpdateTask(task);
 		}
 		
-		public void markTaskAsNotDone(String uuid) {
-			// TODO: Implement
-			System.out.println("markTaskAsNotDone: " + uuid);
+		public boolean markTaskAsNotDone(String uuid) {
+			Task task = getTaskByUuid(uuid);
+			task.setCompleted(false);
+			return ui.invokeUpdateTask(task);
 		}
 	}
 

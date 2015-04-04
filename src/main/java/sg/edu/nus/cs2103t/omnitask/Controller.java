@@ -63,13 +63,15 @@ public class Controller extends Application {
 		ui.start();
 	}
 
-	private void processUserInput(String input) {
+	private boolean processUserInput(String input) {
 		Command command = parser.parseUserInput(input);
 
 		if (command == null) {
 			ui.showError("Invalid command entered. Please try again.");
+			return false;
 		} else {
 			command.processCommand(data, ui);
+			return true;
 		}
 	}
 	
@@ -118,8 +120,8 @@ public class Controller extends Application {
 	
 	CommandReceivedListener commandReceivedListener = new CommandReceivedListener() {
 
-		public void onCommandReceived(String userInput) {
-			processUserInput(userInput);
+		public boolean onCommandReceived(String userInput) {
+			return processUserInput(userInput);
 		}
 
 		public ArrayList<String> doAutoComplete(String userInput) {

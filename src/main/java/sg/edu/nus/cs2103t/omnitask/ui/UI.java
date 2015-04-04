@@ -10,7 +10,7 @@ public abstract class UI {
 	protected CommandReceivedListener commandReceivedListener;
 	
 	public static interface CommandReceivedListener {
-		void onCommandReceived(String userInput);
+		boolean onCommandReceived(String userInput);
 		
 		ArrayList<String> doAutoComplete(String userInput);
 		
@@ -21,10 +21,12 @@ public abstract class UI {
 		this.commandReceivedListener = commandReceivedListener;
 	}
 	
-	protected void invokeCommandReceivedListener(String userInput) {
+	protected boolean invokeCommandReceivedListener(String userInput) {
 		if (commandReceivedListener != null) {
-			commandReceivedListener.onCommandReceived(userInput);
+			return commandReceivedListener.onCommandReceived(userInput);
 		}
+		
+		return false;
 	}
 	
 	protected ArrayList<String> invokeDoAutocompleteListener(String userInput) {

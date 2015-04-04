@@ -100,12 +100,14 @@ public class MainViewController {
 	
 	@FXML protected void onOmniBarEnter(ActionEvent event) {
 		if (!omniBar.getText().trim().equals("")) {
-			ui.invokeCommandReceivedListener(omniBar.getText());
-			
 			commandHistory.add(omniBar.getText());
 			currentCommandHistoryIndex = -1;
 			
-			omniBar.setText("");
+			if (ui.invokeCommandReceivedListener(omniBar.getText())) {
+				omniBar.setText("");
+			} else {
+				omniBar.selectAll();
+			}
 		}
     }
 	

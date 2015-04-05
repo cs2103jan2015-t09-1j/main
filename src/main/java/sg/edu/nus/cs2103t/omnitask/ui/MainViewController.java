@@ -405,6 +405,10 @@ public class MainViewController {
 			}
 		}
 		
+		public void focusOmniBar() {
+			MainViewController.this.focusOmniBar();
+		}
+		
 		public boolean markTaskAsDone(String uuid) {
 			Task task = getTaskByUuid(uuid);
 			task.setCompleted(true);

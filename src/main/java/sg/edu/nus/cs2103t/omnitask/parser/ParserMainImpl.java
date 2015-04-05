@@ -122,7 +122,7 @@ public class ParserMainImpl extends Parser {
 
 			detectPrio(inputSplit, commandInput, false);
 
-			extractDatesAndTaskNameFromCommand(1, inputSplit, commandInput);
+			extractDatesAndTaskNameFromCommand(1, inputSplit, commandInput, false);
 
 			return new CommandAddImpl(commandInput);
 		}
@@ -157,7 +157,7 @@ public class ParserMainImpl extends Parser {
 
 			detectPrio(inputSplit, commandInput, true);
 
-			extractDatesAndTaskNameFromCommand(2, inputSplit, commandInput);
+			extractDatesAndTaskNameFromCommand(2, inputSplit, commandInput, true);
 
 			return new CommandEditImpl(commandInput);
 
@@ -188,7 +188,7 @@ public class ParserMainImpl extends Parser {
 		return str.trim();
 	}
 	
-	private void extractDatesAndTaskNameFromCommand(int startIndex, String[] inputSplit, CommandInput commandInput) {
+	private void extractDatesAndTaskNameFromCommand(int startIndex, String[] inputSplit, CommandInput commandInput, boolean isEditing) {
 		String taskName = "";
 		
 		for (int i = 1; i < inputSplit.length; i++) {
@@ -234,7 +234,7 @@ public class ParserMainImpl extends Parser {
 			}
 		}
 
-		if (taskName.equals("")) {
+		if (!isEditing && taskName.equals("")) {
 			taskName = joinStringArray(inputSplit, startIndex, inputSplit.length);
 		}
 

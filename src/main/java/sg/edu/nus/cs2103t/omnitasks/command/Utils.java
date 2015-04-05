@@ -29,10 +29,7 @@ public class Utils {
 			mutatorTask.setName(commandInput.getName());
 		}
 		if (commandInput.getPriority() != null) {
-			int prioNum = commandInput.convertPriorityToNum((commandInput
-					.getPriority()));
-			mutatorTask.setPriorityByNum(prioNum);
-			// tasks.get(i).setPriority(commandInput.getPriority());
+			mutatorTask.setPriority(commandInput.getPriority());
 		}
 		if (commandInput.getStartDate() != null) {
 			mutatorTask.setStartDate(commandInput.getStartDate());

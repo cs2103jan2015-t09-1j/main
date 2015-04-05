@@ -30,7 +30,7 @@ public class ParserMainImpl extends Parser {
 	private static final String[] DATE_INDICATORS = new String[] { "from",
 			"by", "due", "to", "on" };
 	private static final String[] PRIORITY_INDICATORS = new String[] { "^h",
-			"^m", "^l" };
+			"^m", "^l", "^n" };
 
 	@Override
 	public Command parseUserInput(String input) {
@@ -118,58 +118,11 @@ public class ParserMainImpl extends Parser {
 		// Hmm...
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.ADD) {
 			CommandInput commandInput = new CommandInput(CommandType.ADD);
-			String taskName = "";
+			
 
-			detectPrio(inputSplit, commandInput);
+			detectPrio(inputSplit, commandInput, false);
 
-			for (int i = 1; i < inputSplit.length; i++) {
-				if (inArray(DATE_INDICATORS, inputSplit[i])) {
-					taskName = joinStringArray(inputSplit, 1, i);
-
-					// Parse date using Natty
-					com.joestelmach.natty.Parser parser = new com.joestelmach.natty.Parser();
-					List<DateGroup> groups = parser.parse(joinStringArray(
-							inputSplit, i, inputSplit.length));
-					for (DateGroup group : groups) {
-						// If there are 2 dates, means it's to and from
-						// If no specific time is specified by user, set the
-						// time to 00:00:00, retaining the dates
-						if (group.getDates().size() == 2) {
-							commandInput.setStartDate(new DateTime(group
-									.getDates().get(0).getTime()));
-							if (!isTimeSpecifiedByUser(group.getSyntaxTree()
-									.getChild(0))) {
-								commandInput.setStartDate(commandInput
-										.getStartDate().withMillisOfDay(0));
-							}
-
-							commandInput.setEndDate(new DateTime(group
-									.getDates().get(1).getTime()));
-							if (!isTimeSpecifiedByUser(group.getSyntaxTree()
-									.getChild(1))) {
-								commandInput.setEndDate(commandInput
-										.getEndDate().withMillisOfDay(0));
-							}
-						} else {
-							commandInput.setEndDate(new DateTime(group
-									.getDates().get(0).getTime()));
-							if (!isTimeSpecifiedByUser(group.getSyntaxTree()
-									.getChild(0))) {
-								commandInput.setEndDate(commandInput
-										.getEndDate().withMillisOfDay(0));
-							}
-						}
-					}
-
-					break;
-				}
-			}
-
-			if (taskName.equals("")) {
-				taskName = joinStringArray(inputSplit, 1, inputSplit.length);
-			}
-
-			commandInput.setName(taskName.trim());
+			extractDatesAndTaskNameFromCommand(1, inputSplit, commandInput);
 
 			return new CommandAddImpl(commandInput);
 		}
@@ -198,60 +151,13 @@ public class ParserMainImpl extends Parser {
 
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.EDIT) {
 			CommandInput commandInput = new CommandInput(CommandType.EDIT);
-			String taskName = "";
 			long updateId;
 			updateId = Long.parseLong(inputSplit[1]);
 			commandInput.setId(updateId);
 
-			detectPrio(inputSplit, commandInput);
+			detectPrio(inputSplit, commandInput, true);
 
-			for (int i = 1; i < inputSplit.length; i++) {
-				if (inArray(DATE_INDICATORS, inputSplit[i])) {
-					taskName = joinStringArray(inputSplit, 2, i);
-
-					// Parse date using Natty
-					com.joestelmach.natty.Parser parser = new com.joestelmach.natty.Parser();
-					List<DateGroup> groups = parser.parse(input);
-					for (DateGroup group : groups) {
-						// If there are 2 dates, means it's to and from
-						// If no specific time is specified by user, set the
-						// time to 00:00:00, retaining the dates
-						if (group.getDates().size() == 2) {
-							commandInput.setStartDate(new DateTime(group
-									.getDates().get(0).getTime()));
-							if (!isTimeSpecifiedByUser(group.getSyntaxTree()
-									.getChild(0))) {
-								commandInput.setStartDate(commandInput
-										.getStartDate().withMillisOfDay(0));
-							}
-
-							commandInput.setEndDate(new DateTime(group
-									.getDates().get(1).getTime()));
-							if (!isTimeSpecifiedByUser(group.getSyntaxTree()
-									.getChild(1))) {
-								commandInput.setEndDate(commandInput
-										.getEndDate().withMillisOfDay(0));
-							}
-						} else {
-							commandInput.setEndDate(new DateTime(group
-									.getDates().get(0).getTime()));
-							if (!isTimeSpecifiedByUser(group.getSyntaxTree()
-									.getChild(0))) {
-								commandInput.setEndDate(commandInput
-										.getEndDate().withMillisOfDay(0));
-							}
-						}
-					}
-
-					break;
-				}
-
-				if (taskName.equals("")) {
-					taskName = joinStringArray(inputSplit, 2, inputSplit.length);
-				}
-			}
-
-			commandInput.setName(taskName.trim());
+			extractDatesAndTaskNameFromCommand(2, inputSplit, commandInput);
 
 			return new CommandEditImpl(commandInput);
 
@@ -281,8 +187,61 @@ public class ParserMainImpl extends Parser {
 
 		return str.trim();
 	}
+	
+	private void extractDatesAndTaskNameFromCommand(int startIndex, String[] inputSplit, CommandInput commandInput) {
+		String taskName = "";
+		
+		for (int i = 1; i < inputSplit.length; i++) {
+			if (inArray(DATE_INDICATORS, inputSplit[i])) {
+				taskName = joinStringArray(inputSplit, startIndex, i);
 
-	private void detectPrio(String[] inputSplit, CommandInput commandInput) {
+				// Parse date using Natty
+				com.joestelmach.natty.Parser parser = new com.joestelmach.natty.Parser();
+				List<DateGroup> groups = parser.parse(joinStringArray(
+						inputSplit, i, inputSplit.length));
+				for (DateGroup group : groups) {
+					// If there are 2 dates, means it's to and from
+					// If no specific time is specified by user, set the
+					// time to 00:00:00, retaining the dates
+					if (group.getDates().size() == 2) {
+						commandInput.setStartDate(new DateTime(group
+								.getDates().get(0).getTime()));
+						if (!isTimeSpecifiedByUser(group.getSyntaxTree()
+								.getChild(0))) {
+							commandInput.setStartDate(commandInput
+									.getStartDate().withMillisOfDay(0));
+						}
+
+						commandInput.setEndDate(new DateTime(group
+								.getDates().get(1).getTime()));
+						if (!isTimeSpecifiedByUser(group.getSyntaxTree()
+								.getChild(1))) {
+							commandInput.setEndDate(commandInput
+									.getEndDate().withMillisOfDay(0));
+						}
+					} else {
+						commandInput.setEndDate(new DateTime(group
+								.getDates().get(0).getTime()));
+						if (!isTimeSpecifiedByUser(group.getSyntaxTree()
+								.getChild(0))) {
+							commandInput.setEndDate(commandInput
+									.getEndDate().withMillisOfDay(0));
+						}
+					}
+				}
+
+				break;
+			}
+		}
+
+		if (taskName.equals("")) {
+			taskName = joinStringArray(inputSplit, startIndex, inputSplit.length);
+		}
+
+		commandInput.setName(taskName.trim());
+	}
+
+	private void detectPrio(String[] inputSplit, CommandInput commandInput, boolean isEditing) {
 		int priorityIndex = 0;
 		boolean prioritySent = false;
 
@@ -290,13 +249,16 @@ public class ParserMainImpl extends Parser {
 		for (int j = 1; j < inputSplit.length; j++) {
 			if (inArray(PRIORITY_INDICATORS, inputSplit[j])) {
 				priorityIndex = j;
-				if (inputSplit[j].equals("^h")) {
+				if (inputSplit[j].equals(PRIORITY_INDICATORS[0])) {
 					commandInput.setPriority(Priority.HIGH);
-				} else if (inputSplit[j].equals("^m")) {
+				} else if (inputSplit[j].equals(PRIORITY_INDICATORS[1])) {
 					commandInput.setPriority(Priority.MEDIUM);
-				} else {
+				} else if (inputSplit[j].equals(PRIORITY_INDICATORS[2])) {
 					commandInput.setPriority(Priority.LOW);
+				} else {
+					commandInput.setPriority(Priority.NONE);
 				}
+				
 				prioritySent = true;
 				// remove priority after setting
 				if (priorityIndex >= inputSplit.length - 1) {
@@ -310,8 +272,9 @@ public class ParserMainImpl extends Parser {
 				break;
 			}
 		}
+		
 		// set priority to none if not detected
-		if (prioritySent == false) {
+		if (!isEditing && prioritySent == false) {
 			commandInput.setPriority(Priority.NONE);
 		}
 	}

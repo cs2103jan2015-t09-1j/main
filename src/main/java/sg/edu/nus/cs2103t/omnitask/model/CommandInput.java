@@ -35,7 +35,7 @@ public class CommandInput {
 	
 	private boolean isCompleted;
 	
-	private Priority priority = Priority.NONE;
+	private Priority priority;
 
 	private String name;
 

@@ -18,7 +18,9 @@ public class CommandInput {
 		HELP,
 		UNDO,
 		REDO,
-		MARK
+		MARK,
+		NEXT,
+		PREV
 	}
 	
 	private CommandType commandType;

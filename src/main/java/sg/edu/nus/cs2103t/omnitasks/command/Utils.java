@@ -119,6 +119,18 @@ public class Utils {
 				return CommandInput.CommandType.MARK;
 			}
 		}
+		
+		for (String command : CommandNextImpl.COMMAND_ALIASES) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.NEXT;
+			}
+		}
+		
+		for (String command : CommandPrevImpl.COMMAND_ALIASES) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.PREV;
+			}
+		}
 
 		return CommandInput.CommandType.INVALID;
 	}

@@ -475,5 +475,15 @@ public class UIMainImpl extends UI {
 			
 		});
 	}
+
+	@Override
+	public void scrollDown() {
+		viewController.scrollDown();
+	}
+
+	@Override
+	public void scrollUp() {
+		viewController.scrollUp();
+	}
 	
 }

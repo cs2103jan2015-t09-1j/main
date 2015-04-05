@@ -27,8 +27,34 @@
 		var mapUuidToRow = {};
 		
 		$(function(){
+			$(document).keydown(function(event) {
+				if (event.which == 34) {
+					event.preventDefault();
+					
+					scrollDown();
+				} else if (event.which == 33) {
+					event.preventDefault();
+					
+					scrollUp();
+				}
+			});
+		
 			addAllCards();
 		});
+		
+		function scrollDown() {
+			$("body").stop();
+			$("body").animate({
+				scrollTop: $(window).scrollTop() + 350
+			}, 500);
+		}
+		
+		function scrollUp() {
+			$("body").stop();
+			$("body").animate({
+				scrollTop: $(window).scrollTop() - 350
+			}, 500);
+		}
 		
 		function setCheckboxState(checkbox, checked, animated) {
 			if (checked) {

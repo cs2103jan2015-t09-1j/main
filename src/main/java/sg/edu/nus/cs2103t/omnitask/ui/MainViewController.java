@@ -130,7 +130,13 @@ public class MainViewController {
 		} else if (event.getCode() == KeyCode.TAB) {
 			doAutoComplete();
 			event.consume();
-		}
+		} else if (event.getCode() == KeyCode.PAGE_DOWN) {
+        	scrollDown();
+        	event.consume();
+        } else if (event.getCode() == KeyCode.PAGE_UP) {
+        	scrollUp();
+        	event.consume();
+        }
 	}
 	
 	private void doAutoComplete() {
@@ -336,6 +342,18 @@ public class MainViewController {
 	private void removeCard(String uuid) {
 		if (agendaViewLoaded) {
 			agendaView.getEngine().executeScript("removeCard('" + uuid + "');");
+		}
+	}
+	
+	public void scrollDown() {
+		if (agendaViewLoaded) {
+			agendaView.getEngine().executeScript("scrollDown();");
+		}
+	}
+	
+	public void scrollUp() {
+		if (agendaViewLoaded) {
+			agendaView.getEngine().executeScript("scrollUp();");
 		}
 	}
 	

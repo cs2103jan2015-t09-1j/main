@@ -130,7 +130,7 @@ public class DataStubImpl extends Data {
 
 	@Override
 
-	public String getHelpDescriptors(String helpType) {
+	public String getHelpDescriptors(String helpType,boolean miniMenu) {
 		// TODO Auto-generated method stub
 		return null;
 	}

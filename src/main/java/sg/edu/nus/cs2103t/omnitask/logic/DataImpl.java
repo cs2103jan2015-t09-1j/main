@@ -321,10 +321,10 @@ public class DataImpl extends Data {
 	}
 
 	@Override
-	public String getHelpDescriptors(String helpType) throws IOException {
-		return io.readFromHelpFile(helpType);
+	public String getHelpDescriptors(String helpType,boolean miniMenu) throws IOException {
+		return io.readFromHelpFile(helpType,miniMenu);
 	}
-
+	
 	public boolean undo() {
 		if (previousState.empty()) {
 			return false;

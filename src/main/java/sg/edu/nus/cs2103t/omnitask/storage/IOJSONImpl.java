@@ -21,56 +21,59 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-
 public class IOJSONImpl extends IO {
 	public File storageFile;
-	
+
 	public Gson gson;
-	
+
 	public IOJSONImpl(File storageFile) throws IOException {
 		this.storageFile = storageFile;
-		this.gson = new GsonBuilder()
-					.registerTypeAdapter(new TypeToken<DateTime>(){}.getType(), new DateTimeConverter())
-					.create();
-		
+		this.gson = new GsonBuilder().registerTypeAdapter(
+				new TypeToken<DateTime>() {
+				}.getType(), new DateTimeConverter()).create();
+
 		IO.CheckIfFileExistAndCreateIfDoesNot(storageFile);
 	}
-	
+
 	@Override
 	public ArrayList<Task> readFromFile() throws IOException {
 		String lines = "";
-		
+
 		InputStream in = Files.newInputStream(storageFile.toPath());
-	    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-	    String line = null;
-	    while ((line = reader.readLine()) != null) {
-	        lines += line + "\n";
-	    }
-	    in.close();
-	    
-	    // return empty arraylist if file has zero items
-	    ArrayList<Task> tasks = new ArrayList<Task>();
-	    
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+		String line = null;
+		while ((line = reader.readLine()) != null) {
+			lines += line + "\n";
+		}
+		in.close();
+
+		// return empty arraylist if file has zero items
+		ArrayList<Task> tasks = new ArrayList<Task>();
+
 		// convert json to ArrayList
-	    try {
-	    	ArrayList<Task> tasksFromFile = gson.fromJson(lines, new TypeToken<ArrayList<Task>>(){}.getType());
-	    	if (tasksFromFile != null) {
-	    		tasks = tasksFromFile;
-	    	}
-	    } catch (Exception e) {
-	    	// TODO: This is unacceptable, warn user first!
-	    	// File is most likely corrupted, start over
-	    	saveToFile(new ArrayList<Task>());
-	    }
-	    
-	    return tasks;
+		try {
+			ArrayList<Task> tasksFromFile = gson.fromJson(lines,
+					new TypeToken<ArrayList<Task>>() {
+					}.getType());
+			if (tasksFromFile != null) {
+				tasks = tasksFromFile;
+			}
+		} catch (Exception e) {
+			// TODO: This is unacceptable, warn user first!
+			// File is most likely corrupted, start over
+			saveToFile(new ArrayList<Task>());
+		}
+
+		return tasks;
 	}
-	
+
 	@Override
 	public void saveToFile(List<Task> tasks) throws IOException {
 		String json = gson.toJson(tasks);
-		
-		OutputStream out = new BufferedOutputStream(Files.newOutputStream(storageFile.toPath(), StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING));
+
+		OutputStream out = new BufferedOutputStream(Files.newOutputStream(
+				storageFile.toPath(), StandardOpenOption.WRITE,
+				StandardOpenOption.TRUNCATE_EXISTING));
 		out.write((json).getBytes());
 		out.flush();
 		out.close();
@@ -79,31 +82,38 @@ public class IOJSONImpl extends IO {
 	@Override
 	public void undoFile() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void redoFile() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public String readFromHelpFile(String helpType) throws IOException{
+	public String readFromHelpFile(String helpType, boolean miniMenu)
+			throws IOException {
 		String commandDescription = "";
-		File helpFileData = new File("omnitext help file");
+		File helpFileData;
+		if (miniMenu) {
+			helpFileData = new File("omnitext mini help file");
+		} else {
+			helpFileData = new File("omnitext help file");
+		}
 		InputStream in = Files.newInputStream(helpFileData.toPath());
-	    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-	    String line = null;
-	    while ((line = reader.readLine()) != null) {
-	        if(line.equals("<"+helpType+">")){
-	        	while((line = reader.readLine())!=null && !line.equals("</"+helpType+">")){
-	        		commandDescription += line;
-	        	}
-	        	break;
-	        }
-	    }
-	    in.close();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+		String line = null;
+		while ((line = reader.readLine()) != null) {
+			if (line.equals("<" + helpType + ">")) {
+				while ((line = reader.readLine()) != null
+						&& !line.equals("</" + helpType + ">")) {
+					commandDescription += line;
+				}
+				break;
+			}
+		}
+		in.close();
 		return commandDescription;
 	}
 }

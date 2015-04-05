@@ -46,7 +46,7 @@ public class IOStubImpl extends IO {
 	}
 
 	@Override
-	public String readFromHelpFile(String helpType) throws IOException {
+	public String readFromHelpFile(String helpType,boolean miniMenu) throws IOException {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -51,6 +51,7 @@ public abstract class Data {
 
 	public abstract ArrayList<Task> searchTask();
 
-	public abstract String getHelpDescriptors(String helpType) throws IOException;	
+	public abstract String getHelpDescriptors(String helpType,boolean miniMenu) throws IOException;
+
 	
 }

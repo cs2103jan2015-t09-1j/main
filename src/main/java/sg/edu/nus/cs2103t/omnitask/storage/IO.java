@@ -17,7 +17,7 @@ public abstract class IO {
 	
 	public abstract void redoFile();
 	
-	public abstract String readFromHelpFile(String helpType) throws IOException; 
+	public abstract String readFromHelpFile(String helpType,boolean miniMenu) throws IOException; 
 	
 	public static boolean CheckIfFileExistAndCreateIfDoesNot(File file) throws IOException {
 		if (!file.exists()) {

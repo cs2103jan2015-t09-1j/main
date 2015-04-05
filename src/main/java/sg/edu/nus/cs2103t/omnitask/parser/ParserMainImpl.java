@@ -157,7 +157,11 @@ public class ParserMainImpl extends Parser {
 
 			detectPrio(inputSplit, commandInput, true);
 
-			extractDatesAndTaskNameFromCommand(2, inputSplit, commandInput, true);
+			
+			
+			if(!extractDatesAndTaskNameFromCommand(2, inputSplit, commandInput, true)){
+				commandInput.setName(joinStringArray(inputSplit, 2, inputSplit.length).trim());
+			}
 
 			return new CommandEditImpl(commandInput);
 
@@ -188,13 +192,16 @@ public class ParserMainImpl extends Parser {
 		return str.trim();
 	}
 	
-	private void extractDatesAndTaskNameFromCommand(int startIndex, String[] inputSplit, CommandInput commandInput, boolean isEditing) {
+	//
+	private boolean extractDatesAndTaskNameFromCommand(int startIndex, String[] inputSplit, CommandInput commandInput, boolean isEditing) {
 		String taskName = "";
+		boolean editted = false;
 		
 		for (int i = 1; i < inputSplit.length; i++) {
 			if (inArray(DATE_INDICATORS, inputSplit[i])) {
 				taskName = joinStringArray(inputSplit, startIndex, i);
-
+				editted = true;
+				
 				// Parse date using Natty
 				com.joestelmach.natty.Parser parser = new com.joestelmach.natty.Parser();
 				List<DateGroup> groups = parser.parse(joinStringArray(
@@ -239,6 +246,7 @@ public class ParserMainImpl extends Parser {
 		}
 
 		commandInput.setName(taskName.trim());
+		return editted;
 	}
 
 	private void detectPrio(String[] inputSplit, CommandInput commandInput, boolean isEditing) {

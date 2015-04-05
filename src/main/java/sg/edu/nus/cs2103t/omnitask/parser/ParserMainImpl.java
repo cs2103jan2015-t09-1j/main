@@ -16,6 +16,8 @@ import sg.edu.nus.cs2103t.omnitasks.command.CommandEditImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandExitImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandHelpImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandMarkImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandNextImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandPrevImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandRedoImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandSearchImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandUndoImpl;
@@ -96,6 +98,20 @@ public class ParserMainImpl extends Parser {
 			commandInput.setId(markId);
 
 			return new CommandMarkImpl(commandInput);
+		}
+		
+		if (Utils.getCommandTypeFromString(commandName) == CommandType.NEXT) {
+			CommandInput commandInput = new CommandInput(CommandType.NEXT);
+			commandInput.setCommandType(CommandType.NEXT);
+
+			return new CommandNextImpl(commandInput);
+		}
+		
+		if (Utils.getCommandTypeFromString(commandName) == CommandType.PREV) {
+			CommandInput commandInput = new CommandInput(CommandType.PREV);
+			commandInput.setCommandType(CommandType.PREV);
+
+			return new CommandPrevImpl(commandInput);
 		}
 
 		// TODO: Not sure if the parsing should be done in Command class itself.

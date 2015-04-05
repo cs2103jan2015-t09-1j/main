@@ -61,15 +61,19 @@ public abstract class UI {
 	
 	public abstract void closeHelp();
 	
-	public abstract void showMiniHelp(String msg);
+	public void showMiniHelp(String msg) {};
 	
-	public abstract void closeMiniHelp();
+	public void closeMiniHelp() {};
 	
 	public abstract void showAllTasks();
 	
 	public abstract void showSearchResults(String keyword, ArrayList<Task> tasks);
 	
-	public abstract void redraw();
+	public void scrollDown() {};
+	
+	public void scrollUp() {};
+	
+	public void redraw() {};
 
 	public abstract void start();
 	

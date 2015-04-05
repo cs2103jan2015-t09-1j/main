@@ -21,14 +21,46 @@
 	    -ms-user-select: none;
 	    user-select: none;
 	}
+	
+	.card .checkbox, .card .id, .card .title, .card .date, .card .badge {
+		cursor: pointer;
+	}
 	</style>
 
 	<script type="text/javascript">
 		var mapUuidToRow = {};
 		
 		$(function(){
+			$(document).keydown(function(event) {
+				if (event.which == 34) {
+					event.preventDefault();
+					
+					scrollDown();
+				} else if (event.which == 33) {
+					event.preventDefault();
+					
+					scrollUp();
+				} else {
+					java.focusOmniBar();
+				}
+			});
+		
 			addAllCards();
 		});
+		
+		function scrollDown() {
+			$("body").stop();
+			$("body").animate({
+				scrollTop: $(window).scrollTop() + 350
+			}, 500);
+		}
+		
+		function scrollUp() {
+			$("body").stop();
+			$("body").animate({
+				scrollTop: $(window).scrollTop() - 350
+			}, 500);
+		}
 		
 		function setCheckboxState(checkbox, checked, animated) {
 			if (checked) {
@@ -103,7 +135,9 @@
 					if (task.getEndDate().getMillis() > date) {
 						el = this;
 					} else {
-						before = true;
+						if (!el) {
+							before = true;
+						}
 						return false;
 					}
 				});
@@ -151,6 +185,26 @@
 				el.find(".badge").text(task.getPriorityString());
 				el.find(".badge").css("background-color", task.getPriorityColor());
 			}
+			
+			el.find(".id").unbind("click");
+			el.find(".id").click(function(){
+				java.autofillOmniBarWithEditId(task.getId());
+			});
+			
+			el.find(".title").unbind("click");
+			el.find(".title").click(function(){
+				java.autofillOmniBarWithEditName(task.getId());
+			});
+			
+			el.find(".date").unbind("click");
+			el.find(".date").click(function(){
+				java.autofillOmniBarWithEditDate(task.getId());
+			});
+			
+			el.find(".badge").unbind("click");
+			el.find(".badge").click(function(){
+				java.autofillOmniBarWithEditPriority(task.getId());
+			});
 			
 			setCheckboxState(el.find(".checkbox"), task.isCompleted(), false);
 			
@@ -331,16 +385,16 @@
 						<p class="group-date">Tomorrow</p>
 					</div>
 					<div class="row card-action" style="margin-bottom: -5px;">
-						<div class="col m1" style="margin-top: -5px;"><i class="checkbox mdi-toggle-check-box-outline-blank" style="font-size: 20px;"></i></div>
+						<div class="col m1" style="margin-top: -5px;"><i class="checkbox mdi-toggle-check-box-outline-blank" style="font-size: 20px;" title="Mark/Unmark Task As Done"></i></div>
 						<div class="col m1">
-							<span class="id" style="color: grey;padding-left:5px;padding-right:5px;">1</span>
+							<span class="id" style="color: grey;padding-left:5px;padding-right:5px;" title="Click to autofill OmniBar">1</span>
 						</div>
 						<div class="col m9">
-							<span class="title">CS2103T Tutorial</span>
-							<span class="date"><br>9:00 AM - 10:00 AM</span>
+							<span class="title" title="Click to autofill OmniBar">CS2103T Tutorial</span>
+							<span class="date" title="Click to autofill OmniBar"><br>9:00 AM - 10:00 AM</span>
 						</div>
 						<div class="col m1">
-							<span class="badge" style="margin-left: 5px; font-weight: 300; font-size: 0.8rem; color: #fff; background-color: #26a69a; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; background-clip: padding-box;">high</span>
+							<span class="badge" style="margin-left: 5px; font-weight: 300; font-size: 0.8rem; color: #fff; background-color: #26a69a; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; background-clip: padding-box;" title="Click to autofill OmniBar">high</span>
 						</div>
 					</div>
 				</div>

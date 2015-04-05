@@ -158,6 +158,8 @@ public class Controller extends Application {
 					String help = data.getHelpDescriptors(possibleCommands.get(0).toUpperCase(),true);
 					if (help != null && !help.isEmpty()) {
 						ui.showMiniHelp(help);
+					} else {
+						ui.closeMiniHelp();
 					}
 				} catch (IOException ex) {
 					ex.printStackTrace();

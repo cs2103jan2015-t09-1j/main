@@ -22,6 +22,7 @@ import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSObject;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandEditImpl;
 
 public class MainViewController {
 	
@@ -407,6 +408,42 @@ public class MainViewController {
 		
 		public void focusOmniBar() {
 			MainViewController.this.focusOmniBar();
+		}
+		
+		public void autofillOmniBarWithEditId(int index) {
+			Task task = tasks.get(index-1);
+			cycleHandleHistory();
+			omniBar.setText(CommandEditImpl.COMMAND_ALIASES_EDIT[0] + " " + task.getId() + " ");
+			focusOmniBar();
+			omniBar.end();
+		}
+		
+		public void autofillOmniBarWithEditPriority(int index) {
+			Task task = tasks.get(index-1);
+			cycleHandleHistory();
+			// TODO: Fix me
+			String priority = "";
+			omniBar.setText(CommandEditImpl.COMMAND_ALIASES_EDIT[0] + " " + task.getId() + " ^" + priority);
+			focusOmniBar();
+			omniBar.end();
+		}
+		
+		public void autofillOmniBarWithEditName(int index) {
+			Task task = tasks.get(index-1);
+			cycleHandleHistory();
+			omniBar.setText(CommandEditImpl.COMMAND_ALIASES_EDIT[0] + " " + task.getId() + " " + task.getName());
+			focusOmniBar();
+			omniBar.end();
+		}
+		
+		public void autofillOmniBarWithEditDate(int index) {
+			Task task = tasks.get(index-1);
+			cycleHandleHistory();
+			// TODO: Fix me
+			String date = "";
+			omniBar.setText(CommandEditImpl.COMMAND_ALIASES_EDIT[0] + " " + task.getId() + " " + date);
+			focusOmniBar();
+			omniBar.end();
 		}
 		
 		public boolean markTaskAsDone(String uuid) {

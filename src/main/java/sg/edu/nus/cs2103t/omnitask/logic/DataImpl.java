@@ -100,6 +100,11 @@ public class DataImpl extends Data {
 
 		return clonedTasks;
 	}
+	
+	@Override
+	public Task getTask(int index) {
+		return sortedTasks.get(index).clone();
+	}
 
 	private Stack<ArrayList<Task>> getPreviousState() {
 		previousList = getTasks();
@@ -257,30 +262,6 @@ public class DataImpl extends Data {
 		// Clear redoStack because no undo was made.
 		redoStack.clear();
 
-		return true;
-	}
-
-	public boolean markTask(Task taskToMark) {
-		assertInited();
-		getPreviousState();
-		
-		for (int i = 0; i < tasks.size(); i++) {
-			if (tasks.get(i).getId() == (taskToMark.getId())) {
-				tasks.get(i).setCompleted(taskToMark.isCompleted());
-			}
-		}
-		
-		try {
-			io.saveToFile(tasks);
-			updateTaskId();
-		} catch (IOException ex) {
-			// TODO: Handle error
-			ex.printStackTrace();
-			printError("IO Exception");
-
-			return false;
-		}
-		
 		return true;
 	}
 	

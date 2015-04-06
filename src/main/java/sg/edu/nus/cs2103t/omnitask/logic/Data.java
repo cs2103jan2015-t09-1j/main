@@ -37,13 +37,13 @@ public abstract class Data {
 	
 	public abstract ArrayList<Task> getTasks();
 	
+	public abstract Task getTask(int index);
+	
 	public abstract boolean addTask(Task task) throws TaskNoNameException, IOException;
 
 	public abstract boolean deleteTask(Task task);
 
 	public abstract boolean editTask(Task mutatorTask);
-	
-	public abstract boolean markTask(Task taskToMark);
 	
 	public abstract boolean undo();
 

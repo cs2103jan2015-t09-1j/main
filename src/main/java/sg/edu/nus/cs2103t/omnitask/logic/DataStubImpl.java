@@ -70,6 +70,11 @@ public class DataStubImpl extends Data {
 	}
 
 	@Override
+	public Task getTask(int index) {
+		return tasks.get(index).clone();
+	}
+	
+	@Override
 	public boolean addTask(Task task) throws TaskNoNameException, IOException {
 		assertInited();
 		
@@ -142,12 +147,6 @@ public class DataStubImpl extends Data {
 
 	@Override
 	public boolean redo() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean markTask(Task mutatorTask) {
 		// TODO Auto-generated method stub
 		return false;
 	}

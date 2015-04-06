@@ -42,7 +42,7 @@ public class ParserMainImpl extends Parser {
 		// TODO: Need SLAP?
 		String commandName = inputSplit[0].toLowerCase();
 
-		//display command
+		// display command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.DISPLAY) {
 			CommandInput commandInput = new CommandInput(CommandType.DISPLAY);
 			commandInput.setCommandType(CommandType.DISPLAY);
@@ -50,7 +50,7 @@ public class ParserMainImpl extends Parser {
 			return new CommandDisplayImpl(commandInput);
 		}
 
-		//undo command
+		// undo command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.UNDO) {
 			CommandInput commandInput = new CommandInput(CommandType.UNDO);
 			commandInput.setCommandType(CommandType.UNDO);
@@ -58,31 +58,31 @@ public class ParserMainImpl extends Parser {
 			return new CommandUndoImpl(commandInput);
 		}
 
-		//re-do command
+		// re-do command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.REDO) {
 			CommandInput commandInput = new CommandInput(CommandType.REDO);
 			commandInput.setCommandType(CommandType.REDO);
 
 			return new CommandRedoImpl(commandInput);
 		}
-		
-		//next command
+
+		// next command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.NEXT) {
 			CommandInput commandInput = new CommandInput(CommandType.NEXT);
 			commandInput.setCommandType(CommandType.NEXT);
 
 			return new CommandNextImpl(commandInput);
 		}
-				
-		//prev command
+
+		// prev command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.PREV) {
 			CommandInput commandInput = new CommandInput(CommandType.PREV);
 			commandInput.setCommandType(CommandType.PREV);
 
 			return new CommandPrevImpl(commandInput);
 		}
-		
-		//exit command
+
+		// exit command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.EXIT) {
 			CommandInput commandInput = new CommandInput(CommandType.EXIT);
 			commandInput.setCommandType(CommandType.EXIT);
@@ -90,7 +90,7 @@ public class ParserMainImpl extends Parser {
 			return new CommandExitImpl(commandInput);
 		}
 
-		//delete command
+		// delete command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.DELETE) {
 			CommandInput commandInput = new CommandInput(CommandType.DELETE);
 			commandInput.setCommandType(CommandType.DELETE);
@@ -102,7 +102,7 @@ public class ParserMainImpl extends Parser {
 			return new CommandDeleteImpl(commandInput);
 		}
 
-		//mark command
+		// mark command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.MARK) {
 			CommandInput commandInput = new CommandInput(CommandType.MARK);
 			commandInput.setCommandType(CommandType.MARK);
@@ -125,12 +125,13 @@ public class ParserMainImpl extends Parser {
 		// add command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.ADD) {
 			CommandInput commandInput = new CommandInput(CommandType.ADD);
-		
-			//detect if priority is specified by user
+
+			// detect if priority is specified by user
 			detectPrio(inputSplit, commandInput, false);
 
-			//parse dateTime within input string
-			extractDatesAndTaskNameFromCommand(1, inputSplit, commandInput, false);
+			// parse dateTime within input string
+			extractDatesAndTaskNameFromCommand(1, inputSplit, commandInput,
+					false);
 
 			return new CommandAddImpl(commandInput);
 		}
@@ -157,19 +158,21 @@ public class ParserMainImpl extends Parser {
 			return new CommandHelpImpl(commandInput);
 		}
 
-		//edit command
+		// edit command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.EDIT) {
 			CommandInput commandInput = new CommandInput(CommandType.EDIT);
 			long updateId;
 			updateId = Long.parseLong(inputSplit[1]);
 			commandInput.setId(updateId);
 
-			//edit priority of task if detected
+			// edit priority of task if detected
 			detectPrio(inputSplit, commandInput, true);
 
-			//edit time and name of task if detected within input string
-			if(!extractDatesAndTaskNameFromCommand(2, inputSplit, commandInput, true)){
-				commandInput.setName(joinStringArray(inputSplit, 2, inputSplit.length).trim());
+			// edit time and name of task if detected within input string
+			if (!extractDatesAndTaskNameFromCommand(2, inputSplit,
+					commandInput, true)) {
+				commandInput.setName(joinStringArray(inputSplit, 2,
+						inputSplit.length).trim());
 			}
 
 			return new CommandEditImpl(commandInput);
@@ -180,87 +183,10 @@ public class ParserMainImpl extends Parser {
 		return null;
 	}
 
-	// Do case-insensitive search of word in array
-	private boolean inArray(String[] haystack, String needle) {
-		for (int i = 0; i < haystack.length; i++) {
-			if (haystack[i].toLowerCase().equals(needle.toLowerCase())) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	// Join a string array with a space
-	private String joinStringArray(String[] strArray, int start, int end) {
-		String str = "";
-		for (int i = start; i < end; i++) {
-			str += strArray[i] + " ";
-		}
-
-		return str.trim();
-	}
-	
-	//parse the dateTime within the string input using natty
-	private boolean extractDatesAndTaskNameFromCommand(int startIndex, String[] inputSplit, 
-			CommandInput commandInput, boolean isEditing) {
-		String taskName = "";
-		boolean editted = false;
-		
-		for (int i = 1; i < inputSplit.length; i++) {
-			if (inArray(DATE_INDICATORS, inputSplit[i])) {
-				taskName = joinStringArray(inputSplit, startIndex, i);
-				editted = true;
-				
-				// Parse date using Natty
-				com.joestelmach.natty.Parser parser = new com.joestelmach.natty.Parser();
-				List<DateGroup> groups = parser.parse(joinStringArray(
-						inputSplit, i, inputSplit.length));
-				for (DateGroup group : groups) {
-					// If there are 2 dates, means it's to and from
-					// If no specific time is specified by user, set the
-					// time to 00:00:00, retaining the dates
-					if (group.getDates().size() == 2) {
-						commandInput.setStartDate(new DateTime(group
-								.getDates().get(0).getTime()));
-						if (!isTimeSpecifiedByUser(group.getSyntaxTree()
-								.getChild(0))) {
-							commandInput.setStartDate(commandInput
-									.getStartDate().withMillisOfDay(0));
-						}
-
-						commandInput.setEndDate(new DateTime(group
-								.getDates().get(1).getTime()));
-						if (!isTimeSpecifiedByUser(group.getSyntaxTree()
-								.getChild(1))) {
-							commandInput.setEndDate(commandInput
-									.getEndDate().withMillisOfDay(0));
-						}
-					} else {
-						commandInput.setEndDate(new DateTime(group
-								.getDates().get(0).getTime()));
-						if (!isTimeSpecifiedByUser(group.getSyntaxTree()
-								.getChild(0))) {
-							commandInput.setEndDate(commandInput
-									.getEndDate().withMillisOfDay(0));
-						}
-					}
-				}
-
-				break;
-			}
-		}
-
-		if (!isEditing && taskName.equals("")) {
-			taskName = joinStringArray(inputSplit, startIndex, inputSplit.length);
-		}
-        //to indicate if taskName is edited
-		commandInput.setName(taskName.trim());
-		return editted;
-	}
- 
-	//method to detect priority indicator within string input and remove it from taskName
-	private void detectPrio(String[] inputSplit, CommandInput commandInput, boolean isEditing) {
+	// method to detect priority indicator within string input and remove it
+	// from taskName
+	private void detectPrio(String[] inputSplit, CommandInput commandInput,
+			boolean isEditing) {
 		int priorityIndex = 0;
 		boolean prioritySent = false;
 
@@ -277,7 +203,7 @@ public class ParserMainImpl extends Parser {
 				} else {
 					commandInput.setPriority(Priority.NONE);
 				}
-				
+
 				prioritySent = true;
 				// remove priority after setting
 				if (priorityIndex >= inputSplit.length - 1) {
@@ -291,14 +217,84 @@ public class ParserMainImpl extends Parser {
 				break;
 			}
 		}
-		
+
 		// set priority to none if not detected
 		if (!isEditing && prioritySent == false) {
 			commandInput.setPriority(Priority.NONE);
 		}
 	}
 
-	//method to indicate if time is specified by the user in the input string
+	// parse the dateTime within the string input using natty
+	private boolean extractDatesAndTaskNameFromCommand(int startIndex,
+			String[] inputSplit, CommandInput commandInput, boolean isEditing) {
+		String taskName = "";
+		boolean editted = false;
+
+		for (int i = 1; i < inputSplit.length; i++) {
+			if (inArray(DATE_INDICATORS, inputSplit[i])) {
+				taskName = joinStringArray(inputSplit, startIndex, i);
+				editted = true;
+
+				// Parse date using Natty
+				com.joestelmach.natty.Parser parser = new com.joestelmach.natty.Parser();
+				List<DateGroup> groups = parser.parse(joinStringArray(
+						inputSplit, i, inputSplit.length));
+				for (DateGroup group : groups) {
+					// If there are 2 dates, means it's to and from
+					// If no specific time is specified by user, set the
+					// time to 00:00:00, retaining the dates
+					if (group.getDates().size() == 2) {
+						commandInput.setStartDate(new DateTime(group.getDates()
+								.get(0).getTime()));
+						if (!isTimeSpecifiedByUser(group.getSyntaxTree()
+								.getChild(0))) {
+							commandInput.setStartDate(commandInput
+									.getStartDate().withMillisOfDay(0));
+						}
+
+						commandInput.setEndDate(new DateTime(group.getDates()
+								.get(1).getTime()));
+						if (!isTimeSpecifiedByUser(group.getSyntaxTree()
+								.getChild(1))) {
+							commandInput.setEndDate(commandInput.getEndDate()
+									.withMillisOfDay(0));
+						}
+					} else {
+						commandInput.setEndDate(new DateTime(group.getDates()
+								.get(0).getTime()));
+						if (!isTimeSpecifiedByUser(group.getSyntaxTree()
+								.getChild(0))) {
+							commandInput.setEndDate(commandInput.getEndDate()
+									.withMillisOfDay(0));
+						}
+					}
+				}
+
+				break;
+			}
+		}
+
+		if (!isEditing && taskName.equals("")) {
+			taskName = joinStringArray(inputSplit, startIndex,
+					inputSplit.length);
+		}
+		// to indicate if taskName is edited
+		commandInput.setName(taskName.trim());
+		return editted;
+	}
+
+	// Do case-insensitive search of word in array
+	private boolean inArray(String[] haystack, String needle) {
+		for (int i = 0; i < haystack.length; i++) {
+			if (haystack[i].toLowerCase().equals(needle.toLowerCase())) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	// method to indicate if time is specified by the user in the input string
 	private boolean isTimeSpecifiedByUser(Tree tree) {
 		boolean timeSpecified = false;
 		for (int j = 0; j < tree.getChildCount(); j++) {
@@ -309,5 +305,15 @@ public class ParserMainImpl extends Parser {
 		}
 
 		return timeSpecified;
+	}
+
+	// Join a string array with a space
+	private String joinStringArray(String[] strArray, int start, int end) {
+		String str = "";
+		for (int i = start; i < end; i++) {
+			str += strArray[i] + " ";
+		}
+
+		return str.trim();
 	}
 }

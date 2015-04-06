@@ -1,7 +1,5 @@
 package sg.edu.nus.cs2103t.omnitasks.command;
 
-import java.util.ArrayList;
-
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 
@@ -24,21 +22,6 @@ public class Utils {
 		task.setEndDate(commandInput.getEndDate());
 	}
 
-	public static void makeTaskToEdit(CommandInput commandInput, Task mutatorTask) {
-		if (!commandInput.getName().equals("")) {
-			mutatorTask.setName(commandInput.getName());
-		}
-		if (commandInput.getPriority() != null) {
-			mutatorTask.setPriority(commandInput.getPriority());
-		}
-		if (commandInput.getStartDate() != null) {
-			mutatorTask.setStartDate(commandInput.getStartDate());
-		}
-		if (commandInput.getEndDate() != null) {
-			mutatorTask.setEndDate(commandInput.getEndDate());
-		}
-	}
-	
 	public static void editAttributes(Task foundTask, Task mutatorTask) {
 		if (!mutatorTask.getName().equals("")) {
 			foundTask.setName(mutatorTask.getName());
@@ -110,19 +93,19 @@ public class Utils {
 				return CommandInput.CommandType.REDO;
 			}
 		}
-		
+
 		for (String command : CommandMarkImpl.COMMAND_ALIASES_MARK) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
 				return CommandInput.CommandType.MARK;
 			}
 		}
-		
+
 		for (String command : CommandNextImpl.COMMAND_ALIASES) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
 				return CommandInput.CommandType.NEXT;
 			}
 		}
-		
+
 		for (String command : CommandPrevImpl.COMMAND_ALIASES) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
 				return CommandInput.CommandType.PREV;
@@ -130,6 +113,22 @@ public class Utils {
 		}
 
 		return CommandInput.CommandType.INVALID;
+	}
+
+	public static void makeTaskToEdit(CommandInput commandInput,
+			Task mutatorTask) {
+		if (!commandInput.getName().equals("")) {
+			mutatorTask.setName(commandInput.getName());
+		}
+		if (commandInput.getPriority() != null) {
+			mutatorTask.setPriority(commandInput.getPriority());
+		}
+		if (commandInput.getStartDate() != null) {
+			mutatorTask.setStartDate(commandInput.getStartDate());
+		}
+		if (commandInput.getEndDate() != null) {
+			mutatorTask.setEndDate(commandInput.getEndDate());
+		}
 	}
 
 }

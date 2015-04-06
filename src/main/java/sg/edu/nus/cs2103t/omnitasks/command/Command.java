@@ -16,10 +16,10 @@ public abstract class Command {
 		return commandInput;
 	}
 
+	public abstract boolean processCommand(Data data, UI ui);
+
 	public void setCommandInput(CommandInput commandInput) {
 		this.commandInput = commandInput;
 	}
-
-	public abstract boolean processCommand(Data data, UI ui);
 
 }

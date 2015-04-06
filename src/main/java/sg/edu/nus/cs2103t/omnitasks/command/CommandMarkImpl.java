@@ -20,10 +20,13 @@ public class CommandMarkImpl extends Command {
 		Task task = data.getTask((int) commandInput.getId() - 1);
 		task.setCompleted(commandInput.isCompleted());
 
-		if (data.editTask(task) && task != null) {
+		if (commandInput.isCompleted() == true && data.editTask(task) && task != null) {
 			ui.showMessage("Task \"" + commandInput.getId()
-					+ "\" marked successfully!");
+					+ "\" is successfully marked as Done!");
 			return true;
+		} else if (commandInput.isCompleted() == false && data.editTask(task) && task != null) {
+			ui.showMessage("Task \"" + commandInput.getId()
+					+ "\" is successfully marked as Not Done!");
 		} else {
 			ui.showError("Unable to mark Task \"" + commandInput.getId()
 					+ "\". Please choose a valid id!");

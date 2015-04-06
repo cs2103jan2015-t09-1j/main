@@ -13,21 +13,73 @@ import sg.edu.nus.cs2103t.omnitask.parser.Parser;
 import sg.edu.nus.cs2103t.omnitask.parser.ParserMainImpl;
 import sg.edu.nus.cs2103t.omnitask.storage.IOJSONImpl;
 import sg.edu.nus.cs2103t.omnitask.ui.UI;
-import sg.edu.nus.cs2103t.omnitask.ui.UIMainImpl;
 import sg.edu.nus.cs2103t.omnitask.ui.UI.CommandReceivedListener;
+import sg.edu.nus.cs2103t.omnitask.ui.UIMainImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.Command;
 
 public class Controller extends Application {
 
-	protected Parser parser;
-
-	protected Data data;
-
 	private static UI ui;
+
+	public static void Exit() {
+		ui.exit();
+		System.exit(0);
+	}
 
 	public static void main(String[] args) {
 		launch(args);
 	}
+
+	protected Data data;
+
+	protected Parser parser;
+
+	CommandReceivedListener commandReceivedListener = new CommandReceivedListener() {
+
+		public ArrayList<String> doAutoComplete(String userInput) {
+			return generatePossibleAutoComplete(userInput);
+		}
+
+		public boolean onCommandReceived(String userInput) {
+			return processUserInput(userInput);
+		}
+
+		@Override
+		public void showMiniHelpIfAvailable(String userInput) {
+			// TODO To be fixed
+			// with proper
+			// implementation
+			// adn SLAP similar
+			// to
+			// doAutoComplete?
+
+			// Sample
+			// implementation:
+			ArrayList<String> possibleCommands = generatePossibleAutoComplete(userInput);
+			if (possibleCommands.size() > 0) {
+				try {
+					String help = data.getHelpDescriptors(
+							possibleCommands.get(0).toUpperCase(), true);
+					if (help != null && !help.isEmpty()) {
+						ui.showMiniHelp(help);
+					} else {
+						ui.closeMiniHelp();
+					}
+				} catch (IOException ex) {
+					ex.printStackTrace();
+					ui.closeMiniHelp();
+				}
+			} else {
+				ui.closeMiniHelp();
+			}
+		}
+
+		@Override
+		public boolean updateTask(Task task) {
+			return data.editTask(task);
+		}
+
+	};
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -61,18 +113,6 @@ public class Controller extends Application {
 
 		// Start UI
 		ui.start();
-	}
-
-	private boolean processUserInput(String input) {
-		Command command = parser.parseUserInput(input);
-
-		if (command == null) {
-			ui.showError("Invalid command entered. Please try again.");
-			return false;
-		} else {
-			command.processCommand(data, ui);
-			return true;
-		}
 	}
 
 	private ArrayList<String> generatePossibleAutoComplete(String userInput) {
@@ -131,50 +171,16 @@ public class Controller extends Application {
 		return possibleAutoComplete;
 	}
 
-	CommandReceivedListener commandReceivedListener = new CommandReceivedListener() {
+	private boolean processUserInput(String input) {
+		Command command = parser.parseUserInput(input);
 
-		public boolean onCommandReceived(String userInput) {
-			return processUserInput(userInput);
+		if (command == null) {
+			ui.showError("Invalid command entered. Please try again.");
+			return false;
+		} else {
+			command.processCommand(data, ui);
+			return true;
 		}
-
-		public ArrayList<String> doAutoComplete(String userInput) {
-			return generatePossibleAutoComplete(userInput);
-		}
-
-		@Override
-		public boolean updateTask(Task task) {
-			return data.editTask(task);
-		}
-
-		@Override
-		public void showMiniHelpIfAvailable(String userInput) {
-			// TODO To be fixed with proper implementation adn SLAP similar to
-			// doAutoComplete?
-
-			// Sample implementation:
-			ArrayList<String> possibleCommands = generatePossibleAutoComplete(userInput);
-			if (possibleCommands.size() > 0) {
-				try {
-					String help = data.getHelpDescriptors(possibleCommands.get(0).toUpperCase(),true);
-					if (help != null && !help.isEmpty()) {
-						ui.showMiniHelp(help);
-					} else {
-						ui.closeMiniHelp();
-					}
-				} catch (IOException ex) {
-					ex.printStackTrace();
-					ui.closeMiniHelp();
-				}
-			} else {
-				ui.closeMiniHelp();
-			}
-		}
-
-	};
-
-	public static void Exit() {
-		ui.exit();
-		System.exit(0);
 	}
 
 }

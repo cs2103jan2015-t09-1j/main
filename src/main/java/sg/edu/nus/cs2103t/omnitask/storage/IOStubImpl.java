@@ -6,27 +6,39 @@ import java.util.List;
 
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 
-
 /**
- * IOStubImpl is to be used for testing only.
- * It simulates normal IO by caching the data in memory instead of writing it to file.
+ * IOStubImpl is to be used for testing only. It simulates normal IO by caching
+ * the data in memory instead of writing it to file.
  * 
  * @author Faruq
  *
  */
 public class IOStubImpl extends IO {
-	
+
 	private ArrayList<Task> tasks;
 
 	public IOStubImpl() {
 		this.tasks = new ArrayList<Task>();
 	}
-	
+
 	@Override
 	public ArrayList<Task> readFromFile() {
-	    return (ArrayList<Task>) tasks.clone();
+		return (ArrayList<Task>) tasks.clone();
 	}
-	
+
+	@Override
+	public String readFromHelpFile(String helpType, boolean miniMenu)
+			throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void redoFile() {
+		// TODO Auto-generated method stub
+
+	}
+
 	@Override
 	public void saveToFile(List<Task> tasks) {
 		this.tasks.clear();
@@ -36,18 +48,6 @@ public class IOStubImpl extends IO {
 	@Override
 	public void undoFile() {
 		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void redoFile() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String readFromHelpFile(String helpType,boolean miniMenu) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

@@ -1,7 +1,5 @@
 package sg.edu.nus.cs2103t.omnitasks.command;
 
-import java.util.ArrayList;
-
 import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;

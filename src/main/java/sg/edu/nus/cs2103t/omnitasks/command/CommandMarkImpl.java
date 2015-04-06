@@ -1,7 +1,5 @@
 package sg.edu.nus.cs2103t.omnitasks.command;
 
-import java.util.ArrayList;
-
 import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
@@ -17,23 +15,16 @@ public class CommandMarkImpl extends Command {
 
 	@Override
 	public boolean processCommand(Data data, UI ui) {
-		ArrayList<Task> tasks = data.getTasks();
-		Task taskToMark = null;
+		Task task = data.getTask((int) commandInput.getId() - 1);
+		task.setCompleted(commandInput.isCompleted());
 
-		// Search for a task with user-specified taskId
-		for (int i = 0; i < tasks.size(); i++) {
-			// Return true if taskId is the same as user-specified taskId
-			if (tasks.get(i).getId() == commandInput.getId()) {
-				// Copy the task into taskToRemove for Data to process
-				taskToMark = tasks.get(i);
-				taskToMark.setCompleted(commandInput.isCompleted());
-			}
-		}
-
-		if (data.markTask(taskToMark) && taskToMark != null) {
+		if (commandInput.isCompleted() == true && data.editTask(task) && task != null) {
 			ui.showMessage("Task \"" + commandInput.getId()
-					+ "\" marked successfully!");
+					+ "\" is successfully marked as Done!");
 			return true;
+		} else if (commandInput.isCompleted() == false && data.editTask(task) && task != null) {
+			ui.showMessage("Task \"" + commandInput.getId()
+					+ "\" is successfully marked as Not Done!");
 		} else {
 			ui.showError("Unable to mark Task \"" + commandInput.getId()
 					+ "\". Please choose a valid id!");

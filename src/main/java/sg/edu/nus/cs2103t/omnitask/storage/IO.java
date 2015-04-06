@@ -9,24 +9,24 @@ import java.util.List;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 
 public abstract class IO {
-	public abstract ArrayList<Task> readFromFile() throws IOException;
-	
-	public abstract void saveToFile(List<Task> tasks) throws IOException;
-	
-	public abstract void undoFile();
-	
-	public abstract void redoFile();
-	
-	public abstract String readFromHelpFile(String helpType,boolean miniMenu) throws IOException; 
-	
-	public static boolean CheckIfFileExistAndCreateIfDoesNot(File file) throws IOException {
+	public static boolean CheckIfFileExistAndCreateIfDoesNot(File file)
+			throws IOException {
 		if (!file.exists()) {
 			Files.createFile(file.toPath());
 		}
-		
+
 		return true;
 	}
 
-	
-	
+	public abstract ArrayList<Task> readFromFile() throws IOException;
+
+	public abstract String readFromHelpFile(String helpType, boolean miniMenu)
+			throws IOException;
+
+	public abstract void redoFile();
+
+	public abstract void saveToFile(List<Task> tasks) throws IOException;
+
+	public abstract void undoFile();
+
 }

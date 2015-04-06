@@ -161,30 +161,23 @@
 		}
 		
 		function fillCardDetails(el, task) {
-			if (el.attr("uuid") != task.getUuid().toString()) {
-				el.attr("uuid", task.getUuid().toString());
-			}
+			el.attr("uuid", task.getUuid().toString());
 			
-			if (el.find(".id").text() != task.getId()) {
-				el.find(".id").text(task.getId());
-			}
+			el.find(".id").text(task.getId());
 			
-			if (el.find(".title").text() != task.getName()) {
-				el.find(".title").text(task.getName());
-			}
+			el.find(".title").text(task.getName());
 			
 			var date = task.getFormattedTimeRange();
 			el.attr("date", date);
 			if (date) {
 				el.find(".date").html("<br>" + date);
+				el.find(".date").css("display", "inline");
 			} else {
 				el.find(".date").css("display", "none");
 			}
 			
-			if (el.find(".badge").text() != task.getPriorityString()) {
-				el.find(".badge").text(task.getPriorityString());
-				el.find(".badge").css("background-color", task.getPriorityColor());
-			}
+			el.find(".badge").text(task.getPriorityString());
+			el.find(".badge").css("background-color", task.getPriorityColor());
 			
 			el.find(".id").unbind("click");
 			el.find(".id").click(function(){

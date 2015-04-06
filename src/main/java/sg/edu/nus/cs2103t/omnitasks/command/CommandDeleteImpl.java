@@ -31,11 +31,12 @@ public class CommandDeleteImpl extends Command {
 		}
 
 		if (data.deleteTask(taskToRemove) && taskToRemove != null) {
-			ui.showMessage("Task \"" + commandInput.getId()
-					+ "\" deleted successfully!");
+			ui.showMessage("Task \"" + commandInput.getId() + "\" " + "\""
+					+ taskToRemove.getName() + "\" deleted successfully!");
 			return true;
 		} else {
 			ui.showError("Unable to delete Task \"" + commandInput.getId()
+					+ "\" " + "\"" + taskToRemove.getName()
 					+ "\". Please choose a valid id!");
 		}
 

@@ -22,15 +22,15 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 public class IOJSONImpl extends IO {
-	public File storageFile;
-
 	public Gson gson;
+
+	public File storageFile;
 
 	public IOJSONImpl(File storageFile) throws IOException {
 		this.storageFile = storageFile;
-		this.gson = new GsonBuilder().registerTypeAdapter(
-				new TypeToken<DateTime>() {
-				}.getType(), new DateTimeConverter()).create();
+		this.gson = new GsonBuilder()
+				.registerTypeAdapter(new TypeToken<DateTime>() {}.getType(),
+						new DateTimeConverter()).create();
 
 		IO.CheckIfFileExistAndCreateIfDoesNot(storageFile);
 	}
@@ -53,8 +53,7 @@ public class IOJSONImpl extends IO {
 		// convert json to ArrayList
 		try {
 			ArrayList<Task> tasksFromFile = gson.fromJson(lines,
-					new TypeToken<ArrayList<Task>>() {
-					}.getType());
+					new TypeToken<ArrayList<Task>>() {}.getType());
 			if (tasksFromFile != null) {
 				tasks = tasksFromFile;
 			}
@@ -65,30 +64,6 @@ public class IOJSONImpl extends IO {
 		}
 
 		return tasks;
-	}
-
-	@Override
-	public void saveToFile(List<Task> tasks) throws IOException {
-		String json = gson.toJson(tasks);
-
-		OutputStream out = new BufferedOutputStream(Files.newOutputStream(
-				storageFile.toPath(), StandardOpenOption.WRITE,
-				StandardOpenOption.TRUNCATE_EXISTING));
-		out.write((json).getBytes());
-		out.flush();
-		out.close();
-	}
-
-	@Override
-	public void undoFile() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void redoFile() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -115,5 +90,29 @@ public class IOJSONImpl extends IO {
 		}
 		in.close();
 		return commandDescription;
+	}
+
+	@Override
+	public void redoFile() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void saveToFile(List<Task> tasks) throws IOException {
+		String json = gson.toJson(tasks);
+
+		OutputStream out = new BufferedOutputStream(Files.newOutputStream(
+				storageFile.toPath(), StandardOpenOption.WRITE,
+				StandardOpenOption.TRUNCATE_EXISTING));
+		out.write((json).getBytes());
+		out.flush();
+		out.close();
+	}
+
+	@Override
+	public void undoFile() {
+		// TODO Auto-generated method stub
+
 	}
 }

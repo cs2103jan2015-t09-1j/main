@@ -1,9 +1,7 @@
 package sg.edu.nus.cs2103t.omnitask.logic;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Stack;
 import java.util.UUID;
 
@@ -15,34 +13,39 @@ import javafx.collections.transformation.SortedList;
 import org.joda.time.DateTime;
 
 import sg.edu.nus.cs2103t.omnitask.Logger;
-import sg.edu.nus.cs2103t.omnitask.logic.Data.DataUpdatedListener;
-import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 import sg.edu.nus.cs2103t.omnitask.storage.IO;
-import sg.edu.nus.cs2103t.omnitask.storage.IOJSONImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.Utils;
 
 public class DataImpl extends Data {
 
 	private static DataImpl data;
 
-	private ObservableList<Task> tasks;
+	public static DataImpl GetSingleton() {
+		if (data == null) {
+			data = new DataImpl();
+		}
 
-	private SortedList<Task> sortedTasks;
-
-	private Stack<ArrayList<Task>> previousState;
-
-	private Stack<ArrayList<Task>> redoStack;
-
-	private ArrayList<Task> redoList;
-
-	private ArrayList<Task> currentList;
-
-	private ArrayList<Task> previousList;
+		return data;
+	}
 
 	protected IO io;
 
+	private ArrayList<Task> currentList;
+
 	private boolean inited;
+
+	private ArrayList<Task> previousList;
+
+	private Stack<ArrayList<Task>> previousState;
+
+	private ArrayList<Task> redoList;
+
+	private Stack<ArrayList<Task>> redoStack;
+
+	private SortedList<Task> sortedTasks;
+
+	private ObservableList<Task> tasks;
 
 	private ListChangeListener<Task> tasksChangeListener = new ListChangeListener<Task>() {
 
@@ -56,70 +59,8 @@ public class DataImpl extends Data {
 
 	};
 
-	public static DataImpl GetSingleton() {
-		if (data == null) {
-			data = new DataImpl();
-		}
-
-		return data;
-	}
-
 	private DataImpl() {
 		super();
-	}
-
-	public DataImpl init(IO io) throws IOException {
-		if (inited) {
-			return this;
-		}
-
-		this.io = io;
-		tasks = FXCollections.observableArrayList();
-		sortedTasks = tasks.sorted(Task.taskSorterComparator);
-		sortedTasks.addListener(tasksChangeListener);
-		tasks.addAll(io.readFromFile());
-		redoStack = new Stack<ArrayList<Task>>();
-		previousState = new Stack<ArrayList<Task>>();
-		inited = true;
-
-		return this;
-	}
-
-	private void assertInited() {
-		assert inited;
-	}
-
-	@Override
-	public ArrayList<Task> getTasks() {
-		assertInited();
-
-		ArrayList<Task> clonedTasks = new ArrayList<Task>();
-		for (Task task : sortedTasks) {
-			clonedTasks.add(task.clone());
-		}
-
-		return clonedTasks;
-	}
-
-	private Stack<ArrayList<Task>> getPreviousState() {
-		previousList = getTasks();
-		previousState.push((ArrayList<Task>) previousList.clone());
-
-		return previousState;
-	}
-
-	// Get new "viewing" taskId which can be used for a new task
-	private long getNewId() {
-		assertInited();
-
-		long taskId = 0;
-		for (Task task : tasks) {
-			if (task.getId() > taskId) {
-				taskId = task.getId();
-			}
-		}
-
-		return ++taskId;
 	}
 
 	// Not thread-safe
@@ -153,7 +94,7 @@ public class DataImpl extends Data {
 
 			throw ex;
 		}
-		
+
 		// Clear redoStack because no undo was made.
 		redoStack.clear();
 
@@ -186,30 +127,11 @@ public class DataImpl extends Data {
 
 			return false;
 		}
-		
+
 		// Clear redoStack because no undo was made.
 		redoStack.clear();
 
 		return true;
-	}
-
-	// Reassign taskId to the tasks arraylist
-	private void updateTaskId() {
-		assertInited();
-
-		ArrayList<Task> tmpTasks = new ArrayList<Task>();
-		for (int i = 0; i < sortedTasks.size(); i++) {
-			Task task = sortedTasks.get(i);
-			task.setId(i + 1);
-			tmpTasks.add(task);
-		}
-
-		tasks.setAll(tmpTasks);
-		try {
-			io.saveToFile(tasks);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -223,7 +145,7 @@ public class DataImpl extends Data {
 
 		for (int i = 0; i < tasks.size(); i++) {
 			if (tasks.get(i).getId() == (mutatorTask.getId())) {
-				
+
 				foundTask = tasks.get(i);
 				Utils.editAttributes(foundTask, mutatorTask);
 				// store the task name from the file in a variable incase need
@@ -260,33 +182,79 @@ public class DataImpl extends Data {
 		return true;
 	}
 
-	public boolean markTask(Task taskToMark) {
-		assertInited();
-		getPreviousState();
-		
-		for (int i = 0; i < tasks.size(); i++) {
-			if (tasks.get(i).getId() == (taskToMark.getId())) {
-				tasks.get(i).setCompleted(taskToMark.isCompleted());
-			}
-		}
-		
-		try {
-			io.saveToFile(tasks);
-			updateTaskId();
-		} catch (IOException ex) {
-			// TODO: Handle error
-			ex.printStackTrace();
-			printError("IO Exception");
-
-			return false;
-		}
-		
-		return true;
+	@Override
+	public String getHelpDescriptors(String helpType, boolean miniMenu)
+			throws IOException {
+		return io.readFromHelpFile(helpType, miniMenu);
 	}
-	
-	private void printError(String msg) {
-		System.err.println(DateTime.now() + ": " + msg);
-		Logger.writeError(msg);
+
+	@Override
+	public Task getTask(int index) {
+		return sortedTasks.get(index).clone();
+	}
+
+	@Override
+	public ArrayList<Task> getTasks() {
+		assertInited();
+
+		ArrayList<Task> clonedTasks = new ArrayList<Task>();
+		for (Task task : sortedTasks) {
+			clonedTasks.add(task.clone());
+		}
+
+		return clonedTasks;
+	}
+
+	public DataImpl init(IO io) throws IOException {
+		if (inited) {
+			return this;
+		}
+
+		this.io = io;
+		tasks = FXCollections.observableArrayList();
+		sortedTasks = tasks.sorted(Task.taskSorterComparator);
+		sortedTasks.addListener(tasksChangeListener);
+		tasks.addAll(io.readFromFile());
+		redoStack = new Stack<ArrayList<Task>>();
+		previousState = new Stack<ArrayList<Task>>();
+		inited = true;
+
+		return this;
+	}
+
+	@Override
+	public void notifyDataChanged() {
+		ArrayList<Task> tmpTasks = new ArrayList<Task>();
+		for (int i = 0; i < sortedTasks.size(); i++) {
+			Task task = sortedTasks.get(i);
+			tmpTasks.add(task);
+		}
+		tasks.setAll(tmpTasks);
+	}
+
+	@Override
+	public boolean redo() {
+		if (redoStack.empty()) {
+			return false;
+		} else {
+			previousList = getTasks();
+			// Pushing to previous state to save previous state
+			previousState.push(previousList);
+			// Overwrite current state with "future" state
+			tasks.setAll(redoStack.pop());
+
+			try {
+				io.saveToFile(tasks);
+			} catch (IOException ex) {
+				// TODO: Handle error
+				ex.printStackTrace();
+				printError("IO Exception");
+				return false;
+			}
+
+			return true;
+		}
+
 	}
 
 	// Only in-charge of fetching full task list from the storage and pass it to
@@ -310,21 +278,6 @@ public class DataImpl extends Data {
 		return fullTaskList;
 	}
 
-	@Override
-	public void notifyDataChanged() {
-		ArrayList<Task> tmpTasks = new ArrayList<Task>();
-		for (int i = 0; i < sortedTasks.size(); i++) {
-			Task task = sortedTasks.get(i);
-			tmpTasks.add(task);
-		}
-		tasks.setAll(tmpTasks);
-	}
-
-	@Override
-	public String getHelpDescriptors(String helpType,boolean miniMenu) throws IOException {
-		return io.readFromHelpFile(helpType,miniMenu);
-	}
-	
 	public boolean undo() {
 		if (previousState.empty()) {
 			return false;
@@ -354,28 +307,52 @@ public class DataImpl extends Data {
 		}
 	}
 
-	@Override
-	public boolean redo() {
-		if (redoStack.empty()) {
-			return false;
-		} else {
-			previousList = getTasks();
-			// Pushing to previous state to save previous state
-			previousState.push(previousList);
-			// Overwrite current state with "future" state
-			tasks.setAll(redoStack.pop());
+	private void assertInited() {
+		assert inited;
+	}
 
-			try {
-				io.saveToFile(tasks);
-			} catch (IOException ex) {
-				// TODO: Handle error
-				ex.printStackTrace();
-				printError("IO Exception");
-				return false;
+	// Get new "viewing" taskId which can be used for a new task
+	private long getNewId() {
+		assertInited();
+
+		long taskId = 0;
+		for (Task task : tasks) {
+			if (task.getId() > taskId) {
+				taskId = task.getId();
 			}
-
-			return true;
 		}
 
+		return ++taskId;
+	}
+
+	private Stack<ArrayList<Task>> getPreviousState() {
+		previousList = getTasks();
+		previousState.push((ArrayList<Task>) previousList.clone());
+
+		return previousState;
+	}
+
+	private void printError(String msg) {
+		System.err.println(DateTime.now() + ": " + msg);
+		Logger.writeError(msg);
+	}
+
+	// Reassign taskId to the tasks arraylist
+	private void updateTaskId() {
+		assertInited();
+
+		ArrayList<Task> tmpTasks = new ArrayList<Task>();
+		for (int i = 0; i < sortedTasks.size(); i++) {
+			Task task = sortedTasks.get(i);
+			task.setId(i + 1);
+			tmpTasks.add(task);
+		}
+
+		tasks.setAll(tmpTasks);
+		try {
+			io.saveToFile(tasks);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

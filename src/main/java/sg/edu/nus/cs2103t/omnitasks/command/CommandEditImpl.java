@@ -1,7 +1,5 @@
 package sg.edu.nus.cs2103t.omnitasks.command;
 
-import java.util.ArrayList;
-
 import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
@@ -18,22 +16,12 @@ public class CommandEditImpl extends Command {
 
 	@Override
 	public boolean processCommand(Data data, UI ui) {
-		ArrayList<Task> tasks = data.getTasks();
-		Task mutatorTask = new Task();
-		int indexOfRetrieved = -1;
-		for (int i = 0; i < tasks.size(); i++) {
-			if (tasks.get(i).getId() == commandInput.getId()) {
-				mutatorTask = tasks.get(i);
-				mutatorTask.setId(commandInput.getId());
-				// edit name, priority, start&end date
-				Utils.makeTaskToEdit(commandInput, mutatorTask);
-				indexOfRetrieved = i;
-
-			}
-		}
+		Task task = data.getTask((int) commandInput.getId() - 1);
+		// edit name, priority, start&end date from commandInput
+		Utils.makeTaskToEdit(commandInput, task);
 
 		try {
-			if (data.editTask(mutatorTask)) {
+			if (data.editTask(task)) {
 				ui.showMessage("Task \"" + commandInput.getId()
 						+ "\" updated successfully!");
 				return true;

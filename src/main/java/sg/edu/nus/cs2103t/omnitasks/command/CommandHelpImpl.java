@@ -48,8 +48,8 @@ public class CommandHelpImpl extends Command {
 				 * break; }
 				 */
 				try {
-					commandDescription = data
-							.getHelpDescriptors(specificCommandName,false);
+					commandDescription = data.getHelpDescriptors(
+							specificCommandName, false);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -63,7 +63,7 @@ public class CommandHelpImpl extends Command {
 		} else {
 			// general help description
 			try {
-				commandDescription = data.getHelpDescriptors("OVERVIEW",false);
+				commandDescription = data.getHelpDescriptors("OVERVIEW", false);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

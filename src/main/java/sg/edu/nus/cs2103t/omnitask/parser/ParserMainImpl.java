@@ -42,6 +42,7 @@ public class ParserMainImpl extends Parser {
 		// TODO: Need SLAP?
 		String commandName = inputSplit[0].toLowerCase();
 
+		//display command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.DISPLAY) {
 			CommandInput commandInput = new CommandInput(CommandType.DISPLAY);
 			commandInput.setCommandType(CommandType.DISPLAY);
@@ -49,6 +50,7 @@ public class ParserMainImpl extends Parser {
 			return new CommandDisplayImpl(commandInput);
 		}
 
+		//undo command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.UNDO) {
 			CommandInput commandInput = new CommandInput(CommandType.UNDO);
 			commandInput.setCommandType(CommandType.UNDO);
@@ -56,13 +58,31 @@ public class ParserMainImpl extends Parser {
 			return new CommandUndoImpl(commandInput);
 		}
 
+		//re-do command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.REDO) {
 			CommandInput commandInput = new CommandInput(CommandType.REDO);
 			commandInput.setCommandType(CommandType.REDO);
 
 			return new CommandRedoImpl(commandInput);
 		}
+		
+		//next command
+		if (Utils.getCommandTypeFromString(commandName) == CommandType.NEXT) {
+			CommandInput commandInput = new CommandInput(CommandType.NEXT);
+			commandInput.setCommandType(CommandType.NEXT);
 
+			return new CommandNextImpl(commandInput);
+		}
+				
+		//prev command
+		if (Utils.getCommandTypeFromString(commandName) == CommandType.PREV) {
+			CommandInput commandInput = new CommandInput(CommandType.PREV);
+			commandInput.setCommandType(CommandType.PREV);
+
+			return new CommandPrevImpl(commandInput);
+		}
+		
+		//exit command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.EXIT) {
 			CommandInput commandInput = new CommandInput(CommandType.EXIT);
 			commandInput.setCommandType(CommandType.EXIT);
@@ -70,6 +90,7 @@ public class ParserMainImpl extends Parser {
 			return new CommandExitImpl(commandInput);
 		}
 
+		//delete command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.DELETE) {
 			CommandInput commandInput = new CommandInput(CommandType.DELETE);
 			commandInput.setCommandType(CommandType.DELETE);
@@ -81,6 +102,7 @@ public class ParserMainImpl extends Parser {
 			return new CommandDeleteImpl(commandInput);
 		}
 
+		//mark command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.MARK) {
 			CommandInput commandInput = new CommandInput(CommandType.MARK);
 			commandInput.setCommandType(CommandType.MARK);
@@ -99,29 +121,15 @@ public class ParserMainImpl extends Parser {
 
 			return new CommandMarkImpl(commandInput);
 		}
-		
-		if (Utils.getCommandTypeFromString(commandName) == CommandType.NEXT) {
-			CommandInput commandInput = new CommandInput(CommandType.NEXT);
-			commandInput.setCommandType(CommandType.NEXT);
 
-			return new CommandNextImpl(commandInput);
-		}
-		
-		if (Utils.getCommandTypeFromString(commandName) == CommandType.PREV) {
-			CommandInput commandInput = new CommandInput(CommandType.PREV);
-			commandInput.setCommandType(CommandType.PREV);
-
-			return new CommandPrevImpl(commandInput);
-		}
-
-		// TODO: Not sure if the parsing should be done in Command class itself.
-		// Hmm...
+		// add command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.ADD) {
 			CommandInput commandInput = new CommandInput(CommandType.ADD);
-			
-
+		
+			//detect if priority is specified by user
 			detectPrio(inputSplit, commandInput, false);
 
+			//parse dateTime within input string
 			extractDatesAndTaskNameFromCommand(1, inputSplit, commandInput, false);
 
 			return new CommandAddImpl(commandInput);
@@ -149,15 +157,20 @@ public class ParserMainImpl extends Parser {
 			return new CommandHelpImpl(commandInput);
 		}
 
+		//edit command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.EDIT) {
 			CommandInput commandInput = new CommandInput(CommandType.EDIT);
 			long updateId;
 			updateId = Long.parseLong(inputSplit[1]);
 			commandInput.setId(updateId);
 
+			//edit priority of task if detected
 			detectPrio(inputSplit, commandInput, true);
 
-			extractDatesAndTaskNameFromCommand(2, inputSplit, commandInput, true);
+			//edit time and name of task if detected within input string
+			if(!extractDatesAndTaskNameFromCommand(2, inputSplit, commandInput, true)){
+				commandInput.setName(joinStringArray(inputSplit, 2, inputSplit.length).trim());
+			}
 
 			return new CommandEditImpl(commandInput);
 
@@ -188,13 +201,17 @@ public class ParserMainImpl extends Parser {
 		return str.trim();
 	}
 	
-	private void extractDatesAndTaskNameFromCommand(int startIndex, String[] inputSplit, CommandInput commandInput, boolean isEditing) {
+	//parse the dateTime within the string input using natty
+	private boolean extractDatesAndTaskNameFromCommand(int startIndex, String[] inputSplit, 
+			CommandInput commandInput, boolean isEditing) {
 		String taskName = "";
+		boolean editted = false;
 		
 		for (int i = 1; i < inputSplit.length; i++) {
 			if (inArray(DATE_INDICATORS, inputSplit[i])) {
 				taskName = joinStringArray(inputSplit, startIndex, i);
-
+				editted = true;
+				
 				// Parse date using Natty
 				com.joestelmach.natty.Parser parser = new com.joestelmach.natty.Parser();
 				List<DateGroup> groups = parser.parse(joinStringArray(
@@ -237,10 +254,12 @@ public class ParserMainImpl extends Parser {
 		if (!isEditing && taskName.equals("")) {
 			taskName = joinStringArray(inputSplit, startIndex, inputSplit.length);
 		}
-
+        //to indicate if taskName is edited
 		commandInput.setName(taskName.trim());
+		return editted;
 	}
-
+ 
+	//method to detect priority indicator within string input and remove it from taskName
 	private void detectPrio(String[] inputSplit, CommandInput commandInput, boolean isEditing) {
 		int priorityIndex = 0;
 		boolean prioritySent = false;
@@ -279,6 +298,7 @@ public class ParserMainImpl extends Parser {
 		}
 	}
 
+	//method to indicate if time is specified by the user in the input string
 	private boolean isTimeSpecifiedByUser(Tree tree) {
 		boolean timeSpecified = false;
 		for (int j = 0; j < tree.getChildCount(); j++) {

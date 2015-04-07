@@ -141,9 +141,25 @@ public class UIMainImpl extends UI {
 	public void scrollUp() {
 		viewController.scrollUp();
 	}
+	
+	@Override
+	public void showSection(String section) {
+		viewController.scrollToSection(section);
+	}
+	
+	@Override
+	public void showSection(DateTime endDate) {
+		viewController.scrollToSection(endDate);
+	}
+	
+	@Override
+	public void showSection(DateTime startDate, DateTime endDate) {
+		viewController.scrollToSection(startDate, endDate);
+	}
 
 	public void showAllTasks() {
 		viewController.setViewMode(ViewMode.ALL);
+		showMessage("Showing All Tasks");
 	}
 
 	public void showError(String msg) {
@@ -193,7 +209,7 @@ public class UIMainImpl extends UI {
 		setupHotkeys();
 
 		primaryStage.show();
-		invokeCommandReceivedListener(CommandDisplayImpl.COMMAND_ALIASES_DISPLAY[0]);
+		invokeCommandReceivedListener(CommandDisplayImpl.COMMAND_ALIASES_DISPLAY[0] + " all");
 		showMessage("Welcome to OmniTask. Type 'help' to get help.");
 	}
 

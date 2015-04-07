@@ -33,6 +33,10 @@ public class MainViewController {
 	public static enum ViewMode {
 		ALL, SEARCH
 	}
+	
+	final public static String SECTION_OVERDUE = "Overdue!";
+	
+	final public static String SECTION_FLOATING = "No Due Date";
 
 	public ObservableList<Task> tasks;
 
@@ -84,6 +88,25 @@ public class MainViewController {
 	public void scrollUp() {
 		if (agendaViewLoaded) {
 			agendaView.getEngine().executeScript("scrollUp();");
+		}
+	}
+	
+	public void scrollToSection(DateTime endDate) {
+		scrollToSection(null, endDate);
+	}
+	
+	public void scrollToSection(DateTime startDate, DateTime endDate) {
+		Task task = new Task();
+		task.setStartDate(startDate);
+		task.setEndDate(endDate);
+		
+		scrollToSection(task.getFormattedDate());
+	}
+	
+	public void scrollToSection(String section) {
+		if (agendaViewLoaded) {
+			ui.showMessage("Showing \"" + section + "\" Tasks");
+			agendaView.getEngine().executeScript("scrollToSection('" + section + "');");
 		}
 	}
 
@@ -503,6 +526,14 @@ public class MainViewController {
 			MainViewController.this.focusOmniBar();
 		}
 
+		public String getSectionHeader(int type) {
+			if (type == 0) {
+				return SECTION_OVERDUE;
+			} else {
+				return SECTION_FLOATING;
+			}
+		}
+		
 		public Task getTask(int index) {
 			return tasks.get(index);
 		}
@@ -530,6 +561,14 @@ public class MainViewController {
 		public void redraw() {
 			agendaView.requestLayout();
 			ui.redraw();
+		}
+		
+		public void showError(String msg) {
+			MainViewController.this.showError(msg);
+		}
+		
+		public void showMessage(String msg) {
+			MainViewController.this.showMessage(msg);
 		}
 	}
 

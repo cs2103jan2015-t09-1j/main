@@ -72,6 +72,19 @@
 			}, 500);
 		}
 		
+		function scrollToSection(name) {
+			var section = $("#content .card-row[header='" + name + "']").get(0);
+			if (!section) {
+				java.showMessage("No tasks for \"" + name + "\"");
+				return;
+			}
+			
+			$("body").stop();
+			$("body").animate({
+			    scrollTop: $(section).offset().top
+			}, 500);
+		}
+		
 		function setCheckboxState(checkbox, checked, animated, callback) {
 			if (checked) {
 				$(checkbox).switchClass("mdi-toggle-check-box-outline-blank", "mdi-toggle-check-box", 1000, "easeInOutQuad");
@@ -111,10 +124,10 @@
 		function getSectionHeader(task) {
 			var header = task.getFormattedDate();
 			if (task.isDue()) {
-				header = "Overdue!";
+				header = java.getSectionHeader(0);
 			}
 			if (!header) {
-				header = "No Due Date";
+				header = java.getSectionHeader(1);
 			}
 			
 			return header;

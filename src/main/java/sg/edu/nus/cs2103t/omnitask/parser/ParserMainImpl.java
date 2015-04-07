@@ -46,6 +46,8 @@ public class ParserMainImpl extends Parser {
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.DISPLAY) {
 			CommandInput commandInput = new CommandInput(CommandType.DISPLAY);
 			commandInput.setCommandType(CommandType.DISPLAY);
+			
+			extractDatesAndTaskNameFromCommand(1, inputSplit, commandInput, false);
 
 			return new CommandDisplayImpl(commandInput);
 		}
@@ -141,8 +143,9 @@ public class ParserMainImpl extends Parser {
 			CommandInput commandInput = new CommandInput(CommandType.SEARCH);
 			commandInput.setCommandType(CommandType.SEARCH);
 
-			if (inputSplit.length > 1)
-				commandInput.setName(inputSplit[1]);
+			if (inputSplit.length > 1) {
+				commandInput.setName(joinStringArray(inputSplit, 1, inputSplit.length));
+			}
 
 			return new CommandSearchImpl(commandInput);
 		}

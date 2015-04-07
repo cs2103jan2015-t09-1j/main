@@ -2,6 +2,8 @@ package sg.edu.nus.cs2103t.omnitask.ui;
 
 import java.util.ArrayList;
 
+import org.joda.time.DateTime;
+
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 
 public abstract class UI {
@@ -46,6 +48,15 @@ public abstract class UI {
 	}
 
 	public void scrollUp() {
+	}
+	
+	public void showSection(String section) {
+	}
+	
+	public void showSection(DateTime endDate) {
+	}
+	
+	public void showSection(DateTime startDate, DateTime endDate) {
 	}
 
 	public void setCommandReceivedListener(

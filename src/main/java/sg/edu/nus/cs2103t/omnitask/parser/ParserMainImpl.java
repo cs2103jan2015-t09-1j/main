@@ -230,54 +230,118 @@ public class ParserMainImpl extends Parser {
 		String taskName = "";
 		boolean editted = false;
 
-		for (int i = 1; i < inputSplit.length; i++) {
-			if (inArray(DATE_INDICATORS, inputSplit[i])) {
-				taskName = joinStringArray(inputSplit, startIndex, i);
-				editted = true;
-
-				// Parse date using Natty
-				com.joestelmach.natty.Parser parser = new com.joestelmach.natty.Parser();
-				List<DateGroup> groups = parser.parse(joinStringArray(
-						inputSplit, i, inputSplit.length));
-				for (DateGroup group : groups) {
-					// If there are 2 dates, means it's to and from
-					// If no specific time is specified by user, set the
-					// time to 00:00:00, retaining the dates
-					if (group.getDates().size() == 2) {
-						commandInput.setStartDate(new DateTime(group.getDates()
-								.get(0).getTime()));
-						if (!isTimeSpecifiedByUser(group.getSyntaxTree()
-								.getChild(0))) {
-							commandInput.setStartDate(commandInput
-									.getStartDate().withMillisOfDay(0));
-						}
-
-						commandInput.setEndDate(new DateTime(group.getDates()
-								.get(1).getTime()));
-						if (!isTimeSpecifiedByUser(group.getSyntaxTree()
-								.getChild(1))) {
-							commandInput.setEndDate(commandInput.getEndDate()
-									.withMillisOfDay(0));
-						}
-					} else {
-						commandInput.setEndDate(new DateTime(group.getDates()
-								.get(0).getTime()));
-						if (!isTimeSpecifiedByUser(group.getSyntaxTree()
-								.getChild(0))) {
-							commandInput.setEndDate(commandInput.getEndDate()
-									.withMillisOfDay(0));
-						}
+		boolean quoteDetected = false;
+		
+		for (int i = startIndex; i < inputSplit.length; i++) {
+			// This first block of if conditions check for " symbol and if found, don't use it in natty
+			if (inputSplit[i].startsWith("\"") && inputSplit[i].endsWith("\"")) {
+				quoteDetected = true;
+			} else if (inputSplit[i].startsWith("\"")) {
+				quoteDetected = true;
+				inputSplit[i] = inputSplit[i].substring(1, inputSplit[i].length());
+			} else if (quoteDetected && inputSplit[i].endsWith("\"")) {
+				quoteDetected = false;
+				inputSplit[i] = inputSplit[i].substring(0, inputSplit[i].length() - 1);
+			}
+			
+			if (!quoteDetected && inArray(DATE_INDICATORS, inputSplit[i])) {
+				String dateString = ""; //joinStringArray(inputSplit, i, inputSplit.length);
+				String ignored = "";
+				
+				// Similar to the outer if conditions block which checks for " symbol
+				// Repeated here because of possibility of having " symbol after detecting the DATE_INDICATORS keywords
+				// Any words to be ignored are placed in the ignored variable, Any words to be passed to Natty into dateString variable
+				for (int j = i; j < inputSplit.length; j++) {
+					if (inputSplit[j].startsWith("\"") && inputSplit[j].endsWith("\"")) {
+						quoteDetected = true;
+					} else if (inputSplit[j].startsWith("\"")) {
+						quoteDetected = true;
+						ignored += inputSplit[j].substring(1, inputSplit[j].length()) + " ";
+					} else if (quoteDetected && inputSplit[j].endsWith("\"")) {
+						quoteDetected = false;
+						ignored += inputSplit[j].substring(0, inputSplit[j].length() - 1) + " ";
+					}
+					
+					if (quoteDetected && inputSplit[j].startsWith("\"") && inputSplit[j].endsWith("\"")) {
+						ignored += inputSplit[j].substring(1, inputSplit[j].length() - 1) + " ";
+						quoteDetected = false;
+					} else if (!quoteDetected) {
+						dateString += inputSplit[j] + " ";
 					}
 				}
-
+				
+				// reset the variable back
+				quoteDetected = false;
+				
+				// if there is something to parse, parse it with natty
+				dateString = dateString.trim();
+				
+				if (!dateString.isEmpty()) {
+					// Parse date using Natty
+					com.joestelmach.natty.Parser parser = new com.joestelmach.natty.Parser();
+					List<DateGroup> groups = parser.parse(dateString.trim());
+					
+					// If there is nothing parsed by Natty, it is probably part of task name
+					if (groups.size() == 0) {
+						taskName += inputSplit[i] + " ";
+						continue;
+					}
+					
+					editted = true;
+					
+					for (DateGroup group : groups) {
+						// If there are 2 dates, means it's to and from
+						// If no specific time is specified by user, set the
+						// time to 00:00:00, retaining the dates
+						if (group.getDates().size() == 2) {
+							commandInput.setStartDate(new DateTime(group.getDates()
+									.get(0).getTime()));
+							if (!isTimeSpecifiedByUser(group.getSyntaxTree()
+									.getChild(0))) {
+								commandInput.setStartDate(commandInput
+										.getStartDate().withMillisOfDay(0));
+							}
+	
+							commandInput.setEndDate(new DateTime(group.getDates()
+									.get(1).getTime()));
+							if (!isTimeSpecifiedByUser(group.getSyntaxTree()
+									.getChild(1))) {
+								commandInput.setEndDate(commandInput.getEndDate()
+										.withMillisOfDay(0));
+							}
+						} else {
+							commandInput.setEndDate(new DateTime(group.getDates()
+									.get(0).getTime()));
+							if (!isTimeSpecifiedByUser(group.getSyntaxTree()
+									.getChild(0))) {
+								commandInput.setEndDate(commandInput.getEndDate()
+										.withMillisOfDay(0));
+							}
+						}
+						
+						// Put the string which is unused for parsing dates before the ignored variable string
+						String unusedDateString = dateString.substring(0, group.getPosition());
+						String[] unusedDateStringSplit = unusedDateString.split(" ");
+						ignored = joinStringArray(unusedDateStringSplit, 0, unusedDateStringSplit.length - 1) + " " + ignored;
+					}
+				}
+				
+				// Insert anything ignored as task name
+				taskName += ignored + " ";
+				
 				break;
 			}
+			
+			// If a single word was quoted, unquote it
+			if (quoteDetected && inputSplit[i].startsWith("\"") && inputSplit[i].endsWith("\"")) {
+				inputSplit[i] = inputSplit[i].substring(1, inputSplit[i].length()-1);
+				quoteDetected = false;
+			}
+			
+			// Insert anything not to be parsed by Natty as task name
+			taskName += inputSplit[i] + " ";
 		}
 
-		if (!isEditing && taskName.equals("")) {
-			taskName = joinStringArray(inputSplit, startIndex,
-					inputSplit.length);
-		}
 		// to indicate if taskName is edited
 		commandInput.setName(taskName.trim());
 		return editted;

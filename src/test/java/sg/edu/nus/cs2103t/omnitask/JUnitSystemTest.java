@@ -47,13 +47,13 @@ public class JUnitSystemTest {
 		assertTaskAttributes(data.getTasks().get(0), 1, "Hello World", null, null, Priority.NONE);
 		
 		// Test Add Task with due date
-		processInput(ui, parser, data, "add Hello World Tmr due tomorrow", CommandType.ADD, 0, "Hello World Tmr", null, new DateTime().withMillisOfDay(0).plusDays(1), Priority.NONE);
-		assertTaskAttributes(data.getTasks().get(1), 2, "Hello World Tmr", null, new DateTime().withMillisOfDay(0).plusDays(1), Priority.NONE);
+		processInput(ui, parser, data, "add Hello World due tomorrow", CommandType.ADD, 0, "Hello World", null, new DateTime().withMillisOfDay(0).plusDays(1), Priority.NONE);
+		assertTaskAttributes(data.getTasks().get(1), 2, "Hello World", null, new DateTime().withMillisOfDay(0).plusDays(1), Priority.NONE);
 		
 		// Test Delete Task
 		processInput(ui, parser, data, "delete 1", CommandType.DELETE, 1, null, null, null, Priority.NONE);
 		assertEquals(data.getTasks().size(), 1);
-		assertTaskAttributes(data.getTasks().get(0), 1, "Hello World Tmr", null, new DateTime().withMillisOfDay(0).plusDays(1), Priority.NONE);
+		assertTaskAttributes(data.getTasks().get(0), 1, "Hello World", null, new DateTime().withMillisOfDay(0).plusDays(1), Priority.NONE);
 		
 		// Test Edit Task
 		processInput(ui, parser, data, "edit 1 Hello World Edited", CommandType.EDIT, 1, "Hello World Edited", null, null, Priority.NONE);

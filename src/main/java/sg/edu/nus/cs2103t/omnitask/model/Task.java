@@ -190,15 +190,27 @@ public class Task {
 		}
 
 		String formatted = "";
+		boolean twoDifferentDays = false;
+		DateTimeFormatter fmt = DateTimeFormat.forPattern("dd MMMM, ");
+		
+		if (startDate != null && endDate != null) {
+			twoDifferentDays = !startDate.withMillisOfDay(0).equals(endDate.withMillisOfDay(0));
+		}
 
 		if (startDate != null) {
 			String startDateFormatted = formatTime(startDate);
+			if (twoDifferentDays) {
+				formatted += fmt.print(startDate);
+			}
 			formatted += startDateFormatted;
 		}
 		if (endDate != null) {
 			String endDateFormatted = formatTime(endDate);
 			if (!formatted.isEmpty()) {
 				formatted += " - ";
+			}
+			if (twoDifferentDays) {
+				formatted += fmt.print(endDate);
 			}
 			formatted += endDateFormatted;
 		}

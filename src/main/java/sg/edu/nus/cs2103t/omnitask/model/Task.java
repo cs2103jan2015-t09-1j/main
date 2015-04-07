@@ -9,7 +9,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 public class Task {
 	public static enum Priority {
-		HIGH, LOW, MEDIUM, NONE
+		NONE, LOW, MEDIUM, HIGH
 	}
 
 	// Sort task list according to 3 fields: due date, priority, id
@@ -281,26 +281,6 @@ public class Task {
 
 	public void setPriority(Priority priority) {
 		this.priority = priority;
-	}
-
-	public void setPriorityByNum(int prioNum) {
-		switch (prioNum) {
-			case 0:
-				this.priority = Priority.NONE;
-				break;
-			case 1:
-				this.priority = Priority.LOW;
-				break;
-			case 2:
-				this.priority = Priority.MEDIUM;
-				break;
-			case 3:
-				this.priority = Priority.HIGH;
-				break;
-			default:
-				this.priority = Priority.LOW;
-				break;
-		}
 	}
 
 	public void setRecurrence(boolean recurrence) {

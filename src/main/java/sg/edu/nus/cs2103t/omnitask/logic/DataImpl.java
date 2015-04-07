@@ -32,8 +32,6 @@ public class DataImpl extends Data {
 
 	protected IO io;
 
-	private ArrayList<Task> currentList;
-
 	private boolean inited;
 
 	private ArrayList<Task> previousList;

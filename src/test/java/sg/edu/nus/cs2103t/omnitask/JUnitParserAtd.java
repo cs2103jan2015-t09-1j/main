@@ -2,6 +2,7 @@ package sg.edu.nus.cs2103t.omnitask;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -83,6 +84,54 @@ public class JUnitParserAtd {
 		assertEquals(command.getCommandInput().getCommandType(), CommandType.ADD);
 		assertEquals(command.getCommandInput().getName(), "Hello");
 		assertEquals(command.getCommandInput().getEndDate().dayOfYear().get(), DateTime.now().plusDays(1).dayOfYear().get());
+		
+		// Test parsing of "add" and "task name", "from" (but not a date) and "on" parameter
+		command = parseUserInputHelper("add Get something from Joe on 15 August 2015");
+		assertNotNull(command);
+		assertEquals(command.getCommandInput().getCommandType(), CommandType.ADD);
+		assertEquals(command.getCommandInput().getName(), "Get something from Joe");
+		assertEquals(command.getCommandInput().getEndDate().dayOfMonth().get(), 15);
+		assertEquals(command.getCommandInput().getEndDate().monthOfYear().get(), 8);
+		assertEquals(command.getCommandInput().getEndDate().year().get(), 2015);
+		
+		// Test parsing of "add" and "task name", with quotes (") to escape parsing of date
+		command = parseUserInputHelper("add \"Get something from Joe on 15 August 2015\"");
+		assertNotNull(command);
+		assertEquals(command.getCommandInput().getCommandType(), CommandType.ADD);
+		assertEquals(command.getCommandInput().getName(), "Get something from Joe on 15 August 2015");
+		assertNull(command.getCommandInput().getEndDate());
+		
+		// Variation of above
+		command = parseUserInputHelper("add Get something \"from Joe on 15 August 2015\"");
+		assertNotNull(command);
+		assertEquals(command.getCommandInput().getCommandType(), CommandType.ADD);
+		assertEquals(command.getCommandInput().getName(), "Get something from Joe on 15 August 2015");
+		assertNull(command.getCommandInput().getEndDate());
+		
+		// Another variation of above
+		command = parseUserInputHelper("add Get something \"from Joe\" on 15 August 2015");
+		assertNotNull(command);
+		assertEquals(command.getCommandInput().getCommandType(), CommandType.ADD);
+		assertEquals(command.getCommandInput().getName(), "Get something from Joe");
+		assertEquals(command.getCommandInput().getEndDate().dayOfMonth().get(), 15);
+		assertEquals(command.getCommandInput().getEndDate().monthOfYear().get(), 8);
+		assertEquals(command.getCommandInput().getEndDate().year().get(), 2015);
+		
+		// Another variation of above
+		command = parseUserInputHelper("add Get something from Joe on \"15 August 2015\"");
+		assertNotNull(command);
+		assertEquals(command.getCommandInput().getCommandType(), CommandType.ADD);
+		assertEquals(command.getCommandInput().getName(), "Get something from Joe on 15 August 2015");
+		assertNull(command.getCommandInput().getEndDate());
+		
+		// Test parsing of "add" and "task name", with quotes (") to escape parsing of date in between keyword in task name and actual date
+		command = parseUserInputHelper("add Get something from \"Joe\" on 15 August 2015");
+		assertNotNull(command);
+		assertEquals(command.getCommandInput().getCommandType(), CommandType.ADD);
+		assertEquals(command.getCommandInput().getName(), "Get something from Joe");
+		assertEquals(command.getCommandInput().getEndDate().dayOfMonth().get(), 15);
+		assertEquals(command.getCommandInput().getEndDate().monthOfYear().get(), 8);
+		assertEquals(command.getCommandInput().getEndDate().year().get(), 2015);
 	
 	    //Test parsing of "delete" and "task index" parameter
 		command = parseUserInputHelper("delete 1");

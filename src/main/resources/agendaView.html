@@ -8,9 +8,9 @@
 	<!--Let browser know website is optimized for mobile-->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 	
-	<script type="text/javascript" src="jquery-2.1.3.js"></script>
+	<script type="text/javascript" src="js/jquery-2.1.3.js"></script>
 	<script type="text/javascript" src="js/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="js/materialize.min.js"></script>
+	<script type="text/javascript" src="js/materialize.js"></script>
 
 	<style type="text/css">
 	.noselect {
@@ -20,6 +20,10 @@
 	    -moz-user-select: none;
 	    -ms-user-select: none;
 	    user-select: none;
+	}
+	
+	#content {
+		padding-bottom: 90px;
 	}
 	
 	.card .checkbox, .card .id, .card .title, .card .date, .card .badge {
@@ -44,9 +48,15 @@
 					java.focusOmniBar();
 				}
 			});
+			
+			bindCheckboxes();
 		
 			addAllCards();
 		});
+		
+		function showToast(msg) {
+			toast(msg, 5000);
+		}
 		
 		function scrollDown() {
 			$("body").stop();
@@ -62,33 +72,38 @@
 			}, 500);
 		}
 		
-		function setCheckboxState(checkbox, checked, animated) {
+		function setCheckboxState(checkbox, checked, animated, callback) {
 			if (checked) {
 				$(checkbox).switchClass("mdi-toggle-check-box-outline-blank", "mdi-toggle-check-box", 1000, "easeInOutQuad");
 				if (animated) {
-					$(checkbox).effect("bounce", { times: 1 }, "fast");
+					$(checkbox).effect("bounce", { times: 1 }, "medium", callback);
+				} else {
+					if (callback) { callback(); }
 				}
 			} else {
 				$(checkbox).switchClass("mdi-toggle-check-box", "mdi-toggle-check-box-outline-blank", 1000, "easeInOutQuad");
 				if (animated) {
-					$(checkbox).effect("bounce", { times: 1 }, "fast");
+					$(checkbox).effect("bounce", { times: 1 }, "medium", callback);
+				} else {
+					if (callback) { callback(); }
 				}
 			}
 		}
 
-		function updateCheckboxes() {
-			$("#content .checkbox").unbind("click");
-			$("#content .checkbox").click(function(){
+		function bindCheckboxes() {
+			$("#content").on("click", ".checkbox", function(){
 				var uuid = $(this).parent().parent().attr("uuid");
 				//java.debug(uuid);
 				if ($(this).hasClass("mdi-toggle-check-box-outline-blank")) {
 					// checking
-					setCheckboxState(this, true, true);
-					java.markTaskAsDone(uuid);
+					setCheckboxState(this, true, true, function(){
+						java.markTaskAsDone(uuid);
+					});
 				} else {
 					// unchecking
-					setCheckboxState(this, false, true);
-					java.markTaskAsNotDone(uuid);
+					setCheckboxState(this, false, true, function(){
+						java.markTaskAsNotDone(uuid);
+					});
 				}
 			});
 		}
@@ -113,26 +128,31 @@
 				return $(section);
 			}
 			
+			var date = task.getEndDate();
+			if (task.getStartDate()) {
+				date = task.getStartDate();
+			}
+			
 			section = $("#templates .card-row").clone();
 			section.attr("header", header);
-			if (task.getEndDate()) {
-				section.attr("date", task.getEndDate().getMillis());
+			if (date) {
+				section.attr("date", date.getMillis());
 			}
 			section.find(".group-date").text(header);
 			section.find(".card-action").remove();
 			
 			var el;
 			var before = false;
-			if (task.getEndDate()) {
+			if (date) {
 				$("#content .card-row").each(function() {
 					if (!$(this).attr("date")) {
 						before = true;
 						return false;
 					}
 					
-					var date = parseInt($(this).attr("date"));
+					var sDate = parseInt($(this).attr("date"));
 					
-					if (task.getEndDate().getMillis() > date) {
+					if (date.getMillis() > sDate) {
 						el = this;
 					} else {
 						if (!el) {
@@ -202,8 +222,6 @@
 			setCheckboxState(el.find(".checkbox"), task.isCompleted(), false);
 			
 			mapUuidToRow[task.getUuid().toString()] = el;
-			
-			updateCheckboxes();
 		}
 		
 		function createCard(task) {
@@ -380,14 +398,14 @@
 					<div class="row card-action" style="margin-bottom: -5px;">
 						<div class="col m1" style="margin-top: -5px;"><i class="checkbox mdi-toggle-check-box-outline-blank" style="font-size: 20px;" title="Mark/Unmark Task As Done"></i></div>
 						<div class="col m1">
-							<span class="id" style="color: grey;padding-left:5px;padding-right:5px;" title="Click to autofill OmniBar">1</span>
+							<span class="id waves-effect" style="color: grey;padding-left:5px;padding-right:5px;" title="Click to autofill OmniBar">1</span>
 						</div>
 						<div class="col m9">
-							<span class="title" title="Click to autofill OmniBar">CS2103T Tutorial</span>
-							<span class="date" title="Click to autofill OmniBar"><br>9:00 AM - 10:00 AM</span>
+							<span class="title waves-effect" title="Click to autofill OmniBar">CS2103T Tutorial</span>
+							<span class="date waves-effect" title="Click to autofill OmniBar"><br>9:00 AM - 10:00 AM</span>
 						</div>
 						<div class="col m1">
-							<span class="badge" style="margin-left: 5px; font-weight: 300; font-size: 0.8rem; color: #fff; background-color: #26a69a; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; background-clip: padding-box;" title="Click to autofill OmniBar">high</span>
+							<span class="badge waves-effect" style="margin-left: 5px; font-weight: 300; font-size: 0.8rem; color: #fff; background-color: #26a69a; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; background-clip: padding-box;" title="Click to autofill OmniBar">high</span>
 						</div>
 					</div>
 				</div>

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -20,10 +23,11 @@ import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSObject;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
+import sg.edu.nus.cs2103t.omnitask.parser.ParserMainImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandEditImpl;
 
 public class MainViewController {
-	
+
 	public static enum ViewMode {
 		ALL, SEARCH
 	}
@@ -109,10 +113,12 @@ public class MainViewController {
 
 	public void showError(String msg) {
 		outputText.setText("Error: " + msg);
+		showToast("Error: " + msg);
 	}
 
 	public void showMessage(String msg) {
 		outputText.setText(msg);
+		showToast(msg);
 	}
 
 	public void updateAllTasks(List<Task> tasks,
@@ -391,6 +397,13 @@ public class MainViewController {
 			agendaView.getEngine().executeScript("removeCard('" + uuid + "');");
 		}
 	}
+	
+	private void showToast(String msg) {
+		if (agendaViewLoaded) {
+			msg = msg.replaceAll("'", "\'");
+			agendaView.getEngine().executeScript("showToast('" + msg + "');");
+		}
+	}
 
 	private void updateViewModeText() {
 		if (viewMode == ViewMode.ALL) {
@@ -405,13 +418,26 @@ public class MainViewController {
 	public class Bridge {
 		public void autofillOmniBarWithEditDate(int index) {
 			Task task = tasks.get(index - 1);
+			if (task.getStartDate() == null && task.getEndDate() == null) {
+				return;
+			}
 			cycleHandleHistory();
-			// TODO: Fix me
-			String date = "";
-			omniBar.setText(CommandEditImpl.COMMAND_ALIASES_EDIT[0] + " "
-					+ task.getId() + " " + date);
+
+			DateTimeFormatter fmt = DateTimeFormat
+					.forPattern("dd MMM YYYY hh:mma");
+
+			String date = fmt.print(task.getEndDate());
+			if (task.getStartDate() != null) {
+				date = fmt.print(task.getStartDate()) + " to " + date;
+			} else {
+				date = "due " + date;
+			}
+			String command = CommandEditImpl.COMMAND_ALIASES_EDIT[0] + " "
+					+ task.getId() + " ";
+			omniBar.setText(command + date);
 			focusOmniBar();
-			omniBar.end();
+			omniBar.selectRange(command.length(),
+					command.length() + date.length());
 		}
 
 		public void autofillOmniBarWithEditId(int index) {
@@ -420,27 +446,31 @@ public class MainViewController {
 			omniBar.setText(CommandEditImpl.COMMAND_ALIASES_EDIT[0] + " "
 					+ task.getId() + " ");
 			focusOmniBar();
-			omniBar.end();
+			omniBar.selectRange(0, CommandEditImpl.COMMAND_ALIASES_EDIT[0].length());
 		}
 
 		public void autofillOmniBarWithEditName(int index) {
 			Task task = tasks.get(index - 1);
 			cycleHandleHistory();
-			omniBar.setText(CommandEditImpl.COMMAND_ALIASES_EDIT[0] + " "
-					+ task.getId() + " " + task.getName());
+			String command = CommandEditImpl.COMMAND_ALIASES_EDIT[0] + " "
+					+ task.getId() + " ";
+			omniBar.setText(command + task.getName());
 			focusOmniBar();
-			omniBar.end();
+			omniBar.selectRange(command.length(), command.length()
+					+ task.getName().length());
 		}
 
 		public void autofillOmniBarWithEditPriority(int index) {
 			Task task = tasks.get(index - 1);
 			cycleHandleHistory();
-			// TODO: Fix me
-			String priority = "";
-			omniBar.setText(CommandEditImpl.COMMAND_ALIASES_EDIT[0] + " "
-					+ task.getId() + " ^" + priority);
+			String priority = ParserMainImpl.PRIORITY_INDICATORS[task
+					.getPriority().ordinal()];
+			String command = CommandEditImpl.COMMAND_ALIASES_EDIT[0] + " "
+					+ task.getId() + " ";
+			omniBar.setText(command + priority);
 			focusOmniBar();
-			omniBar.end();
+			omniBar.selectRange(command.length() + 1, command.length() + 1
+					+ priority.length());
 		}
 
 		public void debug(String msg) {

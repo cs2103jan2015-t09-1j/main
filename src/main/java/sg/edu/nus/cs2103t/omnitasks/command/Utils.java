@@ -13,9 +13,7 @@ public class Utils {
 		// using int function instead to set priority
 		// cant be used -> task.setPriority(commandInput.getPriority());
 		if (commandInput.getPriority() != null) {
-			int prioNum = commandInput.convertPriorityToNum((commandInput
-					.getPriority()));
-			task.setPriorityByNum(prioNum);
+			task.setPriority(commandInput.getPriority());
 		}
 
 		task.setStartDate(commandInput.getStartDate());

@@ -44,6 +44,8 @@
 					java.focusOmniBar();
 				}
 			});
+			
+			bindCheckboxes();
 		
 			addAllCards();
 		});
@@ -80,9 +82,8 @@
 			}
 		}
 
-		function updateCheckboxes() {
-			$("#content .checkbox").unbind("click");
-			$("#content .checkbox").click(function(){
+		function bindCheckboxes() {
+			$("#content").on("click", ".checkbox", function(){
 				var uuid = $(this).parent().parent().attr("uuid");
 				//java.debug(uuid);
 				if ($(this).hasClass("mdi-toggle-check-box-outline-blank")) {
@@ -208,8 +209,6 @@
 			setCheckboxState(el.find(".checkbox"), task.isCompleted(), false);
 			
 			mapUuidToRow[task.getUuid().toString()] = el;
-			
-			updateCheckboxes();
 		}
 		
 		function createCard(task) {

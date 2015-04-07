@@ -128,33 +128,45 @@
 				return $(section);
 			}
 			
-			var date = task.getEndDate();
-			if (task.getStartDate()) {
-				date = task.getStartDate();
+			var startDate = task.getStartDate();
+			if (startDate) {
+				startDate = startDate.withMillisOfDay(0);
+			}
+			var endDate = task.getEndDate();
+			if (endDate) {
+				endDate = endDate.withMillisOfDay(0);
 			}
 			
 			section = $("#templates .card-row").clone();
 			section.attr("header", header);
-			if (date) {
-				section.attr("date", date.getMillis());
+			if (startDate) {
+				section.attr("startDate", startDate.getMillis());
+			}
+			if (endDate) {
+				section.attr("endDate", endDate.getMillis());
 			}
 			section.find(".group-date").text(header);
 			section.find(".card-action").remove();
 			
 			var el;
 			var before = false;
-			if (date) {
+			if (endDate) {
 				$("#content .card-row").each(function() {
-					if (!$(this).attr("date")) {
+					if (!$(this).attr("endDate")) {
 						before = true;
 						return false;
 					}
 					
-					var sDate = parseInt($(this).attr("date"));
+					var sDate = $(this).attr("startDate");
+					if (sDate) {
+						sDate = parseInt(sDate);
+					}
+					var eDate = parseInt($(this).attr("endDate"));
 					
-					if (date.getMillis() > sDate) {
+					var compare = java.compareDates(startDate?startDate.getMillis():-1, endDate.getMillis(), sDate?sDate:-1, eDate);
+					if (compare > 0) {
 						el = this;
-					} else {
+					} else if (compare < 0) {
 						if (!el) {
 							before = true;
 						}

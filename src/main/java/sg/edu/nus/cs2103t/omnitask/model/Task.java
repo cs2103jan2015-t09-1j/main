@@ -12,7 +12,7 @@ public class Task {
 		NONE, LOW, MEDIUM, HIGH
 	}
 
-	// Sort task list according to 3 fields: due date, priority, id
+	// Sort task list according to 3 fields: dates, priority, id
 	// General explanation for algorithm:
 	// 1. If both task have no end dates OR both have but equal end dates -> If
 	// priority not equal, sort by priority
@@ -26,8 +26,7 @@ public class Task {
 		@Override
 		public int compare(Task task1, Task task2) {
 			if ((task1.getEndDate() == null && task2.getEndDate() == null)
-					|| ((task1.getEndDate() != null && task2.getEndDate() != null) && task1
-							.getEndDate().equals(task2.getEndDate()))) {
+					|| ((task1.getEndDate() != null && task2.getEndDate() != null) && task1.getEndDate().equals(task2.getEndDate()))) {
 				if (task1.getPriority() != task2.getPriority()) {
 					return task2.getPriority().ordinal()
 							- task1.getPriority().ordinal();
@@ -39,7 +38,15 @@ public class Task {
 					return -1;
 				}
 			} else {
-				return task1.getEndDate().compareTo(task2.getEndDate());
+				if (task1.getStartDate() != null && task2.getStartDate() != null) {
+					task1.getStartDate().compareTo(task2.getStartDate());
+				} else if (task1.getStartDate() != null) {
+					return task1.getStartDate().compareTo(task2.getEndDate());
+				} else if (task2.getStartDate() != null) {
+					return task1.getEndDate().compareTo(task2.getStartDate());
+				} else {
+					return task1.getEndDate().compareTo(task2.getEndDate());
+				}
 			}
 
 			return (int) (task1.getId() - task2.getId());

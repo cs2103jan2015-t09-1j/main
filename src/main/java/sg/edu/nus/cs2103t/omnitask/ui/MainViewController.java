@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -23,6 +24,7 @@ import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSObject;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
+import sg.edu.nus.cs2103t.omnitask.model.Task.Priority;
 import sg.edu.nus.cs2103t.omnitask.parser.ParserMainImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandEditImpl;
 
@@ -471,6 +473,26 @@ public class MainViewController {
 			focusOmniBar();
 			omniBar.selectRange(command.length() + 1, command.length() + 1
 					+ priority.length());
+		}
+		
+		public int compareDates(long startDate1, long endDate1, long startDate2, long endDate2) {
+			Task task1 = new Task();
+			task1.setPriority(Priority.NONE);
+			task1.setId(0);
+			
+			Task task2 = task1.clone();
+			
+			if (startDate1 != -1) {
+				task1.setStartDate(new DateTime().withMillis(startDate1));
+			}
+			task1.setEndDate(new DateTime().withMillis(endDate1));
+			
+			if (startDate2 != -1) {
+				task2.setStartDate(new DateTime().withMillis(startDate2));
+			}
+			task2.setEndDate(new DateTime().withMillis(endDate2));
+			
+			return Task.taskSorterComparator.compare(task1, task2);
 		}
 
 		public void debug(String msg) {

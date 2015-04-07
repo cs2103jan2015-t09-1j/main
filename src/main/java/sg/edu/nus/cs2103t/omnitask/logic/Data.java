@@ -1,9 +1,11 @@
 package sg.edu.nus.cs2103t.omnitask.logic;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import sg.edu.nus.cs2103t.omnitask.model.Task;
+import sg.edu.nus.cs2103t.omnitask.storage.IO;
 
 public abstract class Data {
 
@@ -54,5 +56,7 @@ public abstract class Data {
 	public abstract ArrayList<Task> searchTask();
 
 	public abstract boolean undo();
+	
+	public abstract boolean changeStorageDirectory(String newDir);
 
 }

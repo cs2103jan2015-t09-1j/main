@@ -3,11 +3,17 @@ package sg.edu.nus.cs2103t.omnitask.storage;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +34,9 @@ public class IOJSONImpl extends IO {
 
 	public IOJSONImpl(File storageFile) throws IOException {
 		this.storageFile = storageFile;
-		this.gson = new GsonBuilder()
-				.registerTypeAdapter(new TypeToken<DateTime>() {}.getType(),
-						new DateTimeConverter()).create();
+		this.gson = new GsonBuilder().registerTypeAdapter(
+				new TypeToken<DateTime>() {
+				}.getType(), new DateTimeConverter()).create();
 
 		IO.CheckIfFileExistAndCreateIfDoesNot(storageFile);
 	}
@@ -53,7 +59,8 @@ public class IOJSONImpl extends IO {
 		// convert json to ArrayList
 		try {
 			ArrayList<Task> tasksFromFile = gson.fromJson(lines,
-					new TypeToken<ArrayList<Task>>() {}.getType());
+					new TypeToken<ArrayList<Task>>() {
+					}.getType());
 			if (tasksFromFile != null) {
 				tasks = tasksFromFile;
 			}
@@ -115,4 +122,33 @@ public class IOJSONImpl extends IO {
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public boolean changeStorageFileDirectory(String newDir) throws IOException {
+		boolean status=false;
+		List<Task> currentTasks;
+		try{
+		//check if the path exists
+		Path path = Paths.get(newDir);
+		if (Files.exists(path)) {
+			// copy contents
+			currentTasks = readFromFile();
+			storageFile = new File(newDir+"\\storage.txt");
+			IO.CheckIfFileExistAndCreateIfDoesNot(storageFile);
+			saveToFile(currentTasks);
+			// create configuration file to store new storage location
+			PrintWriter confFile = new PrintWriter("omnitask.conf");
+			confFile.println(newDir);
+			confFile.close();
+			status = true;
+			
+		}
+		}catch(InvalidPathException ip){
+			//the path specified by user is invalid
+			
+		}
+
+		return status;
+	}
+
 }

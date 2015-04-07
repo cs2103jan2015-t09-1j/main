@@ -1,5 +1,6 @@
 package sg.edu.nus.cs2103t.omnitask.storage;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,4 +51,11 @@ public class IOStubImpl extends IO {
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public boolean changeStorageFileDirectory(String newDir) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

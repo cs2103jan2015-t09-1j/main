@@ -150,4 +150,13 @@ public class DataStubImpl extends Data {
 		return taskId;
 	}
 
+	@Override
+	public boolean changeStorageDirectory(String newDir) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+
 }

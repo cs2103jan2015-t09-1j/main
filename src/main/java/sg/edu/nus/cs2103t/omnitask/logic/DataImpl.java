@@ -1,5 +1,6 @@
 package sg.edu.nus.cs2103t.omnitask.logic;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -354,5 +355,17 @@ public class DataImpl extends Data {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public boolean changeStorageDirectory(String newDir) {
+		// TODO Auto-generated method stub
+		try {
+			return io.changeStorageFileDirectory(newDir);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 }

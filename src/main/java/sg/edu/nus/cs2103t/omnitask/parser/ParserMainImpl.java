@@ -20,6 +20,7 @@ import sg.edu.nus.cs2103t.omnitasks.command.CommandNextImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandPrevImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandRedoImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandSearchImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandStorageImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandUndoImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.Utils;
 
@@ -145,6 +146,17 @@ public class ParserMainImpl extends Parser {
 				commandInput.setName(inputSplit[1]);
 
 			return new CommandSearchImpl(commandInput);
+		}
+		
+		//storage command
+		if (Utils.getCommandTypeFromString(commandName) == CommandType.STORAGE) {
+			CommandInput commandInput = new CommandInput(CommandType.STORAGE);
+			commandInput.setCommandType(CommandType.STORAGE);
+
+			if (inputSplit.length > 1)
+				commandInput.setName(inputSplit[1]);
+
+			return new CommandStorageImpl(commandInput);
 		}
 
 		// help command

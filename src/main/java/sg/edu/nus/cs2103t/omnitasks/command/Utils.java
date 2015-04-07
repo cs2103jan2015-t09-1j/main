@@ -111,6 +111,14 @@ public class Utils {
 				return CommandInput.CommandType.PREV;
 			}
 		}
+		
+		for (String command : CommandStorageImpl.COMMAND_ALIASES_STORAGE) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.STORAGE;
+			}
+		}
+		
+		
 
 		return CommandInput.CommandType.INVALID;
 	}

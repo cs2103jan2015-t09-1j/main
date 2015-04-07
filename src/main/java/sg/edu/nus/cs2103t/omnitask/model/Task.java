@@ -39,7 +39,7 @@ public class Task {
 				}
 			} else {
 				if (task1.getStartDate() != null && task2.getStartDate() != null) {
-					task1.getStartDate().compareTo(task2.getStartDate());
+					return task1.getStartDate().compareTo(task2.getStartDate());
 				} else if (task1.getStartDate() != null) {
 					return task1.getStartDate().compareTo(task2.getEndDate());
 				} else if (task2.getStartDate() != null) {

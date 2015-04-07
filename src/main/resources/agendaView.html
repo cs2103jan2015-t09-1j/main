@@ -177,7 +177,8 @@
 					var eDate = parseInt($(this).attr("endDate"));
 					
 					var compare = java.compareDates(startDate?startDate.getMillis():-1, endDate.getMillis(), sDate?sDate:-1, eDate);
-					if (compare > 0) {
+					java.debug(header + " vs. " + $(this).find(".group-date").text() + ": " + compare);
+					if (compare >= 0) {
 						el = this;
 					} else if (compare < 0) {
 						if (!el) {

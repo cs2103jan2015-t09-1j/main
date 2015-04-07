@@ -220,6 +220,8 @@ public class MainViewController {
 	@FXML
 	protected void initialize() {
 		setViewMode(ViewMode.ALL);
+		
+		outputText.setVisible(false);
 
 		agendaView.setContextMenuEnabled(false);
 		agendaView.setZoom(javafx.stage.Screen.getPrimary().getDpi() / 96);

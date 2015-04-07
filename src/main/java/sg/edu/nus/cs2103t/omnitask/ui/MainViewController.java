@@ -113,10 +113,12 @@ public class MainViewController {
 
 	public void showError(String msg) {
 		outputText.setText("Error: " + msg);
+		showToast("Error: " + msg);
 	}
 
 	public void showMessage(String msg) {
 		outputText.setText(msg);
+		showToast(msg);
 	}
 
 	public void updateAllTasks(List<Task> tasks,
@@ -395,6 +397,13 @@ public class MainViewController {
 			agendaView.getEngine().executeScript("removeCard('" + uuid + "');");
 		}
 	}
+	
+	private void showToast(String msg) {
+		if (agendaViewLoaded) {
+			msg = msg.replaceAll("'", "\'");
+			agendaView.getEngine().executeScript("showToast('" + msg + "');");
+		}
+	}
 
 	private void updateViewModeText() {
 		if (viewMode == ViewMode.ALL) {
@@ -437,7 +446,7 @@ public class MainViewController {
 			omniBar.setText(CommandEditImpl.COMMAND_ALIASES_EDIT[0] + " "
 					+ task.getId() + " ");
 			focusOmniBar();
-			omniBar.end();
+			omniBar.selectRange(0, CommandEditImpl.COMMAND_ALIASES_EDIT[0].length());
 		}
 
 		public void autofillOmniBarWithEditName(int index) {

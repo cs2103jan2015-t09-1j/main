@@ -41,6 +41,7 @@ public class JUnitSystemTest {
 		// 1. Check if user input is parsed properly to CommandInput
 		// 2. Check if command succeed
 		// 3. Check if Data committed the changes proper
+		// NOTE: Due to using a sortedlist in Data, do note the index of items when retrieving, it won't be in order of it was added
 		
 		// Test Add Task
 		processInput(ui, parser, data, "add Hello World", CommandType.ADD, 0, "Hello World", null, null, Priority.NONE);
@@ -48,15 +49,16 @@ public class JUnitSystemTest {
 		
 		// Test Add Task with due date
 		processInput(ui, parser, data, "add Hello World due tomorrow", CommandType.ADD, 0, "Hello World", null, new DateTime().withMillisOfDay(0).plusDays(1), Priority.NONE);
-		assertTaskAttributes(data.getTasks().get(1), 2, "Hello World", null, new DateTime().withMillisOfDay(0).plusDays(1), Priority.NONE);
+		// ...the order in the data.getTasks() has changed due to sorting and hence item 0 is the item which we just added
+		assertTaskAttributes(data.getTasks().get(0), 1, "Hello World", null, new DateTime().withMillisOfDay(0).plusDays(1), Priority.NONE);
 		
 		// Test Delete Task
-		processInput(ui, parser, data, "delete 1", CommandType.DELETE, 1, null, null, null, Priority.NONE);
+		processInput(ui, parser, data, "delete 2", CommandType.DELETE, 2, null, null, null, null);
 		assertEquals(data.getTasks().size(), 1);
 		assertTaskAttributes(data.getTasks().get(0), 1, "Hello World", null, new DateTime().withMillisOfDay(0).plusDays(1), Priority.NONE);
 		
 		// Test Edit Task
-		processInput(ui, parser, data, "edit 1 Hello World Edited", CommandType.EDIT, 1, "Hello World Edited", null, null, Priority.NONE);
+		processInput(ui, parser, data, "edit 1 Hello World Edited", CommandType.EDIT, 1, "Hello World Edited", null, null, null);
 		assertTaskAttributes(data.getTasks().get(0), 1, "Hello World Edited", null, new DateTime().withMillisOfDay(0).plusDays(1), Priority.NONE);
 		
 		// TODO: Test Edit Due Task

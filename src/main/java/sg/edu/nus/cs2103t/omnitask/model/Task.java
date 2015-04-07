@@ -199,7 +199,7 @@ public class Task {
 
 		if (startDate != null) {
 			String startDateFormatted = formatTime(startDate);
-			if (twoDifferentDays) {
+			if (twoDifferentDays && !startDateFormatted.isEmpty()) {
 				formatted += fmt.print(startDate);
 			}
 			formatted += startDateFormatted;
@@ -209,7 +209,7 @@ public class Task {
 			if (!formatted.isEmpty()) {
 				formatted += " - ";
 			}
-			if (twoDifferentDays) {
+			if (twoDifferentDays && !endDateFormatted.isEmpty()) {
 				formatted += fmt.print(endDate);
 			}
 			formatted += endDateFormatted;

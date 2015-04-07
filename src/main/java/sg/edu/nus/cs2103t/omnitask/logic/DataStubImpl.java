@@ -156,6 +156,12 @@ public class DataStubImpl extends Data {
 		return false;
 	}
 
+	@Override
+	public void updateTaskId() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 

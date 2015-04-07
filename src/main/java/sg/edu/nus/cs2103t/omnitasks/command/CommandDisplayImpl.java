@@ -23,7 +23,7 @@ public class CommandDisplayImpl extends Command {
 		
 		if (commandInput.getName().toLowerCase().equals("all")) {
 			ui.showAllTasks();
-			data.notifyDataChanged();
+			data.updateTaskId();
 		} else if (commandInput.getName().toLowerCase().equals("overdue")) {
 			ui.showSection(MainViewController.SECTION_OVERDUE);
 		} else if (commandInput.getName().toLowerCase().equals("no due") || commandInput.getName().toLowerCase().equals("floating")) {

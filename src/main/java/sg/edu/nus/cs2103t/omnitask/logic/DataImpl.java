@@ -337,7 +337,7 @@ public class DataImpl extends Data {
 	}
 
 	// Reassign taskId to the tasks arraylist
-	private void updateTaskId() {
+	public void updateTaskId() {
 		assertInited();
 
 		ArrayList<Task> tmpTasks = new ArrayList<Task>();

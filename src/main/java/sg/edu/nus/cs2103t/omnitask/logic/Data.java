@@ -57,6 +57,8 @@ public abstract class Data {
 
 	public abstract boolean undo();
 	
+	public abstract void updateTaskId();
+	
 	public abstract boolean changeStorageDirectory(String newDir);
 
 }

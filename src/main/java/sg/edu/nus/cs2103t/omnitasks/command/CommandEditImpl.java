@@ -16,7 +16,24 @@ public class CommandEditImpl extends Command {
 
 	@Override
 	public boolean processCommand(Data data, UI ui) {
+		
 		Task task = data.getTask((int) commandInput.getId() - 1);
+		int wordLengthLimit = 80;
+		
+		for (int i = 0, lengthOfWord = 0; i < commandInput.getName()
+				.length(); i++) {
+			char character = commandInput.getName().charAt(i);
+			if (lengthOfWord >= wordLengthLimit) {
+				ui.showError("Unable to edit Task. Task name is too long!");
+				return false;
+			}
+			if (character == ' ') {
+				lengthOfWord = 0;
+			} else {
+				lengthOfWord++;
+			}
+
+		}
 		// edit name, priority, start&end date from commandInput
 		Utils.makeTaskToEdit(commandInput, task);
 

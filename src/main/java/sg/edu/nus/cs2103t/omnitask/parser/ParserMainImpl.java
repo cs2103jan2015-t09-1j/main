@@ -259,7 +259,7 @@ public class ParserMainImpl extends Parser {
 			}
 			
 			if (!quoteDetected && inArray(DATE_INDICATORS, inputSplit[i])) {
-				String dateString = ""; //joinStringArray(inputSplit, i, inputSplit.length);
+				String dateString = "";
 				String ignored = "";
 				
 				// Similar to the outer if conditions block which checks for " symbol
@@ -303,7 +303,8 @@ public class ParserMainImpl extends Parser {
 					
 					editted = true;
 					
-					for (DateGroup group : groups) {
+					if (groups.size() > 0) {
+						DateGroup group = groups.get(groups.size() - 1);
 						// If there are 2 dates, means it's to and from
 						// If no specific time is specified by user, set the
 						// time to 00:00:00, retaining the dates

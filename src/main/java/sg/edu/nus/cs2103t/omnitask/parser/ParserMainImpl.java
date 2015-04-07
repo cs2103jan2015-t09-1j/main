@@ -29,8 +29,7 @@ public class ParserMainImpl extends Parser {
 
 	private static final String[] DATE_INDICATORS = new String[] { "from",
 			"by", "due", "to", "on" };
-	private static final String[] PRIORITY_INDICATORS = new String[] { "^h",
-			"^m", "^l", "^n" };
+	public static final String[] PRIORITY_INDICATORS = new String[] { "^n", "^l", "^m", "^h"};
 
 	@Override
 	public Command parseUserInput(String input) {
@@ -194,11 +193,11 @@ public class ParserMainImpl extends Parser {
 		for (int j = 1; j < inputSplit.length; j++) {
 			if (inArray(PRIORITY_INDICATORS, inputSplit[j])) {
 				priorityIndex = j;
-				if (inputSplit[j].equals(PRIORITY_INDICATORS[0])) {
+				if (inputSplit[j].equals(PRIORITY_INDICATORS[3])) {
 					commandInput.setPriority(Priority.HIGH);
-				} else if (inputSplit[j].equals(PRIORITY_INDICATORS[1])) {
-					commandInput.setPriority(Priority.MEDIUM);
 				} else if (inputSplit[j].equals(PRIORITY_INDICATORS[2])) {
+					commandInput.setPriority(Priority.MEDIUM);
+				} else if (inputSplit[j].equals(PRIORITY_INDICATORS[1])) {
 					commandInput.setPriority(Priority.LOW);
 				} else {
 					commandInput.setPriority(Priority.NONE);

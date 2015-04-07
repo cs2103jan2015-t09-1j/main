@@ -128,26 +128,31 @@
 				return $(section);
 			}
 			
+			var date = task.getEndDate();
+			if (task.getStartDate()) {
+				date = task.getStartDate();
+			}
+			
 			section = $("#templates .card-row").clone();
 			section.attr("header", header);
-			if (task.getEndDate()) {
-				section.attr("date", task.getEndDate().getMillis());
+			if (date) {
+				section.attr("date", date.getMillis());
 			}
 			section.find(".group-date").text(header);
 			section.find(".card-action").remove();
 			
 			var el;
 			var before = false;
-			if (task.getEndDate()) {
+			if (date) {
 				$("#content .card-row").each(function() {
 					if (!$(this).attr("date")) {
 						before = true;
 						return false;
 					}
 					
-					var date = parseInt($(this).attr("date"));
+					var sDate = parseInt($(this).attr("date"));
 					
-					if (task.getEndDate().getMillis() > date) {
+					if (date.getMillis() > sDate) {
 						el = this;
 					} else {
 						if (!el) {

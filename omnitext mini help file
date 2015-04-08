@@ -51,15 +51,18 @@
 	<title></title>
 </head>
 <body>
-<h2><span style="font-family:arial,helvetica,sans-serif;"><span style="font-size:18px;">Displaying a Task</span></span></h2>
+<h2>Displaying a Task</h2>
 
-<p><span style="font-family:arial,helvetica,sans-serif;"><strong style="font-family: ''; line-height: 19px; widows: auto;"><span style="color: rgb(0, 0, 255);">show all/archive</span></strong></span></p>
+<p><strong><span style="color:#0000FF;">show all</span>/<span style="color:#0000FF;">archive</span>/<span style="color:#0000FF;">overdue</span>/<span style="color:#0000FF;">floating</span></strong></p>
 
-<p><span style="font-family:arial,helvetica,sans-serif;"><strong style="font-family: ''; line-height: 19px; widows: auto;"><span style="color: rgb(0, 0, 255);">show </span><span style="color:#FF8C00;">&lt;Category&gt;</span></strong></span></p>
+<p><strong><span style="color:#0000FF;">show #</span><span style="color:#FF8C00;">&lt;Category&gt;</span></strong></p>
 
-<p><span style="font-family:arial,helvetica,sans-serif;"><strong style="font-family: ''; widows: auto;"><span style="color: rgb(0, 0, 255);">show</span>&nbsp;<span style="color: rgb(255, 140, 0);">CS2013T</span></strong></span></p>
+<p><strong>eg. <span style="color:#0000FF;">show</span> <span style="color:#0000FF;">#</span><span style="color:#FF8C00;">CS2103T&nbsp;</span></strong></p>
+
+<p>&nbsp;</p>
 </body>
 </html>
+
 
 </DISPLAY>
 <SEARCH>

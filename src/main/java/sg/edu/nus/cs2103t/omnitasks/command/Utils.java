@@ -97,6 +97,12 @@ public class Utils {
 				return CommandInput.CommandType.MARK;
 			}
 		}
+		
+		for (String command : CommandRemoveDateImpl.COMMAND_ALIASES_REMOVEDATE) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.REMOVEDATE;
+			}
+		}
 
 		for (String command : CommandNextImpl.COMMAND_ALIASES) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
@@ -116,8 +122,6 @@ public class Utils {
 			}
 		}
 		
-		
-
 		return CommandInput.CommandType.INVALID;
 	}
 

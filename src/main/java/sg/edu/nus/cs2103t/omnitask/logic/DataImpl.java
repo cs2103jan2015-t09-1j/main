@@ -132,6 +132,43 @@ public class DataImpl extends Data {
 
 		return true;
 	}
+	
+	@Override
+	public boolean removeTaskDate(Task taskToRemoveDate) {
+		assertInited();
+		getPreviousState();
+		int taskIdToRemoveDate = -1;
+		Task foundTask = new Task();
+		
+		for (int i = 0; i < tasks.size(); i++) {
+			if (tasks.get(i).getId() == (taskToRemoveDate.getId())) {
+				foundTask = tasks.get(i);
+				foundTask.setStartDate(null);
+				foundTask.setEndDate(null);
+				taskIdToRemoveDate = i;
+			}
+		}
+		
+		tasks.set(taskIdToRemoveDate, foundTask);
+		
+		if (taskIdToRemoveDate != -1) {
+			// Commit it to storage
+			try {
+				io.saveToFile(tasks);
+				updateTaskId();
+			} catch (IOException ex) {
+				// TODO: Handle error
+				ex.printStackTrace();
+				printError("IO Exception");
+
+				return false;
+			}
+		}
+		
+		redoStack.clear();
+		
+		return true;
+	}
 
 	@Override
 	public boolean editTask(Task mutatorTask) {
@@ -366,4 +403,5 @@ public class DataImpl extends Data {
 		}
 		return false;
 	}
+
 }

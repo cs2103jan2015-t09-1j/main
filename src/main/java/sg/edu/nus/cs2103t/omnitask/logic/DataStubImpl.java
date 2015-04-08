@@ -162,6 +162,12 @@ public class DataStubImpl extends Data {
 		
 	}
 
+	@Override
+	public boolean removeTaskDate(Task taskToRemoveDate) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 
 
 

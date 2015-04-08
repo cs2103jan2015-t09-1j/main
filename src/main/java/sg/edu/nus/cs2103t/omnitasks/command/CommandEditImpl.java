@@ -46,7 +46,7 @@ public class CommandEditImpl extends Command {
 		} catch (ArrayIndexOutOfBoundsException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			ui.showError("Unable to update Task \"" + commandInput.getId()
+			ui.showError("Unable to edit Task \"" + commandInput.getId()
 					+ "\". Please choose a valid id!");
 
 		}

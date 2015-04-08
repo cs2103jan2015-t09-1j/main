@@ -56,9 +56,11 @@ public abstract class Data {
 	public abstract ArrayList<Task> searchTask();
 
 	public abstract boolean undo();
-	
+
 	public abstract void updateTaskId();
-	
+
 	public abstract boolean changeStorageDirectory(String newDir);
+
+	public abstract boolean removeTaskDate(Task taskToRemoveDate);
 
 }

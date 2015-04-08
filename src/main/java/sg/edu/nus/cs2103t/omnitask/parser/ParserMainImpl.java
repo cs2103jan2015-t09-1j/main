@@ -19,6 +19,7 @@ import sg.edu.nus.cs2103t.omnitasks.command.CommandMarkImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandNextImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandPrevImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandRedoImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandRemoveDateImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandSearchImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandStorageImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandUndoImpl;
@@ -42,7 +43,7 @@ public class ParserMainImpl extends Parser {
 		// TODO: Need SLAP?
 		String commandName = inputSplit[0].toLowerCase();
 
-		// display command
+		// Display command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.DISPLAY) {
 			CommandInput commandInput = new CommandInput(CommandType.DISPLAY);
 			commandInput.setCommandType(CommandType.DISPLAY);
@@ -52,7 +53,7 @@ public class ParserMainImpl extends Parser {
 			return new CommandDisplayImpl(commandInput);
 		}
 
-		// undo command
+		// Undo command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.UNDO) {
 			CommandInput commandInput = new CommandInput(CommandType.UNDO);
 			commandInput.setCommandType(CommandType.UNDO);
@@ -60,7 +61,7 @@ public class ParserMainImpl extends Parser {
 			return new CommandUndoImpl(commandInput);
 		}
 
-		// re-do command
+		// Re-do command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.REDO) {
 			CommandInput commandInput = new CommandInput(CommandType.REDO);
 			commandInput.setCommandType(CommandType.REDO);
@@ -68,7 +69,7 @@ public class ParserMainImpl extends Parser {
 			return new CommandRedoImpl(commandInput);
 		}
 
-		// next command
+		// Next command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.NEXT) {
 			CommandInput commandInput = new CommandInput(CommandType.NEXT);
 			commandInput.setCommandType(CommandType.NEXT);
@@ -76,7 +77,7 @@ public class ParserMainImpl extends Parser {
 			return new CommandNextImpl(commandInput);
 		}
 
-		// prev command
+		// Prev command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.PREV) {
 			CommandInput commandInput = new CommandInput(CommandType.PREV);
 			commandInput.setCommandType(CommandType.PREV);
@@ -84,7 +85,7 @@ public class ParserMainImpl extends Parser {
 			return new CommandPrevImpl(commandInput);
 		}
 
-		// exit command
+		// Exit command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.EXIT) {
 			CommandInput commandInput = new CommandInput(CommandType.EXIT);
 			commandInput.setCommandType(CommandType.EXIT);
@@ -92,7 +93,7 @@ public class ParserMainImpl extends Parser {
 			return new CommandExitImpl(commandInput);
 		}
 
-		// delete command
+		// Delete command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.DELETE) {
 			CommandInput commandInput = new CommandInput(CommandType.DELETE);
 			commandInput.setCommandType(CommandType.DELETE);
@@ -104,7 +105,7 @@ public class ParserMainImpl extends Parser {
 			return new CommandDeleteImpl(commandInput);
 		}
 
-		// mark command
+		// Mark command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.MARK) {
 			CommandInput commandInput = new CommandInput(CommandType.MARK);
 			commandInput.setCommandType(CommandType.MARK);
@@ -123,8 +124,21 @@ public class ParserMainImpl extends Parser {
 
 			return new CommandMarkImpl(commandInput);
 		}
+		
+		// RemoveDate Command
+		if (Utils.getCommandTypeFromString(commandName) == CommandType.REMOVEDATE) {
+			CommandInput commandInput = new CommandInput(CommandType.REMOVEDATE);
+			commandInput.setCommandType(CommandType.REMOVEDATE);
 
-		// add command
+			long removeDateId;
+			removeDateId = Long.parseLong(inputSplit[1]);
+
+			commandInput.setId(removeDateId);
+
+			return new CommandRemoveDateImpl(commandInput);
+		}
+
+		// Add Command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.ADD) {
 			CommandInput commandInput = new CommandInput(CommandType.ADD);
 
@@ -138,7 +152,7 @@ public class ParserMainImpl extends Parser {
 			return new CommandAddImpl(commandInput);
 		}
 
-		// search task command
+		// Search Task Command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.SEARCH) {
 			CommandInput commandInput = new CommandInput(CommandType.SEARCH);
 			commandInput.setCommandType(CommandType.SEARCH);
@@ -150,7 +164,7 @@ public class ParserMainImpl extends Parser {
 			return new CommandSearchImpl(commandInput);
 		}
 		
-		//storage command
+		// Storage Command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.STORAGE) {
 			CommandInput commandInput = new CommandInput(CommandType.STORAGE);
 			commandInput.setCommandType(CommandType.STORAGE);
@@ -161,7 +175,7 @@ public class ParserMainImpl extends Parser {
 			return new CommandStorageImpl(commandInput);
 		}
 
-		// help command
+		// Help Command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.HELP) {
 			CommandInput commandInput = new CommandInput(CommandType.HELP);
 			commandInput.setCommandType(CommandType.HELP);
@@ -172,7 +186,7 @@ public class ParserMainImpl extends Parser {
 			return new CommandHelpImpl(commandInput);
 		}
 
-		// edit command
+		// Edit Command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.EDIT) {
 			CommandInput commandInput = new CommandInput(CommandType.EDIT);
 			long updateId;
@@ -197,14 +211,14 @@ public class ParserMainImpl extends Parser {
 		return null;
 	}
 
-	// method to detect priority indicator within string input and remove it
+	// Method to detect priority indicator within string input and remove it
 	// from taskName
 	private void detectPrio(String[] inputSplit, CommandInput commandInput,
 			boolean isEditing) {
 		int priorityIndex = 0;
 		boolean prioritySent = false;
 
-		// detect for priority
+		// Detect for priority
 		for (int j = 1; j < inputSplit.length; j++) {
 			if (inArray(PRIORITY_INDICATORS, inputSplit[j])) {
 				priorityIndex = j;
@@ -238,7 +252,7 @@ public class ParserMainImpl extends Parser {
 		}
 	}
 
-	// parse the dateTime within the string input using natty
+	// Parse the dateTime within the string input using natty
 	private boolean extractDatesAndTaskNameFromCommand(int startIndex,
 			String[] inputSplit, CommandInput commandInput, boolean isEditing) {
 		String taskName = "";

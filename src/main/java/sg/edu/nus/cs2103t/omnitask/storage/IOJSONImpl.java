@@ -77,13 +77,12 @@ public class IOJSONImpl extends IO {
 	public String readFromHelpFile(String helpType, boolean miniMenu)
 			throws IOException {
 		String commandDescription = "";
-		File helpFileData;
+		InputStream in;
 		if (miniMenu) {
-			helpFileData = new File("omnitext mini help file");
+			in = getClass().getResourceAsStream("/omnitext mini help file");
 		} else {
-			helpFileData = new File("omnitext help file");
+			in = getClass().getResourceAsStream("/omnitext help file");
 		}
-		InputStream in = Files.newInputStream(helpFileData.toPath());
 		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		String line = null;
 		while ((line = reader.readLine()) != null) {

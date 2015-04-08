@@ -31,7 +31,7 @@ import sg.edu.nus.cs2103t.omnitasks.command.CommandEditImpl;
 public class MainViewController {
 
 	public static enum ViewMode {
-		ALL, SEARCH
+		ALL, ALTERNATE, ARCHIVED
 	}
 	
 	final public static String SECTION_OVERDUE = "Overdue!";
@@ -57,9 +57,7 @@ public class MainViewController {
 	@FXML
 	private Text outputText;
 
-	private ObservableList<Task> searchedTasks;
-
-	private String searchKeyword;
+	private ObservableList<Task> altTasks;
 
 	private UI ui;
 
@@ -70,7 +68,7 @@ public class MainViewController {
 
 	public MainViewController() {
 		allTasks = FXCollections.observableArrayList();
-		searchedTasks = FXCollections.observableArrayList();
+		altTasks = FXCollections.observableArrayList();
 		tasks = allTasks;
 		commandHistory = new ArrayList<String>();
 	}
@@ -110,13 +108,13 @@ public class MainViewController {
 		}
 	}
 
-	public void setSearchedTasks(String searchKeyword, List<Task> tasks) {
-		this.searchKeyword = searchKeyword;
-
+	public void setAlternateTasks(String title, List<Task> tasks) {
 		Collections.sort(tasks, Task.taskSorterComparator);
+		
+		viewModeText.setText(title);
 
-		this.searchedTasks.clear();
-		this.searchedTasks.addAll(tasks);
+		this.altTasks.clear();
+		this.altTasks.addAll(tasks);
 	}
 
 	public void setUI(UI ui) {
@@ -126,8 +124,8 @@ public class MainViewController {
 	public void setViewMode(ViewMode viewMode) {
 		if (viewMode == ViewMode.ALL) {
 			tasks = allTasks;
-		} else if (viewMode == ViewMode.SEARCH) {
-			tasks = searchedTasks;
+		} else if (viewMode == ViewMode.ALTERNATE || viewMode == ViewMode.ARCHIVED) {
+			tasks = altTasks;
 		}
 
 		this.viewMode = viewMode;
@@ -198,18 +196,18 @@ public class MainViewController {
 			}
 		}
 
-		// If we are in search view mode, delete the task which is no longer
+		// If we are in alternate view mode, delete the task which is no longer
 		// found, edit the one existing inside
-		if (viewMode == ViewMode.SEARCH) {
-			for (int i = 0; i < searchedTasks.size(); i++) {
-				Task task = searchedTasks.get(i);
+		if (viewMode != ViewMode.ALL) {
+			for (int i = 0; i < altTasks.size(); i++) {
+				Task task = altTasks.get(i);
 				int indexInAllTasks = this.allTasks.indexOf(task);
 
 				if (indexInAllTasks == -1) {
-					searchedTasks.remove(i--);
+					altTasks.remove(i--);
 				} else {
 					// This is a pretty slow operation :(
-					searchedTasks.set(i, this.allTasks.get(indexInAllTasks));
+					altTasks.set(i, this.allTasks.get(indexInAllTasks));
 				}
 			}
 
@@ -383,9 +381,9 @@ public class MainViewController {
 		}
 	}
 
-	private List<Task> getSearchedTasksAsList() {
+	private List<Task> getAlternateTasksAsList() {
 		ArrayList<Task> tasks = new ArrayList<Task>();
-		for (Task task : this.searchedTasks) {
+		for (Task task : this.altTasks) {
 			tasks.add(task);
 		}
 		return tasks;
@@ -435,9 +433,6 @@ public class MainViewController {
 	private void updateViewModeText() {
 		if (viewMode == ViewMode.ALL) {
 			viewModeText.setText("All Tasks");
-		} else if (viewMode == ViewMode.SEARCH) {
-			viewModeText
-					.setText("Search results for \"" + searchKeyword + "\"");
 		}
 
 	}
@@ -544,8 +539,12 @@ public class MainViewController {
 			if (viewMode == ViewMode.ALL) {
 				return getTasksAsList();
 			} else {
-				return getSearchedTasksAsList();
+				return getAlternateTasksAsList();
 			}
+		}
+		
+		public int getViewMode() {
+			return viewMode.ordinal();
 		}
 
 		public boolean markTaskAsDone(String uuid) {

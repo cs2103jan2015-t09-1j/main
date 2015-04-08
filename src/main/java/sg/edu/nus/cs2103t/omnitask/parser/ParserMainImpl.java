@@ -99,7 +99,11 @@ public class ParserMainImpl extends Parser {
 			commandInput.setCommandType(CommandType.DELETE);
 
 			long deleteId;
-			deleteId = Long.parseLong(inputSplit[1]);
+			try{
+				deleteId = Long.parseLong(inputSplit[1]);
+			}catch(NumberFormatException e){
+				return null;
+			}
 			commandInput.setId(deleteId);
 
 			return new CommandDeleteImpl(commandInput);
@@ -112,7 +116,11 @@ public class ParserMainImpl extends Parser {
 
 			long markId;
 			String inputOfIsCompleted;
-			markId = Long.parseLong(inputSplit[1]);
+			try{
+				markId = Long.parseLong(inputSplit[1]);
+			}catch(NumberFormatException e){
+				return null;
+			}
 			inputOfIsCompleted = (inputSplit[2]);
 
 			if (inputOfIsCompleted.equalsIgnoreCase("done")) {
@@ -131,7 +139,11 @@ public class ParserMainImpl extends Parser {
 			commandInput.setCommandType(CommandType.REMOVEDATE);
 
 			long removeDateId;
-			removeDateId = Long.parseLong(inputSplit[1]);
+			try{
+				removeDateId = Long.parseLong(inputSplit[1]);
+			}catch(NumberFormatException e){
+				return null;
+			}
 
 			commandInput.setId(removeDateId);
 
@@ -190,7 +202,11 @@ public class ParserMainImpl extends Parser {
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.EDIT) {
 			CommandInput commandInput = new CommandInput(CommandType.EDIT);
 			long updateId;
-			updateId = Long.parseLong(inputSplit[1]);
+			try{
+				updateId = Long.parseLong(inputSplit[1]);
+				}catch(NumberFormatException e){
+					return null;
+					}
 			commandInput.setId(updateId);
 
 			// edit priority of task if detected

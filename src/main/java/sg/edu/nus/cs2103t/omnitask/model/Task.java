@@ -26,7 +26,8 @@ public class Task {
 		@Override
 		public int compare(Task task1, Task task2) {
 			if ((task1.getEndDate() == null && task2.getEndDate() == null)
-					|| ((task1.getEndDate() != null && task2.getEndDate() != null) && task1.getEndDate().equals(task2.getEndDate()))) {
+					|| ((task1.getEndDate() != null && task2.getEndDate() != null) && task1
+							.getEndDate().equals(task2.getEndDate()))) {
 				if (task1.getPriority() != task2.getPriority()) {
 					return task2.getPriority().ordinal()
 							- task1.getPriority().ordinal();
@@ -38,7 +39,8 @@ public class Task {
 					return -1;
 				}
 			} else {
-				if (task1.getStartDate() != null && task2.getStartDate() != null) {
+				if (task1.getStartDate() != null
+						&& task2.getStartDate() != null) {
 					return task1.getStartDate().compareTo(task2.getStartDate());
 				} else if (task1.getStartDate() != null) {
 					return task1.getStartDate().compareTo(task2.getEndDate());
@@ -58,6 +60,8 @@ public class Task {
 
 	final private static String[] priorityStrings = new String[] { "", "low",
 			"med", "high" };
+
+	private boolean isArchived;
 
 	private DateTime endDate;
 
@@ -96,6 +100,7 @@ public class Task {
 		if (uuid != null) {
 			task.setUuid(UUID.fromString(uuid.toString()));
 		}
+		task.setArchived(isArchived);
 		task.setPriority(priority);
 		task.setRecurrence(recurrence);
 		task.setName(name);
@@ -192,9 +197,10 @@ public class Task {
 		String formatted = "";
 		boolean twoDifferentDays = false;
 		DateTimeFormatter fmt = DateTimeFormat.forPattern("dd MMMM, ");
-		
+
 		if (startDate != null && endDate != null) {
-			twoDifferentDays = !startDate.withMillisOfDay(0).equals(endDate.withMillisOfDay(0));
+			twoDifferentDays = !startDate.withMillisOfDay(0).equals(
+					endDate.withMillisOfDay(0));
 		}
 
 		if (startDate != null) {
@@ -338,6 +344,14 @@ public class Task {
 		String formatted = fmt.print(date);
 
 		return formatted.toUpperCase();
+	}
+
+	public boolean isArchived() {
+		return isArchived;
+	}
+
+	public void setArchived(boolean isArchived) {
+		this.isArchived = isArchived;
 	}
 
 }

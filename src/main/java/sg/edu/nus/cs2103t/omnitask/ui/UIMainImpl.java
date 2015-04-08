@@ -187,9 +187,9 @@ public class UIMainImpl extends UI {
 	}
 
 	@Override
-	public void showSearchResults(String keyword, ArrayList<Task> tasks) {
-		viewController.setSearchedTasks(keyword, tasks);
-		viewController.setViewMode(ViewMode.SEARCH);
+	public void showAlternateList(ViewMode viewMode, String title, ArrayList<Task> tasks) {
+		viewController.setAlternateTasks(title, tasks);
+		viewController.setViewMode(viewMode);
 	}
 
 	// @Override

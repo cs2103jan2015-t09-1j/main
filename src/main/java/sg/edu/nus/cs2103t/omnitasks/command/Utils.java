@@ -33,6 +33,7 @@ public class Utils {
 		if (mutatorTask.getEndDate() != null) {
 			foundTask.setEndDate(mutatorTask.getEndDate());
 		}
+		foundTask.setArchived(mutatorTask.isArchived());
 		foundTask.setCompleted(mutatorTask.isCompleted());
 	}
 
@@ -97,7 +98,7 @@ public class Utils {
 				return CommandInput.CommandType.MARK;
 			}
 		}
-		
+
 		for (String command : CommandRemoveDateImpl.COMMAND_ALIASES_REMOVEDATE) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
 				return CommandInput.CommandType.REMOVEDATE;
@@ -115,13 +116,25 @@ public class Utils {
 				return CommandInput.CommandType.PREV;
 			}
 		}
-		
+
 		for (String command : CommandStorageImpl.COMMAND_ALIASES_STORAGE) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
 				return CommandInput.CommandType.STORAGE;
 			}
 		}
-		
+
+		for (String command : CommandArchiveImpl.COMMAND_ALIASES) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.ARCHIVE;
+			}
+		}
+
+		for (String command : CommandUnarchiveImpl.COMMAND_ALIASES) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.UNARCHIVE;
+			}
+		}
+
 		return CommandInput.CommandType.INVALID;
 	}
 

@@ -3,6 +3,7 @@ package sg.edu.nus.cs2103t.omnitask.ui;
 import java.util.ArrayList;
 
 import sg.edu.nus.cs2103t.omnitask.model.Task;
+import sg.edu.nus.cs2103t.omnitask.ui.MainViewController.ViewMode;
 
 public class UIStubImpl extends UI {
 
@@ -43,7 +44,7 @@ public class UIStubImpl extends UI {
 	}
 
 	@Override
-	public void showSearchResults(String keyword, ArrayList<Task> tasks) {
+	public void showAlternateList(ViewMode viewMode, String keyword, ArrayList<Task> tasks) {
 		// TODO Auto-generated method stub
 
 	}

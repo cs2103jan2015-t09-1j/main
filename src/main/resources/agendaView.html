@@ -208,8 +208,13 @@
 		
 		function fillCardDetails(el, task) {
 			el.attr("uuid", task.getUuid().toString());
+			el.attr("archived", task.isArchived());
 			
-			el.find(".id").text("ref id: " + task.getId());
+			if (task.isArchived()) {
+				el.find(".id").text("ref id: " + task.getId() + ", archived");
+			} else {
+				el.find(".id").text("ref id: " + task.getId());
+			}
 			
 			el.find(".title").text(task.getName());
 			
@@ -246,6 +251,22 @@
 			});
 			
 			setCheckboxState(el.find(".checkbox"), task.isCompleted(), false);
+			
+			var boolBasedOnViewMode = java.getViewMode() == 2 ? false : true;
+			if (java.getViewMode() != 1 && task.isArchived() == boolBasedOnViewMode) {
+				el.css("display", "none");
+			} else {
+				el.css("display", "block");
+			}
+			
+			$("#content .card-row").each(function(){
+				var boolBasedOnViewMode = java.getViewMode() == 2 ? "true" : "false";
+				if ($(this).find(".card-action[archived='" + boolBasedOnViewMode + "']").size() > 0) {
+					$(this).show();
+				} else if (java.getViewMode() != 1) {
+					$(this).hide();
+				}
+			});
 			
 			mapUuidToRow[task.getUuid().toString()] = el;
 		}
@@ -328,11 +349,14 @@
 		function addSingleCard(index) {
 			var card = addCard(index);
 			
-			card.hide();
-			card.show("fade", {}, "medium", function(){
-				java.redraw();
-			});
-			scrollToCard(card);
+			var boolBasedOnViewMode = java.getViewMode() == 2 ? "true" : "false";
+			if (java.getViewMode() != 1 && card.attr("archived") == boolBasedOnViewMode) {
+				card.hide();
+				card.show("fade", {}, "medium", function(){
+					java.redraw();
+				});
+				scrollToCard(card);
+			}
 			
 			return card;
 		}
@@ -362,9 +386,12 @@
 			
 			scrollToCard(card);
 			setTimeout(function(){
-				card.effect("highlight", "slow", function(){
-					java.redraw();
-				});
+				var boolBasedOnViewMode = java.getViewMode() == 2 ? "true" : "false";
+				if (java.getViewMode() != 1 && card.attr("archived") == boolBasedOnViewMode) {
+					card.effect("highlight", "slow", function(){
+						java.redraw();
+					});
+				}
 			}, 400);
 		}		
 		
@@ -397,8 +424,6 @@
 				var card = addCard(i);
 			}
 			
-			$("#content .card-action").show();
-			
 			$("body").animate({
 			    scrollTop: 0
 			}, 500);
@@ -414,7 +439,7 @@
 
 	</div>
 
-	<div id="templates">
+	<div id="templates" style="display: none;">
 		<div class="card-row row" style="margin-bottom: -10px;">
 			<div class="col s12 m12">
 				<div class="card">

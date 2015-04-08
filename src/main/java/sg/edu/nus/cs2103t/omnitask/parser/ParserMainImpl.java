@@ -10,6 +10,7 @@ import sg.edu.nus.cs2103t.omnitask.model.CommandInput.CommandType;
 import sg.edu.nus.cs2103t.omnitask.model.Task.Priority;
 import sg.edu.nus.cs2103t.omnitasks.command.Command;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandAddImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandArchiveImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandDeleteImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplayImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandEditImpl;
@@ -22,6 +23,7 @@ import sg.edu.nus.cs2103t.omnitasks.command.CommandRedoImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandRemoveDateImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandSearchImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandStorageImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandUnarchiveImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandUndoImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.Utils;
 
@@ -31,7 +33,8 @@ public class ParserMainImpl extends Parser {
 
 	private static final String[] DATE_INDICATORS = new String[] { "from",
 			"by", "due", "to", "on" };
-	public static final String[] PRIORITY_INDICATORS = new String[] { "^n", "^l", "^m", "^h"};
+	public static final String[] PRIORITY_INDICATORS = new String[] { "^n",
+			"^l", "^m", "^h" };
 
 	@Override
 	public Command parseUserInput(String input) {
@@ -47,8 +50,9 @@ public class ParserMainImpl extends Parser {
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.DISPLAY) {
 			CommandInput commandInput = new CommandInput(CommandType.DISPLAY);
 			commandInput.setCommandType(CommandType.DISPLAY);
-			
-			extractDatesAndTaskNameFromCommand(1, inputSplit, commandInput, false);
+
+			extractDatesAndTaskNameFromCommand(1, inputSplit, commandInput,
+					false);
 
 			return new CommandDisplayImpl(commandInput);
 		}
@@ -99,9 +103,9 @@ public class ParserMainImpl extends Parser {
 			commandInput.setCommandType(CommandType.DELETE);
 
 			long deleteId;
-			try{
+			try {
 				deleteId = Long.parseLong(inputSplit[1]);
-			}catch(NumberFormatException e){
+			} catch (NumberFormatException e) {
 				return null;
 			}
 			commandInput.setId(deleteId);
@@ -116,9 +120,9 @@ public class ParserMainImpl extends Parser {
 
 			long markId;
 			String inputOfIsCompleted;
-			try{
+			try {
 				markId = Long.parseLong(inputSplit[1]);
-			}catch(NumberFormatException e){
+			} catch (NumberFormatException e) {
 				return null;
 			}
 			inputOfIsCompleted = (inputSplit[2]);
@@ -132,16 +136,16 @@ public class ParserMainImpl extends Parser {
 
 			return new CommandMarkImpl(commandInput);
 		}
-		
+
 		// RemoveDate Command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.REMOVEDATE) {
 			CommandInput commandInput = new CommandInput(CommandType.REMOVEDATE);
 			commandInput.setCommandType(CommandType.REMOVEDATE);
 
 			long removeDateId;
-			try{
+			try {
 				removeDateId = Long.parseLong(inputSplit[1]);
-			}catch(NumberFormatException e){
+			} catch (NumberFormatException e) {
 				return null;
 			}
 
@@ -170,12 +174,13 @@ public class ParserMainImpl extends Parser {
 			commandInput.setCommandType(CommandType.SEARCH);
 
 			if (inputSplit.length > 1) {
-				commandInput.setName(joinStringArray(inputSplit, 1, inputSplit.length));
+				commandInput.setName(joinStringArray(inputSplit, 1,
+						inputSplit.length));
 			}
 
 			return new CommandSearchImpl(commandInput);
 		}
-		
+
 		// Storage Command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.STORAGE) {
 			CommandInput commandInput = new CommandInput(CommandType.STORAGE);
@@ -198,15 +203,45 @@ public class ParserMainImpl extends Parser {
 			return new CommandHelpImpl(commandInput);
 		}
 
+		// Archive Command
+		if (Utils.getCommandTypeFromString(commandName) == CommandType.ARCHIVE) {
+			CommandInput commandInput = new CommandInput(CommandType.ARCHIVE);
+			long updateId = -1;
+			try {
+				updateId = Long.parseLong(inputSplit[1]);
+				commandInput.setId(updateId);
+			} catch (NumberFormatException e) {
+			}
+
+			if (updateId == -1 && inputSplit.length > 1)
+				commandInput.setName(inputSplit[1]);
+
+			return new CommandArchiveImpl(commandInput);
+		}
+
+		// Unarchive Command
+		if (Utils.getCommandTypeFromString(commandName) == CommandType.UNARCHIVE) {
+			CommandInput commandInput = new CommandInput(CommandType.UNARCHIVE);
+			long updateId = -1;
+			try {
+				updateId = Long.parseLong(inputSplit[1]);
+				commandInput.setId(updateId);
+			} catch (NumberFormatException e) {
+				return null;
+			}
+
+			return new CommandUnarchiveImpl(commandInput);
+		}
+
 		// Edit Command
 		if (Utils.getCommandTypeFromString(commandName) == CommandType.EDIT) {
 			CommandInput commandInput = new CommandInput(CommandType.EDIT);
 			long updateId;
-			try{
+			try {
 				updateId = Long.parseLong(inputSplit[1]);
-				}catch(NumberFormatException e){
-					return null;
-					}
+			} catch (NumberFormatException e) {
+				return null;
+			}
 			commandInput.setId(updateId);
 
 			// edit priority of task if detected
@@ -275,114 +310,137 @@ public class ParserMainImpl extends Parser {
 		boolean editted = false;
 
 		boolean quoteDetected = false;
-		
+
 		for (int i = startIndex; i < inputSplit.length; i++) {
-			// This first block of if conditions check for " symbol and if found, don't use it in natty
+			// This first block of if conditions check for " symbol and if
+			// found, don't use it in natty
 			if (inputSplit[i].startsWith("\"") && inputSplit[i].endsWith("\"")) {
 				quoteDetected = true;
 			} else if (inputSplit[i].startsWith("\"")) {
 				quoteDetected = true;
-				inputSplit[i] = inputSplit[i].substring(1, inputSplit[i].length());
+				inputSplit[i] = inputSplit[i].substring(1,
+						inputSplit[i].length());
 			} else if (quoteDetected && inputSplit[i].endsWith("\"")) {
 				quoteDetected = false;
-				inputSplit[i] = inputSplit[i].substring(0, inputSplit[i].length() - 1);
+				inputSplit[i] = inputSplit[i].substring(0,
+						inputSplit[i].length() - 1);
 			}
-			
+
 			if (!quoteDetected && inArray(DATE_INDICATORS, inputSplit[i])) {
 				String dateString = "";
 				String ignored = "";
-				
-				// Similar to the outer if conditions block which checks for " symbol
-				// Repeated here because of possibility of having " symbol after detecting the DATE_INDICATORS keywords
-				// Any words to be ignored are placed in the ignored variable, Any words to be passed to Natty into dateString variable
+
+				// Similar to the outer if conditions block which checks for "
+				// symbol
+				// Repeated here because of possibility of having " symbol after
+				// detecting the DATE_INDICATORS keywords
+				// Any words to be ignored are placed in the ignored variable,
+				// Any words to be passed to Natty into dateString variable
 				for (int j = i; j < inputSplit.length; j++) {
-					if (inputSplit[j].startsWith("\"") && inputSplit[j].endsWith("\"")) {
+					if (inputSplit[j].startsWith("\"")
+							&& inputSplit[j].endsWith("\"")) {
 						quoteDetected = true;
 					} else if (inputSplit[j].startsWith("\"")) {
 						quoteDetected = true;
-						ignored += inputSplit[j].substring(1, inputSplit[j].length()) + " ";
+						ignored += inputSplit[j].substring(1,
+								inputSplit[j].length())
+								+ " ";
 					} else if (quoteDetected && inputSplit[j].endsWith("\"")) {
 						quoteDetected = false;
-						ignored += inputSplit[j].substring(0, inputSplit[j].length() - 1) + " ";
+						ignored += inputSplit[j].substring(0,
+								inputSplit[j].length() - 1)
+								+ " ";
 					}
-					
-					if (quoteDetected && inputSplit[j].startsWith("\"") && inputSplit[j].endsWith("\"")) {
-						ignored += inputSplit[j].substring(1, inputSplit[j].length() - 1) + " ";
+
+					if (quoteDetected && inputSplit[j].startsWith("\"")
+							&& inputSplit[j].endsWith("\"")) {
+						ignored += inputSplit[j].substring(1,
+								inputSplit[j].length() - 1)
+								+ " ";
 						quoteDetected = false;
 					} else if (!quoteDetected) {
 						dateString += inputSplit[j] + " ";
 					}
 				}
-				
+
 				// reset the variable back
 				quoteDetected = false;
-				
+
 				// if there is something to parse, parse it with natty
 				dateString = dateString.trim();
-				
+
 				if (!dateString.isEmpty()) {
 					// Parse date using Natty
 					com.joestelmach.natty.Parser parser = new com.joestelmach.natty.Parser();
 					List<DateGroup> groups = parser.parse(dateString.trim());
-					
-					// If there is nothing parsed by Natty, it is probably part of task name
+
+					// If there is nothing parsed by Natty, it is probably part
+					// of task name
 					if (groups.size() == 0) {
 						taskName += inputSplit[i] + " ";
 						continue;
 					}
-					
+
 					editted = true;
-					
+
 					if (groups.size() > 0) {
 						DateGroup group = groups.get(groups.size() - 1);
 						// If there are 2 dates, means it's to and from
 						// If no specific time is specified by user, set the
 						// time to 00:00:00, retaining the dates
 						if (group.getDates().size() == 2) {
-							commandInput.setStartDate(new DateTime(group.getDates()
-									.get(0).getTime()));
+							commandInput.setStartDate(new DateTime(group
+									.getDates().get(0).getTime()));
 							if (!isTimeSpecifiedByUser(group.getSyntaxTree()
 									.getChild(0))) {
 								commandInput.setStartDate(commandInput
 										.getStartDate().withMillisOfDay(0));
 							}
-	
-							commandInput.setEndDate(new DateTime(group.getDates()
-									.get(1).getTime()));
+
+							commandInput.setEndDate(new DateTime(group
+									.getDates().get(1).getTime()));
 							if (!isTimeSpecifiedByUser(group.getSyntaxTree()
 									.getChild(1))) {
-								commandInput.setEndDate(commandInput.getEndDate()
-										.withMillisOfDay(0));
+								commandInput.setEndDate(commandInput
+										.getEndDate().withMillisOfDay(0));
 							}
 						} else {
-							commandInput.setEndDate(new DateTime(group.getDates()
-									.get(0).getTime()));
+							commandInput.setEndDate(new DateTime(group
+									.getDates().get(0).getTime()));
 							if (!isTimeSpecifiedByUser(group.getSyntaxTree()
 									.getChild(0))) {
-								commandInput.setEndDate(commandInput.getEndDate()
-										.withMillisOfDay(0));
+								commandInput.setEndDate(commandInput
+										.getEndDate().withMillisOfDay(0));
 							}
 						}
-						
-						// Put the string which is unused for parsing dates before the ignored variable string
-						String unusedDateString = dateString.substring(0, group.getPosition());
-						String[] unusedDateStringSplit = unusedDateString.split(" ");
-						ignored = joinStringArray(unusedDateStringSplit, 0, unusedDateStringSplit.length - 1) + " " + ignored;
+
+						// Put the string which is unused for parsing dates
+						// before the ignored variable string
+						String unusedDateString = dateString.substring(0,
+								group.getPosition());
+						String[] unusedDateStringSplit = unusedDateString
+								.split(" ");
+						ignored = joinStringArray(unusedDateStringSplit, 0,
+								unusedDateStringSplit.length - 1)
+								+ " "
+								+ ignored;
 					}
 				}
-				
+
 				// Insert anything ignored as task name
 				taskName += ignored + " ";
-				
+
 				break;
 			}
-			
+
 			// If a single word was quoted, unquote it
-			if (quoteDetected && inputSplit[i].startsWith("\"") && inputSplit[i].endsWith("\"")) {
-				inputSplit[i] = inputSplit[i].substring(1, inputSplit[i].length()-1);
+			if (quoteDetected && inputSplit[i].startsWith("\"")
+					&& inputSplit[i].endsWith("\"")) {
+				inputSplit[i] = inputSplit[i].substring(1,
+						inputSplit[i].length() - 1);
 				quoteDetected = false;
 			}
-			
+
 			// Insert anything not to be parsed by Natty as task name
 			taskName += inputSplit[i] + " ";
 		}

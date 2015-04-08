@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
+import sg.edu.nus.cs2103t.omnitask.ui.MainViewController.ViewMode;
 import sg.edu.nus.cs2103t.omnitask.ui.UI;
 
 public class CommandSearchImpl extends Command {
@@ -34,7 +35,7 @@ public class CommandSearchImpl extends Command {
 				}
 			}
 
-			ui.showSearchResults(searchKey, searchTaskResult);
+			ui.showAlternateList(ViewMode.ALTERNATE, "Search results for \"" + searchKey + "\"", searchTaskResult);
 			ui.showMessage("Type \"show all\" to show all tasks.");
 			return true;
 		} else {

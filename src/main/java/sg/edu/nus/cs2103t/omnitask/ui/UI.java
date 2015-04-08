@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.joda.time.DateTime;
 
 import sg.edu.nus.cs2103t.omnitask.model.Task;
+import sg.edu.nus.cs2103t.omnitask.ui.MainViewController.ViewMode;
 
 public abstract class UI {
 
@@ -75,7 +76,7 @@ public abstract class UI {
 	public void showMiniHelp(String msg) {
 	};
 
-	public abstract void showSearchResults(String keyword, ArrayList<Task> tasks);;
+	public abstract void showAlternateList(ViewMode viewMode, String title, ArrayList<Task> tasks);
 
 	public abstract void start();;
 

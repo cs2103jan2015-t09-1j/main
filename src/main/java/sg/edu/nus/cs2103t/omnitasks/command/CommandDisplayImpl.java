@@ -6,6 +6,7 @@ import sg.edu.nus.cs2103t.omnitask.logic.Data;
 import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 import sg.edu.nus.cs2103t.omnitask.ui.MainViewController;
+import sg.edu.nus.cs2103t.omnitask.ui.MainViewController.ViewMode;
 import sg.edu.nus.cs2103t.omnitask.ui.UI;
 
 public class CommandDisplayImpl extends Command {
@@ -31,6 +32,18 @@ public class CommandDisplayImpl extends Command {
 			ui.showSection(MainViewController.SECTION_OVERDUE);
 		} else if (commandInput.getName().toLowerCase().equals("no due") || commandInput.getName().toLowerCase().equals("floating")) {
 			ui.showSection(MainViewController.SECTION_FLOATING);
+		} else if (commandInput.getName().toLowerCase().startsWith("archive")) {
+			
+			ArrayList<Task> showTaskResult = new ArrayList<Task>();
+			ArrayList<Task> fullTaskList = data.searchTask();
+			
+			for (Task task : fullTaskList) {
+				if (task.isArchived()) {
+					showTaskResult.add(task);
+				}
+			}
+
+			ui.showAlternateList(ViewMode.ARCHIVED, "Archived Tasks", showTaskResult);
 		} else if (commandInput.getName().startsWith("#")) {
 			
 			ArrayList<Task> showTaskResult = new ArrayList<Task>();
@@ -45,7 +58,7 @@ public class CommandDisplayImpl extends Command {
 				}
 			}
 
-			ui.showSearchResults(searchKey, showTaskResult);
+			ui.showAlternateList(ViewMode.ALTERNATE, "Category \"" + searchKey + "\"", showTaskResult);
 		} else if (commandInput.getStartDate() != null || commandInput.getEndDate() != null) {
 			ui.showSection(commandInput.getStartDate(), commandInput.getEndDate());
 		} else {

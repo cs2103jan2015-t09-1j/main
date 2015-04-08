@@ -83,9 +83,9 @@
 	<title></title>
 </head>
 <body>
-<h2><span style="font-family:arial,helvetica,sans-serif;"><span style="font-size:18px;">Change storage directory and filename</span></span></h2>
+<h2><span style="font-family:arial,helvetica,sans-serif;"><span style="font-size:18px;">Change storage directory</span></span></h2>
 
-<p><span style="font-family:arial,helvetica,sans-serif;"><span style="font-size:18px;"><strong style="font-family: ''; line-height: 19px; widows: auto;"><span style="color: rgb(0, 0, 255);">storage</span>&nbsp;<span style="color: rgb(255, 140, 0);">&lt;Directory&gt;/&lt;New Filename&gt;</span></strong></span></span></p>
+<p><span style="font-family:arial,helvetica,sans-serif;"><span style="font-size:18px;"><strong style="font-family: ''; line-height: 19px; widows: auto;"><span style="color: rgb(0, 0, 255);">storage</span>&nbsp;<span style="color: rgb(255, 140, 0);">&lt;Directory&gt;</span></strong></span></span></p>
 
 <p><span style="font-family:arial,helvetica,sans-serif;"><span style="font-size: 18px;">Direct Path:&nbsp;</span><strong><span style="color:#FF8C00;">C:\Program Files\Data</span></strong></span></p>
 

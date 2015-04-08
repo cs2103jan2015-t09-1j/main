@@ -54,9 +54,6 @@ public class MainViewController {
 	@FXML
 	private TextField omniBar;
 
-	@FXML
-	private Text outputText;
-
 	private ObservableList<Task> altTasks;
 
 	private UI ui;
@@ -135,12 +132,10 @@ public class MainViewController {
 	}
 
 	public void showError(String msg) {
-		outputText.setText("Error: " + msg);
 		showToast("Error: " + msg);
 	}
 
 	public void showMessage(String msg) {
-		outputText.setText(msg);
 		showToast(msg);
 	}
 
@@ -218,8 +213,6 @@ public class MainViewController {
 	@FXML
 	protected void initialize() {
 		setViewMode(ViewMode.ALL);
-		
-		outputText.setVisible(false);
 
 		agendaView.setContextMenuEnabled(false);
 		agendaView.setZoom(javafx.stage.Screen.getPrimary().getDpi() / 96);

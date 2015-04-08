@@ -160,6 +160,14 @@ public class Controller extends Application {
 				|| userInput.trim().equals("delet")) {
 			possibleAutoComplete.add("delete");
 		}
+		
+		if (userInput.trim().equals("d") || userInput.trim().equals("di")
+				|| userInput.trim().equals("dis")
+				|| userInput.trim().equals("disp")
+				|| userInput.trim().equals("displ")
+				|| userInput.trim().equals("displa")) {
+			possibleAutoComplete.add("display");
+		}
 
 		if (userInput.trim().equals("e") || userInput.trim().equals("ed")
 				|| userInput.trim().equals("edi")) {

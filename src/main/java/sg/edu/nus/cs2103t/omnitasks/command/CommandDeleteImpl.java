@@ -36,8 +36,7 @@ public class CommandDeleteImpl extends Command {
 			return true;
 		} else {
 			ui.showError("Unable to delete Task \"" + commandInput.getId()
-					+ "\" " + "\"" + taskToRemove.getName()
-					+ "\". Please choose a valid id!");
+					+ "\". " +  "Please choose a valid id!");
 		}
 
 		return false;

@@ -9,6 +9,32 @@
    <name>cs2103jan2015-t09-1j</name>
   </organization>
   
+  <build>
+  <plugins>
+    <plugin>
+      <artifactId>maven-assembly-plugin</artifactId>
+      <configuration>
+        <descriptorRefs>
+          <descriptorRef>jar-with-dependencies</descriptorRef>
+        </descriptorRefs>
+        <archive>
+          <manifest>
+            <mainClass>sg.edu.nus.cs2103t.omnitask.Controller</mainClass>
+          </manifest>
+        </archive>
+      </configuration>
+      <executions>
+        <execution>
+          <phase>package</phase>
+          <goals>
+            <goal>single</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+  </plugins>
+</build>
+  
   <dependencies>
   	<dependency>
 		<groupId>com.google.code.gson</groupId>

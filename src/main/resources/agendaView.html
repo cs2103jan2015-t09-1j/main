@@ -209,15 +209,15 @@
 		function fillCardDetails(el, task) {
 			el.attr("uuid", task.getUuid().toString());
 			
-			el.find(".id").text(task.getId());
+			el.find(".id").text("ref id: " + task.getId());
 			
 			el.find(".title").text(task.getName());
 			
 			var date = task.getFormattedTimeRange();
 			el.attr("date", date);
 			if (date) {
-				el.find(".date").html("<br>" + date);
-				el.find(".date").css("display", "inline");
+				el.find(".date").html(date);
+				el.find(".date").css("display", "inline-block");
 			} else {
 				el.find(".date").css("display", "none");
 			}
@@ -414,7 +414,7 @@
 
 	</div>
 
-	<div id="templates" style="display: none;">
+	<div id="templates">
 		<div class="card-row row" style="margin-bottom: -10px;">
 			<div class="col s12 m12">
 				<div class="card">
@@ -423,12 +423,12 @@
 					</div>
 					<div class="row card-action" style="margin-bottom: -5px;">
 						<div class="col m1" style="margin-top: -5px;"><i class="checkbox mdi-toggle-check-box-outline-blank" style="font-size: 20px;" title="Mark/Unmark Task As Done"></i></div>
-						<div class="col m1">
-							<span class="id waves-effect" style="color: grey;padding-left:5px;padding-right:5px;" title="Click to autofill OmniBar">1</span>
-						</div>
 						<div class="col m9">
 							<span class="title waves-effect" title="Click to autofill OmniBar">CS2103T Tutorial</span>
-							<span class="date waves-effect" title="Click to autofill OmniBar"><br>9:00 AM - 10:00 AM</span>
+							<br clear="all" style="margin:0;padding:0;">
+							<span class="id waves-effect" style="color: grey; font-size: 10px; display: inline-block; margin-top: -5px;" title="Click to autofill OmniBar">ref id: 1</span>
+							<br clear="all" style="margin:0;padding:0;">
+							<span class="date waves-effect" title="Click to autofill OmniBar" style="margin-top: 5px;">9:00 AM - 10:00 AM</span>
 						</div>
 						<div class="col m1">
 							<span class="badge waves-effect" style="margin-left: 5px; font-weight: 300; font-size: 0.8rem; color: #fff; background-color: #26a69a; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; background-clip: padding-box;" title="Click to autofill OmniBar">high</span>

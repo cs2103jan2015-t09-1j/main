@@ -246,22 +246,22 @@
 			
 			el.find(".id").unbind("click");
 			el.find(".id").click(function(){
-				java.autofillOmniBarWithEditId(task.getId());
+				java.autofillOmniBarWithEditId(task.getUuid().toString());
 			});
 			
 			el.find(".title").unbind("click");
 			el.find(".title").click(function(){
-				java.autofillOmniBarWithEditName(task.getId());
+				java.autofillOmniBarWithEditName(task.getUuid().toString());
 			});
 			
 			el.find(".date").unbind("click");
 			el.find(".date").click(function(){
-				java.autofillOmniBarWithEditDate(task.getId());
+				java.autofillOmniBarWithEditDate(task.getUuid().toString());
 			});
 			
 			el.find(".badge").unbind("click");
 			el.find(".badge").click(function(){
-				java.autofillOmniBarWithEditPriority(task.getId());
+				java.autofillOmniBarWithEditPriority(task.getUuid().toString());
 			});
 			
 			setCheckboxState(el.find(".checkbox"), task.isCompleted(), false);

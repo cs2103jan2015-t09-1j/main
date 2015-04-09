@@ -432,8 +432,8 @@ public class MainViewController {
 	}
 
 	public class Bridge {
-		public void autofillOmniBarWithEditDate(int index) {
-			Task task = tasks.get(index - 1);
+		public void autofillOmniBarWithEditDate(String uuid) {
+			Task task = getTaskByUuid(uuid);
 			if (task.getStartDate() == null && task.getEndDate() == null) {
 				return;
 			}
@@ -456,8 +456,8 @@ public class MainViewController {
 					command.length() + date.length());
 		}
 
-		public void autofillOmniBarWithEditId(int index) {
-			Task task = tasks.get(index - 1);
+		public void autofillOmniBarWithEditId(String uuid) {
+			Task task = getTaskByUuid(uuid);
 			cycleHandleHistory();
 			omniBar.setText(CommandEditImpl.COMMAND_ALIASES_EDIT[0] + " "
 					+ task.getId() + " ");
@@ -465,8 +465,8 @@ public class MainViewController {
 			omniBar.selectRange(0, CommandEditImpl.COMMAND_ALIASES_EDIT[0].length());
 		}
 
-		public void autofillOmniBarWithEditName(int index) {
-			Task task = tasks.get(index - 1);
+		public void autofillOmniBarWithEditName(String uuid) {
+			Task task = getTaskByUuid(uuid);
 			cycleHandleHistory();
 			String command = CommandEditImpl.COMMAND_ALIASES_EDIT[0] + " "
 					+ task.getId() + " ";
@@ -476,8 +476,8 @@ public class MainViewController {
 					+ task.getName().length());
 		}
 
-		public void autofillOmniBarWithEditPriority(int index) {
-			Task task = tasks.get(index - 1);
+		public void autofillOmniBarWithEditPriority(String uuid) {
+			Task task = getTaskByUuid(uuid);
 			cycleHandleHistory();
 			String priority = ParserMainImpl.PRIORITY_INDICATORS[task
 					.getPriority().ordinal()];

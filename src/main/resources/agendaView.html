@@ -40,6 +40,8 @@
 		var mapUuidToRow = {};
 		
 		$(function(){
+			$("#msg").hide();
+			
 			$(document).keydown(function(event) {
 				if (event.which == 34) {
 					event.preventDefault();
@@ -67,6 +69,35 @@
 		
 		function showToast(msg) {
 			toast(msg, 5000);
+		}
+		
+		function showNoTasks() {
+			$("#msg").text("You have no tasks at the moment. Add some?");
+			$("#msg").show("fade");
+		}
+		
+		function showNoSearchResults() {
+			$("#msg").text("No result found.");
+			$("#msg").show("fade");
+		}
+		
+		function showNoArchiveResults() {
+			$("#msg").text("No archived tasks found.");
+			$("#msg").show("fade");
+		}
+		
+		function showCorrectMsg() {
+			if ($("#content .card-action").size() == 0) {
+				if (java.getViewMode() == 0) {
+					showNoTasks();
+				} else if (java.getViewMode() == 1) {
+					showNoSearchResults();
+				} else if (java.getViewMode() == 2) {
+					showNoArchiveResults();
+				}
+			} else {
+				$("#msg").hide("fade");
+			}
 		}
 		
 		function scrollDown() {
@@ -420,11 +451,15 @@
 						el.remove();
 						section.remove();
 						java.redraw();
+						
+						showCorrectMsg();
 					});
 			} else {
 				el.hide("slide", "medium", function() {
 					el.remove();
 					java.redraw();
+					
+					showCorrectMsg();
 				});
 			}
 		}
@@ -441,6 +476,8 @@
 			$("body").animate({
 			    scrollTop: 0
 			}, 500);
+			
+			showCorrectMsg();
 		}
 
 	</script>
@@ -451,6 +488,9 @@
 <body style="background: #f4f4f4;">
 	<div id="content" class="noselect">
 
+	</div>
+	
+	<div id="msg" style="text-align: center; margin-top: 100px; margin-bottom: 100px;">
 	</div>
 
 	<div id="templates" style="display: none;">

@@ -26,6 +26,11 @@
 		padding-bottom: 90px;
 	}
 	
+	a.category {
+		color: #3F51B5;
+		text-transform: none;
+	}
+	
 	.card .checkbox, .card .id, .card .title, .card .date, .card .badge {
 		cursor: pointer;
 	}
@@ -50,6 +55,12 @@
 			});
 			
 			bindCheckboxes();
+			
+			// Make all #category clickable
+			$("#content").on("click", ".category", function(e){
+				java.showCategory($(this).text());
+				e.preventDefault();
+			});
 		
 			addAllCards();
 		});
@@ -217,6 +228,9 @@
 			}
 			
 			el.find(".title").text(task.getName());
+			var taskName = el.find(".title").text();
+			taskName = taskName.replace(/ #(.+)/g, " <a class=\"category\" href=\"#\">#$1</a> ");
+			el.find(".title").html(taskName);
 			
 			var date = task.getFormattedTimeRange();
 			el.attr("date", date);

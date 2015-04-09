@@ -26,6 +26,7 @@ import netscape.javascript.JSObject;
 import sg.edu.nus.cs2103t.omnitask.model.Task;
 import sg.edu.nus.cs2103t.omnitask.model.Task.Priority;
 import sg.edu.nus.cs2103t.omnitask.parser.ParserMainImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplayImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandEditImpl;
 
 public class MainViewController {
@@ -555,6 +556,11 @@ public class MainViewController {
 		public void redraw() {
 			agendaView.requestLayout();
 			ui.redraw();
+		}
+		
+		public void showCategory(String category) {
+			ui.invokeCommandReceivedListener(CommandDisplayImpl.COMMAND_ALIASES_DISPLAY[0] + " " + category);
+			omniBar.clear();
 		}
 		
 		public void showError(String msg) {

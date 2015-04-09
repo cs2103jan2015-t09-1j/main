@@ -248,7 +248,7 @@ public class UIMainImpl extends UI {
 		if (primaryStage.getY() + primaryStage.getHeight()
 				+ miniHelpStage.getHeight() > screen.getHeight()) {
 			miniHelpStage.setY(primaryStage.getY() + primaryStage.getHeight()
-					- (miniHelpStage.getHeight() + 80));
+					- (miniHelpStage.getHeight() + viewController.getOmniBarHeight() + 10));
 		} else {
 			miniHelpStage.setY(primaryStage.getY() + primaryStage.getHeight());
 		}
@@ -263,8 +263,8 @@ public class UIMainImpl extends UI {
 			helpViewController.setUI(this);
 
 			helpStage = new Stage();
-			helpStage.initStyle(StageStyle.UNDECORATED);
-			helpStage.setScene(new Scene(root, 600, 600));
+			helpStage.initStyle(StageStyle.UTILITY);
+			helpStage.setScene(new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT));
 
 			helpStage.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
 				public void handle(KeyEvent event) {
@@ -296,8 +296,8 @@ public class UIMainImpl extends UI {
 			miniHelpViewController.setUI(this);
 
 			miniHelpStage = new Stage();
-			miniHelpStage.initStyle(StageStyle.UNDECORATED);
-			miniHelpStage.setScene(new Scene(root, WINDOW_WIDTH, 400));
+			miniHelpStage.initStyle(StageStyle.UTILITY);
+			miniHelpStage.setScene(new Scene(root, WINDOW_WIDTH, 150));
 			miniHelpStage.setAlwaysOnTop(true);
 			miniHelpStage.focusedProperty().addListener(
 					new ChangeListener<Boolean>() {

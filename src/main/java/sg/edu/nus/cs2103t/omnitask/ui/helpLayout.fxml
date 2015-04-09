@@ -9,15 +9,16 @@
 <?import javafx.scene.text.*?>
 
 <GridPane alignment="center" hgap="0" vgap="0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sg.edu.nus.cs2103t.omnitask.ui.HelpViewController">
+	<padding><Insets top="15" right="0" bottom="0" left="0"/></padding>
 	<columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="350.0" percentWidth="100.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="400.0" percentWidth="100.0" prefWidth="100.0" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints minHeight="400.0" prefHeight="90.0" vgrow="SOMETIMES" />
     </rowConstraints>
     
-   <WebView fx:id="webView" prefHeight="400.0" prefWidth="350.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+   <WebView fx:id="webView" prefHeight="400.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
    
-   <Button text="Done" prefWidth="600.0" GridPane.columnIndex="0" GridPane.rowIndex="1" onAction="#onDoneClicked" />
+   <Text text="Press ESC to close this help" GridPane.columnIndex="0" GridPane.rowIndex="1" />
 
 </GridPane>

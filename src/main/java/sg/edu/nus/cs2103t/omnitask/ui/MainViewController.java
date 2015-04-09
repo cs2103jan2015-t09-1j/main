@@ -74,6 +74,10 @@ public class MainViewController {
 	public void focusOmniBar() {
 		omniBar.requestFocus();
 	}
+	
+	public double getOmniBarHeight() {
+		return omniBar.getHeight();
+	}
 
 	public void scrollDown() {
 		if (agendaViewLoaded) {

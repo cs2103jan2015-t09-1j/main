@@ -119,18 +119,20 @@ public class ParserMainImpl extends Parser {
 			commandInput.setCommandType(CommandType.MARK);
 
 			long markId;
-			String inputOfIsCompleted;
 			try {
 				markId = Long.parseLong(inputSplit[1]);
 			} catch (NumberFormatException e) {
 				return null;
 			}
-			inputOfIsCompleted = (inputSplit[2]);
-
-			if (inputOfIsCompleted.equalsIgnoreCase("done")) {
+			//invalid command if not specified done or undone
+            if (inputSplit.length==2) {
+            	return null;
+            } else if (inputSplit[2].equalsIgnoreCase("done")) {
 				commandInput.setCompleted(true);
-			} else if (inputOfIsCompleted.equalsIgnoreCase("not done")) {
+			} else if (inputSplit[2].equalsIgnoreCase("undone")) {
 				commandInput.setCompleted(false);
+			} else {
+				return null;
 			}
 			commandInput.setId(markId);
 

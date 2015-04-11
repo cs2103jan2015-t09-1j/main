@@ -147,67 +147,23 @@ public class Controller extends Application {
 		// TODO Implement this properly
 		// Basic example: If "del" is in userInput, return "delete"
 		// Implementation could be as sophisticated as needed
-
-		// Sample (Bad!) Implementation:
+		String[] possibleCommands = new String[] { "add","archive","delete","display","edit","help","mark","next","prev","redo","undo","remove-date","search","storage","unarchive" };
+		
+		for(int i = 0 ; i<possibleCommands.length;i++){
+			if(!userInput.equals("")&&possibleCommands[i].startsWith(userInput.trim())){
+				possibleAutoComplete.add(possibleCommands[i]);
+			}
+				
+					
+		}
+		
+		/*/ Sample (Bad!) Implementation:
 		if (userInput.trim().equals("a") || userInput.trim().equals("ad")
 				|| userInput.trim().equals("add")) {
 			possibleAutoComplete.add("add");
 		}
 
-		if (userInput.trim().equals("d") || userInput.trim().equals("de")
-				|| userInput.trim().equals("del")
-				|| userInput.trim().equals("dele")
-				|| userInput.trim().equals("delet")) {
-			possibleAutoComplete.add("delete");
-		}
-		
-		if (userInput.trim().equals("d") || userInput.trim().equals("di")
-				|| userInput.trim().equals("dis")
-				|| userInput.trim().equals("disp")
-				|| userInput.trim().equals("displ")
-				|| userInput.trim().equals("displa")) {
-			possibleAutoComplete.add("display");
-		}
-
-		if (userInput.trim().equals("e") || userInput.trim().equals("ed")
-				|| userInput.trim().equals("edi")) {
-			possibleAutoComplete.add("edit");
-		}
-
-		if (userInput.trim().equals("r") || userInput.trim().equals("re")
-				|| userInput.trim().equals("red")) {
-			possibleAutoComplete.add("redo");
-		}
-
-		if (userInput.trim().equals("u") || userInput.trim().equals("un")
-				|| userInput.trim().equals("und")) {
-			possibleAutoComplete.add("undo");
-		}
-
-		if (userInput.trim().equals("s") || userInput.trim().equals("se")
-				|| userInput.trim().equals("sea")
-				|| userInput.trim().equals("sear")
-				|| userInput.trim().equals("searc")) {
-			possibleAutoComplete.add("search");
-		}
-
-		if (userInput.trim().equals("s") || userInput.trim().equals("st")
-				|| userInput.trim().equals("sto")
-				|| userInput.trim().equals("stor")
-				|| userInput.trim().equals("stora")
-				|| userInput.trim().equals("storag")) {
-			possibleAutoComplete.add("storage");
-		}
-
-		if (userInput.trim().equals("h") || userInput.trim().equals("he")
-				|| userInput.trim().equals("hel")) {
-			possibleAutoComplete.add("help");
-		}
-
-		if (userInput.trim().equals("e") || userInput.trim().equals("ex")
-				|| userInput.trim().equals("exi")) {
-			possibleAutoComplete.add("exit");
-		}
+		 */
 
 		return possibleAutoComplete;
 	}

@@ -8,11 +8,19 @@ import sg.edu.nus.cs2103t.omnitask.model.Task;
 import sg.edu.nus.cs2103t.omnitask.ui.MainViewController.ViewMode;
 import sg.edu.nus.cs2103t.omnitask.ui.UI;
 
+/**This class contains the logic for search command. When search command is detected by the parser it will pass commandInput 
+ * object into commandSearchImpl and return a commandSearchImpl object. This class object is used in controller class where processComamnd 
+ * method is called using commandSearchImpl's  object.   
+ * <p>
+ * 
+ * @author tlx
+ * 
+ */
 public class CommandSearchImpl extends Command {
 
 	public static String[] COMMAND_ALIASES_SEARCH = new String[] { "search",
 			"find" };
-
+	
 	public CommandSearchImpl(CommandInput commandInput) {
 		super(commandInput);
 		// TODO Auto-generated constructor stub

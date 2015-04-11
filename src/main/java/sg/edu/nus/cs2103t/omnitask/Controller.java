@@ -22,6 +22,11 @@ import sg.edu.nus.cs2103t.omnitask.ui.UI.CommandReceivedListener;
 import sg.edu.nus.cs2103t.omnitask.ui.UIMainImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.Command;
 
+/**
+ * @author TLX
+ *
+ */
+
 public class Controller extends Application {
 
 	private static UI ui;
@@ -48,7 +53,17 @@ public class Controller extends Application {
 		public boolean onCommandReceived(String userInput) {
 			return processUserInput(userInput);
 		}
-
+		
+		/**This function display the mini pop up of help specific to each valid command use types in to aid
+		 * the user in getting the correct commands format
+		 * <p>
+		 * 
+		 * @author tlx
+		 * 
+		 * @param userInput String by of text user key in
+		 *           
+		 * @return void
+		 */
 		@Override
 		public void showMiniHelpIfAvailable(String userInput) {
 			// TODO To be fixed
@@ -86,6 +101,16 @@ public class Controller extends Application {
 
 	};
 
+	/**This function is called on the first instance the program starts up to  
+	 * initialize and display the user interface.
+	 * <p>
+	 * 
+	 * @author tlx
+	 * 
+	 * @param primaryStage which is a Stage object used by UI component
+	 *           
+	 * @return void
+	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
@@ -120,7 +145,8 @@ public class Controller extends Application {
 
 		if (userSetDir.length() > 0) {
 
-			// check that the path is still valid (eg. user deletes the folder then the path is invalid)
+			// check that the path is still valid (eg. user deletes the folder
+			// then the path is invalid)
 			// else it is set to the default storage path
 			Path path = Paths.get(userSetDir);
 			if (Files.exists(path)) {
@@ -140,34 +166,52 @@ public class Controller extends Application {
 		// Start UI
 		ui.start();
 	}
-
+	
+	/**Detects and generates list of possible comamands as user types in the textbox
+	 * <p>
+	 * 
+	 * @author tlx
+	 * 
+	 * @param userInput string which contains text that users types in the textbox
+	 *           
+	 * @return ArrayList<String> generated list of possible commands
+	 */
 	private ArrayList<String> generatePossibleAutoComplete(String userInput) {
 		ArrayList<String> possibleAutoComplete = new ArrayList<String>();
 
 		// TODO Implement this properly
 		// Basic example: If "del" is in userInput, return "delete"
 		// Implementation could be as sophisticated as needed
-		String[] possibleCommands = new String[] { "add","archive","delete","display","edit","help","mark","next","prev","redo","undo","remove-date","search","storage","unarchive" };
-		
-		for(int i = 0 ; i<possibleCommands.length;i++){
-			if(!userInput.equals("")&&possibleCommands[i].startsWith(userInput.trim())){
+		String[] possibleCommands = new String[] { "add", "archive", "delete",
+				"display", "edit", "help", "mark", "next", "prev", "redo",
+				"undo", "remove-date", "search", "storage", "unarchive" };
+
+		for (int i = 0; i < possibleCommands.length; i++) {
+			if (!userInput.equals("")
+					&& possibleCommands[i].startsWith(userInput.trim())) {
 				possibleAutoComplete.add(possibleCommands[i]);
 			}
-				
-					
-		}
-		
-		/*/ Sample (Bad!) Implementation:
-		if (userInput.trim().equals("a") || userInput.trim().equals("ad")
-				|| userInput.trim().equals("add")) {
-			possibleAutoComplete.add("add");
+
 		}
 
+		/*
+		 * / Sample (Bad!) Implementation: if (userInput.trim().equals("a") ||
+		 * userInput.trim().equals("ad") || userInput.trim().equals("add")) {
+		 * possibleAutoComplete.add("add"); }
 		 */
 
 		return possibleAutoComplete;
 	}
-
+	
+	/**process the entire string of text key in by user
+	 * <p>
+	 * 
+	 * @author tlx
+	 * 
+	 * @param input the string input of text key in by user 
+	 *           
+	 * @return boolean indicating if the commands key in by user is valid
+	 */
 	private boolean processUserInput(String input) {
 		Command command = parser.parseUserInput(input);
 

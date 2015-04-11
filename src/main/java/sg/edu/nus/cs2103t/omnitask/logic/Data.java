@@ -31,11 +31,40 @@ public abstract class Data {
 		dataUpdatedListeners.add(listener);
 	}
 
+	/*
+	 * @author Sim Wei Kang
+	 * 
+	 * This method assigns a task ID and a UUID to a task object and saves it in the Tasks list
+	 * 
+	 * @param task A task object that contains all the user input attributes
+	 * @return True if successful, false if overwise
+	 */
 	public abstract boolean addTask(Task task) throws TaskNoNameException,
 			IOException;
 
+	/*
+	 * @author Sim Wei Kang 
+	 * 
+	 * This method checks if the Task object is found in
+	 * the Tasks list, and removes it if its found
+	 * 
+	 * @param task The target Task to be removed
+	 * @return True if successful
+	 */
 	public abstract boolean deleteTask(Task task);
 
+	/*
+	 * @author Sim Wei Kang 
+	 * 
+	 * This method replicates the attributes of
+	 * mutatorTask onto a Task object the Task object will then be saved into
+	 * the Task list.
+	 * 
+	 * @param mutatorTask A Task object that holds the data in which the user
+	 * wants to edit
+	 * 
+	 * @return True if successful, false if otherwise.
+	 */
 	public abstract boolean editTask(Task mutatorTask);
 
 	public abstract String getHelpDescriptors(String helpType, boolean miniMenu)
@@ -47,6 +76,14 @@ public abstract class Data {
 
 	public abstract void notifyDataChanged();
 
+	/*
+	 * @author Sim Wei Kang
+	 * 
+	 * This method rewrites the Tasks list with the Tasks list saved in the RedoStack.
+	 * 
+	 * @param void
+	 * @return True if successful, false if otherwise.
+	 */
 	public abstract boolean redo();
 
 	public void removeDataUpdatedListener(DataUpdatedListener listener) {
@@ -55,12 +92,28 @@ public abstract class Data {
 
 	public abstract ArrayList<Task> searchTask();
 
+	/*
+	 * @author Sim Wei Kang
+	 * 
+	 * This method rewrites the Tasks list with the Tasks list saved in the UndoState.
+	 * 
+	 * @param void
+	 * @return True if successful, false if otherwise
+	 */
 	public abstract boolean undo();
 
 	public abstract void updateTaskId();
 
 	public abstract boolean changeStorageDirectory(String newDir);
 
+	/*
+	 * @author Sim Wei Kang
+	 * 
+	 * This method rewrites the target Task object's date attributes to null
+	 * 
+	 * @param taskToRemove A Task object that contains the id of the target Task in the Tasks list
+	 * @return True if successful, false if otherwise
+	 */
 	public abstract boolean removeTaskDate(Task taskToRemoveDate);
 
 }

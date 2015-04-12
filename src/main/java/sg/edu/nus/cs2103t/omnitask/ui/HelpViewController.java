@@ -16,7 +16,7 @@ public class HelpViewController {
 	}
 
 	public void setContent(String text) {
-		webView.setZoom(javafx.stage.Screen.getPrimary().getDpi() / 96);
+		//webView.setZoom(javafx.stage.Screen.getPrimary().getDpi() / 96);
 		webView.getEngine().loadContent(text);
 	}
 

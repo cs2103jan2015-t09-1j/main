@@ -44,4 +44,3 @@ public class CommandRemoveDate extends Command {
 		return false;
 	}
 }
-//@author A0119742

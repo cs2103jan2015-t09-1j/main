@@ -70,4 +70,3 @@ public class CommandEdit extends Command {
 		return false;
 	}
 }
-//@author A0119742

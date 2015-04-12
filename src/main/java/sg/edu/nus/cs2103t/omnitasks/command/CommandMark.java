@@ -49,4 +49,3 @@ public class CommandMark extends Command {
 		return false;
 	}
 }
-// @author A0119742

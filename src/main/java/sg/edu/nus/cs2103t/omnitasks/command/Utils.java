@@ -20,6 +20,19 @@ public class Utils {
 		task.setEndDate(commandInput.getEndDate());
 	}
 
+	// @author A0119742A
+	/**
+	 * This method is a utility method that is used by editTask method in
+	 * StorageBackedData It creates a Task object that contains attributes of
+	 * what the user wants to edit. It then transfer the attributes to the
+	 * target Task
+	 * <p>
+	 * 
+	 * @param foundTask
+	 *            Target Task
+	 * @param mutatorTask
+	 *            Task containing user's request
+	 */
 	public static void editAttributes(Task foundTask, Task mutatorTask) {
 		if (!mutatorTask.getName().equals("")) {
 			foundTask.setName(mutatorTask.getName());
@@ -138,6 +151,17 @@ public class Utils {
 		return CommandInput.CommandType.INVALID;
 	}
 
+	// @author A0119742A
+	/**
+	 * This method is used by CommandEditImpl to create the mutatorTask which
+	 * contains all the attributes that the user wants to edit
+	 * <p>
+	 * 
+	 * @param commandInput
+	 *            User's input
+	 * @param mutatorTask
+	 *            A task object that will take the user's input attributes
+	 */
 	public static void makeTaskToEdit(CommandInput commandInput,
 			Task mutatorTask) {
 		if (!commandInput.getName().equals("")) {

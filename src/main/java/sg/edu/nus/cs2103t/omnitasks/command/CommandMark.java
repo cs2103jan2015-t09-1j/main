@@ -5,6 +5,14 @@ import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.item.Task;
 import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 
+/**
+ * This class contains the logic for Mark command. When Mark command is
+ * triggered, there will be a check if the target Task is in the tasks list. If
+ * it is found, the Task's isCompleted attribute will be edited to the user
+ * specification.
+ * <p>
+ */
+// @author A0119742
 public class CommandMark extends Command {
 
 	public static String[] COMMAND_ALIASES = new String[] { "mark" };
@@ -41,3 +49,4 @@ public class CommandMark extends Command {
 		return false;
 	}
 }
+// @author A0119742

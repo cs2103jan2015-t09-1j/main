@@ -32,7 +32,7 @@ public abstract class Data {
 
 	/** This method assigns a task ID and a UUID to a task object and saves it in the Tasks list
 	 * 
-	 * @author Sim Wei Kang
+	 * @author A0119742A
 	 * 
 	 * @param task A task object that contains all the user input attributes
 	 * @return True if successful, false if overwise
@@ -43,7 +43,7 @@ public abstract class Data {
 	/** This method checks if the Task object is found in
 	 * the Tasks list, and removes it if its found
 	 * 
-	 * @author Sim Wei Kang 
+	 * @author A0119742A 
 	 *  
 	 * @param task The target Task to be removed
 	 * @return True if successful
@@ -54,8 +54,6 @@ public abstract class Data {
 	 * mutatorTask onto a Task object the Task object will then be saved into
 	 * the Task list.
 	 *   
-	 * @author Sim Wei Kang
-	 * 
 	 * @param mutatorTask A Task object that holds the data in which the user
 	 * wants to edit
 	 * 
@@ -66,15 +64,27 @@ public abstract class Data {
 	public abstract String getHelpDescriptors(String helpType, boolean miniMenu)
 			throws IOException;
 
+	/**
+	 * This method returns a Task object that exists in index-position of the Tasks list
+	 * @param index
+	 * @return Task A Task object
+	 */
 	public abstract Task getTask(int index);
 
+	/**
+	 * This method returns the a clone of the Tasks list
+	 * @return Tasks A list containing task objects
+	 */
 	public abstract ArrayList<Task> getTasks();
 
+	/**
+	 * This method updates the tasks list
+	 */
 	public abstract void notifyDataChanged();
 
 	/** This method rewrites the Tasks list with the Tasks list saved in the RedoStack.
 	 *  
-	 * @author Sim Wei Kang
+	 * @author A0119742A
 	 * 
 	 * @param void
 	 * @return True if successful, false if otherwise.
@@ -89,20 +99,28 @@ public abstract class Data {
 
 	/**This method rewrites the Tasks list with the Tasks list saved in the UndoState.
 	 * 
-	 * @author Sim Wei Kang
+	 * @author A0119742A
 	 * 	  
 	 * @param void
 	 * @return True if successful, false if otherwise
 	 */
 	public abstract boolean undo();
 
+	/**
+	 * This method updates the task ID of all the tasks in the tasks list
+	 */
 	public abstract void updateTaskId();
 
+	/**
+	 * This methods changes the storage directory of OmniTask
+	 * @param newDir New directory path
+	 * @return True if successful, false if otherwise.
+	 */
 	public abstract boolean changeStorageDirectory(String newDir);
 
 	/**This method rewrites the target Task object's date attributes to null
 	 * 
-	 * @author Sim Wei Kang
+	 * @author A0119742A
 	 * 
 	 * @param taskToRemove A Task object that contains the id of the target Task in the Tasks list
 	 * @return True if successful, false if otherwise

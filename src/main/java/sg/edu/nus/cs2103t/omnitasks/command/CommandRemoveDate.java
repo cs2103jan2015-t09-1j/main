@@ -5,6 +5,13 @@ import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.item.Task;
 import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 
+/**
+ * This class contains the logic for RemoveDate command. When RemoveDate command is
+ * triggered, there will be a check if the target Task is in the tasks list. If
+ * it is found, the Task's date will be removed
+ * <p>
+ */
+//@author A0119742
 public class CommandRemoveDate extends Command {
 
 	public static String[] COMMAND_ALIASES = new String[] { "remove-date" };
@@ -37,3 +44,4 @@ public class CommandRemoveDate extends Command {
 		return false;
 	}
 }
+//@author A0119742

@@ -5,6 +5,14 @@ import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.item.Task;
 import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 
+/**
+ * This class contains the logic for Edit command. When Edit command is triggered,
+ * there will be a check if the target Task is in the tasks list. If
+ * it is found, a mutator task will be created and be passed into the data class.
+ * The data class will use the mutator task to overwrite attributes in the target task object
+ * <p>
+ */
+//@author A0119742
 public class CommandEdit extends Command {
 
 	public static String[] COMMAND_ALIASES = new String[] { "edit",
@@ -62,3 +70,4 @@ public class CommandEdit extends Command {
 		return false;
 	}
 }
+//@author A0119742

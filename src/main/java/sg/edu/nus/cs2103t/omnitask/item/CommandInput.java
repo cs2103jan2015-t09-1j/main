@@ -112,12 +112,6 @@ public class CommandInput {
 		this.priority = priority;
 	}
 
-	/*
-	 * public int getType() { return type; }
-	 * 
-	 * public void setType(int type) { this.type = type; }
-	 */
-
 	public void setRecurrence(boolean recurrence) {
 		this.recurrence = recurrence;
 	}

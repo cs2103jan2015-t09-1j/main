@@ -77,9 +77,6 @@ public class Task {
 
 	private DateTime startDate;
 
-	// TODO: Might want to change this to an enum
-	private int type;
-
 	private UUID uuid;
 
 	public Task() {
@@ -104,7 +101,6 @@ public class Task {
 		task.setPriority(priority);
 		task.setRecurrence(recurrence);
 		task.setName(name);
-		task.setType(type);
 		task.setCompleted(isCompleted);
 
 		return task;
@@ -257,10 +253,6 @@ public class Task {
 		return startDate;
 	}
 
-	public int getType() {
-		return type;
-	}
-
 	public UUID getUuid() {
 		return uuid;
 	}
@@ -315,11 +307,7 @@ public class Task {
 	public void setStartDate(DateTime startDate) {
 		this.startDate = startDate;
 	}
-
-	public void setType(int type) {
-		this.type = type;
-	}
-
+	
 	public void setUuid(UUID uuid) {
 		this.uuid = uuid;
 	}
@@ -327,7 +315,7 @@ public class Task {
 	@Override
 	public String toString() {
 		return "Task [startDate=" + startDate + ", endDate=" + endDate
-				+ ", id=" + id + ", name=" + name + ", type=" + type + "]";
+				+ ", id=" + id + ", name=" + name + "]";
 	}
 
 	private String formatTime(DateTime date) {

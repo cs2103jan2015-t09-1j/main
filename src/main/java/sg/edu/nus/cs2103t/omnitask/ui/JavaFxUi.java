@@ -44,6 +44,7 @@ import com.tulskiy.keymaster.common.HotKey;
 import com.tulskiy.keymaster.common.HotKeyListener;
 import com.tulskiy.keymaster.common.Provider;
 
+//@author A0111795A
 public class JavaFxUi extends Ui {
 
 	private static double WINDOW_HEIGHT = 680;

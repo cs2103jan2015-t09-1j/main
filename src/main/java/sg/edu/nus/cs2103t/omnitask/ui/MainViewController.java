@@ -30,14 +30,41 @@ import sg.edu.nus.cs2103t.omnitask.parser.Parser;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplay;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandEdit;
 
+//@author A0111795A
+/**
+* This class is the View Controller for the main UI window.
+* 
+*/
 public class MainViewController {
 
+	/**
+	 * ViewMode influences how the task listing update itselfs upon receiving new data. It is important to set it correctly.
+	 */
 	public static enum ViewMode {
-		ALL, ALTERNATE, ARCHIVED
+		/**
+		 * Showing All Task
+		 */
+		ALL,
+		
+		/**
+		 * Showing Search or Category
+		 */
+		ALTERNATE,
+		
+		/**
+		 * Showing Archived Tasks
+		 */
+		ARCHIVED
 	}
 	
+	/**
+	 * Section title for overdue tasks.
+	 */
 	final public static String SECTION_OVERDUE = "Overdue!";
 	
+	/**
+	 * Section title for floating tasks.
+	 */
 	final public static String SECTION_FLOATING = "No Due Date";
 
 	public ObservableList<Task> tasks;
@@ -257,7 +284,7 @@ public class MainViewController {
 			commandHistory.add(omniBar.getText());
 			currentCommandHistoryIndex = -1;
 
-			if (ui.invokeCommandReceivedListener(omniBar.getText())) {
+			if (ui.invokeCommandReceived(omniBar.getText())) {
 				omniBar.setText("");
 			} else {
 				omniBar.selectAll();
@@ -360,7 +387,7 @@ public class MainViewController {
 
 	private void doAutoComplete() {
 		ArrayList<String> autocomplete = ui
-				.invokeDoAutocompleteListener(omniBar.getText());
+				.invokeDoAutocomplete(omniBar.getText());
 		if (autocomplete.size() > 0) {
 			omniBar.setText(autocomplete.get(0));
 			putOmniBarCaretAtEnd();
@@ -563,7 +590,7 @@ public class MainViewController {
 		}
 		
 		public void showCategory(String category) {
-			ui.invokeCommandReceivedListener(CommandDisplay.COMMAND_ALIASES[0] + " " + category);
+			ui.invokeCommandReceived(CommandDisplay.COMMAND_ALIASES[0] + " " + category);
 			omniBar.clear();
 		}
 		

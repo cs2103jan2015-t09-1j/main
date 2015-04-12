@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.web.WebView;
 
+//@author A0111795A
 public class HelpViewController {
 
 	private Ui ui;

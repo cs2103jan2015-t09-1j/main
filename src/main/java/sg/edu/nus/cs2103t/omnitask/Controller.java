@@ -114,7 +114,7 @@ public class Controller extends Application implements ControllerCallback {
 
 		// Initialize UI
 		ui = new JavaFxUi(primaryStage);
-		ui.setCommandCallback(this);
+		ui.setControllerCallback(this);
 
 		// Initialize other components
 		parser = new Parser();

@@ -47,7 +47,7 @@ import com.tulskiy.keymaster.common.Provider;
 //@author A0111795A
 public class JavaFxUi extends Ui {
 
-	private static double WINDOW_HEIGHT = (javafx.stage.Screen.getPrimary().getDpi() / 96) * 420;
+	private static double WINDOW_HEIGHT = (javafx.stage.Screen.getPrimary().getDpi() / 96) * 560;
 
 	private static double WINDOW_WIDTH = (javafx.stage.Screen.getPrimary().getDpi() / 96) * 640;
 

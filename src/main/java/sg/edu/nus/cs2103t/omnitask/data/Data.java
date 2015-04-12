@@ -62,7 +62,7 @@ public abstract class Data {
 	 * @return True if successful, false if otherwise.
 	 */
 	public abstract boolean editTask(Task mutatorTask);
-
+	
 	public abstract String getHelpDescriptors(String helpType, boolean miniMenu)
 			throws IOException;
 

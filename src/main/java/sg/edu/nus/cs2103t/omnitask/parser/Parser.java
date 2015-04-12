@@ -29,13 +29,23 @@ import sg.edu.nus.cs2103t.omnitasks.command.Utils;
 
 import com.joestelmach.natty.DateGroup;
 
+//@A0116347H
 public class Parser {
 
 	private static final String[] DATE_INDICATORS = new String[] { "from",
 			"by", "due", "to", "on" };
 	public static final String[] PRIORITY_INDICATORS = new String[] { "^n",
 			"^l", "^m", "^h" };
-
+/**
+ * This function reads from user input, then parses the type of commands entered by user
+ * and passes attributes contained within the input to CommandInput class for further
+ * processing.
+ * 
+ * @param input 
+ *             Input text from user
+ * @return Command
+ *             commandType and attributes to be processed
+ */
 	public Command parseUserInput(String input) {
 		// TODO: Fix prototype implementation, need to think of the proper way
 		// to parse text modularly
@@ -265,6 +275,18 @@ public class Parser {
 
 	// Method to detect priority indicator within string input and remove it
 	// from taskName
+	/**
+	 * This method checks though the user input for priority indicator, it will pass the 
+	 * priority found to date class for editAttributes, if no priority is detected, it leaves 
+	 * the field unchanged for editing and set it to none when adding
+	 * 
+	 * @param inputSplit  
+	 *                  user input in String array
+	 * @param commandInput
+	 *                  commandInput 
+	 * @param isEditing
+	 *                  to check if the method is called by adding or editing algorithm
+	 */
 	private void detectPrio(String[] inputSplit, CommandInput commandInput,
 			boolean isEditing) {
 		int priorityIndex = 0;
@@ -305,6 +327,22 @@ public class Parser {
 	}
 
 	// Parse the dateTime within the string input using natty
+	/**
+	 * This method checks the input from user for time indicator, when time indicator is found
+	 * it will check the item after it if it is a date/time. Then it will pass the String 
+	 * contains the date/time to natty and passes the returned date/time to editAttribute.
+	 * And also set the taskName excluding the date/time String.
+	 * 
+	 * @param startIndex
+	 *              index of the time indicator
+	 * @param inputSplit
+	 *              input String array
+	 * @param commandInput
+	 *              commandInput
+	 * @param isEditing
+	 *              to check if the method is called by adding or editing algorithm
+	 * @return
+	 */
 	private boolean extractDatesAndTaskNameFromCommand(int startIndex,
 			String[] inputSplit, CommandInput commandInput, boolean isEditing) {
 		String taskName = "";
@@ -485,3 +523,4 @@ public class Parser {
 		return str.trim();
 	}
 }
+//@A0116347H

@@ -30,7 +30,7 @@ public class JsonStorage extends Storage {
 
 	public File storageFile;
 
-	//@author A0111795A
+	// @author A0111795A
 	public JsonStorage(File storageFile) throws IOException {
 		this.storageFile = storageFile;
 		this.gson = new GsonBuilder().registerTypeAdapter(
@@ -72,7 +72,12 @@ public class JsonStorage extends Storage {
 		return tasks;
 	}
 
-	//@author A0119643
+	/**
+	 * Retrieves content from the help file. There is 2 type of help content
+	 * aside from the main help there is a mini help menu displayed along when
+	 * user types in a code.
+	 * <p>
+	 */
 	@Override
 	public String readFromHelpFile(String helpType, boolean miniMenu)
 			throws IOException {
@@ -104,7 +109,7 @@ public class JsonStorage extends Storage {
 
 	}
 
-	//@author A0111795A
+	// @author A0111795A
 	@Override
 	public void saveToFile(List<Task> tasks) throws IOException {
 		String json = gson.toJson(tasks);
@@ -123,30 +128,39 @@ public class JsonStorage extends Storage {
 
 	}
 
-	//@author A0119643
+	// @author A0119643A
+
+	/**
+	 * This method will test if the user specified location exist if it does
+	 * create a new storage.txt in the new directory and copy the contents of
+	 * the old storage.txt to it. Lastly create a configuration file which
+	 * stores the new directory, it will be loaded everytime omnitask starts.
+	 * <p>
+	 * 
+	 */
 	@Override
 	public boolean changeStorageFileDirectory(String newDir) throws IOException {
-		boolean status=false;
+		boolean status = false;
 		List<Task> currentTasks;
-		try{
-		//check if the path exists
-		Path path = Paths.get(newDir);
-		if (Files.exists(path)) {
-			// copy contents
-			currentTasks = readFromFile();
-			storageFile = new File(newDir+"\\storage.txt");
-			Storage.CheckIfFileExistAndCreateIfDoesNot(storageFile);
-			saveToFile(currentTasks);
-			// create configuration file to store new storage location
-			PrintWriter confFile = new PrintWriter("omnitask.conf");
-			confFile.println(newDir);
-			confFile.close();
-			status = true;
-			
-		}
-		}catch(InvalidPathException ip){
-			//the path specified by user is invalid
-			
+		try {
+			// check if the path exists
+			Path path = Paths.get(newDir);
+			if (Files.exists(path)) {
+				// copy contents
+				currentTasks = readFromFile();
+				storageFile = new File(newDir + "\\storage.txt");
+				Storage.CheckIfFileExistAndCreateIfDoesNot(storageFile);
+				saveToFile(currentTasks);
+				// create configuration file to store new storage location
+				PrintWriter confFile = new PrintWriter("omnitask.conf");
+				confFile.println(newDir);
+				confFile.close();
+				status = true;
+
+			}
+		} catch (InvalidPathException ip) {
+			// the path specified by user is invalid
+
 		}
 
 		return status;

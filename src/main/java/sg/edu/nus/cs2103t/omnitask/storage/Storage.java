@@ -21,7 +21,7 @@ public abstract class Storage {
 		return true;
 	}
 
-	//@author A0119643
+	//@author A0119643A
 	public static String readFromConfFile() throws IOException {
 		String storageDir = "";
 
@@ -34,7 +34,7 @@ public abstract class Storage {
 	//@author A0111795A
 	public abstract ArrayList<Task> readFromFile() throws IOException;
 
-	//@author A0119643
+	//@author A0119643A
 	public abstract String readFromHelpFile(String helpType, boolean miniMenu)
 			throws IOException;
 
@@ -45,7 +45,7 @@ public abstract class Storage {
 
 	public abstract void undoFile();
 
-	//@author A0119643
+	//@author A0119643A
 	public abstract boolean changeStorageFileDirectory(String newDir)
 			throws IOException;
 

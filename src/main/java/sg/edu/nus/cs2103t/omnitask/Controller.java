@@ -27,8 +27,8 @@ import sg.edu.nus.cs2103t.omnitasks.command.CommandMark;
 public class Controller extends Application implements ControllerCallback {
 
 	private static Ui ui;
-	
-	//@author A0111795A
+
+	// @author A0111795A
 	public static void Exit() {
 		ui.exit();
 		System.exit(0);
@@ -42,7 +42,7 @@ public class Controller extends Application implements ControllerCallback {
 
 	protected Parser parser;
 
-	//@author A0119643
+	// @author A0119643A
 	public ArrayList<String> doAutoComplete(String userInput) {
 		return generatePossibleAutoComplete(userInput);
 	}
@@ -57,7 +57,7 @@ public class Controller extends Application implements ControllerCallback {
 	 * format
 	 * <p>
 	 * 
-	 * @author tlx
+	 * 
 	 * 
 	 * @param userInput
 	 *            String by of text user key in
@@ -66,15 +66,6 @@ public class Controller extends Application implements ControllerCallback {
 	 */
 	@Override
 	public void showMiniHelpIfAvailable(String userInput) {
-		// TODO To be fixed
-		// with proper
-		// implementation
-		// adn SLAP similar
-		// to
-		// doAutoComplete?
-
-		// Sample
-		// implementation:
 		ArrayList<String> possibleCommands = generatePossibleAutoComplete(userInput);
 		if (possibleCommands.size() > 0) {
 			try {
@@ -99,7 +90,7 @@ public class Controller extends Application implements ControllerCallback {
 	 * initialize and display the user interface.
 	 * <p>
 	 * 
-	 * @author tlx
+	 * 
 	 * 
 	 * @param primaryStage
 	 *            which is a Stage object used by UI component
@@ -151,7 +142,8 @@ public class Controller extends Application implements ControllerCallback {
 		}
 
 		try {
-			data = StorageBackedData.GetSingleton().init(new JsonStorage(storageFile));
+			data = StorageBackedData.GetSingleton().init(
+					new JsonStorage(storageFile));
 		} catch (IOException ex) {
 			System.err.println("No permission to access file.");
 			Controller.Exit();
@@ -167,7 +159,7 @@ public class Controller extends Application implements ControllerCallback {
 	 * textbox
 	 * <p>
 	 * 
-	 * @author tlx
+	 * 
 	 * 
 	 * @param userInput
 	 *            string which contains text that users types in the textbox
@@ -175,11 +167,9 @@ public class Controller extends Application implements ControllerCallback {
 	 * @return ArrayList<String> generated list of possible commands
 	 */
 	private ArrayList<String> generatePossibleAutoComplete(String userInput) {
+
 		ArrayList<String> possibleAutoComplete = new ArrayList<String>();
 
-		// TODO Implement this properly
-		// Basic example: If "del" is in userInput, return "delete"
-		// Implementation could be as sophisticated as needed
 		String[] possibleCommands = new String[] { "add", "archive", "delete",
 				"display", "edit", "help", "mark", "next", "prev", "redo",
 				"undo", "remove-date", "search", "storage", "unarchive" };
@@ -192,12 +182,6 @@ public class Controller extends Application implements ControllerCallback {
 
 		}
 
-		/*
-		 * / Sample (Bad!) Implementation: if (userInput.trim().equals("a") ||
-		 * userInput.trim().equals("ad") || userInput.trim().equals("add")) {
-		 * possibleAutoComplete.add("add"); }
-		 */
-
 		return possibleAutoComplete;
 	}
 
@@ -205,7 +189,7 @@ public class Controller extends Application implements ControllerCallback {
 	 * process the entire string of text key in by user
 	 * <p>
 	 * 
-	 * @author tlx
+	 * 
 	 * 
 	 * @param input
 	 *            the string input of text key in by user
@@ -224,7 +208,7 @@ public class Controller extends Application implements ControllerCallback {
 		}
 	}
 
-	//@author A0111795A
+	// @author A0111795A
 	@Override
 	public void showAll() {
 		CommandInput commandInput = new CommandInput(CommandType.DISPLAY);

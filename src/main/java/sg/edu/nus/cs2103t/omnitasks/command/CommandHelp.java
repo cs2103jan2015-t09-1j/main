@@ -7,6 +7,18 @@ import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.item.CommandInput.CommandType;
 import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 
+
+
+
+
+/**This class contains the logic required for help command. 
+ * keying in "help" will retrieve overview of all available comamnds 
+ * If the user key in "help <Comamnd Name>" and if the command name user keyed in is valid this class 
+ * will fetch the specific command. 
+ * <p>
+ *
+ */
+//@author A0119643A
 public class CommandHelp extends Command {
 
 	public static String[] COMMAND_ALIASES = new String[] { "help",
@@ -37,16 +49,6 @@ public class CommandHelp extends Command {
 
 			if (exist) {
 
-				/*
-				 * switch (specificCommandName) { case "ADD": commandDescription
-				 * = "add description"; break; case "DISPLAY":
-				 * commandDescription = "display description"; break; case
-				 * "DELETE": commandDescription = "delete description"; break;
-				 * case "EDIT": commandDescription = "edit description"; break;
-				 * case "SEARCH": commandDescription = "search description";
-				 * break; case "EXIT": commandDescription = "Exits the program";
-				 * break; }
-				 */
 				try {
 					commandDescription = data.getHelpDescriptors(
 							specificCommandName, false);

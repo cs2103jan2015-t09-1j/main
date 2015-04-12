@@ -93,6 +93,8 @@ public class JavaFxUi extends Ui {
 	private TrayIcon trayIcon = new TrayIcon(image, "OmniTask");
 
 	private MainViewController mainViewController;
+	
+	private boolean loseFocusByMiniHelpStage;
 
 	public JavaFxUi(Stage primaryStage) {
 		this.primaryStage = primaryStage;
@@ -298,7 +300,7 @@ public class JavaFxUi extends Ui {
 			miniHelpStage.initStyle(StageStyle.UTILITY);
 			miniHelpStage.setScene(new Scene(root, WINDOW_WIDTH, 150));
 			miniHelpStage.setAlwaysOnTop(true);
-			miniHelpStage.focusedProperty().addListener(
+			/*miniHelpStage.focusedProperty().addListener(
 					new ChangeListener<Boolean>() {
 
 						@Override
@@ -310,11 +312,20 @@ public class JavaFxUi extends Ui {
 							}
 						}
 
-					});
+					});*/
+			miniHelpStage.setOnShowing(new EventHandler<WindowEvent>() {
+
+				@Override
+				public void handle(WindowEvent event) {
+					loseFocusByMiniHelpStage = true;
+				}
+				
+			});
 			miniHelpStage.setOnShown(new EventHandler<WindowEvent>() {
 
 				@Override
 				public void handle(WindowEvent event) {
+					primaryStage.requestFocus();
 					repositionAndResizeMiniHelpWindow();
 				}
 
@@ -429,10 +440,29 @@ public class JavaFxUi extends Ui {
 					printDebug("OmniTask Window Hidden");
 
 					hideWindow();
+					closeHelp();
+					closeMiniHelp();
 
 					showTray();
 				}
 
+			});
+			
+			primaryStage.focusedProperty().addListener(new ChangeListener<Boolean>() {
+
+				@Override
+				public void changed(ObservableValue<? extends Boolean> arg0,
+						Boolean oldValue, Boolean newValue) {
+					
+					if (!newValue) {
+						if (!loseFocusByMiniHelpStage) {
+							closeMiniHelp();
+						} else {
+							loseFocusByMiniHelpStage = false;
+						}
+					}
+				}
+				
 			});
 
 			primaryStage.setOnShown(new EventHandler<WindowEvent>() {

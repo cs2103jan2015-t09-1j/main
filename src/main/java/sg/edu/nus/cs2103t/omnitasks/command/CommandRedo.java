@@ -27,4 +27,3 @@ public class CommandRedo extends Command {
 		}
 	}
 }
-//@author A0119742A

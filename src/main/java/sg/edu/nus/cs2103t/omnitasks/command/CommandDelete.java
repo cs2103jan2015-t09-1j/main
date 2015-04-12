@@ -51,4 +51,3 @@ public class CommandDelete extends Command {
 		return false;
 	}
 }
-//@author A0119742

@@ -216,7 +216,7 @@ public class StorageBackedData extends Data {
 
 		return true;
 	}
-	//@author A0119742A
+	
 
 	@Override
 	public String getHelpDescriptors(String helpType, boolean miniMenu)
@@ -268,7 +268,6 @@ public class StorageBackedData extends Data {
 		tasks.setAll(tmpTasks);
 	}
 
-	//@author A0119742A
 	public boolean redo() {
 		if (redoStack.empty()) {
 			return false;
@@ -292,7 +291,7 @@ public class StorageBackedData extends Data {
 		}
 
 	}
-	//@author A0119742A
+	
 	//@author A0119643A
 	// Only in-charge of fetching full task list from the storage and pass it to
 	// CommandSearchImpl for processing
@@ -344,7 +343,7 @@ public class StorageBackedData extends Data {
 
 		}
 	}
-	//@author A0119742A
+
 
 	private void assertInited() {
 		assert inited;

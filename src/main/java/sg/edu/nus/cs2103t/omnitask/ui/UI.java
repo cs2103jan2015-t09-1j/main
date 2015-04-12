@@ -9,7 +9,7 @@ import sg.edu.nus.cs2103t.omnitask.ui.MainViewController.ViewMode;
 
 public abstract class UI {
 
-	public static interface CommandReceivedListener {
+	public static interface ControllerCallback {
 		ArrayList<String> doAutoComplete(String userInput);
 
 		boolean onCommandReceived(String userInput);
@@ -19,7 +19,7 @@ public abstract class UI {
 		boolean updateTask(Task task);
 	}
 
-	protected CommandReceivedListener commandReceivedListener;
+	protected ControllerCallback controllerCallback;
 
 	public abstract void closeHelp();
 
@@ -29,14 +29,14 @@ public abstract class UI {
 	public abstract void exit();
 
 	public void invokeShowMiniHelpIfAvailable(String input) {
-		if (commandReceivedListener != null) {
-			commandReceivedListener.showMiniHelpIfAvailable(input);
+		if (controllerCallback != null) {
+			controllerCallback.showMiniHelpIfAvailable(input);
 		}
 	}
 
 	public boolean invokeUpdateTask(Task task) {
-		if (commandReceivedListener != null) {
-			return commandReceivedListener.updateTask(task);
+		if (controllerCallback != null) {
+			return controllerCallback.updateTask(task);
 		}
 
 		return false;
@@ -50,19 +50,19 @@ public abstract class UI {
 
 	public void scrollUp() {
 	}
-	
+
 	public void showSection(String section) {
 	}
-	
+
 	public void showSection(DateTime endDate) {
 	}
-	
+
 	public void showSection(DateTime startDate, DateTime endDate) {
 	}
 
-	public void setCommandReceivedListener(
-			CommandReceivedListener commandReceivedListener) {
-		this.commandReceivedListener = commandReceivedListener;
+	public void setCommandCallback(
+			ControllerCallback commandReceivedListener) {
+		this.controllerCallback = commandReceivedListener;
 	}
 
 	public abstract void showAllTasks();;
@@ -76,21 +76,22 @@ public abstract class UI {
 	public void showMiniHelp(String msg) {
 	};
 
-	public abstract void showAlternateList(ViewMode viewMode, String title, ArrayList<Task> tasks);
+	public abstract void showAlternateList(ViewMode viewMode, String title,
+			ArrayList<Task> tasks);
 
 	public abstract void start();;
 
 	protected boolean invokeCommandReceivedListener(String userInput) {
-		if (commandReceivedListener != null) {
-			return commandReceivedListener.onCommandReceived(userInput);
+		if (controllerCallback != null) {
+			return controllerCallback.onCommandReceived(userInput);
 		}
 
 		return false;
 	}
 
 	protected ArrayList<String> invokeDoAutocompleteListener(String userInput) {
-		if (commandReceivedListener != null) {
-			return commandReceivedListener.doAutoComplete(userInput);
+		if (controllerCallback != null) {
+			return controllerCallback.doAutoComplete(userInput);
 		}
 
 		return new ArrayList<String>();

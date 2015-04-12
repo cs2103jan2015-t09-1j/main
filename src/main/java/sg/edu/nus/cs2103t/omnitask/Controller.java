@@ -18,7 +18,7 @@ import sg.edu.nus.cs2103t.omnitask.parser.ParserMainImpl;
 import sg.edu.nus.cs2103t.omnitask.storage.IO;
 import sg.edu.nus.cs2103t.omnitask.storage.IOJSONImpl;
 import sg.edu.nus.cs2103t.omnitask.ui.UI;
-import sg.edu.nus.cs2103t.omnitask.ui.UI.CommandReceivedListener;
+import sg.edu.nus.cs2103t.omnitask.ui.UI.ControllerCallback;
 import sg.edu.nus.cs2103t.omnitask.ui.UIMainImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.Command;
 
@@ -27,7 +27,7 @@ import sg.edu.nus.cs2103t.omnitasks.command.Command;
  *
  */
 
-public class Controller extends Application {
+public class Controller extends Application implements ControllerCallback {
 
 	private static UI ui;
 
@@ -44,62 +44,58 @@ public class Controller extends Application {
 
 	protected Parser parser;
 
-	CommandReceivedListener commandReceivedListener = new CommandReceivedListener() {
+	public ArrayList<String> doAutoComplete(String userInput) {
+		return generatePossibleAutoComplete(userInput);
+	}
 
-		public ArrayList<String> doAutoComplete(String userInput) {
-			return generatePossibleAutoComplete(userInput);
-		}
+	public boolean onCommandReceived(String userInput) {
+		return processUserInput(userInput);
+	}
+	
+	/**This function display the mini pop up of help specific to each valid command use types in to aid
+	 * the user in getting the correct commands format
+	 * <p>
+	 * 
+	 * @author tlx
+	 * 
+	 * @param userInput String by of text user key in
+	 *           
+	 * @return void
+	 */
+	@Override
+	public void showMiniHelpIfAvailable(String userInput) {
+		// TODO To be fixed
+		// with proper
+		// implementation
+		// adn SLAP similar
+		// to
+		// doAutoComplete?
 
-		public boolean onCommandReceived(String userInput) {
-			return processUserInput(userInput);
-		}
-		
-		/**This function display the mini pop up of help specific to each valid command use types in to aid
-		 * the user in getting the correct commands format
-		 * <p>
-		 * 
-		 * @author tlx
-		 * 
-		 * @param userInput String by of text user key in
-		 *           
-		 * @return void
-		 */
-		@Override
-		public void showMiniHelpIfAvailable(String userInput) {
-			// TODO To be fixed
-			// with proper
-			// implementation
-			// adn SLAP similar
-			// to
-			// doAutoComplete?
-
-			// Sample
-			// implementation:
-			ArrayList<String> possibleCommands = generatePossibleAutoComplete(userInput);
-			if (possibleCommands.size() > 0) {
-				try {
-					String help = data.getHelpDescriptors(
-							possibleCommands.get(0).toUpperCase(), true);
-					if (help != null && !help.isEmpty()) {
-						ui.showMiniHelp(help);
-					} else {
-						ui.closeMiniHelp();
-					}
-				} catch (IOException ex) {
-					ex.printStackTrace();
+		// Sample
+		// implementation:
+		ArrayList<String> possibleCommands = generatePossibleAutoComplete(userInput);
+		if (possibleCommands.size() > 0) {
+			try {
+				String help = data.getHelpDescriptors(
+						possibleCommands.get(0).toUpperCase(), true);
+				if (help != null && !help.isEmpty()) {
+					ui.showMiniHelp(help);
+				} else {
 					ui.closeMiniHelp();
 				}
-			} else {
+			} catch (IOException ex) {
+				ex.printStackTrace();
 				ui.closeMiniHelp();
 			}
+		} else {
+			ui.closeMiniHelp();
 		}
+	}
 
-		@Override
-		public boolean updateTask(Task task) {
-			return data.editTask(task);
-		}
-
-	};
+	@Override
+	public boolean updateTask(Task task) {
+		return data.editTask(task);
+	}
 
 	/**This function is called on the first instance the program starts up to  
 	 * initialize and display the user interface.
@@ -116,7 +112,7 @@ public class Controller extends Application {
 
 		// Initialize UI
 		ui = new UIMainImpl(primaryStage);
-		ui.setCommandReceivedListener(commandReceivedListener);
+		ui.setCommandCallback(this);
 
 		// Initialize other components
 		parser = new ParserMainImpl();

@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import sg.edu.nus.cs2103t.omnitask.item.Task;
 
+//@author A0111795A
 public class StubData extends Data {
 
 	private static StubData data;

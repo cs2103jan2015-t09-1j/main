@@ -24,15 +24,11 @@ import sg.edu.nus.cs2103t.omnitasks.command.Command;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplay;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandMark;
 
-/**
- * @author TLX
- *
- */
-
 public class Controller extends Application implements ControllerCallback {
 
 	private static Ui ui;
-
+	
+	//@author A0111795A
 	public static void Exit() {
 		ui.exit();
 		System.exit(0);
@@ -46,6 +42,7 @@ public class Controller extends Application implements ControllerCallback {
 
 	protected Parser parser;
 
+	//@author A0119643
 	public ArrayList<String> doAutoComplete(String userInput) {
 		return generatePossibleAutoComplete(userInput);
 	}
@@ -227,6 +224,7 @@ public class Controller extends Application implements ControllerCallback {
 		}
 	}
 
+	//@author A0111795A
 	@Override
 	public void showAll() {
 		CommandInput commandInput = new CommandInput(CommandType.DISPLAY);

@@ -6,12 +6,10 @@ import java.util.List;
 
 import sg.edu.nus.cs2103t.omnitask.item.Task;
 
+//@author A0111795A
 /**
  * IOStubImpl is to be used for testing only. It simulates normal IO by caching
  * the data in memory instead of writing it to file.
- * 
- * @author Faruq
- *
  */
 public class StubStorage extends Storage {
 

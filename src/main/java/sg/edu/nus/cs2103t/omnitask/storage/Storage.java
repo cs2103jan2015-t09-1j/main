@@ -10,6 +10,7 @@ import java.util.List;
 
 import sg.edu.nus.cs2103t.omnitask.item.Task;
 
+//@author A0111795A
 public abstract class Storage {
 	public static boolean CheckIfFileExistAndCreateIfDoesNot(File file)
 			throws IOException {
@@ -20,6 +21,7 @@ public abstract class Storage {
 		return true;
 	}
 
+	//@author A0119643
 	public static String readFromConfFile() throws IOException {
 		String storageDir = "";
 
@@ -29,17 +31,21 @@ public abstract class Storage {
 		return storageDir;
 	}
 
+	//@author A0111795A
 	public abstract ArrayList<Task> readFromFile() throws IOException;
 
+	//@author A0119643
 	public abstract String readFromHelpFile(String helpType, boolean miniMenu)
 			throws IOException;
 
 	public abstract void redoFile();
 
+	//@author A0111795A
 	public abstract void saveToFile(List<Task> tasks) throws IOException;
 
 	public abstract void undoFile();
 
+	//@author A0119643
 	public abstract boolean changeStorageFileDirectory(String newDir)
 			throws IOException;
 

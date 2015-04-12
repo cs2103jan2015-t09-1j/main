@@ -30,6 +30,7 @@ public class JsonStorage extends Storage {
 
 	public File storageFile;
 
+	//@author A0111795A
 	public JsonStorage(File storageFile) throws IOException {
 		this.storageFile = storageFile;
 		this.gson = new GsonBuilder().registerTypeAdapter(
@@ -71,6 +72,7 @@ public class JsonStorage extends Storage {
 		return tasks;
 	}
 
+	//@author A0119643
 	@Override
 	public String readFromHelpFile(String helpType, boolean miniMenu)
 			throws IOException {
@@ -102,6 +104,7 @@ public class JsonStorage extends Storage {
 
 	}
 
+	//@author A0111795A
 	@Override
 	public void saveToFile(List<Task> tasks) throws IOException {
 		String json = gson.toJson(tasks);
@@ -120,6 +123,7 @@ public class JsonStorage extends Storage {
 
 	}
 
+	//@author A0119643
 	@Override
 	public boolean changeStorageFileDirectory(String newDir) throws IOException {
 		boolean status=false;

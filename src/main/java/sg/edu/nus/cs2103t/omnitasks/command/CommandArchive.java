@@ -7,6 +7,7 @@ import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.item.Task;
 import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 
+//@author A0111795A
 public class CommandArchive extends Command {
 
 	public static String[] COMMAND_ALIASES = new String[] { "archive" };

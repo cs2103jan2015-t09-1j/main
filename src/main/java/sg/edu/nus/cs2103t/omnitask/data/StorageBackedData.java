@@ -45,6 +45,7 @@ public class StorageBackedData extends Data {
 
 	private ObservableList<Task> tasks;
 
+	//@author A0111795A
 	private ListChangeListener<Task> tasksChangeListener = new ListChangeListener<Task>() {
 
 		@Override
@@ -61,7 +62,6 @@ public class StorageBackedData extends Data {
 		super();
 	}
 
-	// Not thread-safe
 	//@author A0119742A
 	public boolean addTask(Task task) throws TaskNoNameException, IOException {
 		assertInited();

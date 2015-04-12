@@ -7,6 +7,7 @@ import sg.edu.nus.cs2103t.omnitask.item.Task;
 
 public abstract class Data {
 
+	//@author A0111795A
 	public static interface DataUpdatedListener {
 		void dataUpdated(
 				ArrayList<Task> tasks,
@@ -30,6 +31,7 @@ public abstract class Data {
 		dataUpdatedListeners.add(listener);
 	}
 
+	//@author A0119742A
 	/** This method assigns a task ID and a UUID to a task object and saves it in the Tasks list
 	 * 
 	 * @author A0119742A
@@ -91,10 +93,12 @@ public abstract class Data {
 	 */
 	public abstract boolean redo();
 
+	//@author A0111795A
 	public void removeDataUpdatedListener(DataUpdatedListener listener) {
 		dataUpdatedListeners.remove(listener);
 	}
 
+	//@author A0119742A
 	public abstract ArrayList<Task> searchTask();
 
 	/**This method rewrites the Tasks list with the Tasks list saved in the UndoState.

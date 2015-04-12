@@ -10,6 +10,7 @@ import java.nio.file.StandardOpenOption;
 
 import org.joda.time.DateTime;
 
+//@author A0111795A
 public class Logger {
 	private static Path logFile = new File("log.txt").toPath();
 

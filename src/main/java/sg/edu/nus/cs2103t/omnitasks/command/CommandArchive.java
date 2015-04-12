@@ -8,6 +8,13 @@ import sg.edu.nus.cs2103t.omnitask.item.Task;
 import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 
 //@author A0111795A
+/**
+ * This class contains the logic for Archive command. When Archive command is triggered,
+ * it will check the parameter being passed, when "done" is detected it will call the data class
+ * to mark all done tasks as archived and hide from displaying. And when an index is detected, 
+ * it will archive the selected task if the index in within correct range.
+ * <p>
+ */
 public class CommandArchive extends Command {
 
 	public static String[] COMMAND_ALIASES = new String[] { "archive" };

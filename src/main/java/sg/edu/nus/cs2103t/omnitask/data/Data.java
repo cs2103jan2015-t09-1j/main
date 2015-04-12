@@ -30,10 +30,9 @@ public abstract class Data {
 		dataUpdatedListeners.add(listener);
 	}
 
-	/*
-	 * @author Sim Wei Kang
+	/** This method assigns a task ID and a UUID to a task object and saves it in the Tasks list
 	 * 
-	 * This method assigns a task ID and a UUID to a task object and saves it in the Tasks list
+	 * @author A0119742A
 	 * 
 	 * @param task A task object that contains all the user input attributes
 	 * @return True if successful, false if overwise
@@ -41,24 +40,20 @@ public abstract class Data {
 	public abstract boolean addTask(Task task) throws TaskNoNameException,
 			IOException;
 
-	/*
-	 * @author Sim Wei Kang 
-	 * 
-	 * This method checks if the Task object is found in
+	/** This method checks if the Task object is found in
 	 * the Tasks list, and removes it if its found
 	 * 
+	 * @author A0119742A 
+	 *  
 	 * @param task The target Task to be removed
 	 * @return True if successful
 	 */
 	public abstract boolean deleteTask(Task task);
 
-	/*
-	 * @author Sim Wei Kang 
-	 * 
-	 * This method replicates the attributes of
+	/** This method replicates the attributes of
 	 * mutatorTask onto a Task object the Task object will then be saved into
 	 * the Task list.
-	 * 
+	 *   
 	 * @param mutatorTask A Task object that holds the data in which the user
 	 * wants to edit
 	 * 
@@ -69,16 +64,27 @@ public abstract class Data {
 	public abstract String getHelpDescriptors(String helpType, boolean miniMenu)
 			throws IOException;
 
+	/**
+	 * This method returns a Task object that exists in index-position of the Tasks list
+	 * @param index
+	 * @return Task A Task object
+	 */
 	public abstract Task getTask(int index);
 
+	/**
+	 * This method returns the a clone of the Tasks list
+	 * @return Tasks A list containing task objects
+	 */
 	public abstract ArrayList<Task> getTasks();
 
+	/**
+	 * This method updates the tasks list
+	 */
 	public abstract void notifyDataChanged();
 
-	/*
-	 * @author Sim Wei Kang
-	 * 
-	 * This method rewrites the Tasks list with the Tasks list saved in the RedoStack.
+	/** This method rewrites the Tasks list with the Tasks list saved in the RedoStack.
+	 *  
+	 * @author A0119742A
 	 * 
 	 * @param void
 	 * @return True if successful, false if otherwise.
@@ -91,24 +97,30 @@ public abstract class Data {
 
 	public abstract ArrayList<Task> searchTask();
 
-	/*
-	 * @author Sim Wei Kang
+	/**This method rewrites the Tasks list with the Tasks list saved in the UndoState.
 	 * 
-	 * This method rewrites the Tasks list with the Tasks list saved in the UndoState.
-	 * 
+	 * @author A0119742A
+	 * 	  
 	 * @param void
 	 * @return True if successful, false if otherwise
 	 */
 	public abstract boolean undo();
 
+	/**
+	 * This method updates the task ID of all the tasks in the tasks list
+	 */
 	public abstract void updateTaskId();
 
+	/**
+	 * This methods changes the storage directory of OmniTask
+	 * @param newDir New directory path
+	 * @return True if successful, false if otherwise.
+	 */
 	public abstract boolean changeStorageDirectory(String newDir);
 
-	/*
-	 * @author Sim Wei Kang
+	/**This method rewrites the target Task object's date attributes to null
 	 * 
-	 * This method rewrites the target Task object's date attributes to null
+	 * @author A0119742A
 	 * 
 	 * @param taskToRemove A Task object that contains the id of the target Task in the Tasks list
 	 * @return True if successful, false if otherwise

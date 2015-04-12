@@ -7,10 +7,19 @@ import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.item.Task;
 import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 
+/**
+ * This class contains the logic for Delete command. When Delete command is
+ * triggered, there will be a check if the target Task is in the tasks list. If
+ * it is found, make a replicate of the task object. The replicate then will be
+ * passed to data class which will then remove the task object from the tasks
+ * list
+ * <p>
+ */
+//@author A0119742
 public class CommandDelete extends Command {
 
-	public static String[] COMMAND_ALIASES = new String[] { "delete",
-			"remove", "cancel" };
+	public static String[] COMMAND_ALIASES = new String[] { "delete", "remove",
+			"cancel" };
 
 	public CommandDelete(CommandInput commandInput) {
 		super(commandInput);
@@ -36,9 +45,10 @@ public class CommandDelete extends Command {
 			return true;
 		} else {
 			ui.showError("Unable to delete Task \"" + commandInput.getId()
-					+ "\". " +  "Please choose a valid id!");
+					+ "\". " + "Please choose a valid id!");
 		}
 
 		return false;
 	}
 }
+//@author A0119742

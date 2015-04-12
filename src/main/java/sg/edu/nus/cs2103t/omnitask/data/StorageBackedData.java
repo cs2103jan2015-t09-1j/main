@@ -62,7 +62,7 @@ public class StorageBackedData extends Data {
 	}
 
 	// Not thread-safe
-	@Override
+	//@author A0119742A
 	public boolean addTask(Task task) throws TaskNoNameException, IOException {
 		assertInited();
 		getPreviousState();
@@ -216,6 +216,7 @@ public class StorageBackedData extends Data {
 
 		return true;
 	}
+	//@author A0119742A
 
 	@Override
 	public String getHelpDescriptors(String helpType, boolean miniMenu)
@@ -267,7 +268,7 @@ public class StorageBackedData extends Data {
 		tasks.setAll(tmpTasks);
 	}
 
-	@Override
+	//@author A0119742A
 	public boolean redo() {
 		if (redoStack.empty()) {
 			return false;
@@ -291,6 +292,7 @@ public class StorageBackedData extends Data {
 		}
 
 	}
+	//@author A0119742A
 
 	// Only in-charge of fetching full task list from the storage and pass it to
 	// CommandSearchImpl for processing
@@ -312,7 +314,8 @@ public class StorageBackedData extends Data {
 
 		return fullTaskList;
 	}
-
+	
+	//@author A0119742A
 	public boolean undo() {
 		if (previousState.empty()) {
 			return false;
@@ -341,6 +344,7 @@ public class StorageBackedData extends Data {
 
 		}
 	}
+	//@author A0119742A
 
 	private void assertInited() {
 		assert inited;

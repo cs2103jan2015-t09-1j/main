@@ -3,18 +3,18 @@ package sg.edu.nus.cs2103t.omnitasks.command;
 import sg.edu.nus.cs2103t.omnitask.data.Data;
 import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.item.Task;
-import sg.edu.nus.cs2103t.omnitask.ui.UI;
+import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 
-public class CommandUnarchiveImpl extends Command {
+public class CommandUnarchive extends Command {
 
 	public static String[] COMMAND_ALIASES = new String[] { "unarchive" };
 
-	public CommandUnarchiveImpl(CommandInput commandInput) {
+	public CommandUnarchive(CommandInput commandInput) {
 		super(commandInput);
 	}
 
 	@Override
-	public boolean processCommand(Data data, UI ui) {
+	public boolean processCommand(Data data, Ui ui) {
 		Task task = data.getTask((int) commandInput.getId() - 1);
 		task.setArchived(false);
 

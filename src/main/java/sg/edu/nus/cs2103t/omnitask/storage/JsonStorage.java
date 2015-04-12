@@ -3,8 +3,6 @@ package sg.edu.nus.cs2103t.omnitask.storage;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -27,18 +25,18 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-public class IOJSONImpl extends IO {
+public class JsonStorage extends Storage {
 	public Gson gson;
 
 	public File storageFile;
 
-	public IOJSONImpl(File storageFile) throws IOException {
+	public JsonStorage(File storageFile) throws IOException {
 		this.storageFile = storageFile;
 		this.gson = new GsonBuilder().registerTypeAdapter(
 				new TypeToken<DateTime>() {
 				}.getType(), new DateTimeConverter()).create();
 
-		IO.CheckIfFileExistAndCreateIfDoesNot(storageFile);
+		Storage.CheckIfFileExistAndCreateIfDoesNot(storageFile);
 	}
 
 	@Override
@@ -133,7 +131,7 @@ public class IOJSONImpl extends IO {
 			// copy contents
 			currentTasks = readFromFile();
 			storageFile = new File(newDir+"\\storage.txt");
-			IO.CheckIfFileExistAndCreateIfDoesNot(storageFile);
+			Storage.CheckIfFileExistAndCreateIfDoesNot(storageFile);
 			saveToFile(currentTasks);
 			// create configuration file to store new storage location
 			PrintWriter confFile = new PrintWriter("omnitask.conf");

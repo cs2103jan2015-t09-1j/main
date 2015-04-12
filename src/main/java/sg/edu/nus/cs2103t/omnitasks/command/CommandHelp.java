@@ -5,21 +5,21 @@ import java.io.IOException;
 import sg.edu.nus.cs2103t.omnitask.data.Data;
 import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.item.CommandInput.CommandType;
-import sg.edu.nus.cs2103t.omnitask.ui.UI;
+import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 
-public class CommandHelpImpl extends Command {
+public class CommandHelp extends Command {
 
-	public static String[] COMMAND_ALIASES_HELP = new String[] { "help",
+	public static String[] COMMAND_ALIASES = new String[] { "help",
 			"manual" };
 
-	public CommandHelpImpl(CommandInput commandInput) {
+	public CommandHelp(CommandInput commandInput) {
 		super(commandInput);
 		// TODO Auto-generated constructor stub
 	}
 
 	// TODO: This class shouldn't be calling UI directly
 	@Override
-	public boolean processCommand(Data data, UI ui) {
+	public boolean processCommand(Data data, Ui ui) {
 		String commandDescription = "";
 		String specificCommandName = "";
 		if (commandInput.getName() != null) {

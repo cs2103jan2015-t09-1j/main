@@ -281,7 +281,7 @@ public class Task {
 		if (endDate == null)
 			return false;
 
-		return new DateTime().now().isAfter(endDate);
+		return DateTime.now().isAfter(endDate);
 	}
 
 	public boolean isRecurrence() {

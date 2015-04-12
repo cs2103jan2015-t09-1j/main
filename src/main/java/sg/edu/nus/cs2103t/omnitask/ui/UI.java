@@ -7,7 +7,7 @@ import org.joda.time.DateTime;
 import sg.edu.nus.cs2103t.omnitask.item.Task;
 import sg.edu.nus.cs2103t.omnitask.ui.MainViewController.ViewMode;
 
-public abstract class UI {
+public abstract class Ui {
 
 	public static interface ControllerCallback {
 		ArrayList<String> doAutoComplete(String userInput);

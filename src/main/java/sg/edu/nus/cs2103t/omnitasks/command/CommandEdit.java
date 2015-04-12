@@ -3,19 +3,19 @@ package sg.edu.nus.cs2103t.omnitasks.command;
 import sg.edu.nus.cs2103t.omnitask.data.Data;
 import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.item.Task;
-import sg.edu.nus.cs2103t.omnitask.ui.UI;
+import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 
-public class CommandEditImpl extends Command {
+public class CommandEdit extends Command {
 
-	public static String[] COMMAND_ALIASES_EDIT = new String[] { "edit",
+	public static String[] COMMAND_ALIASES = new String[] { "edit",
 			"change", "update", "modify" };
 
-	public CommandEditImpl(CommandInput commandInput) {
+	public CommandEdit(CommandInput commandInput) {
 		super(commandInput);
 	}
 
 	@Override
-	public boolean processCommand(Data data, UI ui) {
+	public boolean processCommand(Data data, Ui ui) {
 
 		Task task = new Task();
 		try {

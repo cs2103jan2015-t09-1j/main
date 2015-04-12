@@ -39,97 +39,97 @@ public class Utils {
 
 	public static CommandInput.CommandType getCommandTypeFromString(String str) {
 
-		for (String command : CommandAddImpl.COMMAND_ALIASES_ADD) {
+		for (String command : CommandAdd.COMMAND_ALIASES) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
 				return CommandInput.CommandType.ADD;
 			}
 		}
 
-		for (String command : CommandDeleteImpl.COMMAND_ALIASES_DELETE) {
+		for (String command : CommandDelete.COMMAND_ALIASES) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
 				return CommandInput.CommandType.DELETE;
 			}
 		}
 
-		for (String command : CommandDisplayImpl.COMMAND_ALIASES_DISPLAY) {
+		for (String command : CommandDisplay.COMMAND_ALIASES) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
 				return CommandInput.CommandType.DISPLAY;
 			}
 		}
 
-		for (String command : CommandEditImpl.COMMAND_ALIASES_EDIT) {
+		for (String command : CommandEdit.COMMAND_ALIASES) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
 				return CommandInput.CommandType.EDIT;
 			}
 		}
 
-		for (String command : CommandExitImpl.COMMAND_ALIASES_EXIT) {
+		for (String command : CommandExit.COMMAND_ALIASES) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
 				return CommandInput.CommandType.EXIT;
 			}
 		}
 
-		for (String command : CommandSearchImpl.COMMAND_ALIASES_SEARCH) {
+		for (String command : CommandSearch.COMMAND_ALIASES) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
 				return CommandInput.CommandType.SEARCH;
 			}
 		}
 
-		for (String command : CommandHelpImpl.COMMAND_ALIASES_HELP) {
+		for (String command : CommandHelp.COMMAND_ALIASES) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
 				return CommandInput.CommandType.HELP;
 			}
 		}
 
-		for (String command : CommandUndoImpl.COMMAND_ALIASES_UNDO) {
+		for (String command : CommandUndo.COMMAND_ALIASES) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
 				return CommandInput.CommandType.UNDO;
 			}
 		}
 
-		for (String command : CommandRedoImpl.COMMAND_ALIASES_REDO) {
+		for (String command : CommandRedo.COMMAND_ALIASES) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
 				return CommandInput.CommandType.REDO;
 			}
 		}
 
-		for (String command : CommandMarkImpl.COMMAND_ALIASES_MARK) {
+		for (String command : CommandMark.COMMAND_ALIASES) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
 				return CommandInput.CommandType.MARK;
 			}
 		}
 
-		for (String command : CommandRemoveDateImpl.COMMAND_ALIASES_REMOVEDATE) {
+		for (String command : CommandRemoveDate.COMMAND_ALIASES) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
 				return CommandInput.CommandType.REMOVEDATE;
 			}
 		}
 
-		for (String command : CommandNextImpl.COMMAND_ALIASES) {
+		for (String command : CommandNext.COMMAND_ALIASES) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
 				return CommandInput.CommandType.NEXT;
 			}
 		}
 
-		for (String command : CommandPrevImpl.COMMAND_ALIASES) {
+		for (String command : CommandPrev.COMMAND_ALIASES) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
 				return CommandInput.CommandType.PREV;
 			}
 		}
 
-		for (String command : CommandStorageImpl.COMMAND_ALIASES_STORAGE) {
+		for (String command : CommandStorage.COMMAND_ALIASES) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
 				return CommandInput.CommandType.STORAGE;
 			}
 		}
 
-		for (String command : CommandArchiveImpl.COMMAND_ALIASES) {
+		for (String command : CommandArchive.COMMAND_ALIASES) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
 				return CommandInput.CommandType.ARCHIVE;
 			}
 		}
 
-		for (String command : CommandUnarchiveImpl.COMMAND_ALIASES) {
+		for (String command : CommandUnarchive.COMMAND_ALIASES) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
 				return CommandInput.CommandType.UNARCHIVE;
 			}

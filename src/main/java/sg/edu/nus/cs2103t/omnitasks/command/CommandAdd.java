@@ -6,18 +6,18 @@ import sg.edu.nus.cs2103t.omnitask.data.Data;
 import sg.edu.nus.cs2103t.omnitask.data.Data.TaskNoNameException;
 import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.item.Task;
-import sg.edu.nus.cs2103t.omnitask.ui.UI;
+import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 
-public class CommandAddImpl extends Command {
+public class CommandAdd extends Command {
 
-	public static String[] COMMAND_ALIASES_ADD = new String[] { "add", "new" };
+	public static String[] COMMAND_ALIASES = new String[] { "add", "new" };
 
-	public CommandAddImpl(CommandInput commandInput) {
+	public CommandAdd(CommandInput commandInput) {
 		super(commandInput);
 	}
 
 	@Override
-	public boolean processCommand(Data data, UI ui) {
+	public boolean processCommand(Data data, Ui ui) {
 
 		int wordLengthLimit = 80;
 		for (int i = 0, lengthOfWord = 0; i < commandInput.getName()

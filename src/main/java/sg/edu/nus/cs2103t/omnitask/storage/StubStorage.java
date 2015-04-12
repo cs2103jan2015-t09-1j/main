@@ -1,6 +1,5 @@
 package sg.edu.nus.cs2103t.omnitask.storage;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,14 +13,15 @@ import sg.edu.nus.cs2103t.omnitask.item.Task;
  * @author Faruq
  *
  */
-public class IOStubImpl extends IO {
+public class StubStorage extends Storage {
 
 	private ArrayList<Task> tasks;
 
-	public IOStubImpl() {
+	public StubStorage() {
 		this.tasks = new ArrayList<Task>();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public ArrayList<Task> readFromFile() {
 		return (ArrayList<Task>) tasks.clone();

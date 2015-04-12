@@ -3,18 +3,18 @@ package sg.edu.nus.cs2103t.omnitasks.command;
 import sg.edu.nus.cs2103t.omnitask.data.Data;
 import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.item.Task;
-import sg.edu.nus.cs2103t.omnitask.ui.UI;
+import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 
-public class CommandRemoveDateImpl extends Command {
+public class CommandRemoveDate extends Command {
 
-	public static String[] COMMAND_ALIASES_REMOVEDATE = new String[] { "remove-date" };
+	public static String[] COMMAND_ALIASES = new String[] { "remove-date" };
 
-	public CommandRemoveDateImpl(CommandInput commandInput) {
+	public CommandRemoveDate(CommandInput commandInput) {
 		super(commandInput);
 	}
 
 	@Override
-	public boolean processCommand(Data data, UI ui) {
+	public boolean processCommand(Data data, Ui ui) {
 		Task taskToRemoveDate = data.getTask((int) commandInput.getId() - 1);
 		
 		taskToRemoveDate.setStartDate(null);

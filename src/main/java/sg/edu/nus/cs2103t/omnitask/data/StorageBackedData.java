@@ -1,6 +1,5 @@
 package sg.edu.nus.cs2103t.omnitask.data;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -15,22 +14,22 @@ import org.joda.time.DateTime;
 
 import sg.edu.nus.cs2103t.omnitask.Logger;
 import sg.edu.nus.cs2103t.omnitask.item.Task;
-import sg.edu.nus.cs2103t.omnitask.storage.IO;
+import sg.edu.nus.cs2103t.omnitask.storage.Storage;
 import sg.edu.nus.cs2103t.omnitasks.command.Utils;
 
-public class DataImpl extends Data {
+public class StorageBackedData extends Data {
 
-	private static DataImpl data;
+	private static StorageBackedData data;
 
-	public static DataImpl GetSingleton() {
+	public static StorageBackedData GetSingleton() {
 		if (data == null) {
-			data = new DataImpl();
+			data = new StorageBackedData();
 		}
 
 		return data;
 	}
 
-	protected IO io;
+	protected Storage io;
 
 	private boolean inited;
 
@@ -58,7 +57,7 @@ public class DataImpl extends Data {
 
 	};
 
-	private DataImpl() {
+	private StorageBackedData() {
 		super();
 	}
 
@@ -241,7 +240,7 @@ public class DataImpl extends Data {
 		return clonedTasks;
 	}
 
-	public DataImpl init(IO io) throws IOException {
+	public StorageBackedData init(Storage io) throws IOException {
 		if (inited) {
 			return this;
 		}
@@ -361,6 +360,7 @@ public class DataImpl extends Data {
 		return ++taskId;
 	}
 
+	@SuppressWarnings("unchecked")
 	private Stack<ArrayList<Task>> getPreviousState() {
 		previousList = getTasks();
 		previousState.push((ArrayList<Task>) previousList.clone());

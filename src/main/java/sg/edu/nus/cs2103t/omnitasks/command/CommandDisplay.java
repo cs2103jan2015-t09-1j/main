@@ -7,19 +7,19 @@ import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.item.Task;
 import sg.edu.nus.cs2103t.omnitask.ui.MainViewController;
 import sg.edu.nus.cs2103t.omnitask.ui.MainViewController.ViewMode;
-import sg.edu.nus.cs2103t.omnitask.ui.UI;
+import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 
-public class CommandDisplayImpl extends Command {
+public class CommandDisplay extends Command {
 
-	public static String[] COMMAND_ALIASES_DISPLAY = new String[] { "display",
+	public static String[] COMMAND_ALIASES = new String[] { "display",
 			"show" };
 
-	public CommandDisplayImpl(CommandInput commandInput) {
+	public CommandDisplay(CommandInput commandInput) {
 		super(commandInput);
 	}
 
 	@Override
-	public boolean processCommand(Data data, UI ui) {
+	public boolean processCommand(Data data, Ui ui) {
 		if (commandInput.getName() == null || (commandInput.getName().isEmpty() && commandInput.getStartDate() == null && commandInput.getEndDate() == null)) {
 			ui.showError("Invalid parameters for \"" + commandInput.getCommandType().toString().toLowerCase() + "\" command!");
 			return false;

@@ -11,20 +11,18 @@ import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import sg.edu.nus.cs2103t.omnitask.data.Data;
-import sg.edu.nus.cs2103t.omnitask.data.DataImpl;
+import sg.edu.nus.cs2103t.omnitask.data.StorageBackedData;
 import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.item.CommandInput.CommandType;
-import sg.edu.nus.cs2103t.omnitask.item.Task;
 import sg.edu.nus.cs2103t.omnitask.parser.Parser;
-import sg.edu.nus.cs2103t.omnitask.parser.ParserMainImpl;
-import sg.edu.nus.cs2103t.omnitask.storage.IO;
-import sg.edu.nus.cs2103t.omnitask.storage.IOJSONImpl;
-import sg.edu.nus.cs2103t.omnitask.ui.UI;
-import sg.edu.nus.cs2103t.omnitask.ui.UI.ControllerCallback;
-import sg.edu.nus.cs2103t.omnitask.ui.UIMainImpl;
+import sg.edu.nus.cs2103t.omnitask.storage.JsonStorage;
+import sg.edu.nus.cs2103t.omnitask.storage.Storage;
+import sg.edu.nus.cs2103t.omnitask.ui.JavaFxUi;
+import sg.edu.nus.cs2103t.omnitask.ui.Ui;
+import sg.edu.nus.cs2103t.omnitask.ui.Ui.ControllerCallback;
 import sg.edu.nus.cs2103t.omnitasks.command.Command;
-import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplayImpl;
-import sg.edu.nus.cs2103t.omnitasks.command.CommandMarkImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplay;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandMark;
 
 /**
  * @author TLX
@@ -33,7 +31,7 @@ import sg.edu.nus.cs2103t.omnitasks.command.CommandMarkImpl;
 
 public class Controller extends Application implements ControllerCallback {
 
-	private static UI ui;
+	private static Ui ui;
 
 	public static void Exit() {
 		ui.exit();
@@ -115,11 +113,11 @@ public class Controller extends Application implements ControllerCallback {
 	public void start(Stage primaryStage) throws Exception {
 
 		// Initialize UI
-		ui = new UIMainImpl(primaryStage);
+		ui = new JavaFxUi(primaryStage);
 		ui.setCommandCallback(this);
 
 		// Initialize other components
-		parser = new ParserMainImpl();
+		parser = new Parser();
 
 		// Get file from argument
 		File storageFile = null;
@@ -137,7 +135,7 @@ public class Controller extends Application implements ControllerCallback {
 
 		String userSetDir = "";
 		try {
-			userSetDir = IO.readFromConfFile();
+			userSetDir = Storage.readFromConfFile();
 		} catch (FileNotFoundException io) {
 
 		}
@@ -156,7 +154,7 @@ public class Controller extends Application implements ControllerCallback {
 		}
 
 		try {
-			data = DataImpl.GetSingleton().init(new IOJSONImpl(storageFile));
+			data = StorageBackedData.GetSingleton().init(new JsonStorage(storageFile));
 		} catch (IOException ex) {
 			System.err.println("No permission to access file.");
 			Controller.Exit();
@@ -233,7 +231,7 @@ public class Controller extends Application implements ControllerCallback {
 	public void showAll() {
 		CommandInput commandInput = new CommandInput(CommandType.DISPLAY);
 		commandInput.setName("all");
-		Command command = new CommandDisplayImpl(commandInput);
+		Command command = new CommandDisplay(commandInput);
 		command.processCommand(data, ui);
 	}
 
@@ -242,7 +240,7 @@ public class Controller extends Application implements ControllerCallback {
 		CommandInput commandInput = new CommandInput(CommandType.MARK);
 		commandInput.setId(id);
 		commandInput.setCompleted(true);
-		Command command = new CommandMarkImpl(commandInput);
+		Command command = new CommandMark(commandInput);
 		return command.processCommand(data, ui);
 	}
 
@@ -251,7 +249,7 @@ public class Controller extends Application implements ControllerCallback {
 		CommandInput commandInput = new CommandInput(CommandType.MARK);
 		commandInput.setId(id);
 		commandInput.setCompleted(false);
-		Command command = new CommandMarkImpl(commandInput);
+		Command command = new CommandMark(commandInput);
 		return command.processCommand(data, ui);
 	}
 

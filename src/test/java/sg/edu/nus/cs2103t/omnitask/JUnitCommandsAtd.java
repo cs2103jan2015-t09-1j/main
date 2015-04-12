@@ -6,46 +6,46 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import sg.edu.nus.cs2103t.omnitask.data.DataStubImpl;
+import sg.edu.nus.cs2103t.omnitask.data.StubData;
 import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.item.CommandInput.CommandType;
-import sg.edu.nus.cs2103t.omnitask.ui.UI;
-import sg.edu.nus.cs2103t.omnitask.ui.UIStubImpl;
+import sg.edu.nus.cs2103t.omnitask.ui.Ui;
+import sg.edu.nus.cs2103t.omnitask.ui.StubUi;
 import sg.edu.nus.cs2103t.omnitasks.command.Command;
-import sg.edu.nus.cs2103t.omnitasks.command.CommandAddImpl;
-import sg.edu.nus.cs2103t.omnitasks.command.CommandEditImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandAdd;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandEdit;
 
 public class JUnitCommandsAtd {
 	
 	// Test add command, make sure it is added successfully
 	@Test
 	public void TestCommandAdd() {
-		UI ui = new UIStubImpl();
-		DataStubImpl data = initData();
+		Ui ui = new StubUi();
+		StubData data = initData();
 		addOneTaskShouldPass(data, ui, "Hello Add");
 	}
 	
 	// Test add command, make sure empty string will not add successfully
 	@Test
 	public void TestCommandAddFail1() {
-		UI ui = new UIStubImpl();
-		DataStubImpl data = initData();
+		Ui ui = new StubUi();
+		StubData data = initData();
 		addOneTaskShouldFail(data, ui, "");
 	}
 	
 	// Test add command, make sure empty (untrimmed) string will not add successfully
 	@Test
 	public void TestCommandAddFail2() {
-		UI ui = new UIStubImpl();
-		DataStubImpl data = initData();
+		Ui ui = new StubUi();
+		StubData data = initData();
 		addOneTaskShouldFail(data, ui, " ");
 	}
 	
 	// Test edit command, make sure edited tasks are saved properly
 	@Test
 	public void TestCommandEdit() {
-		UI ui = new UIStubImpl();
-		DataStubImpl data = initData();
+		Ui ui = new StubUi();
+		StubData data = initData();
 		
 		addOneTaskShouldPass(data, ui, "Hello Edit");
 		
@@ -53,7 +53,7 @@ public class JUnitCommandsAtd {
 		commandInput.setId(1);
 		commandInput.setName("Hello Edited");
 		
-		Command command = new CommandEditImpl(commandInput);
+		Command command = new CommandEdit(commandInput);
 		boolean success = command.processCommand(data, ui);
 		
 		assertTrue(success);
@@ -62,8 +62,8 @@ public class JUnitCommandsAtd {
 		assertEquals(data.getTasks().get(0).getName(), "Hello Edited");
 	}
 	
-	private DataStubImpl initData() {
-		DataStubImpl data = DataStubImpl.GetSingleton();
+	private StubData initData() {
+		StubData data = StubData.GetSingleton();
 		
 		// Needed because of method signature
 		// Technically exception would never ever be thrown
@@ -77,11 +77,11 @@ public class JUnitCommandsAtd {
 	}
 	
 	// Assert if fail
-	private void addOneTaskShouldPass(DataStubImpl data, UI ui, String name) {
+	private void addOneTaskShouldPass(StubData data, Ui ui, String name) {
 		CommandInput commandInput = new CommandInput(CommandType.ADD);
 		commandInput.setName(name);
 		
-		Command command = new CommandAddImpl(commandInput);
+		Command command = new CommandAdd(commandInput);
 		boolean success = command.processCommand(data, ui);
 		
 		assertTrue(success);
@@ -91,11 +91,11 @@ public class JUnitCommandsAtd {
 	}
 	
 	// Assert if pass
-	private void addOneTaskShouldFail(DataStubImpl data, UI ui, String name) {
+	private void addOneTaskShouldFail(StubData data, Ui ui, String name) {
 		CommandInput commandInput = new CommandInput(CommandType.ADD);
 		commandInput.setName(name);
 		
-		Command command = new CommandAddImpl(commandInput);
+		Command command = new CommandAdd(commandInput);
 		boolean success = command.processCommand(data, ui);
 		
 		assertFalse(success);

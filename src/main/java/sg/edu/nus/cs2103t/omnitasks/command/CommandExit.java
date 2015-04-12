@@ -3,19 +3,19 @@ package sg.edu.nus.cs2103t.omnitasks.command;
 import sg.edu.nus.cs2103t.omnitask.Controller;
 import sg.edu.nus.cs2103t.omnitask.data.Data;
 import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
-import sg.edu.nus.cs2103t.omnitask.ui.UI;
+import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 
-public class CommandExitImpl extends Command {
+public class CommandExit extends Command {
 
-	public static String[] COMMAND_ALIASES_EXIT = new String[] { "exit",
+	public static String[] COMMAND_ALIASES = new String[] { "exit",
 			"close", "escape" };
 
-	public CommandExitImpl(CommandInput commandInput) {
+	public CommandExit(CommandInput commandInput) {
 		super(commandInput);
 	}
 
 	@Override
-	public boolean processCommand(Data data, UI ui) {
+	public boolean processCommand(Data data, Ui ui) {
 		Controller.Exit();
 		return true;
 	}

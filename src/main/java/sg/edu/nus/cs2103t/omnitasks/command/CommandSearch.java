@@ -6,7 +6,7 @@ import sg.edu.nus.cs2103t.omnitask.data.Data;
 import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.item.Task;
 import sg.edu.nus.cs2103t.omnitask.ui.MainViewController.ViewMode;
-import sg.edu.nus.cs2103t.omnitask.ui.UI;
+import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 
 /**This class contains the logic for search command. When search command is detected by the parser it will pass commandInput 
  * object into commandSearchImpl and return a commandSearchImpl object. This class object is used in controller class where processComamnd 
@@ -16,18 +16,18 @@ import sg.edu.nus.cs2103t.omnitask.ui.UI;
  * @author tlx
  * 
  */
-public class CommandSearchImpl extends Command {
+public class CommandSearch extends Command {
 
-	public static String[] COMMAND_ALIASES_SEARCH = new String[] { "search",
+	public static String[] COMMAND_ALIASES = new String[] { "search",
 			"find" };
 	
-	public CommandSearchImpl(CommandInput commandInput) {
+	public CommandSearch(CommandInput commandInput) {
 		super(commandInput);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public boolean processCommand(Data data, UI ui) {
+	public boolean processCommand(Data data, Ui ui) {
 		// process search functions done here
 		ArrayList<Task> searchTaskResult = new ArrayList<Task>();
 		ArrayList<Task> fullTaskList = new ArrayList<Task>();

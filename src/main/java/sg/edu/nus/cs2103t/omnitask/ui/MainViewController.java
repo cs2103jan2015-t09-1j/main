@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -23,11 +19,16 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSObject;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import sg.edu.nus.cs2103t.omnitask.item.Task;
 import sg.edu.nus.cs2103t.omnitask.item.Task.Priority;
-import sg.edu.nus.cs2103t.omnitask.parser.ParserMainImpl;
-import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplayImpl;
-import sg.edu.nus.cs2103t.omnitasks.command.CommandEditImpl;
+import sg.edu.nus.cs2103t.omnitask.parser.Parser;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplay;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandEdit;
 
 public class MainViewController {
 
@@ -57,7 +58,7 @@ public class MainViewController {
 
 	private ObservableList<Task> altTasks;
 
-	private UI ui;
+	private Ui ui;
 
 	private ViewMode viewMode = ViewMode.ALL;
 
@@ -119,7 +120,7 @@ public class MainViewController {
 		this.altTasks.addAll(tasks);
 	}
 
-	public void setUI(UI ui) {
+	public void setUI(Ui ui) {
 		this.ui = ui;
 	}
 
@@ -152,7 +153,7 @@ public class MainViewController {
 				addAllCards();
 			}
 		} else {
-			int ind = 0;
+			//int ind = 0;
 			while (changes.next()) {
 				// System.out.println("changeIndex: " + ind++);
 				for (Task task : changes.getRemoved()) {
@@ -224,7 +225,7 @@ public class MainViewController {
 		agendaView.getEngine().getLoadWorker().stateProperty()
 				.addListener(new ChangeListener<State>() {
 					@Override
-					public void changed(ObservableValue ov, State oldState,
+					public void changed(ObservableValue<? extends State> ov, State oldState,
 							State newState) {
 						if (newState == Worker.State.SUCCEEDED) {
 							showMessage("Welcome to OmniTask. Type 'help' to get help.");
@@ -453,7 +454,7 @@ public class MainViewController {
 			} else {
 				date = "due " + date;
 			}
-			String command = CommandEditImpl.COMMAND_ALIASES_EDIT[0] + " "
+			String command = CommandEdit.COMMAND_ALIASES[0] + " "
 					+ task.getId() + " ";
 			omniBar.setText(command + date);
 			focusOmniBar();
@@ -464,16 +465,16 @@ public class MainViewController {
 		public void autofillOmniBarWithEditId(String uuid) {
 			Task task = getTaskByUuid(uuid);
 			cycleHandleHistory();
-			omniBar.setText(CommandEditImpl.COMMAND_ALIASES_EDIT[0] + " "
+			omniBar.setText(CommandEdit.COMMAND_ALIASES[0] + " "
 					+ task.getId() + " ");
 			focusOmniBar();
-			omniBar.selectRange(0, CommandEditImpl.COMMAND_ALIASES_EDIT[0].length());
+			omniBar.selectRange(0, CommandEdit.COMMAND_ALIASES[0].length());
 		}
 
 		public void autofillOmniBarWithEditName(String uuid) {
 			Task task = getTaskByUuid(uuid);
 			cycleHandleHistory();
-			String command = CommandEditImpl.COMMAND_ALIASES_EDIT[0] + " "
+			String command = CommandEdit.COMMAND_ALIASES[0] + " "
 					+ task.getId() + " ";
 			omniBar.setText(command + task.getName());
 			focusOmniBar();
@@ -484,9 +485,9 @@ public class MainViewController {
 		public void autofillOmniBarWithEditPriority(String uuid) {
 			Task task = getTaskByUuid(uuid);
 			cycleHandleHistory();
-			String priority = ParserMainImpl.PRIORITY_INDICATORS[task
+			String priority = Parser.PRIORITY_INDICATORS[task
 					.getPriority().ordinal()];
-			String command = CommandEditImpl.COMMAND_ALIASES_EDIT[0] + " "
+			String command = CommandEdit.COMMAND_ALIASES[0] + " "
 					+ task.getId() + " ";
 			omniBar.setText(command + priority);
 			focusOmniBar();
@@ -562,7 +563,7 @@ public class MainViewController {
 		}
 		
 		public void showCategory(String category) {
-			ui.invokeCommandReceivedListener(CommandDisplayImpl.COMMAND_ALIASES_DISPLAY[0] + " " + category);
+			ui.invokeCommandReceivedListener(CommandDisplay.COMMAND_ALIASES[0] + " " + category);
 			omniBar.clear();
 		}
 		

@@ -6,7 +6,7 @@ import javafx.scene.web.WebView;
 
 public class HelpViewController {
 
-	private UI ui;
+	private Ui ui;
 
 	@FXML
 	private WebView webView;
@@ -19,7 +19,7 @@ public class HelpViewController {
 		webView.getEngine().loadContent(text);
 	}
 
-	public void setUI(UI ui) {
+	public void setUI(Ui ui) {
 		this.ui = ui;
 	}
 

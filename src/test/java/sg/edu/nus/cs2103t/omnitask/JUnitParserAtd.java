@@ -10,7 +10,6 @@ import org.junit.Test;
 import sg.edu.nus.cs2103t.omnitask.item.CommandInput.CommandType;
 import sg.edu.nus.cs2103t.omnitask.item.Task.Priority;
 import sg.edu.nus.cs2103t.omnitask.parser.Parser;
-import sg.edu.nus.cs2103t.omnitask.parser.ParserMainImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.Command;
 
 public class JUnitParserAtd {
@@ -174,7 +173,7 @@ public class JUnitParserAtd {
 	}
 	
 	private Command parseUserInputHelper(String input) {
-		Parser parser = new ParserMainImpl();
+		Parser parser = new Parser();
 		return parser.parseUserInput(input);
 	}
 }

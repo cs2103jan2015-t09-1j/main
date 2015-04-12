@@ -2,19 +2,19 @@ package sg.edu.nus.cs2103t.omnitasks.command;
 
 import sg.edu.nus.cs2103t.omnitask.data.Data;
 import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
-import sg.edu.nus.cs2103t.omnitask.ui.UI;
+import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 
-public class CommandStorageImpl extends Command {
+public class CommandStorage extends Command {
 
-	public static String[] COMMAND_ALIASES_STORAGE = new String[] { "storage",
+	public static String[] COMMAND_ALIASES = new String[] { "storage",
 			"dest", "dir" };
 
-	public CommandStorageImpl(CommandInput commandInput) {
+	public CommandStorage(CommandInput commandInput) {
 		super(commandInput);
 	}
 
 	@Override
-	public boolean processCommand(Data data, UI ui) {
+	public boolean processCommand(Data data, Ui ui) {
 
 		if (commandInput.getName() != null) {
 			if (data.changeStorageDirectory(commandInput.getName())) {

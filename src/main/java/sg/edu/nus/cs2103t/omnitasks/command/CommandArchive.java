@@ -5,18 +5,18 @@ import java.util.ArrayList;
 import sg.edu.nus.cs2103t.omnitask.data.Data;
 import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.item.Task;
-import sg.edu.nus.cs2103t.omnitask.ui.UI;
+import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 
-public class CommandArchiveImpl extends Command {
+public class CommandArchive extends Command {
 
 	public static String[] COMMAND_ALIASES = new String[] { "archive" };
 
-	public CommandArchiveImpl(CommandInput commandInput) {
+	public CommandArchive(CommandInput commandInput) {
 		super(commandInput);
 	}
 
 	@Override
-	public boolean processCommand(Data data, UI ui) {
+	public boolean processCommand(Data data, Ui ui) {
 		if (commandInput.getName() != null
 				&& commandInput.getName().toLowerCase().equals("done")) {
 			ArrayList<Task> tasks = data.getTasks();

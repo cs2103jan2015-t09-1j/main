@@ -3,18 +3,18 @@ package sg.edu.nus.cs2103t.omnitasks.command;
 import sg.edu.nus.cs2103t.omnitask.data.Data;
 import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.item.Task;
-import sg.edu.nus.cs2103t.omnitask.ui.UI;
+import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 
-public class CommandMarkImpl extends Command {
+public class CommandMark extends Command {
 
-	public static String[] COMMAND_ALIASES_MARK = new String[] { "mark" };
+	public static String[] COMMAND_ALIASES = new String[] { "mark" };
 
-	public CommandMarkImpl(CommandInput commandInput) {
+	public CommandMark(CommandInput commandInput) {
 		super(commandInput);
 	}
 
 	@Override
-	public boolean processCommand(Data data, UI ui) {
+	public boolean processCommand(Data data, Ui ui) {
 		Task task = new Task();
 		try {
 			task = data.getTask((int) commandInput.getId() - 1);

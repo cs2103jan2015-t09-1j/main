@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import sg.edu.nus.cs2103t.omnitask.item.Task;
 import sg.edu.nus.cs2103t.omnitask.ui.MainViewController.ViewMode;
 
-public class UIStubImpl extends UI {
+public class StubUi extends Ui {
 
 	@Override
 	public void closeHelp() {

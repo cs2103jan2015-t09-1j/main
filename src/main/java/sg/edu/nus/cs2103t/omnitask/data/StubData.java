@@ -6,13 +6,13 @@ import java.util.UUID;
 
 import sg.edu.nus.cs2103t.omnitask.item.Task;
 
-public class DataStubImpl extends Data {
+public class StubData extends Data {
 
-	private static DataStubImpl data;
+	private static StubData data;
 
-	public static DataStubImpl GetSingleton() {
+	public static StubData GetSingleton() {
 		if (data == null) {
-			data = new DataStubImpl();
+			data = new StubData();
 		}
 
 		return data;
@@ -22,7 +22,7 @@ public class DataStubImpl extends Data {
 
 	private ArrayList<Task> tasks;
 
-	private DataStubImpl() {
+	private StubData() {
 		super();
 	}
 
@@ -96,7 +96,7 @@ public class DataStubImpl extends Data {
 		return tasks;
 	}
 
-	public DataStubImpl init() throws IOException {
+	public StubData init() throws IOException {
 		if (inited) {
 			return this;
 		}

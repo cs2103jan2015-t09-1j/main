@@ -5,19 +5,19 @@ import java.util.ArrayList;
 import sg.edu.nus.cs2103t.omnitask.data.Data;
 import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.item.Task;
-import sg.edu.nus.cs2103t.omnitask.ui.UI;
+import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 
-public class CommandDeleteImpl extends Command {
+public class CommandDelete extends Command {
 
-	public static String[] COMMAND_ALIASES_DELETE = new String[] { "delete",
+	public static String[] COMMAND_ALIASES = new String[] { "delete",
 			"remove", "cancel" };
 
-	public CommandDeleteImpl(CommandInput commandInput) {
+	public CommandDelete(CommandInput commandInput) {
 		super(commandInput);
 	}
 
 	@Override
-	public boolean processCommand(Data data, UI ui) {
+	public boolean processCommand(Data data, Ui ui) {
 		ArrayList<Task> tasks = data.getTasks();
 		Task taskToRemove = null;
 

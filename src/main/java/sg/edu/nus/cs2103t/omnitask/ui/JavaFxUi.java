@@ -35,17 +35,16 @@ import org.joda.time.DateTime;
 
 import sg.edu.nus.cs2103t.omnitask.Controller;
 import sg.edu.nus.cs2103t.omnitask.Logger;
-import sg.edu.nus.cs2103t.omnitask.data.DataImpl;
 import sg.edu.nus.cs2103t.omnitask.data.Data.DataUpdatedListener;
+import sg.edu.nus.cs2103t.omnitask.data.StorageBackedData;
 import sg.edu.nus.cs2103t.omnitask.item.Task;
 import sg.edu.nus.cs2103t.omnitask.ui.MainViewController.ViewMode;
-import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplayImpl;
 
 import com.tulskiy.keymaster.common.HotKey;
 import com.tulskiy.keymaster.common.HotKeyListener;
 import com.tulskiy.keymaster.common.Provider;
 
-public class UIMainImpl extends UI {
+public class JavaFxUi extends Ui {
 
 	private static double WINDOW_HEIGHT = 680;
 
@@ -56,7 +55,7 @@ public class UIMainImpl extends UI {
 		public void dataUpdated(
 				ArrayList<Task> tasks,
 				javafx.collections.ListChangeListener.Change<? extends Task> changes) {
-			viewController.updateAllTasks(tasks, changes);
+			mainViewController.updateAllTasks(tasks, changes);
 		}
 
 	};
@@ -92,9 +91,9 @@ public class UIMainImpl extends UI {
 
 	private TrayIcon trayIcon = new TrayIcon(image, "OmniTask");
 
-	private MainViewController viewController;
+	private MainViewController mainViewController;
 
-	public UIMainImpl(Stage primaryStage) {
+	public JavaFxUi(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 	}
 
@@ -134,37 +133,37 @@ public class UIMainImpl extends UI {
 
 	@Override
 	public void scrollDown() {
-		viewController.scrollDown();
+		mainViewController.scrollDown();
 	}
 
 	@Override
 	public void scrollUp() {
-		viewController.scrollUp();
+		mainViewController.scrollUp();
 	}
 	
 	@Override
 	public void showSection(String section) {
-		viewController.scrollToSection(section);
+		mainViewController.scrollToSection(section);
 	}
 	
 	@Override
 	public void showSection(DateTime endDate) {
-		viewController.scrollToSection(endDate);
+		mainViewController.scrollToSection(endDate);
 	}
 	
 	@Override
 	public void showSection(DateTime startDate, DateTime endDate) {
-		viewController.scrollToSection(startDate, endDate);
+		mainViewController.scrollToSection(startDate, endDate);
 	}
 
 	public void showAllTasks() {
-		viewController.setViewMode(ViewMode.ALL);
+		mainViewController.setViewMode(ViewMode.ALL);
 		showMessage("Showing All Tasks");
 	}
 
 	public void showError(String msg) {
-		if (viewController != null) {
-			viewController.showError(msg);
+		if (mainViewController != null) {
+			mainViewController.showError(msg);
 		} else {
 			printError("Error: " + msg);
 		}
@@ -177,7 +176,7 @@ public class UIMainImpl extends UI {
 	}
 
 	public void showMessage(String msg) {
-		viewController.showMessage(msg);
+		mainViewController.showMessage(msg);
 	}
 
 	@Override
@@ -188,14 +187,14 @@ public class UIMainImpl extends UI {
 
 	@Override
 	public void showAlternateList(ViewMode viewMode, String title, ArrayList<Task> tasks) {
-		viewController.setAlternateTasks(title, tasks);
-		viewController.setViewMode(viewMode);
+		mainViewController.setAlternateTasks(title, tasks);
+		mainViewController.setViewMode(viewMode);
 	}
 
 	// @Override
 	public void start() {
 		// Subscribe to Data changes
-		DataImpl.GetSingleton().addDataUpdatedListener(dataUpdatedListener);
+		StorageBackedData.GetSingleton().addDataUpdatedListener(dataUpdatedListener);
 
 		setupUI();
 
@@ -247,7 +246,7 @@ public class UIMainImpl extends UI {
 		if (primaryStage.getY() + primaryStage.getHeight()
 				+ miniHelpStage.getHeight() > screen.getHeight()) {
 			miniHelpStage.setY(primaryStage.getY() + primaryStage.getHeight()
-					- (miniHelpStage.getHeight() + viewController.getOmniBarHeight() + 10));
+					- (miniHelpStage.getHeight() + mainViewController.getOmniBarHeight() + 10));
 		} else {
 			miniHelpStage.setY(primaryStage.getY() + primaryStage.getHeight());
 		}
@@ -387,8 +386,8 @@ public class UIMainImpl extends UI {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(
 					"mainLayout.fxml"));
 			Parent root = (Parent) loader.load();
-			viewController = (MainViewController) loader.getController();
-			viewController.setUI(this);
+			mainViewController = (MainViewController) loader.getController();
+			mainViewController.setUI(this);
 
 			Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 			scene.getStylesheets().add(
@@ -446,7 +445,7 @@ public class UIMainImpl extends UI {
 					hideTray();
 
 					// Make sure input is focused
-					viewController.focusOmniBar();
+					mainViewController.focusOmniBar();
 				}
 
 			});

@@ -7,21 +7,21 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import sg.edu.nus.cs2103t.omnitask.data.DataImpl;
+import sg.edu.nus.cs2103t.omnitask.data.StorageBackedData;
 import sg.edu.nus.cs2103t.omnitask.data.Data.TaskNoNameException;
 import sg.edu.nus.cs2103t.omnitask.item.Task;
-import sg.edu.nus.cs2103t.omnitask.storage.IOStubImpl;
+import sg.edu.nus.cs2103t.omnitask.storage.StubStorage;
 
 public class JUnitDataAtd {
 	
 	@Test
 	public void TestAdd() throws TaskNoNameException, IOException {
-		DataImpl data = DataImpl.GetSingleton();
+		StorageBackedData data = StorageBackedData.GetSingleton();
 		
 		// Needed because of method signature
 		// Technically exception would never ever be throw if using IOStubImpl
 		try {
-			data.init(new IOStubImpl());
+			data.init(new StubStorage());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -29,7 +29,7 @@ public class JUnitDataAtd {
 		addOneTask(data, "Testing");
 		
 	}
-	private void addOneTask(final DataImpl data, final String name) throws TaskNoNameException, IOException {
+	private void addOneTask(final StorageBackedData data, final String name) throws TaskNoNameException, IOException {
 		Task task = new Task();
 		task.setName(name);
 		assertEquals(true, data.getTasks().isEmpty());

@@ -10,11 +10,11 @@ import java.io.IOException;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
-import sg.edu.nus.cs2103t.omnitask.logic.Data;
-import sg.edu.nus.cs2103t.omnitask.logic.DataImpl;
-import sg.edu.nus.cs2103t.omnitask.model.CommandInput.CommandType;
-import sg.edu.nus.cs2103t.omnitask.model.Task;
-import sg.edu.nus.cs2103t.omnitask.model.Task.Priority;
+import sg.edu.nus.cs2103t.omnitask.data.Data;
+import sg.edu.nus.cs2103t.omnitask.data.DataImpl;
+import sg.edu.nus.cs2103t.omnitask.item.Task;
+import sg.edu.nus.cs2103t.omnitask.item.CommandInput.CommandType;
+import sg.edu.nus.cs2103t.omnitask.item.Task.Priority;
 import sg.edu.nus.cs2103t.omnitask.parser.Parser;
 import sg.edu.nus.cs2103t.omnitask.parser.ParserMainImpl;
 import sg.edu.nus.cs2103t.omnitask.storage.IOJSONImpl;

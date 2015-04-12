@@ -1,8 +1,8 @@
-package sg.edu.nus.cs2103t.omnitask.model;
+package sg.edu.nus.cs2103t.omnitask.item;
 
 import org.joda.time.DateTime;
 
-import sg.edu.nus.cs2103t.omnitask.model.Task.Priority;
+import sg.edu.nus.cs2103t.omnitask.item.Task.Priority;
 
 // CommandInput object holds the parsed user commands parsed by Parser
 public class CommandInput {

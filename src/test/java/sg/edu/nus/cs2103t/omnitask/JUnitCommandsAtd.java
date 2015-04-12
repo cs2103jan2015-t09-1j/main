@@ -6,9 +6,9 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import sg.edu.nus.cs2103t.omnitask.logic.DataStubImpl;
-import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
-import sg.edu.nus.cs2103t.omnitask.model.CommandInput.CommandType;
+import sg.edu.nus.cs2103t.omnitask.data.DataStubImpl;
+import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
+import sg.edu.nus.cs2103t.omnitask.item.CommandInput.CommandType;
 import sg.edu.nus.cs2103t.omnitask.ui.UI;
 import sg.edu.nus.cs2103t.omnitask.ui.UIStubImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.Command;

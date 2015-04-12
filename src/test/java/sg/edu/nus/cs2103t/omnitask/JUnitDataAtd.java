@@ -7,9 +7,9 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import sg.edu.nus.cs2103t.omnitask.logic.Data.TaskNoNameException;
-import sg.edu.nus.cs2103t.omnitask.logic.DataImpl;
-import sg.edu.nus.cs2103t.omnitask.model.Task;
+import sg.edu.nus.cs2103t.omnitask.data.DataImpl;
+import sg.edu.nus.cs2103t.omnitask.data.Data.TaskNoNameException;
+import sg.edu.nus.cs2103t.omnitask.item.Task;
 import sg.edu.nus.cs2103t.omnitask.storage.IOStubImpl;
 
 public class JUnitDataAtd {

@@ -1,10 +1,10 @@
-package sg.edu.nus.cs2103t.omnitask.logic;
+package sg.edu.nus.cs2103t.omnitask.data;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import sg.edu.nus.cs2103t.omnitask.model.Task;
+import sg.edu.nus.cs2103t.omnitask.item.Task;
 import sg.edu.nus.cs2103t.omnitask.storage.IO;
 
 public abstract class Data {

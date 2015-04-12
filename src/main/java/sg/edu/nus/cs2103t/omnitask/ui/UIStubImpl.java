@@ -2,7 +2,7 @@ package sg.edu.nus.cs2103t.omnitask.ui;
 
 import java.util.ArrayList;
 
-import sg.edu.nus.cs2103t.omnitask.model.Task;
+import sg.edu.nus.cs2103t.omnitask.item.Task;
 import sg.edu.nus.cs2103t.omnitask.ui.MainViewController.ViewMode;
 
 public class UIStubImpl extends UI {

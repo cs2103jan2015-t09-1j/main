@@ -7,8 +7,8 @@ import static org.junit.Assert.assertNull;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
-import sg.edu.nus.cs2103t.omnitask.model.CommandInput.CommandType;
-import sg.edu.nus.cs2103t.omnitask.model.Task.Priority;
+import sg.edu.nus.cs2103t.omnitask.item.CommandInput.CommandType;
+import sg.edu.nus.cs2103t.omnitask.item.Task.Priority;
 import sg.edu.nus.cs2103t.omnitask.parser.Parser;
 import sg.edu.nus.cs2103t.omnitask.parser.ParserMainImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.Command;

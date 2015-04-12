@@ -1,4 +1,4 @@
-package sg.edu.nus.cs2103t.omnitask.logic;
+package sg.edu.nus.cs2103t.omnitask.data;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import javafx.collections.transformation.SortedList;
 import org.joda.time.DateTime;
 
 import sg.edu.nus.cs2103t.omnitask.Logger;
-import sg.edu.nus.cs2103t.omnitask.model.Task;
+import sg.edu.nus.cs2103t.omnitask.item.Task;
 import sg.edu.nus.cs2103t.omnitask.storage.IO;
 import sg.edu.nus.cs2103t.omnitasks.command.Utils;
 

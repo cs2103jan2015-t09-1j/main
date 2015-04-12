@@ -21,7 +21,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 import sg.edu.nus.cs2103t.omnitask.DateTimeConverter;
-import sg.edu.nus.cs2103t.omnitask.model.Task;
+import sg.edu.nus.cs2103t.omnitask.item.Task;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

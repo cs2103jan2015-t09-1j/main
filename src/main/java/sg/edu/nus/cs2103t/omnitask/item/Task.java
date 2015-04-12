@@ -1,4 +1,4 @@
-package sg.edu.nus.cs2103t.omnitask.model;
+package sg.edu.nus.cs2103t.omnitask.item;
 
 import java.util.Comparator;
 import java.util.UUID;

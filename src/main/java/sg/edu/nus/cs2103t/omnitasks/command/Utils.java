@@ -1,7 +1,7 @@
 package sg.edu.nus.cs2103t.omnitasks.command;
 
-import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
-import sg.edu.nus.cs2103t.omnitask.model.Task;
+import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
+import sg.edu.nus.cs2103t.omnitask.item.Task;
 
 public class Utils {
 

@@ -2,9 +2,9 @@ package sg.edu.nus.cs2103t.omnitasks.command;
 
 import java.io.IOException;
 
-import sg.edu.nus.cs2103t.omnitask.logic.Data;
-import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
-import sg.edu.nus.cs2103t.omnitask.model.CommandInput.CommandType;
+import sg.edu.nus.cs2103t.omnitask.data.Data;
+import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
+import sg.edu.nus.cs2103t.omnitask.item.CommandInput.CommandType;
 import sg.edu.nus.cs2103t.omnitask.ui.UI;
 
 public class CommandHelpImpl extends Command {

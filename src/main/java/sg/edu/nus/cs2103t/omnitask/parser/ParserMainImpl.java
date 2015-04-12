@@ -5,9 +5,9 @@ import java.util.List;
 import org.antlr.runtime.tree.Tree;
 import org.joda.time.DateTime;
 
-import sg.edu.nus.cs2103t.omnitask.model.CommandInput;
-import sg.edu.nus.cs2103t.omnitask.model.CommandInput.CommandType;
-import sg.edu.nus.cs2103t.omnitask.model.Task.Priority;
+import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
+import sg.edu.nus.cs2103t.omnitask.item.CommandInput.CommandType;
+import sg.edu.nus.cs2103t.omnitask.item.Task.Priority;
 import sg.edu.nus.cs2103t.omnitasks.command.Command;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandAddImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandArchiveImpl;

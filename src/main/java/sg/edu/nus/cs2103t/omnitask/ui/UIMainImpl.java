@@ -209,8 +209,7 @@ public class UIMainImpl extends UI {
 		setupHotkeys();
 
 		primaryStage.show();
-		invokeCommandReceivedListener(CommandDisplayImpl.COMMAND_ALIASES_DISPLAY[0] + " all");
-		showMessage("Welcome to OmniTask. Type 'help' to get help.");
+		invokeShowAll();
 	}
 
 	private void hideTray() {

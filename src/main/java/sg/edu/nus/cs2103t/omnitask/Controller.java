@@ -12,6 +12,8 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import sg.edu.nus.cs2103t.omnitask.data.Data;
 import sg.edu.nus.cs2103t.omnitask.data.DataImpl;
+import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
+import sg.edu.nus.cs2103t.omnitask.item.CommandInput.CommandType;
 import sg.edu.nus.cs2103t.omnitask.item.Task;
 import sg.edu.nus.cs2103t.omnitask.parser.Parser;
 import sg.edu.nus.cs2103t.omnitask.parser.ParserMainImpl;
@@ -21,6 +23,8 @@ import sg.edu.nus.cs2103t.omnitask.ui.UI;
 import sg.edu.nus.cs2103t.omnitask.ui.UI.ControllerCallback;
 import sg.edu.nus.cs2103t.omnitask.ui.UIMainImpl;
 import sg.edu.nus.cs2103t.omnitasks.command.Command;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplayImpl;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandMarkImpl;
 
 /**
  * @author TLX
@@ -51,15 +55,18 @@ public class Controller extends Application implements ControllerCallback {
 	public boolean onCommandReceived(String userInput) {
 		return processUserInput(userInput);
 	}
-	
-	/**This function display the mini pop up of help specific to each valid command use types in to aid
-	 * the user in getting the correct commands format
+
+	/**
+	 * This function display the mini pop up of help specific to each valid
+	 * command use types in to aid the user in getting the correct commands
+	 * format
 	 * <p>
 	 * 
 	 * @author tlx
 	 * 
-	 * @param userInput String by of text user key in
-	 *           
+	 * @param userInput
+	 *            String by of text user key in
+	 * 
 	 * @return void
 	 */
 	@Override
@@ -76,8 +83,8 @@ public class Controller extends Application implements ControllerCallback {
 		ArrayList<String> possibleCommands = generatePossibleAutoComplete(userInput);
 		if (possibleCommands.size() > 0) {
 			try {
-				String help = data.getHelpDescriptors(
-						possibleCommands.get(0).toUpperCase(), true);
+				String help = data.getHelpDescriptors(possibleCommands.get(0)
+						.toUpperCase(), true);
 				if (help != null && !help.isEmpty()) {
 					ui.showMiniHelp(help);
 				} else {
@@ -92,19 +99,16 @@ public class Controller extends Application implements ControllerCallback {
 		}
 	}
 
-	@Override
-	public boolean updateTask(Task task) {
-		return data.editTask(task);
-	}
-
-	/**This function is called on the first instance the program starts up to  
+	/**
+	 * This function is called on the first instance the program starts up to
 	 * initialize and display the user interface.
 	 * <p>
 	 * 
 	 * @author tlx
 	 * 
-	 * @param primaryStage which is a Stage object used by UI component
-	 *           
+	 * @param primaryStage
+	 *            which is a Stage object used by UI component
+	 * 
 	 * @return void
 	 */
 	@Override
@@ -162,14 +166,17 @@ public class Controller extends Application implements ControllerCallback {
 		// Start UI
 		ui.start();
 	}
-	
-	/**Detects and generates list of possible comamands as user types in the textbox
+
+	/**
+	 * Detects and generates list of possible comamands as user types in the
+	 * textbox
 	 * <p>
 	 * 
 	 * @author tlx
 	 * 
-	 * @param userInput string which contains text that users types in the textbox
-	 *           
+	 * @param userInput
+	 *            string which contains text that users types in the textbox
+	 * 
 	 * @return ArrayList<String> generated list of possible commands
 	 */
 	private ArrayList<String> generatePossibleAutoComplete(String userInput) {
@@ -198,14 +205,16 @@ public class Controller extends Application implements ControllerCallback {
 
 		return possibleAutoComplete;
 	}
-	
-	/**process the entire string of text key in by user
+
+	/**
+	 * process the entire string of text key in by user
 	 * <p>
 	 * 
 	 * @author tlx
 	 * 
-	 * @param input the string input of text key in by user 
-	 *           
+	 * @param input
+	 *            the string input of text key in by user
+	 * 
 	 * @return boolean indicating if the commands key in by user is valid
 	 */
 	private boolean processUserInput(String input) {
@@ -218,6 +227,32 @@ public class Controller extends Application implements ControllerCallback {
 			command.processCommand(data, ui);
 			return true;
 		}
+	}
+
+	@Override
+	public void showAll() {
+		CommandInput commandInput = new CommandInput(CommandType.DISPLAY);
+		commandInput.setName("all");
+		Command command = new CommandDisplayImpl(commandInput);
+		command.processCommand(data, ui);
+	}
+
+	@Override
+	public boolean markTaskAsDone(long id) {
+		CommandInput commandInput = new CommandInput(CommandType.MARK);
+		commandInput.setId(id);
+		commandInput.setCompleted(true);
+		Command command = new CommandMarkImpl(commandInput);
+		return command.processCommand(data, ui);
+	}
+
+	@Override
+	public boolean markTaskAsNotDone(long id) {
+		CommandInput commandInput = new CommandInput(CommandType.MARK);
+		commandInput.setId(id);
+		commandInput.setCompleted(false);
+		Command command = new CommandMarkImpl(commandInput);
+		return command.processCommand(data, ui);
 	}
 
 }

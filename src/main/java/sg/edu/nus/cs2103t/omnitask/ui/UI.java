@@ -16,7 +16,11 @@ public abstract class UI {
 
 		void showMiniHelpIfAvailable(String userInput);
 
-		boolean updateTask(Task task);
+		void showAll();
+
+		boolean markTaskAsDone(long id);
+
+		boolean markTaskAsNotDone(long id);
 	}
 
 	protected ControllerCallback controllerCallback;
@@ -34,9 +38,23 @@ public abstract class UI {
 		}
 	}
 
-	public boolean invokeUpdateTask(Task task) {
+	public void invokeShowAll() {
 		if (controllerCallback != null) {
-			return controllerCallback.updateTask(task);
+			controllerCallback.showAll();
+		}
+	}
+
+	public boolean invokeMarkTaskAsDone(long id) {
+		if (controllerCallback != null) {
+			return controllerCallback.markTaskAsDone(id);
+		}
+
+		return false;
+	}
+
+	public boolean invokeMarkTaskAsNotDone(long id) {
+		if (controllerCallback != null) {
+			return controllerCallback.markTaskAsNotDone(id);
 		}
 
 		return false;
@@ -60,8 +78,7 @@ public abstract class UI {
 	public void showSection(DateTime startDate, DateTime endDate) {
 	}
 
-	public void setCommandCallback(
-			ControllerCallback commandReceivedListener) {
+	public void setCommandCallback(ControllerCallback commandReceivedListener) {
 		this.controllerCallback = commandReceivedListener;
 	}
 

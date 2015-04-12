@@ -227,6 +227,7 @@ public class MainViewController {
 					public void changed(ObservableValue ov, State oldState,
 							State newState) {
 						if (newState == Worker.State.SUCCEEDED) {
+							showMessage("Welcome to OmniTask. Type 'help' to get help.");
 							agendaViewLoaded = true;
 						}
 					}
@@ -547,14 +548,12 @@ public class MainViewController {
 
 		public boolean markTaskAsDone(String uuid) {
 			Task task = getTaskByUuid(uuid);
-			task.setCompleted(true);
-			return ui.invokeUpdateTask(task);
+			return ui.invokeMarkTaskAsDone(task.getId());
 		}
 
 		public boolean markTaskAsNotDone(String uuid) {
 			Task task = getTaskByUuid(uuid);
-			task.setCompleted(false);
-			return ui.invokeUpdateTask(task);
+			return ui.invokeMarkTaskAsNotDone(task.getId());
 		}
 
 		public void redraw() {

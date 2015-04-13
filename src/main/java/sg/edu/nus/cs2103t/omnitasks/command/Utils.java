@@ -5,6 +5,7 @@ import sg.edu.nus.cs2103t.omnitask.item.Task;
 
 public class Utils {
 
+	//@author a0119742A
 	public static void addAttributes(CommandInput commandInput, Task task) {
 		task.setName(commandInput.getName());
 
@@ -49,7 +50,15 @@ public class Utils {
 		foundTask.setArchived(mutatorTask.isArchived());
 		foundTask.setCompleted(mutatorTask.isCompleted());
 	}
+	//@author A0119742A
 
+	/**
+	 * This methods returns the commandType of the input
+	 * <p>
+	 * 
+	 * @param str User Input
+	 * @return CommandType
+	 */
 	public static CommandInput.CommandType getCommandTypeFromString(String str) {
 
 		for (String command : CommandAdd.COMMAND_ALIASES) {

@@ -5,6 +5,7 @@ import sg.edu.nus.cs2103t.omnitask.data.Data;
 import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 
+//@author A0119742A
 public class CommandExit extends Command {
 
 	public static String[] COMMAND_ALIASES = new String[] { "exit",

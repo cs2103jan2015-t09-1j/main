@@ -1,0 +1,950 @@
+//@author: a0119742a
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\data\StorageBackedData.java
+	 */
+
+	public boolean addTask(Task task) throws TaskNoNameException, IOException {
+		assertInited();
+		getPreviousState();
+		// Create new task object
+		if (task.getName().trim().isEmpty()) {
+			throw new TaskNoNameException();
+		}
+
+		// When adding task, always get new id
+		task.setId(getNewId());
+
+		// Assign randomUUID to task if it is null
+		if (task.getUuid() == null) {
+			task.setUuid(UUID.randomUUID());
+		}
+
+		// Add the task to our "local cache"
+		tasks.add(task);
+
+		// Commit it to storage
+		try {
+			io.saveToFile(tasks.subList(0, tasks.size()));
+			updateTaskId();
+		} catch (IOException ex) {
+			// Reverse change
+			tasks.remove(tasks.size() - 1);
+
+			throw ex;
+		}
+
+		// Clear redoStack because no undo was made.
+		redoStack.clear();
+
+		return true;
+	}
+
+	@Override
+	public boolean deleteTask(Task taskToRemove) {
+		assertInited();
+		getPreviousState();
+
+		int indexToRemove = -1;
+
+		if (tasks.contains(taskToRemove)) {
+			indexToRemove = tasks.indexOf(taskToRemove);
+			tasks.remove(taskToRemove);
+		}
+
+		// Commit it to storage
+		try {
+			io.saveToFile(tasks);
+			updateTaskId();
+		} catch (IOException ex) {
+			// TODO: Handle error
+			ex.printStackTrace();
+			printError("IO Exception");
+
+			// Reverse change
+			tasks.add(indexToRemove, taskToRemove);
+
+			return false;
+		}
+
+		// Clear redoStack because no undo was made.
+		redoStack.clear();
+
+		return true;
+	}
+	
+	@Override
+	public boolean removeTaskDate(Task taskToRemoveDate) {
+		assertInited();
+		getPreviousState();
+		int taskIdToRemoveDate = -1;
+		Task foundTask = new Task();
+		
+		for (int i = 0; i < tasks.size(); i++) {
+			if (tasks.get(i).getId() == (taskToRemoveDate.getId())) {
+				foundTask = tasks.get(i);
+				foundTask.setStartDate(null);
+				foundTask.setEndDate(null);
+				taskIdToRemoveDate = i;
+			}
+		}
+		
+		tasks.set(taskIdToRemoveDate, foundTask);
+		
+		if (taskIdToRemoveDate != -1) {
+			// Commit it to storage
+			try {
+				io.saveToFile(tasks);
+				updateTaskId();
+			} catch (IOException ex) {
+				// TODO: Handle error
+				ex.printStackTrace();
+				printError("IO Exception");
+
+				return false;
+			}
+		}
+		
+		redoStack.clear();
+		
+		return true;
+	}
+
+	@Override
+	public boolean editTask(Task mutatorTask) {
+		assertInited();
+		getPreviousState();
+
+		int taskIdToUpdate = -1;
+		String tmpTaskName = "";
+		Task foundTask = new Task();
+
+		for (int i = 0; i < tasks.size(); i++) {
+			if (tasks.get(i).getId() == (mutatorTask.getId())) {
+
+				foundTask = tasks.get(i);
+				Utils.editAttributes(foundTask, mutatorTask);
+				// store the task name from the file in a variable incase need
+				// to revert below
+				tmpTaskName = tasks.get(i).getName();
+				taskIdToUpdate = i;
+			}
+		}
+
+		// Replace the task object in arraylist with the new object
+		tasks.set(taskIdToUpdate, foundTask);
+
+		if (taskIdToUpdate != -1) {
+			// Commit it to storage
+			try {
+				io.saveToFile(tasks);
+				updateTaskId();
+			} catch (IOException ex) {
+				// TODO: Handle error
+				ex.printStackTrace();
+				printError("IO Exception");
+
+				// Reverse change
+				// do a reverse of update
+				tasks.get(taskIdToUpdate).setName(tmpTaskName);
+
+				return false;
+			}
+		}
+
+		// Clear redoStack because no undo was made.
+		redoStack.clear();
+
+		return true;
+	}
+	
+
+	@Override
+	public String getHelpDescriptors(String helpType, boolean miniMenu)
+			throws IOException {
+		return io.readFromHelpFile(helpType, miniMenu);
+	}
+
+	@Override
+	public Task getTask(int index) {
+		return sortedTasks.get(index).clone();
+	}
+
+	@Override
+	public ArrayList<Task> getTasks() {
+		assertInited();
+
+		ArrayList<Task> clonedTasks = new ArrayList<Task>();
+		for (Task task : sortedTasks) {
+			clonedTasks.add(task.clone());
+		}
+
+		return clonedTasks;
+	}
+
+	public StorageBackedData init(Storage io) throws IOException {
+		if (inited) {
+			return this;
+		}
+
+		this.io = io;
+		tasks = FXCollections.observableArrayList();
+		sortedTasks = tasks.sorted(Task.taskSorterComparator);
+		sortedTasks.addListener(tasksChangeListener);
+		tasks.addAll(io.readFromFile());
+		redoStack = new Stack<ArrayList<Task>>();
+		previousState = new Stack<ArrayList<Task>>();
+		inited = true;
+
+		return this;
+	}
+
+	@Override
+	public void notifyDataChanged() {
+		ArrayList<Task> tmpTasks = new ArrayList<Task>();
+		for (int i = 0; i < sortedTasks.size(); i++) {
+			Task task = sortedTasks.get(i);
+			tmpTasks.add(task);
+		}
+		tasks.setAll(tmpTasks);
+	}
+
+	public boolean redo() {
+		if (redoStack.empty()) {
+			return false;
+		} else {
+			previousList = getTasks();
+			// Pushing to previous state to save previous state
+			previousState.push(previousList);
+			// Overwrite current state with "future" state
+			tasks.setAll(redoStack.pop());
+
+			try {
+				io.saveToFile(tasks);
+			} catch (IOException ex) {
+				// TODO: Handle error
+				ex.printStackTrace();
+				printError("IO Exception");
+				return false;
+			}
+
+			return true;
+		}
+
+	}
+	
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\data\StorageBackedData.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\data\StorageBackedData.java
+	 */
+
+	public boolean undo() {
+		if (previousState.empty()) {
+			return false;
+		} else {
+
+			// Saving current Tasks list into redoList
+			redoList = getTasks();
+			// Pushing to redoStack ("future state") to save current state
+			redoStack.push(redoList);
+
+			// Getting previous state
+			previousList = previousState.peek();
+			// Overwrite current state with previous state
+			tasks.setAll(previousState.pop());
+
+			try {
+				io.saveToFile(tasks);
+			} catch (IOException ex) {
+				// TODO: Handle error
+				ex.printStackTrace();
+				printError("IO Exception");
+				return false;
+			}
+
+			return true;
+
+		}
+	}
+
+
+	private void assertInited() {
+		assert inited;
+	}
+
+	// Get new "viewing" taskId which can be used for a new task
+	private long getNewId() {
+		assertInited();
+
+		long taskId = 0;
+		for (Task task : tasks) {
+			if (task.getId() > taskId) {
+				taskId = task.getId();
+			}
+		}
+
+		return ++taskId;
+	}
+
+	@SuppressWarnings("unchecked")
+	private Stack<ArrayList<Task>> getPreviousState() {
+		previousList = getTasks();
+		previousState.push((ArrayList<Task>) previousList.clone());
+
+		return previousState;
+	}
+
+	private void printError(String msg) {
+		System.err.println(DateTime.now() + ": " + msg);
+		Logger.writeError(msg);
+	}
+
+	// Reassign taskId to the tasks arraylist
+	public void updateTaskId() {
+		assertInited();
+
+		ArrayList<Task> tmpTasks = new ArrayList<Task>();
+		for (int i = 0; i < sortedTasks.size(); i++) {
+			Task task = sortedTasks.get(i);
+			task.setId(i + 1);
+			tmpTasks.add(task);
+		}
+
+		tasks.setAll(tmpTasks);
+		try {
+			io.saveToFile(tasks);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\data\StorageBackedData.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandAdd.java
+	 */
+
+/**
+ * This class contains the logic for Add command. When Add command is triggered,
+ * it will create a new Task object that takes the attributes of the
+ * commandInput object. It will then pass it to the data class to be inserted
+ * into the tasks list.
+ * <p>
+ */
+
+public class CommandAdd extends Command {
+
+	public static String[] COMMAND_ALIASES = new String[] { "add", "new" };
+
+	public CommandAdd(CommandInput commandInput) {
+		super(commandInput);
+	}
+
+	@Override
+	public boolean processCommand(Data data, Ui ui) {
+
+		int wordLengthLimit = 80;
+		for (int i = 0, lengthOfWord = 0; i < commandInput.getName().length(); i++) {
+			char character = commandInput.getName().charAt(i);
+			if (lengthOfWord >= wordLengthLimit) {
+				ui.showError("Unable to add Task. Task name is too long!");
+				return false;
+			}
+			if (character == ' ') {
+				lengthOfWord = 0;
+			} else {
+				lengthOfWord++;
+			}
+
+		}
+
+		Task task = new Task();
+		Utils.addAttributes(commandInput, task);
+
+		// TODO: Fix magic string
+		try {
+			if (data.addTask(task)) {
+				ui.showMessage("Task \"" + task.getName()
+						+ "\" added successfully!");
+				return true;
+			}
+		} catch (TaskNoNameException e) {
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		ui.showError("Failed to add task \"" + commandInput.getName() + "\".");
+
+		return false;
+	}
+}
+
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandAdd.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandDelete.java
+	 */
+
+public class CommandDelete extends Command {
+
+	public static String[] COMMAND_ALIASES = new String[] { "delete", "remove",
+			"cancel" };
+
+	public CommandDelete(CommandInput commandInput) {
+		super(commandInput);
+	}
+
+	@Override
+	public boolean processCommand(Data data, Ui ui) {
+		ArrayList<Task> tasks = data.getTasks();
+		Task taskToRemove = null;
+
+		// Search for a task with user-specified taskId
+		for (int i = 0; i < tasks.size(); i++) {
+			// Return true if taskId is the same as user-specified taskId
+			if (tasks.get(i).getId() == commandInput.getId()) {
+				// Copy the task into taskToRemove for Data to process
+				taskToRemove = tasks.get(i);
+			}
+		}
+
+		if (data.deleteTask(taskToRemove) && taskToRemove != null) {
+			ui.showMessage("Task " + taskToRemove.getName()
+					+ "\" deleted successfully!");
+			return true;
+		} else {
+			ui.showError("Unable to delete Task \"" + commandInput.getId()
+					+ "\". " + "Please choose a valid id!");
+		}
+
+		return false;
+	}
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandDelete.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandEdit.java
+	 */
+
+public class CommandEdit extends Command {
+
+	public static String[] COMMAND_ALIASES = new String[] { "edit",
+			"change", "update", "modify" };
+
+	public CommandEdit(CommandInput commandInput) {
+		super(commandInput);
+	}
+
+	@Override
+	public boolean processCommand(Data data, Ui ui) {
+
+		Task task = new Task();
+		try {
+			task = data.getTask((int) commandInput.getId() - 1);
+		} catch (IndexOutOfBoundsException e1) {
+			// TODO Auto-generated catch block
+			ui.showError("Unable to edit Task \"" + commandInput.getId()
+					+ "\". Please choose a valid id!");
+			e1.printStackTrace();
+			return false;
+		}
+		int wordLengthLimit = 80;
+
+		for (int i = 0, lengthOfWord = 0; i < commandInput.getName().length(); i++) {
+			char character = commandInput.getName().charAt(i);
+			if (lengthOfWord >= wordLengthLimit) {
+				ui.showError("Unable to edit Task. Task name is too long!");
+				return false;
+			}
+			if (character == ' ') {
+				lengthOfWord = 0;
+			} else {
+				lengthOfWord++;
+			}
+
+		}
+		
+		String taskOldName = task.getName();
+		
+		// edit name, priority, start&end date from commandInput
+		Utils.makeTaskToEdit(commandInput, task);
+
+		try {
+			if (data.editTask(task)) {
+				ui.showMessage("Task \"" + taskOldName
+						+ "\" updated successfully!");
+				return true;
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			ui.showError("Unable to edit Task \"" + taskOldName
+					+ "\". Please choose a valid id!");
+
+		}
+
+		return false;
+	}
+}
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandEdit.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandExit.java
+	 */
+
+public class CommandExit extends Command {
+
+	public static String[] COMMAND_ALIASES = new String[] { "exit",
+			"close", "escape" };
+
+	public CommandExit(CommandInput commandInput) {
+		super(commandInput);
+	}
+
+	@Override
+	public boolean processCommand(Data data, Ui ui) {
+		Controller.Exit();
+		return true;
+	}
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandExit.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandMark.java
+	 */
+
+public class CommandMark extends Command {
+
+	public static String[] COMMAND_ALIASES = new String[] { "mark" };
+
+	public CommandMark(CommandInput commandInput) {
+		super(commandInput);
+	}
+
+	@Override
+	public boolean processCommand(Data data, Ui ui) {
+		Task task = new Task();
+		try {
+			task = data.getTask((int) commandInput.getId() - 1);
+		} catch (IndexOutOfBoundsException e) {
+			// TODO Auto-generated catch block
+			ui.showError("Unable to mark Task \"" + commandInput.getId()
+					+ "\". Please choose a valid id!");
+			e.printStackTrace();
+			return false;
+		}
+		task.setCompleted(commandInput.isCompleted());
+
+		if (commandInput.isCompleted() == true && data.editTask(task)
+				&& task != null) {
+			ui.showMessage("Task \"" + task.getName()
+					+ "\" is successfully marked as Done!");
+			return true;
+		} else if (commandInput.isCompleted() == false && data.editTask(task)
+				&& task != null) {
+			ui.showMessage("Task \"" + task.getName()
+					+ "\" is successfully marked as Not Done!");
+			return true;
+		}
+
+		return false;
+	}
+}
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandMark.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandRedo.java
+	 */
+
+public class CommandRedo extends Command {
+
+	public static String[] COMMAND_ALIASES = new String[] { "redo" };
+
+	public CommandRedo(CommandInput commandInput) {
+		super(commandInput);
+	}
+
+	@Override
+	public boolean processCommand(Data data, Ui ui) {
+		if (data.redo()) {
+			ui.showMessage("Redo completed!");
+			return true;
+		} else {
+			ui.showMessage("You have no Redo entries");
+			return false;
+		}
+	}
+}
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandRedo.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandRemoveDate.java
+	 */
+
+public class CommandRemoveDate extends Command {
+
+	public static String[] COMMAND_ALIASES = new String[] { "remove-date" };
+
+	public CommandRemoveDate(CommandInput commandInput) {
+		super(commandInput);
+	}
+
+	@Override
+	public boolean processCommand(Data data, Ui ui) {
+		Task taskToRemoveDate = data.getTask((int) commandInput.getId() - 1);
+		
+		taskToRemoveDate.setStartDate(null);
+		taskToRemoveDate.setEndDate(null);
+
+		try {
+			if (data.removeTaskDate(taskToRemoveDate)) {
+				ui.showMessage("Task \"" + taskToRemoveDate.getName()
+						+ "\" date has been removed!");
+				return true;
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			ui.showError("Unable to edit Task \"" + taskToRemoveDate.getName()
+					+ "\". Please choose a valid id!");
+
+		}
+
+		return false;
+	}
+}
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandRemoveDate.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandUndo.java
+	 */
+
+public class CommandUndo extends Command {
+
+	public static String[] COMMAND_ALIASES = new String[] { "undo" };
+
+	public CommandUndo(CommandInput commandInput) {
+		super(commandInput);
+	}
+
+	@Override
+	public boolean processCommand(Data data, Ui ui) {
+		if (data.undo()) {
+			ui.showMessage("Undo completed!");
+			return true;
+		} else {
+			ui.showMessage("You have no previous entries");
+			return false;
+		}
+	}
+}
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandUndo.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\Utils.java
+	 */
+
+	public static void addAttributes(CommandInput commandInput, Task task) {
+		task.setName(commandInput.getName());
+
+		// there exits 2 enums of priority in Task and CommandInput passing
+		// between this 2 resulted in conflict
+		// using int function instead to set priority
+		// cant be used -> task.setPriority(commandInput.getPriority());
+		if (commandInput.getPriority() != null) {
+			task.setPriority(commandInput.getPriority());
+		}
+
+		task.setStartDate(commandInput.getStartDate());
+		task.setEndDate(commandInput.getEndDate());
+	}
+
+	/**
+	 * This method is a utility method that is used by editTask method in
+	 * StorageBackedData It creates a Task object that contains attributes of
+	 * what the user wants to edit. It then transfer the attributes to the
+	 * target Task
+	 * <p>
+	 * 
+	 * @param foundTask
+	 *            Target Task
+	 * @param mutatorTask
+	 *            Task containing user's request
+	 */
+	public static void editAttributes(Task foundTask, Task mutatorTask) {
+		if (!mutatorTask.getName().equals("")) {
+			foundTask.setName(mutatorTask.getName());
+		}
+		if (mutatorTask.getPriority() != null) {
+			foundTask.setPriority(mutatorTask.getPriority());
+		}
+		if (mutatorTask.getStartDate() != null || mutatorTask.getEndDate() != null) {
+			foundTask.setStartDate(mutatorTask.getStartDate());
+			foundTask.setEndDate(mutatorTask.getEndDate());
+		}
+		foundTask.setArchived(mutatorTask.isArchived());
+		foundTask.setCompleted(mutatorTask.isCompleted());
+	}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\Utils.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\Utils.java
+	 */
+
+
+	public static CommandInput.CommandType getCommandTypeFromString(String str) {
+
+		for (String command : CommandAdd.COMMAND_ALIASES) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.ADD;
+			}
+		}
+
+		for (String command : CommandDelete.COMMAND_ALIASES) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.DELETE;
+			}
+		}
+
+		for (String command : CommandDisplay.COMMAND_ALIASES) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.SHOW;
+			}
+		}
+
+		for (String command : CommandEdit.COMMAND_ALIASES) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.EDIT;
+			}
+		}
+
+		for (String command : CommandExit.COMMAND_ALIASES) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.EXIT;
+			}
+		}
+
+		for (String command : CommandSearch.COMMAND_ALIASES) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.SEARCH;
+			}
+		}
+
+		for (String command : CommandHelp.COMMAND_ALIASES) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.HELP;
+			}
+		}
+
+		for (String command : CommandUndo.COMMAND_ALIASES) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.UNDO;
+			}
+		}
+
+		for (String command : CommandRedo.COMMAND_ALIASES) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.REDO;
+			}
+		}
+
+		for (String command : CommandMark.COMMAND_ALIASES) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.MARK;
+			}
+		}
+
+		for (String command : CommandRemoveDate.COMMAND_ALIASES) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.REMOVEDATE;
+			}
+		}
+
+		for (String command : CommandNext.COMMAND_ALIASES) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.NEXT;
+			}
+		}
+
+		for (String command : CommandPrev.COMMAND_ALIASES) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.PREV;
+			}
+		}
+
+		for (String command : CommandStorage.COMMAND_ALIASES) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.STORAGE;
+			}
+		}
+
+		for (String command : CommandArchive.COMMAND_ALIASES) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.ARCHIVE;
+			}
+		}
+
+		for (String command : CommandUnarchive.COMMAND_ALIASES) {
+			if (command.toLowerCase().equals(str.toLowerCase())) {
+				return CommandInput.CommandType.UNARCHIVE;
+			}
+		}
+
+		return CommandInput.CommandType.INVALID;
+	}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\Utils.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\Utils.java
+	 */
+
+	/**
+	 * This method is used by CommandEditImpl to create the mutatorTask which
+	 * contains all the attributes that the user wants to edit
+	 * <p>
+	 * 
+	 * @param commandInput
+	 *            User's input
+	 * @param mutatorTask
+	 *            A task object that will take the user's input attributes
+	 */
+	public static void makeTaskToEdit(CommandInput commandInput,
+			Task mutatorTask) {
+		if (!commandInput.getName().equals("")) {
+			mutatorTask.setName(commandInput.getName());
+		}
+		if (commandInput.getPriority() != null) {
+			mutatorTask.setPriority(commandInput.getPriority());
+		}
+		if (commandInput.getStartDate() != null || commandInput.getEndDate() != null) {
+			mutatorTask.setStartDate(commandInput.getStartDate());
+			mutatorTask.setEndDate(commandInput.getEndDate());
+		}
+	}
+
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\Utils.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\test\java\sg\edu\nus\cs2103t\omnitask\JUnitDataAtd.java
+	 */
+
+public class JUnitDataAtd {
+	
+	@Test
+	public void TestAdd() throws TaskNoNameException, IOException {
+		StorageBackedData data = StorageBackedData.GetSingleton();
+		
+		// Needed because of method signature
+		// Technically exception would never ever be throw if using IOStubImpl
+		try {
+			data.init(new StubStorage());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// Craft tests below
+		addOneTask(data, "Testing");
+		
+	}
+	private void addOneTask(final StorageBackedData data, final String name) throws TaskNoNameException, IOException {
+		Task task = new Task();
+		task.setName(name);
+		assertEquals(true, data.getTasks().isEmpty());
+		data.addTask(task);
+		//test if the task is added into the array list.
+		assertEquals(task.getId(), data.getTasks().get(0).getId());
+	}
+	@Test
+	public void TestDelete() throws TaskNoNameException, IOException  {
+		StorageBackedData data = StorageBackedData.GetSingleton();
+		
+		// Needed because of method signature
+		// Technically exception would never ever be throw if using IOStubImpl
+		try {
+			data.init(new StubStorage());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// Craft tests below
+		deleteOneTask(data, "deleteTest");
+		
+	}
+	private void deleteOneTask(final StorageBackedData data, final String name) throws TaskNoNameException, IOException {
+		Task task = new Task();
+		task.setName(name);
+		
+		data.addTask(task);
+		//assertEquals(data.getTasks().get(0).getId(), task.getId());
+		data.deleteTask(task);
+		assertEquals(true, data.getTasks().isEmpty());
+		
+	}
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\test\java\sg\edu\nus\cs2103t\omnitask\JUnitDataAtd.java
+
+
+
+
+

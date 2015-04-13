@@ -1,0 +1,2918 @@
+//@author: a0111795a
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\Logger.java
+	 */
+
+/**
+ * Simple logger to log to file. Largely unused.
+ *
+ */
+public class Logger {
+	private static Path logFile = new File("log.txt").toPath();
+
+	public static void writeDebug(String msg) {
+		writeToFile(logFile, DateTime.now() + " [D]: " + msg + "\r\n");
+	}
+
+	public static void writeError(String msg) {
+		writeToFile(logFile, DateTime.now() + " [E]: " + msg + "\r\n");
+	}
+
+	private static void writeToFile(Path file, String string) {
+		try {
+			if (!file.toFile().exists()) {
+				Files.createFile(file);
+			}
+
+			OutputStream out = new BufferedOutputStream(Files.newOutputStream(
+					file, StandardOpenOption.WRITE, StandardOpenOption.APPEND));
+			out.write((string).getBytes());
+			out.flush();
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\Logger.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\data\Data.java
+	 */
+
+	public static interface DataUpdatedListener {
+		void dataUpdated(
+				ArrayList<Task> tasks,
+				javafx.collections.ListChangeListener.Change<? extends Task> changes);
+	}
+
+	@SuppressWarnings("serial")
+	public static class TaskNoNameException extends Exception {
+		public TaskNoNameException() {
+			super("Task must have a name.");
+		}
+	}
+
+	protected ArrayList<DataUpdatedListener> dataUpdatedListeners;
+
+	protected Data() {
+		dataUpdatedListeners = new ArrayList<DataUpdatedListener>();
+	}
+
+	/**
+	 * Add listeners to this class to listen to data changes.
+	 */
+	public void addDataUpdatedListener(DataUpdatedListener listener) {
+		dataUpdatedListeners.add(listener);
+	}
+
+	/** This method assigns a task ID and a UUID to a task object and saves it in the Tasks list
+	 * <p>
+	 * 
+	 * @param task A task object that contains all the user input attributes
+	 * @return True if successful, false if overwise
+	 */
+	public abstract boolean addTask(Task task) throws TaskNoNameException,
+			IOException;
+
+	/** This method checks if the Task object is found in
+	 * the Tasks list, and removes it if its found
+	 * <p>
+	 * 
+	 *  
+	 * @param task The target Task to be removed
+	 * @return True if successful
+	 */
+	public abstract boolean deleteTask(Task task);
+
+	/** This method replicates the attributes of
+	 * mutatorTask onto a Task object the Task object will then be saved into
+	 * the Task list.
+	 * <p>
+	 *   
+	 * @param mutatorTask A Task object that holds the data in which the user
+	 * wants to edit
+	 * 
+	 * @return True if successful, false if otherwise.
+	 */
+	public abstract boolean editTask(Task mutatorTask);
+	
+	public abstract String getHelpDescriptors(String helpType, boolean miniMenu)
+			throws IOException;
+
+	/**
+	 * This method returns a Task object that exists in index-position of the Tasks list
+	 * <p>
+	 * 
+	 * @param index
+	 * @return Task A Task object
+	 */
+	public abstract Task getTask(int index);
+
+	/**
+	 * This method returns the a clone of the Tasks list
+	 * <p>
+	 * 
+	 * @return Tasks A list containing task objects
+	 */
+	public abstract ArrayList<Task> getTasks();
+
+	/**
+	 * This method updates the tasks list
+	 */
+	public abstract void notifyDataChanged();
+
+	/** This method rewrites the Tasks list with the Tasks list saved in the RedoStack.
+	 *  <p>
+	 * 
+	 * @param void
+	 * @return True if successful, false if otherwise.
+	 */
+	public abstract boolean redo();
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\data\Data.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\data\Data.java
+	 */
+
+	public void removeDataUpdatedListener(DataUpdatedListener listener) {
+		dataUpdatedListeners.remove(listener);
+	}
+
+	public abstract ArrayList<Task> searchTask();
+
+	/**This method rewrites the Tasks list with the Tasks list saved in the UndoState.
+	 * <p>
+	 * 
+	 * @param void
+	 * @return True if successful, false if otherwise
+	 */
+	public abstract boolean undo();
+
+	/**
+	 * This method updates the task ID of all the tasks in the tasks list
+	 * <p>
+	 */
+	public abstract void updateTaskId();
+
+	/**
+	 * This methods changes the storage directory of OmniTask
+	 * <p>
+	 * 
+	 * @param newDir New directory path
+	 * @return True if successful, false if otherwise.
+	 */
+	public abstract boolean changeStorageDirectory(String newDir);
+
+	/**This method rewrites the target Task object's date attributes to null
+	 * <p>
+	 *  
+	 * @param taskToRemove A Task object that contains the id of the target Task in the Tasks list
+	 * @return True if successful, false if otherwise
+	 */
+	public abstract boolean removeTaskDate(Task taskToRemoveDate);
+
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\data\Data.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\data\StorageBackedData.java
+	 */
+
+	private ListChangeListener<Task> tasksChangeListener = new ListChangeListener<Task>() {
+
+		@Override
+		public void onChanged(
+				javafx.collections.ListChangeListener.Change<? extends Task> changes) {
+			for (DataUpdatedListener listener : dataUpdatedListeners) {
+				listener.dataUpdated(getTasks(), changes);
+			}
+		}
+
+	};
+
+	private StorageBackedData() {
+		super();
+	}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\data\StorageBackedData.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\data\StubData.java
+	 */
+
+/**
+ * Stub Data class. Used for unit test.
+ *
+ */
+public class StubData extends Data {
+
+	private static StubData data;
+
+	public static StubData GetSingleton() {
+		if (data == null) {
+			data = new StubData();
+		}
+
+		return data;
+	}
+
+	private boolean inited;
+
+	private ArrayList<Task> tasks;
+
+	private StubData() {
+		super();
+	}
+
+	@Override
+	public boolean addTask(Task task) throws TaskNoNameException, IOException {
+		assertInited();
+
+		// Create new task object
+		if (task.getName().trim().isEmpty()) {
+			throw new TaskNoNameException();
+		}
+
+		// When adding task, always get new id
+		task.setId(getNewId());
+
+		// Assign randomUUID to task if it is null
+		if (task.getUuid() == null) {
+			task.setUuid(UUID.randomUUID());
+		}
+
+		tasks.add(task);
+
+		notifyDataChanged();
+
+		return true;
+	}
+
+	@Override
+	public boolean deleteTask(Task task) {
+		assertInited();
+
+		for (int i = 0; i < tasks.size(); i++) {
+			if (tasks.get(i).getUuid().equals(task.getUuid())) {
+				tasks.remove(i);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean editTask(Task task) {
+		assertInited();
+
+		for (int i = 0; i < tasks.size(); i++) {
+			if (tasks.get(i).getUuid().equals(task.getUuid())) {
+				tasks.set(i, task);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	@Override
+	public String getHelpDescriptors(String helpType, boolean miniMenu) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Task getTask(int index) {
+		return tasks.get(index).clone();
+	}
+
+	@Override
+	public ArrayList<Task> getTasks() {
+		assertInited();
+
+		return tasks;
+	}
+
+	public StubData init() throws IOException {
+		if (inited) {
+			return this;
+		}
+
+		tasks = new ArrayList<Task>();
+
+		return this;
+	}
+
+	@Override
+	public void notifyDataChanged() {
+		assertInited();
+
+		for (DataUpdatedListener listener : dataUpdatedListeners) {
+			listener.dataUpdated(tasks, null);
+		}
+	}
+
+	@Override
+	public boolean redo() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public ArrayList<Task> searchTask() {
+		assertInited();
+		
+		return tasks;
+	}
+
+	public boolean undo() {
+		return true;
+		// TODO Auto-generated method stub
+
+	}
+
+	private void assertInited() {
+		assert inited;
+	}
+
+	private long getNewId() {
+		assertInited();
+
+		long taskId = 1;
+		ArrayList<Task> tasks = getTasks();
+		if (tasks.size() > 0) {
+			taskId = tasks.get(tasks.size() - 1).getId() + 1;
+		}
+
+		return taskId;
+	}
+
+	@Override
+	public boolean changeStorageDirectory(String newDir) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void updateTaskId() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean removeTaskDate(Task taskToRemoveDate) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\data\StubData.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\item\Task.java
+	 */
+
+/**
+ * This class holds info on Task details. The usual way to construct this object is to fill in the data based on CommandInput object.
+ * If a Task has end date but no start date, it is a Deadline Task.
+ * If a Task has both start and end dates, it is a Timed Task.
+ * If a Task has no dates, it is a Floating Task.
+ *
+ */
+public class Task {
+	/**
+	 * There are 4 levels of Priority for a Task.
+	 */
+	public static enum Priority {
+		/**
+		 * No Priority
+		 */
+		NONE,
+		/**
+		 * Low Priority
+		 */
+		LOW,
+		/**
+		 * Medium Priority
+		 */
+		MEDIUM,
+		/**
+		 * High Priority
+		 */
+		HIGH
+	}
+
+	/**
+	* Sort task list according to 3 fields: dates, priority, id
+	* General explanation for algorithm:
+	* 1. If both task have no end dates OR both have but equal end dates -> If
+	* priority not equal, sort by priority
+	* 2. If either of the task have no end date, place the one with no end date
+	* lower down the list (return 1) and the other, higher up (return -1
+	* 3. If both task have end dates and they're not equal, use the DateTime
+	* compareTo to resolve
+	* 4. Default case: Sort by task id
+	*/
+	public static Comparator<Task> taskSorterComparator = new Comparator<Task>() {
+
+		@Override
+		public int compare(Task task1, Task task2) {
+			if ((task1.getEndDate() == null && task2.getEndDate() == null)
+					|| ((task1.getEndDate() != null && task2.getEndDate() != null) && task1
+							.getEndDate().equals(task2.getEndDate()))) {
+				if (task1.getPriority() != task2.getPriority()) {
+					return task2.getPriority().ordinal()
+							- task1.getPriority().ordinal();
+				}
+			} else if (task1.getEndDate() == null || task2.getEndDate() == null) {
+				if (task1.getEndDate() == null) {
+					return 1;
+				} else {
+					return -1;
+				}
+			} else {
+				if (task1.getStartDate() != null
+						&& task2.getStartDate() != null) {
+					return task1.getStartDate().compareTo(task2.getStartDate());
+				} else if (task1.getStartDate() != null) {
+					return task1.getStartDate().compareTo(task2.getEndDate());
+				} else if (task2.getStartDate() != null) {
+					return task1.getEndDate().compareTo(task2.getStartDate());
+				} else {
+					return task1.getEndDate().compareTo(task2.getEndDate());
+				}
+			}
+
+			return (int) (task1.getId() - task2.getId());
+		}
+	};
+
+	/**
+	 * Contains values of colors to be used for rendering by UI
+	 */
+	final private static String[] priorityColors = new String[] { "none",
+			"#0099CC", "#FF8800", "#CC0000" };
+
+	/**
+	 * Contains the strings to be used for rendering by UI
+	 */
+	final private static String[] priorityStrings = new String[] { "", "low",
+			"med", "high" };
+
+	private boolean isArchived;
+
+	private DateTime endDate;
+
+	private long id;
+
+	private boolean isCompleted;
+
+	private String name;
+
+	private Priority priority = Priority.NONE;
+
+	private DateTime startDate;
+
+	private UUID uuid;
+
+	/**
+	 * Default constructor has no arguments.
+	 */
+	public Task() {
+	}
+
+	/**
+	* Clone this object. Used by Data component when returning Task so that the object does not get modified in Data cache when changes are made in other components.
+	*/
+	// When you add a new field to the class, this method needs to be updated too
+	public Task clone() {
+		Task task = new Task();
+
+		if (startDate != null) {
+			task.setStartDate(new DateTime().withMillis(startDate.getMillis()));
+		}
+		if (endDate != null) {
+			task.setEndDate(new DateTime().withMillis(endDate.getMillis()));
+		}
+		task.setId(id);
+		if (uuid != null) {
+			task.setUuid(UUID.fromString(uuid.toString()));
+		}
+		task.setArchived(isArchived);
+		task.setPriority(priority);
+		task.setName(name);
+		task.setCompleted(isCompleted);
+
+		return task;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Task other = (Task) obj;
+		if (uuid == null) {
+			if (other.uuid != null)
+				return false;
+		} else if (!uuid.equals(other.uuid))
+			return false;
+		return true;
+	}
+
+	/**
+	 * Get the end date for this Task.
+	 * 
+	 * @return null If there is no end date
+	 * @return DateTime If there is a end date
+	 */
+	public DateTime getEndDate() {
+		return endDate;
+	}
+
+	/**
+	 * Get the date in formatted form suitable for display in UI.
+	 * It will automatically format the date depending on what details are available and what type of Task it is.
+	 * 
+	 * @return String Formatted date
+	 */
+	public String getFormattedDate() {
+		DateTime startDate = getStartDate();
+		DateTime endDate = getEndDate();
+
+		if (startDate == null && endDate == null) {
+			return null;
+		}
+
+		DateTime today = DateTime.now();
+		DateTime tomorrow = today.plusDays(1);
+		DateTimeFormatter fmt = DateTimeFormat.forPattern("dd MMM hh:mm");
+
+		if (today.year().get() == endDate.year().get()) {
+			fmt = DateTimeFormat.forPattern("EEEE, MMMM dd");
+		} else {
+			fmt = DateTimeFormat.forPattern("EEEE, MMMM dd, YYYY");
+		}
+
+		String endDateFormatted = fmt.print(endDate);
+
+		if (today.getYear() == endDate.getYear()
+				&& today.getDayOfYear() == endDate.getDayOfYear()) {
+			endDateFormatted = "Today";
+		} else if (tomorrow.getYear() == endDate.getYear()
+				&& tomorrow.getDayOfYear() == endDate.getDayOfYear()) {
+			endDateFormatted = "Tomorrow";
+		}
+
+		if (startDate == null) {
+			return endDateFormatted;
+		} else {
+			if (today.year().get() == startDate.year().get()) {
+				fmt = DateTimeFormat.forPattern("EEEE, MMMM dd");
+			} else {
+				fmt = DateTimeFormat.forPattern("EEEE, MMMM dd, YYYY");
+			}
+
+			String startDateFormatted = fmt.print(startDate);
+
+			if (today.getYear() == startDate.getYear()
+					&& today.getDayOfYear() == startDate.getDayOfYear()) {
+				startDateFormatted = "Today";
+			} else if (tomorrow.getYear() == startDate.getYear()
+					&& tomorrow.getDayOfYear() == startDate.getDayOfYear()) {
+				startDateFormatted = "Tomorrow";
+			}
+
+			if (startDateFormatted.equals(endDateFormatted)) {
+				return startDateFormatted;
+			}
+
+			return fmt.print(startDate) + " - " + endDateFormatted;
+		}
+	}
+
+	/**
+	 * Get the time in formatted form suitable for display in UI.
+	 * It will automatically format the time depending on what details are available and what type of Task it is.
+	 * 
+	 * @return String Formatted time
+	 */
+	public String getFormattedTimeRange() {
+		DateTime startDate = getStartDate();
+		DateTime endDate = getEndDate();
+
+		if (startDate == null && endDate == null) {
+			return "";
+		}
+
+		String formatted = "";
+		boolean twoDifferentDays = false;
+		DateTimeFormatter fmt = DateTimeFormat.forPattern("dd MMMM, ");
+
+		if (startDate != null && endDate != null) {
+			twoDifferentDays = !startDate.withMillisOfDay(0).equals(
+					endDate.withMillisOfDay(0));
+		}
+
+		if (startDate != null) {
+			String startDateFormatted = formatTime(startDate);
+			if (twoDifferentDays && !startDateFormatted.isEmpty()) {
+				formatted += fmt.print(startDate);
+			}
+			formatted += startDateFormatted;
+		}
+		if (endDate != null) {
+			String endDateFormatted = formatTime(endDate);
+			if (!formatted.isEmpty()) {
+				formatted += " - ";
+			}
+			if (twoDifferentDays && !endDateFormatted.isEmpty()) {
+				formatted += fmt.print(endDate);
+			}
+			formatted += endDateFormatted;
+		}
+
+		return formatted;
+	}
+
+	/**
+	 * Get Task Id/Index/Ref Id.
+	 * 
+	 * @return int Task Id
+	 */
+	public long getId() {
+		return id;
+	}
+
+	/**
+	 * Get Task name.
+	 * 
+	 * @return String Task name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * Get Task priority.
+	 * 
+	 * @return Priority Task priority
+	 */
+	public Priority getPriority() {
+		return this.priority;
+	}
+
+	/**
+	 * Get Task priority color to be used by UI.
+	 * 
+	 * @return String Color of priority in hex format
+	 */
+	public String getPriorityColor() {
+		if (priority != null && priority.ordinal() < 4) {
+			return priorityColors[priority.ordinal()];
+		}
+
+		return priorityColors[0];
+	}
+
+	/**
+	 * Get Task priority label to be used by UI.
+	 * 
+	 * @return String Label of priority
+	 */
+	public String getPriorityString() {
+		if (priority != null && priority.ordinal() < 4) {
+			return priorityStrings[priority.ordinal()];
+		}
+
+		return priorityStrings[0];
+	}
+
+	/**
+	 * Get the start date for this Task.
+	 * 
+	 * @return DateTime Start date of this Task
+	 */
+	public DateTime getStartDate() {
+		return startDate;
+	}
+
+	/**
+	 * Get the Uuid for this Task. Uuid is a unique identifier for this Task.
+	 * 
+	 * @return UUID Unique id for this Task
+	 */
+	public UUID getUuid() {
+		return uuid;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((uuid == null) ? 0 : uuid.hashCode());
+		return result;
+	}
+
+	/**
+	 * Return if this Task is done.
+	 * 
+	 * @return true if Task is completed
+	 * @return false if Task is not completed
+	 */
+	public boolean isCompleted() {
+		return isCompleted;
+	}
+	
+	/**
+	 * Return if this Task is due.
+	 * 
+	 * @return true if Task is due
+	 * @return false if Task is not due
+	 */
+	public boolean isDue() {
+		if (endDate == null)
+			return false;
+
+		return DateTime.now().isAfter(endDate);
+	}
+
+	/**
+	 * Set if the Task is completed.
+	 * 
+	 * @param isCompleted true if Task is completed
+	 */
+	public void setCompleted(boolean isCompleted) {
+		this.isCompleted = isCompleted;
+	}
+	
+	/**
+	 * Set the value for Task end date.
+	 * 
+	 * @param endDate Task end date
+	 */
+	public void setEndDate(DateTime endDate) {
+		this.endDate = endDate;
+	}
+
+	/**
+	 * Set Task id.
+	 * 
+	 * @param id Task id
+	 */
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	/**
+	 * Set Task name.
+	 * 
+	 * @param name Task name
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * Set Task priority.
+	 * 
+	 * @param priority Task priority
+	 */
+	public void setPriority(Priority priority) {
+		this.priority = priority;
+	}
+
+	/**
+	 * Set start date for Task.
+	 * 
+	 * @param startDate Task start date
+	 */
+	public void setStartDate(DateTime startDate) {
+		this.startDate = startDate;
+	}
+	
+	/**
+	 * Set Task Uuid.
+	 * 
+	 * @param uuid Task UUID
+	 */
+	public void setUuid(UUID uuid) {
+		this.uuid = uuid;
+	}
+
+	@Override
+	public String toString() {
+		return "Task [startDate=" + startDate + ", endDate=" + endDate
+				+ ", id=" + id + ", name=" + name + "]";
+	}
+
+	private String formatTime(DateTime date) {
+		String timeFormat = "";
+		if (date.millisOfDay().get() != 0) {
+			timeFormat = "hh:mm a";
+		}
+
+		if (timeFormat.equals("")) {
+			return "";
+		}
+
+		DateTimeFormatter fmt = DateTimeFormat.forPattern(timeFormat);
+		String formatted = fmt.print(date);
+
+		return formatted.toUpperCase();
+	}
+
+	/**
+	 * Return if Task is archived.
+	 * 
+	 * @return true if Task is archived
+	 * @return false if Task is not archived
+	 */
+	public boolean isArchived() {
+		return isArchived;
+	}
+
+	/**
+	 * Set if the Task is archived.
+	 * 
+	 * @param isArchived true if Task is archived.
+	 */
+	public void setArchived(boolean isArchived) {
+		this.isArchived = isArchived;
+	}
+
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\item\Task.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\parser\Parser.java
+	 */
+
+	// Do case-insensitive search of word in array
+	private boolean inArray(String[] haystack, String needle) {
+		for (int i = 0; i < haystack.length; i++) {
+			if (haystack[i].toLowerCase().equals(needle.toLowerCase())) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	// method to indicate if time is specified by the user in the input string
+	private boolean isTimeSpecifiedByUser(Tree tree) {
+		boolean timeSpecified = false;
+		for (int j = 0; j < tree.getChildCount(); j++) {
+			if (tree.getChild(j).getText().equals("EXPLICIT_TIME")) {
+				timeSpecified = true;
+				break;
+			}
+		}
+
+		return timeSpecified;
+	}
+
+	// Join a string array with a space
+	private String joinStringArray(String[] strArray, int start, int end) {
+		String str = "";
+		for (int i = start; i < end; i++) {
+			str += strArray[i] + " ";
+		}
+
+		return str.trim();
+	}
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\parser\Parser.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\storage\StubStorage.java
+	 */
+
+/**
+ * IOStubImpl is to be used for testing only. It simulates normal IO by caching
+ * the data in memory instead of writing it to file.
+ */
+public class StubStorage extends Storage {
+
+	private ArrayList<Task> tasks;
+
+	public StubStorage() {
+		this.tasks = new ArrayList<Task>();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public ArrayList<Task> readFromFile() {
+		return (ArrayList<Task>) tasks.clone();
+	}
+
+	@Override
+	public String readFromHelpFile(String helpType, boolean miniMenu)
+			throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void redoFile() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void saveToFile(List<Task> tasks) {
+		this.tasks.clear();
+		this.tasks.addAll(tasks);
+	}
+
+	@Override
+	public void undoFile() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean changeStorageFileDirectory(String newDir) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\storage\StubStorage.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\storage\JsonStorage.java
+	 */
+
+	public JsonStorage(File storageFile) throws IOException {
+		this.storageFile = storageFile;
+		this.gson = new GsonBuilder().registerTypeAdapter(
+				new TypeToken<DateTime>() {
+				}.getType(), new DateTimeConverter()).create();
+
+		Storage.CheckIfFileExistAndCreateIfDoesNot(storageFile);
+	}
+
+	@Override
+	public ArrayList<Task> readFromFile() throws IOException {
+		String lines = readFromFileToString(storageFile);
+
+		// return empty arraylist if file has zero items
+		ArrayList<Task> tasks = new ArrayList<Task>();
+		
+		String sampleTasksJson = readFromFileToString(getClass().getResourceAsStream("/sampleStorage.json"));
+		ArrayList<Task> sampleTasks = gson.fromJson(sampleTasksJson,
+				new TypeToken<ArrayList<Task>>() {
+				}.getType());
+		tasks = sampleTasks;
+
+		// convert json to ArrayList
+		try {
+			ArrayList<Task> tasksFromFile = gson.fromJson(lines,
+					new TypeToken<ArrayList<Task>>() {
+					}.getType());
+			if (tasksFromFile != null) {
+				tasks = tasksFromFile;
+			}
+		} catch (Exception e) {
+			// TODO: This is unacceptable, warn user first!
+			// File is most likely corrupted, start over
+			saveToFile(new ArrayList<Task>());
+		}
+
+		return tasks;
+	}
+	
+	private String readFromFileToString(File file) throws IOException {
+		return readFromFileToString(Files.newInputStream(file.toPath()));
+	}
+	
+	private String readFromFileToString(InputStream in) throws IOException {
+		String lines = "";
+		
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+		String line = null;
+		while ((line = reader.readLine()) != null) {
+			lines += line + "\n";
+		}
+		in.close();
+		
+		return lines;
+	}
+	
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\storage\JsonStorage.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\storage\JsonStorage.java
+	 */
+
+	@Override
+	public void saveToFile(List<Task> tasks) throws IOException {
+		String json = gson.toJson(tasks);
+
+		OutputStream out = new BufferedOutputStream(Files.newOutputStream(
+				storageFile.toPath(), StandardOpenOption.WRITE,
+				StandardOpenOption.TRUNCATE_EXISTING));
+		out.write((json).getBytes());
+		out.flush();
+		out.close();
+	}
+
+	@Override
+	public void undoFile() {
+		// TODO Auto-generated method stub
+
+	}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\storage\JsonStorage.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\storage\Storage.java
+	 */
+
+	public static boolean CheckIfFileExistAndCreateIfDoesNot(File file)
+			throws IOException {
+		if (!file.exists()) {
+			Files.createFile(file.toPath());
+		}
+
+		return true;
+	}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\storage\Storage.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\storage\Storage.java
+	 */
+
+	public abstract ArrayList<Task> readFromFile() throws IOException;
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\storage\Storage.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\storage\Storage.java
+	 */
+
+	public abstract void saveToFile(List<Task> tasks) throws IOException;
+
+	public abstract void undoFile();
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\storage\Storage.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\ui\HelpViewController.java
+	 */
+
+public class HelpViewController {
+
+	private Ui ui;
+
+	@FXML
+	private WebView webView;
+
+	public HelpViewController() {
+	}
+
+	public void setContent(String text) {
+		//webView.setZoom(javafx.stage.Screen.getPrimary().getDpi() / 96);
+		webView.getEngine().loadContent(text);
+	}
+
+	public void setUI(Ui ui) {
+		this.ui = ui;
+	}
+
+	@FXML
+	protected void initialize() {
+	}
+
+	@FXML
+	protected void onDoneClicked(ActionEvent event) {
+		ui.closeHelp();
+	}
+
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\ui\HelpViewController.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\ui\JavaFxUi.java
+	 */
+
+public class JavaFxUi extends Ui {
+
+	private static double WINDOW_HEIGHT = (javafx.stage.Screen.getPrimary().getDpi() / 96) * 560;
+
+	private static double WINDOW_WIDTH = (javafx.stage.Screen.getPrimary().getDpi() / 96) * 640;
+
+	private DataUpdatedListener dataUpdatedListener = new DataUpdatedListener() {
+
+		public void dataUpdated(
+				ArrayList<Task> tasks,
+				javafx.collections.ListChangeListener.Change<? extends Task> changes) {
+			mainViewController.updateAllTasks(tasks, changes);
+		}
+
+	};
+
+	private Stage helpStage;
+
+	private HelpViewController helpViewController;
+
+	private Image image = Toolkit.getDefaultToolkit().getImage(
+			getClass().getResource("/tray.png"));
+
+	private Stage miniHelpStage;
+
+	private HelpViewController miniHelpViewController;
+
+	private Stage primaryStage;
+
+	private HotKeyListener showHideHotkeyListener = new HotKeyListener() {
+		// @Override
+		public void onHotKey(HotKey arg0) {
+			Platform.runLater(new Runnable() {
+				// @Override
+				public void run() {
+					if (primaryStage.isShowing()) {
+						hideWindow();
+					} else {
+						showWindow();
+					}
+				}
+			});
+		}
+	};
+
+	private TrayIcon trayIcon = new TrayIcon(image, "OmniTask");
+
+	private MainViewController mainViewController;
+	
+	private boolean loseFocusByMiniHelpStage;
+
+	public JavaFxUi(Stage primaryStage) {
+		this.primaryStage = primaryStage;
+	}
+
+	@Override
+	public void closeHelp() {
+		helpStage.hide();
+	}
+
+	@Override
+	public void closeMiniHelp() {
+		miniHelpStage.hide();
+	}
+
+	// @Override
+	public void exit() {
+		Provider provider = Provider.getCurrentProvider(false);
+		provider.reset();
+		provider.stop();
+
+		Platform.exit();
+	}
+
+	@Override
+	public void redraw() {
+		final double width = primaryStage.getWidth();
+		primaryStage.setWidth(width - 1);
+
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				primaryStage.setWidth(width + 1);
+			}
+
+		});
+	}
+
+	@Override
+	public void scrollDown() {
+		mainViewController.scrollDown();
+	}
+
+	@Override
+	public void scrollUp() {
+		mainViewController.scrollUp();
+	}
+	
+	@Override
+	public void showSection(String section) {
+		mainViewController.scrollToSection(section);
+	}
+	
+	@Override
+	public void showSection(DateTime endDate) {
+		mainViewController.scrollToSection(endDate);
+	}
+	
+	@Override
+	public void showSection(DateTime startDate, DateTime endDate) {
+		mainViewController.scrollToSection(startDate, endDate);
+	}
+
+	public void showAllTasks() {
+		mainViewController.setViewMode(ViewMode.ALL);
+		showMessage("Showing All Tasks");
+	}
+
+	public void showError(String msg) {
+		if (mainViewController != null) {
+			mainViewController.showError(msg);
+		} else {
+			printError("Error: " + msg);
+		}
+	}
+
+	@Override
+	public void showHelp(String msg) {
+		helpViewController.setContent(msg);
+		helpStage.show();
+	}
+
+	public void showMessage(String msg) {
+		mainViewController.showMessage(msg);
+	}
+
+	@Override
+	public void showMiniHelp(String msg) {
+		miniHelpViewController.setContent(msg);
+		miniHelpStage.show();
+	}
+
+	@Override
+	public void showAlternateList(ViewMode viewMode, String title, ArrayList<Task> tasks) {
+		mainViewController.setAlternateTasks(title, tasks);
+		mainViewController.setViewMode(viewMode);
+	}
+
+	// @Override
+	public void start() {
+		// Subscribe to Data changes
+		StorageBackedData.GetSingleton().addDataUpdatedListener(dataUpdatedListener);
+
+		setupUI();
+
+		SwingUtilities.invokeLater(new Runnable() {
+			// @Override
+			public void run() {
+				setupTray();
+			}
+		});
+
+		setupHotkeys();
+
+		primaryStage.show();
+		invokeShowAll();
+	}
+
+	private void hideTray() {
+		SwingUtilities.invokeLater(new Runnable() {
+			// @Override
+			public void run() {
+				if (SystemTray.isSupported()) {
+					SystemTray tray = SystemTray.getSystemTray();
+
+					tray.remove(trayIcon);
+				}
+			}
+		});
+	}
+
+	private void hideWindow() {
+		primaryStage.hide();
+	}
+
+	private void printDebug(String msg) {
+		System.out.println(DateTime.now() + ": " + msg);
+		Logger.writeDebug(msg);
+	}
+
+	private void printError(String msg) {
+		System.err.println(DateTime.now() + ": " + msg);
+		Logger.writeError(msg);
+	}
+
+	private void repositionAndResizeMiniHelpWindow() {
+		miniHelpStage.setWidth(primaryStage.getWidth());
+		miniHelpStage.setX(primaryStage.getX());
+
+		Rectangle2D screen = Screen.getPrimary().getVisualBounds();
+		if (primaryStage.getY() + primaryStage.getHeight()
+				+ miniHelpStage.getHeight() > screen.getHeight()) {
+			miniHelpStage.setY(primaryStage.getY() + primaryStage.getHeight()
+					- (miniHelpStage.getHeight() + mainViewController.getOmniBarHeight() + 10));
+		} else {
+			miniHelpStage.setY(primaryStage.getY() + primaryStage.getHeight());
+		}
+	}
+
+	private void setupHelpWindow() {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(
+					"helpLayout.fxml"));
+			Parent root = (Parent) loader.load();
+			helpViewController = (HelpViewController) loader.getController();
+			helpViewController.setUI(this);
+
+			helpStage = new Stage();
+			helpStage.initStyle(StageStyle.UTILITY);
+			helpStage.setScene(new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT));
+
+			helpStage.setOnShowing(new EventHandler<WindowEvent>() {
+
+				@Override
+				public void handle(WindowEvent event) {
+					helpStage.setWidth(primaryStage.getWidth());
+					helpStage.setHeight(primaryStage.getHeight());
+					helpStage.setX(primaryStage.getX());
+					helpStage.setY(primaryStage.getY());
+				}
+				
+			});
+			
+			helpStage.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
+				public void handle(KeyEvent event) {
+					if (event.getCode() == KeyCode.ESCAPE) {
+						closeHelp();
+					}
+				}
+			});
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+
+	private void setupHotkeys() {
+		Provider provider = Provider.getCurrentProvider(false);
+		provider.register(
+				KeyStroke.getKeyStroke('O', InputEvent.SHIFT_DOWN_MASK
+						| InputEvent.CTRL_DOWN_MASK), showHideHotkeyListener);
+	}
+
+	private void setupMiniHelpWindow() {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(
+					"miniHelpLayout.fxml"));
+			Parent root = (Parent) loader.load();
+			miniHelpViewController = (HelpViewController) loader
+					.getController();
+			miniHelpViewController.setUI(this);
+
+			miniHelpStage = new Stage();
+			miniHelpStage.initStyle(StageStyle.UTILITY);
+			miniHelpStage.setScene(new Scene(root, WINDOW_WIDTH, (javafx.stage.Screen.getPrimary().getDpi() / 96) * 150));
+			miniHelpStage.setAlwaysOnTop(true);
+			/*miniHelpStage.focusedProperty().addListener(
+					new ChangeListener<Boolean>() {
+
+						@Override
+						public void changed(
+								ObservableValue<? extends Boolean> arg0,
+								Boolean oldValue, Boolean newValue) {
+							if (newValue) {
+								primaryStage.requestFocus();
+							}
+						}
+
+					});*/
+			miniHelpStage.setOnShowing(new EventHandler<WindowEvent>() {
+
+				@Override
+				public void handle(WindowEvent event) {
+					loseFocusByMiniHelpStage = true;
+				}
+				
+			});
+			miniHelpStage.setOnShown(new EventHandler<WindowEvent>() {
+
+				@Override
+				public void handle(WindowEvent event) {
+					primaryStage.requestFocus();
+					repositionAndResizeMiniHelpWindow();
+				}
+
+			});
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+
+	private void setupTray() {
+		if (SystemTray.isSupported()) {
+			trayIcon.setImageAutoSize(true);
+			trayIcon.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					printDebug("Tray actionPerformed event triggered.");
+					Platform.runLater(new Runnable() {
+						// @Override
+						public void run() {
+							showWindow();
+						}
+					});
+				}
+			});
+			trayIcon.addMouseListener(new MouseListener() {
+
+				// @Override
+				public void mouseClicked(MouseEvent e) {
+					printDebug("Tray mouseClicked event triggered.");
+					Platform.runLater(new Runnable() {
+						// @Override
+						public void run() {
+							showWindow();
+						}
+					});
+				}
+
+				// @Override
+				public void mouseEntered(MouseEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+
+				// @Override
+				public void mouseExited(MouseEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+
+				// @Override
+				public void mousePressed(MouseEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+
+				// @Override
+				public void mouseReleased(MouseEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+
+			});
+
+			printDebug("Tray Setup Complete.");
+		}
+	}
+
+	private void setupUI() {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(
+					"mainLayout.fxml"));
+			Parent root = (Parent) loader.load();
+			mainViewController = (MainViewController) loader.getController();
+			mainViewController.setUI(this);
+
+			Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+			scene.getStylesheets().add(
+					getClass().getResource("application.css").toExternalForm());
+			primaryStage.setScene(scene);
+
+			primaryStage.setMinWidth(WINDOW_WIDTH);
+			primaryStage.setMinHeight(WINDOW_HEIGHT);
+			primaryStage.setTitle("OmniTask");
+			primaryStage.getIcons().add(
+					new javafx.scene.image.Image("tray.png"));
+
+			primaryStage.iconifiedProperty().addListener(
+					new ChangeListener<Boolean>() {
+
+						public void changed(
+								ObservableValue<? extends Boolean> prop,
+								Boolean oldValue, Boolean newValue) {
+							// newValue is true if window is minimized
+							if (newValue) {
+								primaryStage.hide();
+							}
+						}
+
+					});
+
+			primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				// @Override
+				public void handle(WindowEvent arg0) {
+					Controller.Exit();
+				}
+			});
+
+			primaryStage.setOnHidden(new EventHandler<WindowEvent>() {
+
+				// @Override
+				public void handle(WindowEvent event) {
+					printDebug("OmniTask Window Hidden");
+
+					hideWindow();
+					closeHelp();
+					closeMiniHelp();
+
+					showTray();
+				}
+
+			});
+			
+			primaryStage.focusedProperty().addListener(new ChangeListener<Boolean>() {
+
+				@Override
+				public void changed(ObservableValue<? extends Boolean> arg0,
+						Boolean oldValue, Boolean newValue) {
+					
+					if (!newValue) {
+						if (!loseFocusByMiniHelpStage) {
+							closeMiniHelp();
+						} else {
+							loseFocusByMiniHelpStage = false;
+						}
+					}
+				}
+				
+			});
+
+			primaryStage.setOnShown(new EventHandler<WindowEvent>() {
+
+				// @Override
+				public void handle(WindowEvent event) {
+					printDebug("OmniTask Window Shown");
+
+					showWindow();
+
+					hideTray();
+
+					// Make sure input is focused
+					mainViewController.focusOmniBar();
+				}
+
+			});
+
+			ChangeListener<Number> resizeAndMoveChangeListener = new ChangeListener<Number>() {
+
+				@Override
+				public void changed(
+						ObservableValue<? extends Number> observable,
+						Number oldValue, Number newValue) {
+					repositionAndResizeMiniHelpWindow();
+				}
+
+			};
+
+			primaryStage.widthProperty().addListener(
+					resizeAndMoveChangeListener);
+			primaryStage.heightProperty().addListener(
+					resizeAndMoveChangeListener);
+			primaryStage.xProperty().addListener(resizeAndMoveChangeListener);
+			primaryStage.yProperty().addListener(resizeAndMoveChangeListener);
+
+			setupHelpWindow();
+			setupMiniHelpWindow();
+
+			primaryStage.getScene().setOnKeyPressed(
+					new EventHandler<KeyEvent>() {
+						public void handle(KeyEvent event) {
+							if (event.getCode() == KeyCode.ESCAPE) {
+								closeHelp();
+								closeMiniHelp();
+							}
+						}
+					});
+
+			Platform.setImplicitExit(false);
+
+			printDebug("UI Setup Complete.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+
+	private void showTray() {
+		SwingUtilities.invokeLater(new Runnable() {
+			// @Override
+			public void run() {
+				if (SystemTray.isSupported()) {
+					SystemTray tray = SystemTray.getSystemTray();
+
+					try {
+						if (tray.getTrayIcons().length == 0) {
+							tray.add(trayIcon);
+							trayIcon.displayMessage(
+									"OmniTask",
+									"Click here or press Ctrl + Shift + O to show OmniTask",
+									TrayIcon.MessageType.INFO);
+						}
+					} catch (AWTException e) {
+						printError("TrayIcon could not be added.");
+					}
+				}
+			}
+		});
+	}
+
+	private void showWindow() {
+		primaryStage.show();
+		primaryStage.setIconified(false);
+	}
+
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\ui\JavaFxUi.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\ui\MainViewController.java
+	 */
+
+/**
+* This class is the View Controller for the main UI window.
+* 
+*/
+public class MainViewController {
+
+	/**
+	 * ViewMode influences how the task listing update itselfs upon receiving new data. It is important to set it correctly.
+	 */
+	public static enum ViewMode {
+		/**
+		 * Showing All Task
+		 */
+		ALL,
+		
+		/**
+		 * Showing Search or Category
+		 */
+		ALTERNATE,
+		
+		/**
+		 * Showing Archived Tasks
+		 */
+		ARCHIVED
+	}
+	
+	/**
+	 * Section title for overdue tasks.
+	 */
+	final public static String SECTION_OVERDUE = "Overdue!";
+	
+	/**
+	 * Section title for floating tasks.
+	 */
+	final public static String SECTION_FLOATING = "No Due Date";
+
+	public ObservableList<Task> tasks;
+
+	@FXML
+	private WebView agendaView;
+
+	private boolean agendaViewLoaded;
+
+	private ObservableList<Task> allTasks;
+
+	private ArrayList<String> commandHistory;
+
+	private int currentCommandHistoryIndex = -1;
+
+	@FXML
+	private TextField omniBar;
+
+	private ObservableList<Task> altTasks;
+
+	private Ui ui;
+
+	private ViewMode viewMode = ViewMode.ALL;
+
+	@FXML
+	private Text viewModeText;
+
+	public MainViewController() {
+		allTasks = FXCollections.observableArrayList();
+		altTasks = FXCollections.observableArrayList();
+		tasks = allTasks;
+		commandHistory = new ArrayList<String>();
+	}
+
+	public void focusOmniBar() {
+		omniBar.requestFocus();
+	}
+	
+	public double getOmniBarHeight() {
+		return omniBar.getHeight();
+	}
+
+	public void scrollDown() {
+		if (agendaViewLoaded) {
+			agendaView.getEngine().executeScript("scrollDown();");
+		}
+	}
+
+	public void scrollUp() {
+		if (agendaViewLoaded) {
+			agendaView.getEngine().executeScript("scrollUp();");
+		}
+	}
+	
+	public void scrollToSection(DateTime endDate) {
+		scrollToSection(null, endDate);
+	}
+	
+	public void scrollToSection(DateTime startDate, DateTime endDate) {
+		Task task = new Task();
+		task.setStartDate(startDate);
+		task.setEndDate(endDate);
+		
+		scrollToSection(task.getFormattedDate());
+	}
+	
+	public void scrollToSection(String section) {
+		if (agendaViewLoaded) {
+			ui.showMessage("Showing \"" + section + "\" Tasks");
+			agendaView.getEngine().executeScript("scrollToSection('" + section + "');");
+		}
+	}
+
+	public void setAlternateTasks(String title, List<Task> tasks) {
+		Collections.sort(tasks, Task.taskSorterComparator);
+		
+		viewModeText.setText(title);
+
+		this.altTasks.clear();
+		this.altTasks.addAll(tasks);
+	}
+
+	public void setUI(Ui ui) {
+		this.ui = ui;
+	}
+
+	public void setViewMode(ViewMode viewMode) {
+		if (viewMode == ViewMode.ALL) {
+			tasks = allTasks;
+		} else if (viewMode == ViewMode.ALTERNATE || viewMode == ViewMode.ARCHIVED) {
+			tasks = altTasks;
+		}
+
+		this.viewMode = viewMode;
+		addAllCards();
+
+		updateViewModeText();
+	}
+
+	public void showError(String msg) {
+		showToast("Error: " + msg);
+	}
+
+	public void showMessage(String msg) {
+		showToast(msg);
+	}
+
+	public void updateAllTasks(List<Task> tasks,
+			javafx.collections.ListChangeListener.Change<? extends Task> changes) {
+		if (this.allTasks.size() == 0) {
+			this.allTasks.addAll(tasks);
+			if (viewMode == ViewMode.ALL) {
+				addAllCards();
+			}
+		} else {
+			//int ind = 0;
+			while (changes.next()) {
+				// System.out.println("changeIndex: " + ind++);
+				for (Task task : changes.getRemoved()) {
+					// System.out.println("Removed: " + task.getId() + " - " +
+					// task.getName());
+					int pos = tasks.indexOf(task);
+					if (pos == -1) {
+						if (viewMode == ViewMode.ALL) {
+							removeCard(task.getUuid().toString());
+						}
+						this.allTasks.remove(task);
+					}
+				}
+
+				for (Task task : changes.getAddedSubList()) {
+					// System.out.println("Added: " + task.getId() + " - " +
+					// task.getName());
+					boolean editing = false;
+
+					int oldPos = this.allTasks.indexOf(task);
+					if (oldPos != -1) {
+						this.allTasks.remove(task);
+						editing = true;
+					}
+
+					int pos = tasks.indexOf(task);
+					this.allTasks.add(pos, task);
+
+					if (editing && viewMode == ViewMode.ALL) {
+						if (changes.getAddedSize() > 1) {
+							editCard(task.getUuid().toString(), pos);
+						} else {
+							editSingleCard(task.getUuid().toString(), pos);
+						}
+					} else if (viewMode == ViewMode.ALL) {
+						addSingleCard(pos);
+					}
+				}
+
+				// System.out.println("");
+			}
+		}
+
+		// If we are in alternate view mode, delete the task which is no longer
+		// found, edit the one existing inside
+		if (viewMode != ViewMode.ALL) {
+			for (int i = 0; i < altTasks.size(); i++) {
+				Task task = altTasks.get(i);
+				int indexInAllTasks = this.allTasks.indexOf(task);
+
+				if (indexInAllTasks == -1) {
+					altTasks.remove(i--);
+				} else {
+					// This is a pretty slow operation :(
+					altTasks.set(i, this.allTasks.get(indexInAllTasks));
+				}
+			}
+
+			addAllCards();
+		}
+	}
+
+	@FXML
+	protected void initialize() {
+		setViewMode(ViewMode.ALL);
+
+		agendaView.setContextMenuEnabled(false);
+		agendaView.setZoom(javafx.stage.Screen.getPrimary().getDpi() / 96);
+		agendaView.getEngine().getLoadWorker().stateProperty()
+				.addListener(new ChangeListener<State>() {
+					@Override
+					public void changed(ObservableValue<? extends State> ov, State oldState,
+							State newState) {
+						if (newState == Worker.State.SUCCEEDED) {
+							showMessage("Welcome to OmniTask. Type 'help' to get help.");
+							agendaViewLoaded = true;
+						}
+					}
+				});
+
+		agendaView.getEngine().load(
+				getClass().getResource("/agendaView.html").toExternalForm());
+		JSObject jsobj = (JSObject) agendaView.getEngine().executeScript(
+				"window");
+		jsobj.setMember("java", new Bridge());
+
+		omniBar.textProperty().addListener(new ChangeListener<String>() {
+
+			@Override
+			public void changed(ObservableValue<? extends String> arg0,
+					String oldValue, String newValue) {
+				ui.invokeShowMiniHelpIfAvailable(newValue);
+			}
+
+		});
+	}
+
+	@FXML
+	protected void onOmniBarEnter(ActionEvent event) {
+		if (!omniBar.getText().trim().equals("")) {
+			commandHistory.add(omniBar.getText());
+			currentCommandHistoryIndex = -1;
+
+			if (ui.invokeCommandReceived(omniBar.getText())) {
+				omniBar.setText("");
+			} else {
+				omniBar.selectAll();
+			}
+		}
+	}
+
+	@FXML
+	protected void onOmniBarKeyPressed(KeyEvent event) {
+		if (event.getCode() == KeyCode.UP) {
+			cyclePrevHistory();
+			event.consume();
+		} else if (event.getCode() == KeyCode.DOWN) {
+			cycleNextHistory();
+			event.consume();
+		} else if (event.getCode() == KeyCode.TAB) {
+			doAutoComplete();
+			event.consume();
+		} else if (event.getCode() == KeyCode.PAGE_DOWN) {
+			scrollDown();
+			event.consume();
+		} else if (event.getCode() == KeyCode.PAGE_UP) {
+			scrollUp();
+			event.consume();
+		}
+	}
+
+	private void addAllCards() {
+		if (agendaViewLoaded) {
+			agendaView.getEngine().executeScript("addAllCards();");
+		}
+	}
+
+	private void addCard(int index) {
+		if (agendaViewLoaded) {
+			agendaView.getEngine().executeScript("addCard(" + index + ");");
+		}
+	}
+
+	private void addSingleCard(int index) {
+		if (agendaViewLoaded) {
+			agendaView.getEngine().executeScript(
+					"addSingleCard(" + index + ");");
+		}
+	}
+
+	// saves current input into commandHistory (if not empty)
+	private void cycleHandleHistory() {
+		if (omniBar.getText().trim().isEmpty()) {
+			return;
+		}
+
+		if (currentCommandHistoryIndex == -1) {
+			commandHistory.add(omniBar.getText());
+		} else {
+			commandHistory.set(currentCommandHistoryIndex, omniBar.getText());
+		}
+	}
+
+	// replace current input with next command (if any)
+	private void cycleNextHistory() {
+		if (currentCommandHistoryIndex == -1) {
+			putOmniBarCaretAtEnd();
+			return;
+		}
+
+		cycleHandleHistory();
+
+		if (currentCommandHistoryIndex >= commandHistory.size() - 1) {
+			currentCommandHistoryIndex = -1;
+			omniBar.setText("");
+			putOmniBarCaretAtEnd();
+			return;
+		}
+
+		omniBar.setText(commandHistory.get(++currentCommandHistoryIndex));
+		putOmniBarCaretAtEnd();
+	}
+
+	// replace current input with prev command (if any)
+	private void cyclePrevHistory() {
+		if (currentCommandHistoryIndex == 0) {
+			putOmniBarCaretAtEnd();
+			return;
+		}
+
+		cycleHandleHistory();
+
+		if (currentCommandHistoryIndex == -1 && commandHistory.size() > 0) {
+			currentCommandHistoryIndex = commandHistory.size();
+		} else if (currentCommandHistoryIndex == -1
+				&& commandHistory.size() == 0) {
+			putOmniBarCaretAtEnd();
+			return;
+		}
+
+		omniBar.setText(commandHistory.get(--currentCommandHistoryIndex));
+		putOmniBarCaretAtEnd();
+	}
+
+	private void doAutoComplete() {
+		ArrayList<String> autocomplete = ui
+				.invokeDoAutocomplete(omniBar.getText());
+		if (autocomplete.size() > 0) {
+			omniBar.setText(autocomplete.get(0));
+			putOmniBarCaretAtEnd();
+		}
+	}
+
+	private void editCard(String uuid, int index) {
+		if (agendaViewLoaded) {
+			agendaView.getEngine().executeScript(
+					"editCard('" + uuid + "', " + index + ");");
+		}
+	}
+
+	private void editSingleCard(String uuid, int index) {
+		if (agendaViewLoaded) {
+			agendaView.getEngine().executeScript(
+					"editSingleCard('" + uuid + "', " + index + ");");
+		}
+	}
+
+	private List<Task> getAlternateTasksAsList() {
+		ArrayList<Task> tasks = new ArrayList<Task>();
+		for (Task task : this.altTasks) {
+			tasks.add(task);
+		}
+		return tasks;
+	}
+
+	private Task getTaskByUuid(String uuid) {
+		for (Task task : this.tasks) {
+			if (task.getUuid().toString().equals(uuid)) {
+				return task;
+			}
+		}
+
+		return null;
+	}
+
+	private List<Task> getTasksAsList() {
+		ArrayList<Task> tasks = new ArrayList<Task>();
+		for (Task task : this.tasks) {
+			tasks.add(task);
+		}
+		return tasks;
+	}
+
+	private void putOmniBarCaretAtEnd() {
+		Platform.runLater(new Runnable() {
+
+			public void run() {
+				omniBar.end();
+			}
+
+		});
+	}
+
+	private void removeCard(String uuid) {
+		if (agendaViewLoaded) {
+			agendaView.getEngine().executeScript("removeCard('" + uuid + "');");
+		}
+	}
+	
+	private void showToast(String msg) {
+		if (agendaViewLoaded) {
+			msg = msg.replaceAll("\"", "\\\\\"");
+			agendaView.getEngine().executeScript("showToast(\"" + msg + "\");");
+		}
+	}
+
+	private void updateViewModeText() {
+		if (viewMode == ViewMode.ALL) {
+			viewModeText.setText("All Tasks");
+		}
+
+	}
+
+	public class Bridge {
+		public void autofillOmniBarWithEditDate(String uuid) {
+			Task task = getTaskByUuid(uuid);
+			if (task.getStartDate() == null && task.getEndDate() == null) {
+				return;
+			}
+			cycleHandleHistory();
+
+			DateTimeFormatter fmt = DateTimeFormat
+					.forPattern("dd MMM YYYY hh:mma");
+
+			String date = fmt.print(task.getEndDate());
+			if (task.getStartDate() != null) {
+				date = fmt.print(task.getStartDate()) + " to " + date;
+			} else {
+				date = "due " + date;
+			}
+			String command = CommandEdit.COMMAND_ALIASES[0] + " "
+					+ task.getId() + " ";
+			omniBar.setText(command + date);
+			focusOmniBar();
+			omniBar.selectRange(command.length(),
+					command.length() + date.length());
+		}
+
+		public void autofillOmniBarWithEditId(String uuid) {
+			Task task = getTaskByUuid(uuid);
+			cycleHandleHistory();
+			omniBar.setText(CommandEdit.COMMAND_ALIASES[0] + " "
+					+ task.getId() + " ");
+			focusOmniBar();
+			omniBar.selectRange(0, CommandEdit.COMMAND_ALIASES[0].length());
+		}
+
+		public void autofillOmniBarWithEditName(String uuid) {
+			Task task = getTaskByUuid(uuid);
+			cycleHandleHistory();
+			String command = CommandEdit.COMMAND_ALIASES[0] + " "
+					+ task.getId() + " ";
+			String taskName = task.getName().replaceAll("\"", "\\\\\"");
+			omniBar.setText(command + taskName);
+			focusOmniBar();
+			omniBar.selectRange(command.length(), command.length()
+					+ taskName.length());
+		}
+
+		public void autofillOmniBarWithEditPriority(String uuid) {
+			Task task = getTaskByUuid(uuid);
+			cycleHandleHistory();
+			String priority = Parser.PRIORITY_INDICATORS[task
+					.getPriority().ordinal()];
+			String command = CommandEdit.COMMAND_ALIASES[0] + " "
+					+ task.getId() + " ";
+			omniBar.setText(command + priority);
+			focusOmniBar();
+			omniBar.selectRange(command.length() + 1, command.length() + 1
+					+ priority.length());
+		}
+		
+		public int compareDates(long startDate1, long endDate1, long startDate2, long endDate2) {
+			Task task1 = new Task();
+			task1.setPriority(Priority.NONE);
+			task1.setId(0);
+			
+			Task task2 = task1.clone();
+			
+			if (startDate1 != -1) {
+				task1.setStartDate(new DateTime().withMillis(startDate1));
+			}
+			task1.setEndDate(new DateTime().withMillis(endDate1));
+			
+			if (startDate2 != -1) {
+				task2.setStartDate(new DateTime().withMillis(startDate2));
+			}
+			task2.setEndDate(new DateTime().withMillis(endDate2));
+			
+			return Task.taskSorterComparator.compare(task1, task2);
+		}
+
+		public void debug(String msg) {
+			System.out.println(msg);
+		}
+
+		public void focusOmniBar() {
+			MainViewController.this.focusOmniBar();
+		}
+
+		public String getSectionHeader(int type) {
+			if (type == 0) {
+				return SECTION_OVERDUE;
+			} else {
+				return SECTION_FLOATING;
+			}
+		}
+		
+		public Task getTask(int index) {
+			return tasks.get(index);
+		}
+
+		public List<Task> getTasks() {
+			if (viewMode == ViewMode.ALL) {
+				return getTasksAsList();
+			} else {
+				return getAlternateTasksAsList();
+			}
+		}
+		
+		public int getViewMode() {
+			return viewMode.ordinal();
+		}
+
+		public boolean markTaskAsDone(String uuid) {
+			Task task = getTaskByUuid(uuid);
+			return ui.invokeMarkTaskAsDone(task.getId());
+		}
+
+		public boolean markTaskAsNotDone(String uuid) {
+			Task task = getTaskByUuid(uuid);
+			return ui.invokeMarkTaskAsNotDone(task.getId());
+		}
+
+		public void redraw() {
+			agendaView.requestLayout();
+			ui.redraw();
+		}
+		
+		public void showCategory(String category) {
+			ui.invokeCommandReceived(CommandDisplay.COMMAND_ALIASES[0] + " " + category);
+			omniBar.clear();
+		}
+		
+		public void showError(String msg) {
+			MainViewController.this.showError(msg);
+		}
+		
+		public void showMessage(String msg) {
+			MainViewController.this.showMessage(msg);
+		}
+	}
+
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\ui\MainViewController.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\ui\Ui.java
+	 */
+
+/**
+ * This class handles all user interaction and rendering of task lists.
+ * 
+ */
+public abstract class Ui {
+
+	/**
+	 * This interface is used by Ui class to communicate with Controller class in the form of callback methods
+	 */
+	public static interface ControllerCallback {
+		/**
+		 * Returns the possible auto complete. The userInput argument is used to derive the possibilities.
+		 *
+		 * @param  userInput User's input  
+		 * @return 			 List of possible auto complete
+		 */
+		ArrayList<String> doAutoComplete(String userInput);
+
+		/**
+		 * Process user's input and execute the evaluated command.
+		 *
+		 * @param  userInput user's input  
+		 * @return true If command is successful
+		 */
+		boolean onCommandReceived(String userInput);
+
+		/**
+		 * Populate Ui's mini help window if needed.
+		 *
+		 * @param  userInput User's input
+		 */
+		void showMiniHelpIfAvailable(String userInput);
+
+		/**
+		 * Show all tasks (similar to issuing "show all" as user input).
+		 */
+		void showAll();
+
+		/**
+		 * Mark the specified task as done and return the result.
+		 *
+		 * @param  id Task id
+		 * @return true If command is successful
+		 */
+		boolean markTaskAsDone(long id);
+
+		/**
+		 * Mark the specified task as not done and return the result.
+		 *
+		 * @param  id Task id
+		 * @return true If command is successful
+		 */
+		boolean markTaskAsNotDone(long id);
+	}
+
+	protected ControllerCallback controllerCallback;
+
+	/**
+	 * Closes the help window.
+	 */
+	public abstract void closeHelp();
+
+	/**
+	 * Closes the mini help window.
+	 */
+	public void closeMiniHelp() {
+	}
+
+	/**
+	 * Exits the UI. Should be called before exiting the program to allow clean ups.
+	 */
+	public abstract void exit();
+
+	/**
+	 * Helper method to call {@link Ui.ControllerCallback#showMiniHelpIfAvailable}.
+	 * Calling this ensure that the method is not called on a null controllerCallback.
+	 * 
+	 * @param  userInput User's input
+	 */
+	public void invokeShowMiniHelpIfAvailable(String userInput) {
+		if (controllerCallback != null) {
+			controllerCallback.showMiniHelpIfAvailable(userInput);
+		}
+	}
+
+	/**
+	 * Helper method to call {@link Ui.ControllerCallback#showAll}.
+	 * Calling this ensure that the method is not called on a null controllerCallback.
+	 */
+	public void invokeShowAll() {
+		if (controllerCallback != null) {
+			controllerCallback.showAll();
+		}
+	}
+
+	/**
+	 * Helper method to call {@link Ui.ControllerCallback#markTaskAsDone}.
+	 * Calling this ensure that the method is not called on a null controllerCallback.
+	 *
+	 * @param  id Task id
+	 * @return true If command is successful
+	 */
+	public boolean invokeMarkTaskAsDone(long id) {
+		if (controllerCallback != null) {
+			return controllerCallback.markTaskAsDone(id);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Helper method to call {@link Ui.ControllerCallback#markTaskAsNotDone}.
+	 * Calling this ensure that the method is not called on a null controllerCallback.
+	 * 
+	 * @param  id Task id
+	 * @return true If command is successful
+	 */
+	public boolean invokeMarkTaskAsNotDone(long id) {
+		if (controllerCallback != null) {
+			return controllerCallback.markTaskAsNotDone(id);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Redraws WebView. Use when graphical glitch in JavaFx's WebView occur.
+	 */
+	public void redraw() {
+	}
+
+	/**
+	 * Scroll the task list down.
+	 */
+	public void scrollDown() {
+	}
+
+	/**
+	 * Scroll the task list up.
+	 */
+	public void scrollUp() {
+	}
+
+	/**
+	 * Scroll to specified section. However, usually you would call {@link Ui#showSection(DateTime)} or {@link Ui#showSection(DateTime, DateTime)} instead.
+	 * 
+	 * @param section Section to scroll to
+	 */
+	public void showSection(String section) {
+	}
+
+	/**
+	 * Scroll to specified date.
+	 * 
+	 * @param endDate Date to scroll to
+	 */
+	public void showSection(DateTime endDate) {
+	}
+
+	/**
+	 * Scroll to specified date.
+	 * 
+	 * @param startDate Date to scroll to
+	 * @param endDate Date to scroll to
+	 */
+	public void showSection(DateTime startDate, DateTime endDate) {
+	}
+
+	/**
+	 * Sets the controller callback.
+	 * 
+	 * @param controllerCallback Usually the controller class this Ui is associated with
+	 */
+	public void setControllerCallback(ControllerCallback controllerCallback) {
+		this.controllerCallback = controllerCallback;
+	}
+
+	/**
+	 * Show all tasks.
+	 */
+	public abstract void showAllTasks();
+
+	/**
+	 * Show error message to user.
+	 * 
+	 * @param msg Error message
+	 */
+	public abstract void showError(String msg);
+
+	/**
+	 * Show help window.
+	 * 
+	 * @param msg Body for help window.
+	 */
+	public abstract void showHelp(String msg);
+
+	/**
+	 * Show message to user.
+	 * 
+	 * @param msg Message
+	 */
+	public abstract void showMessage(String msg);
+
+	/**
+	 * Show mini help window.
+	 * 
+	 * @param msg Body for help window.
+	 */
+	public void showMiniHelp(String msg) {
+	};
+
+	/**
+	 * Show alternate task list. Used to switch between search mode (&amp; category mode) and archive mode.
+	 * 
+	 * @param viewMode ViewMode to set to. See {@link MainViewController.ViewMode}.
+	 * @param title Title to show on the text field at the top.
+	 * @param tasks Tasks to populate the list with.
+	 */
+	public abstract void showAlternateList(ViewMode viewMode, String title,
+			ArrayList<Task> tasks);
+
+	/**
+	 * Start the Ui lifecycle.
+	 */
+	public abstract void start();
+
+	/**
+	 * Helper method to call {@link Ui.ControllerCallback#CommandReceivedListener}.
+	 * Calling this ensure that the method is not called on a null controllerCallback.
+	 * 
+	 * @param  userInput user's input  
+	 * @return true If command is successful
+	 */
+	protected boolean invokeCommandReceived(String userInput) {
+		if (controllerCallback != null) {
+			return controllerCallback.onCommandReceived(userInput);
+		}
+
+		return false;
+	}
+
+	/**
+	 * Helper method to call {@link Ui.ControllerCallback#doAutocompleteListener}.
+	 * Calling this ensure that the method is not called on a null controllerCallback.
+	 */
+	protected ArrayList<String> invokeDoAutocomplete(String userInput) {
+		if (controllerCallback != null) {
+			return controllerCallback.doAutoComplete(userInput);
+		}
+
+		return new ArrayList<String>();
+	}
+
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\ui\Ui.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\Controller.java
+	 */
+
+	public static void Exit() {
+		ui.exit();
+		System.exit(0);
+	}
+
+	public static void main(String[] args) {
+		launch(args);
+	}
+
+	protected Data data;
+
+	protected Parser parser;
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\Controller.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\Controller.java
+	 */
+
+	@Override
+	public void showAll() {
+		CommandInput commandInput = new CommandInput(CommandType.SHOW);
+		commandInput.setName("all");
+		Command command = new CommandDisplay(commandInput);
+		command.processCommand(data, ui);
+	}
+
+	@Override
+	public boolean markTaskAsDone(long id) {
+		CommandInput commandInput = new CommandInput(CommandType.MARK);
+		commandInput.setId(id);
+		commandInput.setCompleted(true);
+		Command command = new CommandMark(commandInput);
+		return command.processCommand(data, ui);
+	}
+
+	@Override
+	public boolean markTaskAsNotDone(long id) {
+		CommandInput commandInput = new CommandInput(CommandType.MARK);
+		commandInput.setId(id);
+		commandInput.setCompleted(false);
+		Command command = new CommandMark(commandInput);
+		return command.processCommand(data, ui);
+	}
+
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\Controller.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\Command.java
+	 */
+
+public abstract class Command {
+
+	protected CommandInput commandInput;
+
+	public Command(CommandInput commandInput) {
+		this.commandInput = commandInput;
+	}
+
+	public CommandInput getCommandInput() {
+		return commandInput;
+	}
+
+	public abstract boolean processCommand(Data data, Ui ui);
+
+	public void setCommandInput(CommandInput commandInput) {
+		this.commandInput = commandInput;
+	}
+
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\Command.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandArchive.java
+	 */
+
+/**
+ * This class contains the logic for Archive command. When Archive command is triggered,
+ * it will check the parameter being passed, when "done" is detected it will call the data class
+ * to mark all done tasks as archived and hide from displaying. And when an index is detected, 
+ * it will archive the selected task if the index in within correct range.
+ * <p>
+ */
+public class CommandArchive extends Command {
+
+	public static String[] COMMAND_ALIASES = new String[] { "archive" };
+
+	public CommandArchive(CommandInput commandInput) {
+		super(commandInput);
+	}
+
+	@Override
+	public boolean processCommand(Data data, Ui ui) {
+		if (commandInput.getName() != null
+				&& commandInput.getName().toLowerCase().equals("done")) {
+			ArrayList<Task> tasks = data.getTasks();
+
+			for (Task task : tasks) {
+				if (task.isCompleted()) {
+					task.setArchived(true);
+
+					if (!data.editTask(task)) {
+						ui.showError("Unable to archive all done tasks.");
+						return false;
+					}
+				}
+			}
+
+			ui.showMessage("All done tasks successfully archived!");
+
+			return true;
+		} else {
+			Task task = data.getTask((int) commandInput.getId() - 1);
+			task.setArchived(true);
+
+			if (data.editTask(task) && task != null) {
+				ui.showMessage("Task \"" + task.getName()
+						+ "\" is successfully archived!");
+				return true;
+			} else {
+				ui.showError("Unable to archive Task \"" + task.getName()
+						+ "\". Please choose a valid id!");
+			}
+		}
+
+		return false;
+	}
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandArchive.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandNext.java
+	 */
+
+/**
+ * This class contains the logic for Next command. When Next command is triggered, it will
+ * call the ui to scroll down to show the next section of the list of tasks.
+ */
+public class CommandNext extends Command {
+
+	public static String[] COMMAND_ALIASES = new String[] { "next", "n" };
+
+	public CommandNext(CommandInput commandInput) {
+		super(commandInput);
+	}
+
+	@Override
+	public boolean processCommand(Data data, Ui ui) {
+		ui.scrollDown();
+		return true;
+	}
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandNext.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandPrev.java
+	 */
+
+/**
+ * This class contains the logic for Prev command. When Prev command is triggered, it will
+ * call the ui to scroll up to show the previous section of the list of tasks.
+ */
+public class CommandPrev extends Command {
+
+	public static String[] COMMAND_ALIASES = new String[] { "prev", "p" };
+
+	public CommandPrev(CommandInput commandInput) {
+		super(commandInput);
+	}
+
+	@Override
+	public boolean processCommand(Data data, Ui ui) {
+		ui.scrollUp();
+		return true;
+	}
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandPrev.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandUnarchive.java
+	 */
+
+/**
+ * This class contains the logic for unarchive command. When unarchive command is triggered, 
+ * it will call the data class to mark the respective archived task unarchived again, thus
+ * unhide it from displaying.
+ */
+public class CommandUnarchive extends Command {
+
+	public static String[] COMMAND_ALIASES = new String[] { "unarchive" };
+
+	public CommandUnarchive(CommandInput commandInput) {
+		super(commandInput);
+	}
+
+	@Override
+	public boolean processCommand(Data data, Ui ui) {
+		Task task = data.getTask((int) commandInput.getId() - 1);
+		task.setArchived(false);
+
+		if (data.editTask(task) && task != null) {
+			ui.showMessage("Task \"" + task.getName()
+					+ "\" is successfully unarchived!");
+			return true;
+		} else {
+			ui.showError("Unable to unarchive Task \"" + task.getName()
+					+ "\". Please choose a valid id!");
+		}
+
+		return false;
+	}
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandUnarchive.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\test\java\sg\edu\nus\cs2103t\omnitask\JUnitSystemTest.java
+	 */
+
+public class JUnitSystemTest {
+	
+	// Test Whole System And All Known Commands
+	@Test
+	public void TestSystem() throws IOException {
+		// Initialize stub ui
+		Ui ui = new StubUi();
+		
+		// Initialize other components
+		Parser parser = new Parser();
+		File file = new File("SystemTestingStorage.txt");
+		file.delete();
+		file.deleteOnExit();
+		Data data = StorageBackedData.GetSingleton().init(new JsonStorage(file));
+
+		// General Test Flow:
+		// 1. Check if user input is parsed properly to CommandInput
+		// 2. Check if command succeed
+		// 3. Check if Data committed the changes proper
+		// NOTE: Due to using a sortedlist in Data, do note the index of items when retrieving, it won't be in order of it was added
+		
+		// Delete tasks from sample file as it will ruin our test
+		for (Task task : data.getTasks()) {
+			data.deleteTask(task);
+		}
+		
+		// Test Add Task
+		processInput(ui, parser, data, "add Hello World", CommandType.ADD, 0, "Hello World", null, null, Priority.NONE, false);
+		assertTaskAttributes(data.getTasks().get(0), 1, "Hello World", null, null, Priority.NONE, false);
+		
+		// Test Add Task with due date
+		processInput(ui, parser, data, "add Hello World due tomorrow", CommandType.ADD, 0, "Hello World", null, new DateTime().withMillisOfDay(0).plusDays(1), Priority.NONE, false);
+		// ...the order in the data.getTasks() has changed due to sorting and hence item 0 is the item which we just added
+		assertTaskAttributes(data.getTasks().get(0), 1, "Hello World", null, new DateTime().withMillisOfDay(0).plusDays(1), Priority.NONE, false);
+		
+		// Test Delete Task
+		processInput(ui, parser, data, "delete 2", CommandType.DELETE, 2, null, null, null, null, false);
+		assertEquals(data.getTasks().size(), 1);
+		assertTaskAttributes(data.getTasks().get(0), 1, "Hello World", null, new DateTime().withMillisOfDay(0).plusDays(1), Priority.NONE, false);
+		
+		// Test Edit Task
+		processInput(ui, parser, data, "edit 1 Hello World Edited", CommandType.EDIT, 1, "Hello World Edited", null, null, null, false);
+		assertTaskAttributes(data.getTasks().get(0), 1, "Hello World Edited", null, new DateTime().withMillisOfDay(0).plusDays(1), Priority.NONE, false);
+		
+		// Test Edit Task Due
+		processInput(ui, parser, data, "edit 1 due 5pm", CommandType.EDIT, 1, null, null, new DateTime().withMillisOfDay(0).plusHours(17), null, false);
+		assertTaskAttributes(data.getTasks().get(0), 1, "Hello World Edited", null, new DateTime().withMillisOfDay(0).plusHours(17), Priority.NONE, false);
+		
+		// Test Add Timed Task
+		processInput(ui, parser, data, "add Timed Task from today to tomorrow", CommandType.ADD, 0, "Timed Task", new DateTime().withMillisOfDay(0), new DateTime().withMillisOfDay(0).plusDays(1), Priority.NONE, false);
+		// ...the order in the data.getTasks() has changed due to sorting and hence item 0 is the item which we just added
+		assertTaskAttributes(data.getTasks().get(0), 1, "Timed Task", new DateTime().withMillisOfDay(0), new DateTime().withMillisOfDay(0).plusDays(1), Priority.NONE, false);
+		
+		// Test Edit Timed Task
+		processInput(ui, parser, data, "edit 1 from tomorrow 1pm to tomorrow 3pm", CommandType.EDIT, 1, null, new DateTime().withMillisOfDay(0).plusDays(1).plusHours(13), new DateTime().withMillisOfDay(0).plusDays(1).plusHours(15), null, false);
+		// ...the order in the data.getTasks() has changed due to sorting and hence item 1 (id 2) is the item which we just edited
+		assertTaskAttributes(data.getTasks().get(1), 2, "Timed Task", new DateTime().withMillisOfDay(0).plusDays(1).plusHours(13), new DateTime().withMillisOfDay(0).plusDays(1).plusHours(15), Priority.NONE, false);
+		
+		// Test Add with Priority
+		processInput(ui, parser, data, "add High Priority Task ^h", CommandType.ADD, 0, "High Priority Task", null, null, Priority.HIGH, false);
+		assertTaskAttributes(data.getTasks().get(2), 3, "High Priority Task", null, null, Priority.HIGH, false);
+		
+		// Test Edit Priority
+		processInput(ui, parser, data, "edit 3 Low Priority Task ^l", CommandType.EDIT, 3, "Low Priority Task", null, null, Priority.LOW, false);
+		assertTaskAttributes(data.getTasks().get(2), 3, "Low Priority Task", null, null, Priority.LOW, false);
+		
+		// Test Mark Done
+		processInput(ui, parser, data, "mark 3 done", CommandType.MARK, 3, null, null, null, null, true);
+		assertTaskAttributes(data.getTasks().get(2), 3, "Low Priority Task", null, null, Priority.LOW, true);
+		
+		// Test Mark Undone
+		processInput(ui, parser, data, "mark 3 undone", CommandType.MARK, 3, null, null, null, null, false);
+		assertTaskAttributes(data.getTasks().get(2), 3, "Low Priority Task", null, null, Priority.LOW, false);
+		
+		// Test remove-date
+		processInput(ui, parser, data, "remove-date 2", CommandType.REMOVEDATE, 2, null, null, null, null, false);
+		// ...the order in the data.getTasks() has changed due to sorting and hence item 2 (id 3) is the item which we just edited
+		assertTaskAttributes(data.getTasks().get(2), 3, "Timed Task", null, null, Priority.NONE, false);
+	}
+	
+	private void processInput(Ui ui, Parser parser, Data data, String input, CommandType expectedCommandType, long expectedId, String expectedTaskName, DateTime expectedStartDate, DateTime expectedEndDate, Priority expectedPriority, boolean expectedIsCompleted) {
+		Command command = parser.parseUserInput(input);
+
+		assertNotNull(command);
+		assertEquals(expectedCommandType, command.getCommandInput().getCommandType());
+		assertEquals(expectedId, command.getCommandInput().getId());
+		assertEquals(expectedTaskName, command.getCommandInput().getName() == null || command.getCommandInput().getName().equals("") ? null : command.getCommandInput().getName());
+		assertEquals(expectedStartDate, command.getCommandInput().getStartDate());
+		assertEquals(expectedEndDate, command.getCommandInput().getEndDate());
+		assertEquals(expectedPriority, command.getCommandInput().getPriority());
+		assertEquals(expectedIsCompleted, command.getCommandInput().isCompleted());
+		
+		boolean success = command.processCommand(data, ui);
+		assertTrue(success);
+	}
+	
+	private void assertTaskAttributes(Task task, long expectedId, String expectedTaskName, DateTime expectedStartDate, DateTime expectedEndDate, Priority expectedPriority, boolean expectedIsCompleted) {
+		assertEquals(expectedId, task.getId());
+		assertEquals(expectedTaskName, task.getName());
+		assertEquals(expectedStartDate, task.getStartDate());
+		assertEquals(expectedEndDate, task.getEndDate());
+		assertEquals(expectedPriority, task.getPriority());
+		assertEquals(expectedIsCompleted, task.isCompleted());
+	}
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\test\java\sg\edu\nus\cs2103t\omnitask\JUnitSystemTest.java
+
+
+
+
+

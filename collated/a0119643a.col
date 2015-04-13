@@ -1,0 +1,741 @@
+//@author: a0119643a
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\data\StorageBackedData.java
+	 */
+
+	// Only in-charge of fetching full task list from the storage and pass it to
+	// CommandSearchImpl for processing
+	@Override
+	public ArrayList<Task> searchTask() {
+		assertInited();
+
+		ArrayList<Task> fullTaskList = new ArrayList<Task>();
+
+		try {
+			fullTaskList = io.readFromFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			printError("Unable to read from file @ dataImpl search function! ");
+		}
+
+		return fullTaskList;
+	}
+	
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\data\StorageBackedData.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\data\StorageBackedData.java
+	 */
+
+	@Override
+	public boolean changeStorageDirectory(String newDir) {
+		// TODO Auto-generated method stub
+		try {
+			return io.changeStorageFileDirectory(newDir);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\data\StorageBackedData.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\storage\JsonStorage.java
+	 */
+
+
+	@Override
+	public String readFromHelpFile(String helpType, boolean miniMenu)
+			throws IOException {
+		String commandDescription = "";
+		InputStream in;
+		if (miniMenu) {
+			in = getClass().getResourceAsStream("/omnitext mini help file");
+		} else {
+			in = getClass().getResourceAsStream("/omnitext help file");
+		}
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+		String line = null;
+		while ((line = reader.readLine()) != null) {
+			if (line.equals("<" + helpType + ">")) {
+				while ((line = reader.readLine()) != null
+						&& !line.equals("</" + helpType + ">")) {
+					commandDescription += line;
+				}
+				break;
+			}
+		}
+		in.close();
+		return commandDescription;
+	}
+
+	@Override
+	public void redoFile() {
+		// TODO Auto-generated method stub
+
+	}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\storage\JsonStorage.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\storage\JsonStorage.java
+	 */
+
+	
+	@Override
+	public boolean changeStorageFileDirectory(String newDir) throws IOException {
+		boolean status = false;
+		List<Task> currentTasks;
+		try {
+			// check if the path exists
+			Path path = Paths.get(newDir);
+			if (Files.exists(path)) {
+				// copy contents
+				currentTasks = readFromFile();
+				storageFile = new File(newDir + "\\storage.txt");
+				Storage.CheckIfFileExistAndCreateIfDoesNot(storageFile);
+				saveToFile(currentTasks);
+				// create configuration file to store new storage location
+				PrintWriter confFile = new PrintWriter("omnitask.conf");
+				confFile.println(newDir);
+				confFile.close();
+				status = true;
+
+			}
+		} catch (InvalidPathException ip) {
+			// the path specified by user is invalid
+
+		}
+
+		return status;
+	}
+
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\storage\JsonStorage.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\storage\Storage.java
+	 */
+
+	public static String readFromConfFile() throws IOException {
+		String storageDir = "";
+
+		BufferedReader bufferReader = new BufferedReader(new FileReader("omnitask.conf"));
+		storageDir = bufferReader.readLine();
+		bufferReader.close();
+		return storageDir;
+	}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\storage\Storage.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\storage\Storage.java
+	 */
+
+	/**
+	 * Retrieves content from the help file. There is 2 type of help content
+	 * aside from the main help there is a mini help menu displayed along when
+	 * user types in a code.
+	 * <p>
+	 */
+	public abstract String readFromHelpFile(String helpType, boolean miniMenu)
+			throws IOException;
+
+	public abstract void redoFile();
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\storage\Storage.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\storage\Storage.java
+	 */
+
+	/**
+	 * This method will test if the user specified location exist if it does
+	 * create a new storage.txt in the new directory and copy the contents of
+	 * the old storage.txt to it. Lastly create a configuration file which
+	 * stores the new directory, it will be loaded everytime omnitask starts.
+	 * <p>
+	 * 
+	 */
+	public abstract boolean changeStorageFileDirectory(String newDir)
+			throws IOException;
+
+	// public abstract String readFromConfFile() throws FileNotFoundException,
+	// IOException;
+
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\storage\Storage.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\Controller.java
+	 */
+
+	public ArrayList<String> doAutoComplete(String userInput) {
+		return generatePossibleAutoComplete(userInput);
+	}
+
+	public boolean onCommandReceived(String userInput) {
+		return processUserInput(userInput);
+	}
+
+	/**
+	 * This function display the mini pop up of help specific to each valid
+	 * command use types in to aid the user in getting the correct commands
+	 * format
+	 * <p>
+	 * 
+	 * 
+	 * 
+	 * @param userInput
+	 *            String by of text user key in
+	 * 
+	 * @return void
+	 */
+	@Override
+	public void showMiniHelpIfAvailable(String userInput) {
+		ArrayList<String> possibleCommands = generatePossibleAutoComplete(userInput);
+		if (possibleCommands.size() > 0) {
+			try {
+				String help = data.getHelpDescriptors(possibleCommands.get(0)
+						.toUpperCase(), true);
+				if (help != null && !help.isEmpty()) {
+					ui.showMiniHelp(help);
+				} else {
+					ui.closeMiniHelp();
+				}
+			} catch (IOException ex) {
+				ex.printStackTrace();
+				ui.closeMiniHelp();
+			}
+		} else {
+			ui.closeMiniHelp();
+		}
+	}
+
+	/**
+	 * This function is called on the first instance the program starts up to
+	 * initialize and display the user interface.
+	 * <p>
+	 * 
+	 * 
+	 * 
+	 * @param primaryStage
+	 *            which is a Stage object used by UI component
+	 * 
+	 * @return void
+	 */
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+
+		// Initialize UI
+		ui = new JavaFxUi(primaryStage);
+		ui.setControllerCallback(this);
+
+		// Initialize other components
+		parser = new Parser();
+
+		// Get file from argument
+		File storageFile = null;
+
+		// Use default filename if no argument specified
+		/*
+		 * String[] args = getParameters().getRaw().toArray(new String[] {}); if
+		 * (args.length == 0) { storageFile = new File("storage.txt"); } else {
+		 * storageFile = new File(args[0]); }
+		 */
+
+		// Initialize data logic (which would create the storage file if needed)
+		// Exit application if fails
+		// if the user has set a location for storage read from that directory
+
+		String userSetDir = "";
+		try {
+			userSetDir = Storage.readFromConfFile();
+		} catch (FileNotFoundException io) {
+
+		}
+		storageFile = new File("storage.txt");// default
+
+		if (userSetDir.length() > 0) {
+
+			// check that the path is still valid (eg. user deletes the folder
+			// then the path is invalid)
+			// else it is set to the default storage path
+			Path path = Paths.get(userSetDir);
+			if (Files.exists(path)) {
+				storageFile = new File(userSetDir + "\\storage.txt");
+			}
+
+		}
+
+		try {
+			data = StorageBackedData.GetSingleton().init(
+					new JsonStorage(storageFile));
+		} catch (IOException ex) {
+			System.err.println("No permission to access file.");
+			Controller.Exit();
+			return;
+		}
+
+		// Start UI
+		ui.start();
+	}
+
+	/**
+	 * Detects and generates list of possible comamands as user types in the
+	 * textbox
+	 * <p>
+	 * 
+	 * 
+	 * 
+	 * @param userInput
+	 *            string which contains text that users types in the textbox
+	 * 
+	 * @return ArrayList<String> generated list of possible commands
+	 */
+	private ArrayList<String> generatePossibleAutoComplete(String userInput) {
+
+		ArrayList<String> possibleAutoComplete = new ArrayList<String>();
+		ArrayList<String[]> allCommandAliases = new ArrayList<String[]>();
+		ArrayList<String> possibleCommands = new ArrayList<String>();
+
+		allCommandAliases.add(CommandAdd.COMMAND_ALIASES);
+		allCommandAliases.add(CommandArchive.COMMAND_ALIASES);
+		allCommandAliases.add(CommandDelete.COMMAND_ALIASES);
+		allCommandAliases.add(CommandDisplay.COMMAND_ALIASES);
+		allCommandAliases.add(CommandEdit.COMMAND_ALIASES);
+		allCommandAliases.add(CommandExit.COMMAND_ALIASES);
+		allCommandAliases.add(CommandHelp.COMMAND_ALIASES);
+		allCommandAliases.add(CommandMark.COMMAND_ALIASES);
+		allCommandAliases.add(CommandNext.COMMAND_ALIASES);
+		allCommandAliases.add(CommandPrev.COMMAND_ALIASES);
+		allCommandAliases.add(CommandRedo.COMMAND_ALIASES);
+		allCommandAliases.add(CommandRemoveDate.COMMAND_ALIASES);
+		allCommandAliases.add(CommandSearch.COMMAND_ALIASES);
+		allCommandAliases.add(CommandStorage.COMMAND_ALIASES);
+		allCommandAliases.add(CommandUnarchive.COMMAND_ALIASES);
+		allCommandAliases.add(CommandUndo.COMMAND_ALIASES);
+
+		
+
+		for (int i = 0; i < allCommandAliases.size(); i++) {
+			for (String s : allCommandAliases.get(i)) {
+				if (!s.trim().isEmpty()) {
+					possibleCommands.add(s);
+				}
+			}
+		}
+		
+		Collections.sort(possibleCommands);
+		
+		
+		for (int i = 0; i < possibleCommands.size(); i++) {
+			if (!userInput.equals("")
+					&& possibleCommands.get(i).startsWith(userInput.toLowerCase().trim())) {
+				possibleAutoComplete.add(possibleCommands.get(i));
+			}
+
+		}
+
+		return possibleAutoComplete;
+	}
+
+	/**
+	 * process the entire string of text key in by user
+	 * <p>
+	 * 
+	 * 
+	 * 
+	 * @param input
+	 *            the string input of text key in by user
+	 * 
+	 * @return boolean indicating if the commands key in by user is valid
+	 */
+	private boolean processUserInput(String input) {
+		Command command = parser.parseUserInput(input);
+
+		if (command == null) {
+			ui.showError("Invalid command entered. Please try again.");
+			return false;
+		} else {
+			command.processCommand(data, ui);
+			return true;
+		}
+	}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitask\Controller.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandHelp.java
+	 */
+
+public class CommandHelp extends Command {
+
+	public static String[] COMMAND_ALIASES = new String[] { "help",
+			"manual" };
+
+	public CommandHelp(CommandInput commandInput) {
+		super(commandInput);
+		// TODO Auto-generated constructor stub
+	}
+
+	// TODO: This class shouldn't be calling UI directly
+	@Override
+	public boolean processCommand(Data data, Ui ui) {
+		String commandDescription = "";
+		String specificCommandName = "";
+		if (commandInput.getName() != null) {
+
+			specificCommandName = commandInput.getName().toUpperCase();
+			// if the specific commands user entered exist in the list of
+			// available commands display the detail each specific commands
+			boolean exist = false;
+			for (CommandType commandType : CommandType.values()) {
+				if (specificCommandName.equals(commandType.toString())) {
+					exist = true;
+					break;
+				}
+			}
+
+			if (exist) {
+
+				try {
+					commandDescription = data.getHelpDescriptors(
+							specificCommandName, false);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				ui.showHelp(commandDescription);
+			} else {
+				ui.showError("the specific command you entered does not exist in this system!");
+			}
+
+		} else {
+			// general help description
+			try {
+				commandDescription = data.getHelpDescriptors("OVERVIEW", false);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			ui.showHelp(commandDescription);
+		}
+
+		// returning false to not execute update listing
+		return false;
+	}
+
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandHelp.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandStorage.java
+	 */
+
+
+/**
+ * Logic for change storage location, Validate if the user input directory exist
+ * and change omnitask working directory to the one user specified.
+ * <p>
+ *
+ */
+public class CommandStorage extends Command {
+
+	public static String[] COMMAND_ALIASES = new String[] { "storage", "dest",
+			"dir" };
+
+	public CommandStorage(CommandInput commandInput) {
+		super(commandInput);
+	}
+
+	@Override
+	public boolean processCommand(Data data, Ui ui) {
+
+		if (commandInput.getName() != null) {
+			if (data.changeStorageDirectory(commandInput.getName())) {
+				ui.showMessage("Sucessfully changed storage directory to: "
+						+ commandInput.getName());
+			} else {
+				ui.showError(commandInput.getName()
+						+ " this directory is invalid! Ensure that the path exist!");
+			}
+		} else {
+			ui.showError("Please fill in the path to the new storage location you wish to set!");
+		}
+
+		return false;
+
+	}
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandStorage.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandSearch.java
+	 */
+
+
+/**
+ * This class contains the logic for search command. When search command is
+ * detected by the parser it will pass commandInput object into
+ * commandSearchImpl and return a commandSearchImpl object. This class object is
+ * used in controller class where processComamnd method is called using
+ * commandSearchImpl's object.
+ * <p>
+ * 
+ * 
+ * 
+ */
+
+public class CommandSearch extends Command {
+
+	public static String[] COMMAND_ALIASES = new String[] { "search", "find" };
+
+	public CommandSearch(CommandInput commandInput) {
+		super(commandInput);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public boolean processCommand(Data data, Ui ui) {
+		// process search functions done here
+		ArrayList<Task> searchTaskResult = new ArrayList<Task>();
+		ArrayList<Task> fullTaskList = new ArrayList<Task>();
+
+		fullTaskList = data.searchTask();
+		String searchKey;
+
+		if (commandInput.getName() != null) {
+			searchKey = commandInput.getName().toLowerCase();
+			for (int i = 0; i < fullTaskList.size(); i++) {
+				if (fullTaskList.get(i).getName().toLowerCase()
+						.contains(searchKey)) {
+					searchTaskResult.add(fullTaskList.get(i));
+				}
+			}
+
+			ui.showAlternateList(ViewMode.ALTERNATE, "Search results for \""
+					+ searchKey + "\"", searchTaskResult);
+			ui.showMessage("Type \"show all\" to show all tasks.");
+			return true;
+		} else {
+			ui.showError("Please fill in the search key!");
+
+		}
+		// return false to update the task listing with search result and not
+		// default
+		return false;
+	}
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\main\java\sg\edu\nus\cs2103t\omnitasks\command\CommandSearch.java
+
+
+
+
+
+	/**
+	 * origin: D:\Documents\Eclipse\omnitask\src\test\java\sg\edu\nus\cs2103t\omnitask\JUnitCommandsAtd.java
+	 */
+
+	// Test add command, make sure it is added successfully
+	@Test
+	public void TestCommandAdd() {
+		Ui ui = new StubUi();
+		StubData data = initData();
+		addOneTaskShouldPass(data, ui, "Hello Add");
+	}
+
+	// Test add command, make sure empty string will not add successfully
+	@Test
+	public void TestCommandAddFail1() {
+		Ui ui = new StubUi();
+		StubData data = initData();
+		addOneTaskShouldFail(data, ui, "");
+	}
+
+	// Test add command, make sure empty (untrimmed) string will not add
+	// successfully
+	@Test
+	public void TestCommandAddFail2() {
+		Ui ui = new StubUi();
+		StubData data = initData();
+		addOneTaskShouldFail(data, ui, " ");
+	}
+
+	// Test edit command, make sure edited tasks are saved properly
+	@Test
+	public void TestCommandEdit() {
+		Ui ui = new StubUi();
+		StubData data = initData();
+
+		addOneTaskShouldPass(data, ui, "Hello Edit");
+
+		CommandInput commandInput = new CommandInput(CommandType.EDIT);
+		commandInput.setId(1);
+		commandInput.setName("Hello Edited");
+
+		Command command = new CommandEdit(commandInput);
+		boolean success = command.processCommand(data, ui);
+
+		assertTrue(success);
+		assertNotNull(data.getTasks().get(0));
+		assertEquals(data.getTasks().get(0).getId(), 1);
+		assertEquals(data.getTasks().get(0).getName(), "Hello Edited");
+	}
+
+	private StubData initData() {
+		StubData data = StubData.GetSingleton();
+
+		// Needed because of method signature
+		// Technically exception would never ever be thrown
+		try {
+			data.init();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return data;
+	}
+
+	// Assert if fail
+	private void addOneTaskShouldPass(StubData data, Ui ui, String name) {
+		CommandInput commandInput = new CommandInput(CommandType.ADD);
+		commandInput.setName(name);
+
+		Command command = new CommandAdd(commandInput);
+		boolean success = command.processCommand(data, ui);
+
+		assertTrue(success);
+		assertNotNull(data.getTasks().get(0));
+		assertEquals(data.getTasks().get(0).getId(), 1);
+		assertEquals(data.getTasks().get(0).getName(), name);
+	}
+
+	// Assert if pass
+	private void addOneTaskShouldFail(StubData data, Ui ui, String name) {
+		CommandInput commandInput = new CommandInput(CommandType.ADD);
+		commandInput.setName(name);
+
+		Command command = new CommandAdd(commandInput);
+		boolean success = command.processCommand(data, ui);
+
+		assertFalse(success);
+	}
+
+	
+	// test search valid string command
+	@Test
+	public void TestCommandSearchValid() {
+
+		boolean success = searchStub("valid");
+		assertTrue(success);
+	}
+
+	// test search null search key command
+	@Test
+	public void TestCommandSearchEmpty() {
+		boolean success = searchStub(null);
+		assertFalse(success);
+	}
+
+	// test search lower/upper/mixed case string command
+	@Test
+	public void TestCommandSearchCase() {
+
+		boolean success = searchStub("lower");
+		assertTrue(success);
+		success = searchStub("UPPER");
+		assertTrue(success);
+		success = searchStub("MiXeD");
+		assertTrue(success);
+
+	}
+
+	// the main logic of search is used here for testing purposes
+	private boolean searchStub(String searchKey) {
+		ArrayList<Task> fullTaskList = new ArrayList<Task>();
+		// simulated list of task with test keywords
+		Task task = new Task();
+		task.setName("valid");
+		fullTaskList.add(task);
+		task = new Task();
+		task.setName("LOWER");
+		fullTaskList.add(task);
+		task = new Task();
+		task.setName("upper");
+		fullTaskList.add(task);
+		task = new Task();
+		task.setName("mixed");
+		fullTaskList.add(task);
+		if (searchKey != null) {
+			for (int i = 0; i < fullTaskList.size(); i++) {
+				if (fullTaskList.get(i).getName().toLowerCase()
+						.contains(searchKey.toLowerCase())) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+}
+
+	// End of segment: D:\Documents\Eclipse\omnitask\src\test\java\sg\edu\nus\cs2103t\omnitask\JUnitCommandsAtd.java
+
+
+
+
+

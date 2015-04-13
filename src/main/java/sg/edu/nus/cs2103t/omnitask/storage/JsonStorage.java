@@ -72,12 +72,6 @@ public class JsonStorage extends Storage {
 		return tasks;
 	}
 
-	/**
-	 * Retrieves content from the help file. There is 2 type of help content
-	 * aside from the main help there is a mini help menu displayed along when
-	 * user types in a code.
-	 * <p>
-	 */
 	@Override
 	public String readFromHelpFile(String helpType, boolean miniMenu)
 			throws IOException {

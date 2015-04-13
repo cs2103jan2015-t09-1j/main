@@ -171,7 +171,7 @@ public class Controller extends Application implements ControllerCallback {
 		ArrayList<String> possibleAutoComplete = new ArrayList<String>();
 
 		String[] possibleCommands = new String[] { "add", "archive", "delete",
-				"display", "edit", "help", "mark", "next", "prev", "redo",
+				"show", "edit", "help", "mark", "next", "prev", "redo",
 				"undo", "remove-date", "search", "storage", "unarchive" };
 
 		for (int i = 0; i < possibleCommands.length; i++) {
@@ -211,7 +211,7 @@ public class Controller extends Application implements ControllerCallback {
 	// @author A0111795A
 	@Override
 	public void showAll() {
-		CommandInput commandInput = new CommandInput(CommandType.DISPLAY);
+		CommandInput commandInput = new CommandInput(CommandType.SHOW);
 		commandInput.setName("all");
 		Command command = new CommandDisplay(commandInput);
 		command.processCommand(data, ui);

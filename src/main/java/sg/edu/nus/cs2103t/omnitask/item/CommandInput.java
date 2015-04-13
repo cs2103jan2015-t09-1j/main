@@ -8,7 +8,7 @@ import sg.edu.nus.cs2103t.omnitask.item.Task.Priority;
 public class CommandInput {
 
 	public static enum CommandType {
-		ADD, DELETE, DISPLAY, EDIT, EXIT, HELP, INVALID, MARK, NEXT, PREV, REDO, SEARCH, UNDO, STORAGE, REMOVEDATE, ARCHIVE, UNARCHIVE
+		ADD, DELETE, SHOW, EDIT, EXIT, HELP, INVALID, MARK, NEXT, PREV, REDO, SEARCH, UNDO, STORAGE, REMOVEDATE, ARCHIVE, UNARCHIVE
 	}
 
 	private CommandType commandType;

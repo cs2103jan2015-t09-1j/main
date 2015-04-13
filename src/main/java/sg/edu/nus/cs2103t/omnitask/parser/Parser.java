@@ -46,9 +46,9 @@ public class Parser {
 		String commandName = inputSplit[0].toLowerCase();
 
 		// Display command
-		if (Utils.getCommandTypeFromString(commandName) == CommandType.DISPLAY) {
-			CommandInput commandInput = new CommandInput(CommandType.DISPLAY);
-			commandInput.setCommandType(CommandType.DISPLAY);
+		if (Utils.getCommandTypeFromString(commandName) == CommandType.SHOW) {
+			CommandInput commandInput = new CommandInput(CommandType.SHOW);
+			commandInput.setCommandType(CommandType.SHOW);
 
 			extractDatesAndTaskNameFromCommand(1, inputSplit, commandInput,
 					false);

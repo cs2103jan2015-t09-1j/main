@@ -66,6 +66,7 @@
 
 </DISPLAY>
 <SEARCH>
+
 <html>
 <head>
 	<title></title>
@@ -75,9 +76,10 @@
 
 <p><span style="font-family:arial,helvetica,sans-serif;"><strong><span style="font-size:18px;"><span style="color:#0000FF;">search</span> <span style="color:#FF8C00;">&lt;Task Name&gt;</span>/<span style="color:#FF8C00;">&lt;Date/Time&gt;</span>/<span style="color:#FF8C00;">&lt;Category&gt;</span></span></strong></span></p>
 
-<p><span style="font-family:arial,helvetica,sans-serif;"><strong><span style="font-size:18px;"><span style="color:#0000FF;">search</span> <span style="color:#FF8C00;">john birthday</span> / <span style="color:#FF8C00;">search 13th april 2015</span> / <span style="color:#FF8C00;">search CS2013T</span></span></strong></span></p>
+<p><span style="font-family:arial,helvetica,sans-serif;"><strong><span style="font-size:18px;"><span style="color:#0000FF;">search</span> <span style="color:#FF8C00;">john birthday</span> / <span style="color:#0000FF;">search</span><span style="color:#FF8C00;"> 13th april 2015</span> /<span style="color:#0000FF;"> search</span><span style="color:#FF8C00;"> CS2013T</span></span></strong></span></p>
 </body>
 </html>
+
 
 </SEARCH>
 <STORAGE>
@@ -114,3 +116,70 @@
 
 </REDO>
 </UNDO>
+<NEXT>
+<PREV>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h2><font face="arial, helvetica, sans-serif"><span style="font-size: 18px;">Scrolling task view window</span></font></h2>
+
+<p><span style="font-size:18px;"><span style="font-family:arial,helvetica,sans-serif;">Scroll up the page: <font color="#0000ff"><b>prev</b></font></span></span></p>
+
+<p><span style="font-size:18px;"><span style="font-family:arial,helvetica,sans-serif;">Scroll down the page: <span style="color:#0000FF;"><strong>next</strong></span></span></span></p>
+</body>
+</html>
+
+</PREV>
+</NEXT>
+<UNARCHIVE>
+<ARCHIVE>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h2><font face="arial, helvetica, sans-serif"><span style="font-size: 18px;">Archiving files</span></font></h2>
+
+<p><span style="font-size:18px;"><span style="font-family:arial,helvetica,sans-serif;">keeps the task out of view: <font color="#0000ff"><b>archive </b></font><span style="color:#FF8C00;"><b>&lt;Task ID&gt;</b></span></span></span></p>
+
+<p><span style="font-size:18px;"><span style="font-family:arial,helvetica,sans-serif;">restore the task to the view: <font color="#0000ff"><b>unarchive </b></font><span style="color:#FF8C00;"><b>&lt;Task ID&gt;</b></span></span></span></p>
+</body>
+</html>
+
+</ARCHIVE>
+</UNARCHIVE>
+<MARK>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h2><font face="arial, helvetica, sans-serif"><span style="font-size: 18px;">Mark completed task</span></font></h2>
+
+<p><span style="font-size:18px;"><span style="font-family:arial,helvetica,sans-serif;"><span style="color:#0000FF;"><strong>mark</strong></span><font color="#0000ff"><b>&nbsp;</b></font><span style="color:#FF8C00;"><b>&lt;Task ID&gt;</b></span></span></span></p>
+
+<p>&nbsp;</p>
+</body>
+</html>
+
+</MARK>
+<REMOVE-DATE>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h2><font face="arial, helvetica, sans-serif"><span style="font-size: 18px;">Remove&nbsp;date of task</span></font></h2>
+
+<p>&nbsp;</p>
+
+<p><span style="font-family:arial,helvetica,sans-serif;"><strong><span style="font-size:18px;"><font color="#0000ff">remove-date</font>&nbsp;<span style="color:#FF8C00;">&lt;Task ID&gt;</span></span></strong></span></p>
+
+<p>&nbsp;</p>
+</body>
+</html>
+
+</REMOVE-DATE>
+

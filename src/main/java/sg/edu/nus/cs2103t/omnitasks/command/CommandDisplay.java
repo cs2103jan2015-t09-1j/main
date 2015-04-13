@@ -12,7 +12,7 @@ import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 public class CommandDisplay extends Command {
 
 	public static String[] COMMAND_ALIASES = new String[] { "display",
-			"show" };
+			"show","list" };
 
 	public CommandDisplay(CommandInput commandInput) {
 		super(commandInput);

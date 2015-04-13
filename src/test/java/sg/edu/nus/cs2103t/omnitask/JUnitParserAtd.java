@@ -141,7 +141,7 @@ public class JUnitParserAtd {
 		//Test parsing of "display" parameter
 		command = parseUserInputHelper("display");
 		assertNotNull(command);
-		assertEquals(command.getCommandInput().getCommandType(), CommandType.DISPLAY);
+		assertEquals(command.getCommandInput().getCommandType(), CommandType.SHOW);
 		
 		//Test parsing of "edit" and "task index" and "task name" parameter
 		command = parseUserInputHelper("edit 1 Hello");

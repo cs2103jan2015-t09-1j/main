@@ -34,7 +34,7 @@
 		</tr>
 		<tr style="height: 0px;">
 			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;">
-			<p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">display</span></span></strong></p>
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt;"><font face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;"><b>show</b></span></font></p>
 			</td>
 			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;">
 			<p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;"><strong><span style="color:#0000FF;">show</span>&nbsp;<span style="color:#0000FF;">all</span>/<span style="color:#0000FF;">overdue</span>/<span style="color:#0000FF;">floating</span>/<span style="color:#0000FF;">#</span><span style="color:#FF8C00;">&lt;Category&gt;&nbsp;</span></strong></p>
@@ -85,8 +85,24 @@
 			<p dir="ltr" style="line-height: 1.2; margin-top: 0pt; margin-bottom: 0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">help</span></span></strong></p>
 			</td>
 			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;">
-			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt;"><strong><font face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;"><span style="color:#0000FF;">help</span> <span style="color:#FF8C00;">&lt;Command Name&gt;</span> (specific desription on commands)</span></font></strong></p>
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt;"><strong><font face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;"><span style="color:#0000FF;">help</span> <span style="color:#FF8C00;">&lt;Command Name&gt;</span></span></font></strong></p>
 			</td>
+		</tr>
+		<tr>
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;"><strong>mark</strong></td>
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;"><strong><span style="color:#0000FF;">mark</span> <span style="color:#FF8C00;">&lt;Task ID&gt;</span></strong></td>
+		</tr>
+		<tr>
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;"><strong>next/prev</strong></td>
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;"><strong><span style="color:#0000FF;">next</span>/<span style="color:#0000FF;">prev</span> (commands to scroll the task view page)</strong></td>
+		</tr>
+		<tr>
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;"><strong>remove-date</strong></td>
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;"><span style="color:#0000FF;"><strong>remove-date </strong></span><span style="color:#FF8C00;"><strong>&lt;Task ID&gt;</strong></span></td>
+		</tr>
+		<tr>
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;"><strong>archive/unarchive</strong></td>
+			<td style="border-style: solid; border-color: rgb(54, 95, 145); vertical-align: top; padding: 7px;"><strong><span style="color:#0000FF;">archive/unarchive </span><span style="color:#FF8C00;">&lt;Task ID&gt;&nbsp;</span></strong></td>
 		</tr>
 	</tbody>
 </table>
@@ -115,15 +131,15 @@
 			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">add </span></span></strong></p>
 			</td>
 			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
-			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">create, new</span></span></strong></p>
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">new</span></span></strong></p>
 			</td>
 		</tr>
 		<tr style="height:0px">
 			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
-			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">display</span></span></strong></p>
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt;"><font face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;"><b>show</b></span></font></p>
 			</td>
 			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
-			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">show, list</span></span></strong></p>
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">display,list</span></span></strong></p>
 			</td>
 		</tr>
 		<tr style="height:0px">
@@ -131,15 +147,7 @@
 			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">search</span></span></strong></p>
 			</td>
 			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
-			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">find,look</span></span></strong></p>
-			</td>
-		</tr>
-		<tr style="height:0px">
-			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
-			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">search by</span></span></strong></p>
-			</td>
-			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
-			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">find with,look for</span></span></strong></p>
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">find</span></span></strong></p>
 			</td>
 		</tr>
 		<tr style="height:0px">
@@ -147,7 +155,7 @@
 			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">delete</span></span></strong></p>
 			</td>
 			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
-			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">remove</span></span></strong></p>
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">remove,cancel</span></span></strong></p>
 			</td>
 		</tr>
 		<tr style="height:0px">
@@ -155,23 +163,15 @@
 			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">edit</span></span></strong></p>
 			</td>
 			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
-			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">change, update</span></span></strong></p>
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">change, update,modify</span></span></strong></p>
 			</td>
 		</tr>
 		<tr style="height:0px">
 			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
-			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">undo</span></span></strong></p>
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">undo/redo</span></span></strong></p>
 			</td>
 			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
-			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">revert, recover, back</span></span></strong></p>
-			</td>
-		</tr>
-		<tr style="height:0px">
-			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
-			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">priority</span></span></strong></p>
-			</td>
-			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
-			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">rank, order</span></span></strong></p>
+			<p dir="ltr" style="margin-top: 0pt; margin-bottom: 0pt;"><font face="Verdana"><span style="font-size: 13px; line-height: 15.6000003814697px; white-space: pre-wrap;"><b>(you can only use the text undo and redo for this 2 commands)</b></span></font></p>
 			</td>
 		</tr>
 		<tr style="height:0px">
@@ -179,7 +179,7 @@
 			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">storage</span></span></strong></p>
 			</td>
 			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
-			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">directory, location</span></span></strong></p>
+			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">dir,dest</span></span></strong></p>
 			</td>
 		</tr>
 		<tr style="height:0px">
@@ -189,6 +189,26 @@
 			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px">
 			<p dir="ltr" style="line-height:1.2;margin-top:0pt;margin-bottom:0pt;"><strong><span id="docs-internal-guid-2129a58a-7f9f-9782-cb47-a6eb1832e644"><span style="font-size: 13px; font-family: Verdana; vertical-align: baseline; white-space: pre-wrap;">manual</span></span></strong></p>
 			</td>
+		</tr>
+		<tr>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong>next</strong></td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong>n</strong></td>
+		</tr>
+		<tr>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong>prev</strong></td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong>p</strong></td>
+		</tr>
+		<tr>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong>mark</strong></td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong>(no other available aliases)</strong></td>
+		</tr>
+		<tr>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong>remove-date</strong></td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong>(no other available aliases)</strong></td>
+		</tr>
+		<tr>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong>archive/unarchive</strong></td>
+			<td style="border-left:solid #365f91 1px;border-right:solid #365f91 1px;border-bottom:solid #365f91 1px;border-top:solid #365f91 1px;vertical-align:top;padding:7px 7px 7px 7px"><strong>(no other available aliases)</strong></td>
 		</tr>
 	</tbody>
 </table>
@@ -384,7 +404,7 @@
 </html>
 
 </EDIT>
-<DISPLAY>
+<SHOW>
 <html>
 <head>
 	<title></title>
@@ -435,7 +455,7 @@
 </body>
 </html>
 
-</DISPLAY>
+</SHOW>
 <SEARCH>
 <html>
 <head>
@@ -587,7 +607,87 @@
 
 </UNDO>
 </REDO>
+<MARK>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h2>OmniTask marking a done task</h2>
 
+<p><span style="font-family:lucida sans unicode,lucida grande,sans-serif;">After you have completed a task, you can mark it as done to help you organise and keep&nbsp;unfinished task in view.</span></p>
 
+<p dir="ltr" style="margin-top: 24pt; margin-bottom: 0pt;"><font face="Verdana"><span style="font-size: 15px; line-height: 20.7000007629395px; white-space: pre-wrap;">Task with id 1 will be mark as completed.</span></font></p>
+
+<p dir="ltr" style="margin-top: 24pt; margin-bottom: 0pt;"><strong><font face="Verdana"><span style="font-size: 15px; line-height: 20.7000007629395px; white-space: pre-wrap;"><span style="color:#0000FF;">mark </span><span style="color:#FF8C00;">&lt;Task ID&gt;</span></span></font></strong></p>
+
+<p dir="ltr"><strong><font face="Verdana"><span style="font-size: 15px; line-height: 20.7000007629395px; white-space: pre-wrap;"><span style="color:#0000FF;">mark </span><span style="color:#FF8C00;">1 </span></span></font></strong></p>
+</body>
+</html>
+
+</MARK>
+<UNARCHIVE>
+<ARCHIVE>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h2>OmniTask Archiving a file</h2>
+
+<p><span style="font-family:lucida sans unicode,lucida grande,sans-serif;">You may wish to store away some of the task and keep them out of view.This can be done easily with the help of archive command.</span></p>
+
+<p dir="ltr" style="margin-top: 24pt; margin-bottom: 0pt;"><font face="Verdana"><span style="font-size: 15px; line-height: 20.7000007629395px; white-space: pre-wrap;">Task with id 1 will be out of side to view archived task, </span></font><font face="Verdana"><span style="font-size: 15px; line-height: 20.7000007629395px; white-space: pre-wrap;">use the command <strong><span style="color:#0000FF;">show</span> <span style="color:#FF8C00;">archive</span></strong></span></font></p>
+
+<p dir="ltr" style="margin-top: 24pt; margin-bottom: 0pt;"><strong><font face="Verdana"><span style="font-size: 15px; line-height: 20.7000007629395px; white-space: pre-wrap;"><span style="color:#0000FF;">archive </span><span style="color:#FF8C00;">&lt;Task ID&gt;</span></span></font></strong></p>
+
+<p dir="ltr"><strong><font face="Verdana"><span style="font-size: 15px; line-height: 20.7000007629395px; white-space: pre-wrap;"><span style="color:#0000FF;">archive </span><span style="color:#FF8C00;">1 </span></span></font></strong></p>
+
+<p dir="ltr"><span style="font-family: Verdana; font-size: 15px; line-height: 20.7000007629395px; white-space: pre-wrap;">To put the a task back into view use the unarchive command</span></p>
+
+<p dir="ltr"><span style="font-size:18px;"><strong><span style="color:#0000FF;">unarchive</span> <span style="color:#FF8C00;">&lt;Task ID&gt;</span></strong></span></p>
+
+<p dir="ltr"><span style="font-size:18px;"><strong><span style="color:#0000FF;">unarchive</span> <span style="color:#FF8C00;">1</span></strong></span></p>
+</body>
+</html>
+
+</ARCHIVE>
+</UNARCHIVE>
+<REMOVEDATE>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h2>OmniTask removing dates from task</h2>
+
+<p><font face="lucida sans unicode, lucida grande, sans-serif">Task that are populated with dates can be removed using the remove date command.</font></p>
+
+<p dir="ltr" style="margin-top: 24pt; margin-bottom: 0pt;"><font face="Verdana"><span style="font-size: 15px; line-height: 20.7000007629395px; white-space: pre-wrap;">Task with id 1 will be mark as completed. After the command the task will no longer have specific dates and is under floating tasks.</span></font></p>
+
+<p dir="ltr" style="margin-top: 24pt; margin-bottom: 0pt;"><strong><font face="Verdana"><span style="font-size: 15px; line-height: 20.7000007629395px; white-space: pre-wrap;"><span style="color:#0000FF;">remove-date </span><span style="color:#FF8C00;">&lt;Task ID&gt;</span></span></font></strong></p>
+
+<p dir="ltr"><strong><font face="Verdana"><span style="font-size: 15px; line-height: 20.7000007629395px; white-space: pre-wrap;"><span style="color:#0000FF;">remove-date </span><span style="color:#FF8C00;">1 </span></span></font></strong></p>
+</body>
+</html>
+
+</REMOVEDATE>
+<NEXT>
+<PREV>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h2>OmniTask scrolling task list view with commands</h2>
+
+<p><font face="Verdana"><span style="font-size: 15px; line-height: 20.7000007629395px; white-space: pre-wrap;">This 2 commands are designed for user who prefer to use keyboards as their primary source of input it allows user to scroll the page without the use of a mouse.</span></font></p>
+
+<p dir="ltr" style="margin-top: 24pt; margin-bottom: 0pt;"><strong><font face="Verdana"><span style="font-size: 15px; line-height: 20.7000007629395px; white-space: pre-wrap;"><span style="color:#0000FF;">next/prev </span></span></font></strong></p>
+</body>
+</html>
+
+</PREV>
+</NEXT>
 
 

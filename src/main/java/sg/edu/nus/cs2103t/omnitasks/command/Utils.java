@@ -66,7 +66,7 @@ public class Utils {
 
 		for (String command : CommandDisplay.COMMAND_ALIASES) {
 			if (command.toLowerCase().equals(str.toLowerCase())) {
-				return CommandInput.CommandType.DISPLAY;
+				return CommandInput.CommandType.SHOW;
 			}
 		}
 

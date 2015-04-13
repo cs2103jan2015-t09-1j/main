@@ -452,8 +452,8 @@ public class MainViewController {
 	
 	private void showToast(String msg) {
 		if (agendaViewLoaded) {
-			msg = msg.replaceAll("'", "\'");
-			agendaView.getEngine().executeScript("showToast('" + msg + "');");
+			msg = msg.replaceAll("\"", "\\\\\"");
+			agendaView.getEngine().executeScript("showToast(\"" + msg + "\");");
 		}
 	}
 

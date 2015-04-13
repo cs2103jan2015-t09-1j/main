@@ -15,7 +15,7 @@ import sg.edu.nus.cs2103t.omnitask.ui.Ui;
  * list
  * <p>
  */
-//@author A0119742
+//@author A0119742A
 public class CommandDelete extends Command {
 
 	public static String[] COMMAND_ALIASES = new String[] { "delete", "remove",

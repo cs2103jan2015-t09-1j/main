@@ -12,7 +12,7 @@ import sg.edu.nus.cs2103t.omnitask.ui.Ui;
  * specification.
  * <p>
  */
-// @author A0119742
+// @author A0119742A
 public class CommandMark extends Command {
 
 	public static String[] COMMAND_ALIASES = new String[] { "mark" };

@@ -12,7 +12,7 @@ import sg.edu.nus.cs2103t.omnitask.ui.Ui;
  * The data class will use the mutator task to overwrite attributes in the target task object
  * <p>
  */
-//@author A0119742
+//@author A0119742A
 public class CommandEdit extends Command {
 
 	public static String[] COMMAND_ALIASES = new String[] { "edit",

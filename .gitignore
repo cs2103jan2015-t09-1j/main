@@ -1,0 +1,7 @@
+target/
+.classpath
+storage*.txt
+LICENSE.txt
+log.txt
+.settings/
+.project

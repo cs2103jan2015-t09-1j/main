@@ -45,6 +45,11 @@ public class JUnitSystemTest {
 		// 3. Check if Data committed the changes proper
 		// NOTE: Due to using a sortedlist in Data, do note the index of items when retrieving, it won't be in order of it was added
 		
+		// Delete tasks from sample file as it will ruin our test
+		for (Task task : data.getTasks()) {
+			data.deleteTask(task);
+		}
+		
 		// Test Add Task
 		processInput(ui, parser, data, "add Hello World", CommandType.ADD, 0, "Hello World", null, null, Priority.NONE, false);
 		assertTaskAttributes(data.getTasks().get(0), 1, "Hello World", null, null, Priority.NONE, false);

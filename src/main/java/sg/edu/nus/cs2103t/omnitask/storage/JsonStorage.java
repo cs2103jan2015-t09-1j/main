@@ -42,18 +42,16 @@ public class JsonStorage extends Storage {
 
 	@Override
 	public ArrayList<Task> readFromFile() throws IOException {
-		String lines = "";
-
-		InputStream in = Files.newInputStream(storageFile.toPath());
-		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-		String line = null;
-		while ((line = reader.readLine()) != null) {
-			lines += line + "\n";
-		}
-		in.close();
+		String lines = readFromFileToString(storageFile);
 
 		// return empty arraylist if file has zero items
 		ArrayList<Task> tasks = new ArrayList<Task>();
+		
+		String sampleTasksJson = readFromFileToString(getClass().getResourceAsStream("/sampleStorage.json"));
+		ArrayList<Task> sampleTasks = gson.fromJson(sampleTasksJson,
+				new TypeToken<ArrayList<Task>>() {
+				}.getType());
+		tasks = sampleTasks;
 
 		// convert json to ArrayList
 		try {
@@ -70,6 +68,23 @@ public class JsonStorage extends Storage {
 		}
 
 		return tasks;
+	}
+	
+	private String readFromFileToString(File file) throws IOException {
+		return readFromFileToString(Files.newInputStream(file.toPath()));
+	}
+	
+	private String readFromFileToString(InputStream in) throws IOException {
+		String lines = "";
+		
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+		String line = null;
+		while ((line = reader.readLine()) != null) {
+			lines += line + "\n";
+		}
+		in.close();
+		
+		return lines;
 	}
 
 	@Override

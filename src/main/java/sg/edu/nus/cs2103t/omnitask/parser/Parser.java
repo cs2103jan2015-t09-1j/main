@@ -33,7 +33,7 @@ import com.joestelmach.natty.DateGroup;
 public class Parser {
 
 	private static final String[] DATE_INDICATORS = new String[] { "from",
-			"by", "due", "to", "on" };
+			"by", "due", "on" };
 	public static final String[] PRIORITY_INDICATORS = new String[] { "^n",
 			"^l", "^m", "^h" };
 /**
@@ -259,11 +259,7 @@ public class Parser {
 			detectPrio(inputSplit, commandInput, true);
 
 			// edit time and name of task if detected within input string
-			if (!extractDatesAndTaskNameFromCommand(2, inputSplit,
-					commandInput, true)) {
-				commandInput.setName(joinStringArray(inputSplit, 2,
-						inputSplit.length).trim());
-			}
+			extractDatesAndTaskNameFromCommand(2, inputSplit, commandInput, true);
 
 			return new CommandEdit(commandInput);
 
@@ -341,25 +337,23 @@ public class Parser {
 	 *              commandInput
 	 * @param isEditing
 	 *              to check if the method is called by adding or editing algorithm
-	 * @return
 	 */
-	private boolean extractDatesAndTaskNameFromCommand(int startIndex,
+	private void extractDatesAndTaskNameFromCommand(int startIndex,
 			String[] inputSplit, CommandInput commandInput, boolean isEditing) {
 		String taskName = "";
-		boolean editted = false;
 
 		boolean quoteDetected = false;
 
 		for (int i = startIndex; i < inputSplit.length; i++) {
 			// This first block of if conditions check for " symbol and if
 			// found, don't use it in natty
-			if (inputSplit[i].startsWith("\"") && inputSplit[i].endsWith("\"")) {
+			if (inputSplit[i].startsWith("\"") && inputSplit[i].endsWith("\"") && !inputSplit[i].endsWith("\\\"")) {
 				quoteDetected = true;
 			} else if (inputSplit[i].startsWith("\"")) {
 				quoteDetected = true;
 				inputSplit[i] = inputSplit[i].substring(1,
 						inputSplit[i].length());
-			} else if (quoteDetected && inputSplit[i].endsWith("\"")) {
+			} else if (quoteDetected && inputSplit[i].endsWith("\"") && !inputSplit[i].endsWith("\\\"")) {
 				quoteDetected = false;
 				inputSplit[i] = inputSplit[i].substring(0,
 						inputSplit[i].length() - 1);
@@ -377,14 +371,15 @@ public class Parser {
 				// Any words to be passed to Natty into dateString variable
 				for (int j = i; j < inputSplit.length; j++) {
 					if (inputSplit[j].startsWith("\"")
-							&& inputSplit[j].endsWith("\"")) {
+							&& inputSplit[j].endsWith("\"")
+							&& !inputSplit[j].endsWith("\\\"")) {
 						quoteDetected = true;
 					} else if (inputSplit[j].startsWith("\"")) {
 						quoteDetected = true;
 						ignored += inputSplit[j].substring(1,
 								inputSplit[j].length())
 								+ " ";
-					} else if (quoteDetected && inputSplit[j].endsWith("\"")) {
+					} else if (quoteDetected && inputSplit[j].endsWith("\"") && !inputSplit[j].endsWith("\\\"") ) {
 						quoteDetected = false;
 						ignored += inputSplit[j].substring(0,
 								inputSplit[j].length() - 1)
@@ -392,7 +387,8 @@ public class Parser {
 					}
 
 					if (quoteDetected && inputSplit[j].startsWith("\"")
-							&& inputSplit[j].endsWith("\"")) {
+							&& inputSplit[j].endsWith("\"")
+							&& !inputSplit[j].endsWith("\\\"")) {
 						ignored += inputSplit[j].substring(1,
 								inputSplit[j].length() - 1)
 								+ " ";
@@ -419,8 +415,6 @@ public class Parser {
 						taskName += inputSplit[i] + " ";
 						continue;
 					}
-
-					editted = true;
 
 					if (groups.size() > 0) {
 						DateGroup group = groups.get(groups.size() - 1);
@@ -483,10 +477,11 @@ public class Parser {
 			// Insert anything not to be parsed by Natty as task name
 			taskName += inputSplit[i] + " ";
 		}
+		
+		// remove escaped quotes
+		taskName = taskName.replaceAll("\\\\\"", "\"");
 
-		// to indicate if taskName is edited
 		commandInput.setName(taskName.trim());
-		return editted;
 	}
 
 	// Do case-insensitive search of word in array

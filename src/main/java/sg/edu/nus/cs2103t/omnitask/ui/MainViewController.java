@@ -503,10 +503,11 @@ public class MainViewController {
 			cycleHandleHistory();
 			String command = CommandEdit.COMMAND_ALIASES[0] + " "
 					+ task.getId() + " ";
-			omniBar.setText(command + task.getName());
+			String taskName = task.getName().replaceAll("\"", "\\\\\"");
+			omniBar.setText(command + taskName);
 			focusOmniBar();
 			omniBar.selectRange(command.length(), command.length()
-					+ task.getName().length());
+					+ taskName.length());
 		}
 
 		public void autofillOmniBarWithEditPriority(String uuid) {

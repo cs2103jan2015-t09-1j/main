@@ -25,11 +25,11 @@ public class CommandUnarchive extends Command {
 		task.setArchived(false);
 
 		if (data.editTask(task) && task != null) {
-			ui.showMessage("Task \"" + commandInput.getId()
+			ui.showMessage("Task \"" + task.getName()
 					+ "\" is successfully unarchived!");
 			return true;
 		} else {
-			ui.showError("Unable to unarchive Task \"" + commandInput.getId()
+			ui.showError("Unable to unarchive Task \"" + task.getName()
 					+ "\". Please choose a valid id!");
 		}
 

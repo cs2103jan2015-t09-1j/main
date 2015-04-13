@@ -15,7 +15,7 @@ import sg.edu.nus.cs2103t.omnitask.ui.Ui;
  * list
  * <p>
  */
-//@author A0119742
+// @author A0119742A
 public class CommandDelete extends Command {
 
 	public static String[] COMMAND_ALIASES = new String[] { "delete", "remove",
@@ -40,8 +40,8 @@ public class CommandDelete extends Command {
 		}
 
 		if (data.deleteTask(taskToRemove) && taskToRemove != null) {
-			ui.showMessage("Task \"" + commandInput.getId() + "\" " + "\""
-					+ taskToRemove.getName() + "\" deleted successfully!");
+			ui.showMessage("Task " + taskToRemove.getName()
+					+ "\" deleted successfully!");
 			return true;
 		} else {
 			ui.showError("Unable to delete Task \"" + commandInput.getId()

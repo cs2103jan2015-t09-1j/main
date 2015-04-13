@@ -42,18 +42,16 @@ public class JsonStorage extends Storage {
 
 	@Override
 	public ArrayList<Task> readFromFile() throws IOException {
-		String lines = "";
-
-		InputStream in = Files.newInputStream(storageFile.toPath());
-		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-		String line = null;
-		while ((line = reader.readLine()) != null) {
-			lines += line + "\n";
-		}
-		in.close();
+		String lines = readFromFileToString(storageFile);
 
 		// return empty arraylist if file has zero items
 		ArrayList<Task> tasks = new ArrayList<Task>();
+		
+		String sampleTasksJson = readFromFileToString(getClass().getResourceAsStream("/sampleStorage.json"));
+		ArrayList<Task> sampleTasks = gson.fromJson(sampleTasksJson,
+				new TypeToken<ArrayList<Task>>() {
+				}.getType());
+		tasks = sampleTasks;
 
 		// convert json to ArrayList
 		try {
@@ -71,13 +69,24 @@ public class JsonStorage extends Storage {
 
 		return tasks;
 	}
+	
+	private String readFromFileToString(File file) throws IOException {
+		return readFromFileToString(Files.newInputStream(file.toPath()));
+	}
+	
+	private String readFromFileToString(InputStream in) throws IOException {
+		String lines = "";
+		
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+		String line = null;
+		while ((line = reader.readLine()) != null) {
+			lines += line + "\n";
+		}
+		in.close();
+		
+		return lines;
+	}
 
-	/**
-	 * Retrieves content from the help file. There is 2 type of help content
-	 * aside from the main help there is a mini help menu displayed along when
-	 * user types in a code.
-	 * <p>
-	 */
 	@Override
 	public String readFromHelpFile(String helpType, boolean miniMenu)
 			throws IOException {
@@ -129,15 +138,7 @@ public class JsonStorage extends Storage {
 	}
 
 	// @author A0119643A
-
-	/**
-	 * This method will test if the user specified location exist if it does
-	 * create a new storage.txt in the new directory and copy the contents of
-	 * the old storage.txt to it. Lastly create a configuration file which
-	 * stores the new directory, it will be loaded everytime omnitask starts.
-	 * <p>
-	 * 
-	 */
+	
 	@Override
 	public boolean changeStorageFileDirectory(String newDir) throws IOException {
 		boolean status = false;

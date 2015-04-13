@@ -48,11 +48,11 @@ public class CommandArchive extends Command {
 			task.setArchived(true);
 
 			if (data.editTask(task) && task != null) {
-				ui.showMessage("Task \"" + commandInput.getId()
+				ui.showMessage("Task \"" + task.getName()
 						+ "\" is successfully archived!");
 				return true;
 			} else {
-				ui.showError("Unable to archive Task \"" + commandInput.getId()
+				ui.showError("Unable to archive Task \"" + task.getName()
 						+ "\". Please choose a valid id!");
 			}
 		}

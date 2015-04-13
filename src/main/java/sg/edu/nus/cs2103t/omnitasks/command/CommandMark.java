@@ -12,7 +12,7 @@ import sg.edu.nus.cs2103t.omnitask.ui.Ui;
  * specification.
  * <p>
  */
-// @author A0119742
+// @author A0119742A
 public class CommandMark extends Command {
 
 	public static String[] COMMAND_ALIASES = new String[] { "mark" };
@@ -37,13 +37,14 @@ public class CommandMark extends Command {
 
 		if (commandInput.isCompleted() == true && data.editTask(task)
 				&& task != null) {
-			ui.showMessage("Task \"" + commandInput.getId()
+			ui.showMessage("Task \"" + task.getName()
 					+ "\" is successfully marked as Done!");
 			return true;
 		} else if (commandInput.isCompleted() == false && data.editTask(task)
 				&& task != null) {
-			ui.showMessage("Task \"" + commandInput.getId()
+			ui.showMessage("Task \"" + task.getName()
 					+ "\" is successfully marked as Not Done!");
+			return true;
 		}
 
 		return false;

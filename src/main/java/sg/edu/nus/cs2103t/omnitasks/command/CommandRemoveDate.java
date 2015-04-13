@@ -11,7 +11,7 @@ import sg.edu.nus.cs2103t.omnitask.ui.Ui;
  * it is found, the Task's date will be removed
  * <p>
  */
-//@author A0119742
+//@author A0119742A
 public class CommandRemoveDate extends Command {
 
 	public static String[] COMMAND_ALIASES = new String[] { "remove-date" };
@@ -29,14 +29,14 @@ public class CommandRemoveDate extends Command {
 
 		try {
 			if (data.removeTaskDate(taskToRemoveDate)) {
-				ui.showMessage("Task \"" + commandInput.getId()
+				ui.showMessage("Task \"" + taskToRemoveDate.getName()
 						+ "\" date has been removed!");
 				return true;
 			}
 		} catch (ArrayIndexOutOfBoundsException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			ui.showError("Unable to edit Task \"" + commandInput.getId()
+			ui.showError("Unable to edit Task \"" + taskToRemoveDate.getName()
 					+ "\". Please choose a valid id!");
 
 		}

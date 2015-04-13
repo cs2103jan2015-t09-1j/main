@@ -7,20 +7,48 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+//@author A0111795A
+/**
+ * This class holds info on Task details. The usual way to construct this object is to fill in the data based on CommandInput object.
+ * If a Task has end date but no start date, it is a Deadline Task.
+ * If a Task has both start and end dates, it is a Timed Task.
+ * If a Task has no dates, it is a Floating Task.
+ *
+ */
 public class Task {
+	/**
+	 * There are 4 levels of Priority for a Task.
+	 */
 	public static enum Priority {
-		NONE, LOW, MEDIUM, HIGH
+		/**
+		 * No Priority
+		 */
+		NONE,
+		/**
+		 * Low Priority
+		 */
+		LOW,
+		/**
+		 * Medium Priority
+		 */
+		MEDIUM,
+		/**
+		 * High Priority
+		 */
+		HIGH
 	}
 
-	// Sort task list according to 3 fields: dates, priority, id
-	// General explanation for algorithm:
-	// 1. If both task have no end dates OR both have but equal end dates -> If
-	// priority not equal, sort by priority
-	// 2. If either of the task have no end date, place the one with no end date
-	// lower down the list (return 1) and the other, higher up (return -1
-	// 3. If both task have end dates and they're not equal, use the DateTime
-	// compareTo to resolve
-	// 4. Default case: Sort by task id
+	/**
+	* Sort task list according to 3 fields: dates, priority, id
+	* General explanation for algorithm:
+	* 1. If both task have no end dates OR both have but equal end dates -> If
+	* priority not equal, sort by priority
+	* 2. If either of the task have no end date, place the one with no end date
+	* lower down the list (return 1) and the other, higher up (return -1
+	* 3. If both task have end dates and they're not equal, use the DateTime
+	* compareTo to resolve
+	* 4. Default case: Sort by task id
+	*/
 	public static Comparator<Task> taskSorterComparator = new Comparator<Task>() {
 
 		@Override
@@ -55,9 +83,15 @@ public class Task {
 		}
 	};
 
+	/**
+	 * Contains values of colors to be used for rendering by UI
+	 */
 	final private static String[] priorityColors = new String[] { "none",
 			"#0099CC", "#FF8800", "#CC0000" };
 
+	/**
+	 * Contains the strings to be used for rendering by UI
+	 */
 	final private static String[] priorityStrings = new String[] { "", "low",
 			"med", "high" };
 
@@ -73,17 +107,20 @@ public class Task {
 
 	private Priority priority = Priority.NONE;
 
-	private boolean recurrence;
-
 	private DateTime startDate;
 
 	private UUID uuid;
 
+	/**
+	 * Default constructor has no arguments.
+	 */
 	public Task() {
 	}
 
-	// When you add a new field to the class, this method needs to be updated
-	// too
+	/**
+	* Clone this object. Used by Data component when returning Task so that the object does not get modified in Data cache when changes are made in other components.
+	*/
+	// When you add a new field to the class, this method needs to be updated too
 	public Task clone() {
 		Task task = new Task();
 
@@ -99,7 +136,6 @@ public class Task {
 		}
 		task.setArchived(isArchived);
 		task.setPriority(priority);
-		task.setRecurrence(recurrence);
 		task.setName(name);
 		task.setCompleted(isCompleted);
 
@@ -123,10 +159,22 @@ public class Task {
 		return true;
 	}
 
+	/**
+	 * Get the end date for this Task.
+	 * 
+	 * @return null If there is no end date
+	 * @return DateTime If there is a end date
+	 */
 	public DateTime getEndDate() {
 		return endDate;
 	}
 
+	/**
+	 * Get the date in formatted form suitable for display in UI.
+	 * It will automatically format the date depending on what details are available and what type of Task it is.
+	 * 
+	 * @return String Formatted date
+	 */
 	public String getFormattedDate() {
 		DateTime startDate = getStartDate();
 		DateTime endDate = getEndDate();
@@ -182,6 +230,12 @@ public class Task {
 		}
 	}
 
+	/**
+	 * Get the time in formatted form suitable for display in UI.
+	 * It will automatically format the time depending on what details are available and what type of Task it is.
+	 * 
+	 * @return String Formatted time
+	 */
 	public String getFormattedTimeRange() {
 		DateTime startDate = getStartDate();
 		DateTime endDate = getEndDate();
@@ -220,19 +274,38 @@ public class Task {
 		return formatted;
 	}
 
+	/**
+	 * Get Task Id/Index/Ref Id.
+	 * 
+	 * @return int Task Id
+	 */
 	public long getId() {
 		return id;
 	}
 
+	/**
+	 * Get Task name.
+	 * 
+	 * @return String Task name
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Get Task priority.
+	 * 
+	 * @return Priority Task priority
+	 */
 	public Priority getPriority() {
-
 		return this.priority;
 	}
 
+	/**
+	 * Get Task priority color to be used by UI.
+	 * 
+	 * @return String Color of priority in hex format
+	 */
 	public String getPriorityColor() {
 		if (priority != null && priority.ordinal() < 4) {
 			return priorityColors[priority.ordinal()];
@@ -241,6 +314,11 @@ public class Task {
 		return priorityColors[0];
 	}
 
+	/**
+	 * Get Task priority label to be used by UI.
+	 * 
+	 * @return String Label of priority
+	 */
 	public String getPriorityString() {
 		if (priority != null && priority.ordinal() < 4) {
 			return priorityStrings[priority.ordinal()];
@@ -249,10 +327,20 @@ public class Task {
 		return priorityStrings[0];
 	}
 
+	/**
+	 * Get the start date for this Task.
+	 * 
+	 * @return DateTime Start date of this Task
+	 */
 	public DateTime getStartDate() {
 		return startDate;
 	}
 
+	/**
+	 * Get the Uuid for this Task. Uuid is a unique identifier for this Task.
+	 * 
+	 * @return UUID Unique id for this Task
+	 */
 	public UUID getUuid() {
 		return uuid;
 	}
@@ -265,10 +353,22 @@ public class Task {
 		return result;
 	}
 
+	/**
+	 * Return if this Task is done.
+	 * 
+	 * @return true if Task is completed
+	 * @return false if Task is not completed
+	 */
 	public boolean isCompleted() {
 		return isCompleted;
 	}
-
+	
+	/**
+	 * Return if this Task is due.
+	 * 
+	 * @return true if Task is due
+	 * @return false if Task is not due
+	 */
 	public boolean isDue() {
 		if (endDate == null)
 			return false;
@@ -276,38 +376,65 @@ public class Task {
 		return DateTime.now().isAfter(endDate);
 	}
 
-	public boolean isRecurrence() {
-		return recurrence;
-	}
-
+	/**
+	 * Set if the Task is completed.
+	 * 
+	 * @param isCompleted true if Task is completed
+	 */
 	public void setCompleted(boolean isCompleted) {
 		this.isCompleted = isCompleted;
 	}
-
+	
+	/**
+	 * Set the value for Task end date.
+	 * 
+	 * @param endDate Task end date
+	 */
 	public void setEndDate(DateTime endDate) {
 		this.endDate = endDate;
 	}
 
+	/**
+	 * Set Task id.
+	 * 
+	 * @param id Task id
+	 */
 	public void setId(long id) {
 		this.id = id;
 	}
 
+	/**
+	 * Set Task name.
+	 * 
+	 * @param name Task name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Set Task priority.
+	 * 
+	 * @param priority Task priority
+	 */
 	public void setPriority(Priority priority) {
 		this.priority = priority;
 	}
 
-	public void setRecurrence(boolean recurrence) {
-		this.recurrence = recurrence;
-	}
-
+	/**
+	 * Set start date for Task.
+	 * 
+	 * @param startDate Task start date
+	 */
 	public void setStartDate(DateTime startDate) {
 		this.startDate = startDate;
 	}
 	
+	/**
+	 * Set Task Uuid.
+	 * 
+	 * @param uuid Task UUID
+	 */
 	public void setUuid(UUID uuid) {
 		this.uuid = uuid;
 	}
@@ -334,10 +461,21 @@ public class Task {
 		return formatted.toUpperCase();
 	}
 
+	/**
+	 * Return if Task is archived.
+	 * 
+	 * @return true if Task is archived
+	 * @return false if Task is not archived
+	 */
 	public boolean isArchived() {
 		return isArchived;
 	}
 
+	/**
+	 * Set if the Task is archived.
+	 * 
+	 * @param isArchived true if Task is archived.
+	 */
 	public void setArchived(boolean isArchived) {
 		this.isArchived = isArchived;
 	}

@@ -123,15 +123,7 @@ public class JsonStorage extends Storage {
 	}
 
 	// @author A0119643A
-
-	/**
-	 * This method will test if the user specified location exist if it does
-	 * create a new storage.txt in the new directory and copy the contents of
-	 * the old storage.txt to it. Lastly create a configuration file which
-	 * stores the new directory, it will be loaded everytime omnitask starts.
-	 * <p>
-	 * 
-	 */
+	
 	@Override
 	public boolean changeStorageFileDirectory(String newDir) throws IOException {
 		boolean status = false;

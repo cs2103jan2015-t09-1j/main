@@ -29,7 +29,7 @@ import sg.edu.nus.cs2103t.omnitasks.command.Utils;
 
 import com.joestelmach.natty.DateGroup;
 
-//@A0116347H
+//@author A0116347H
 public class Parser {
 
 	private static final String[] DATE_INDICATORS = new String[] { "from",
@@ -484,6 +484,7 @@ public class Parser {
 		commandInput.setName(taskName.trim());
 	}
 
+	// @author A0111795A
 	// Do case-insensitive search of word in array
 	private boolean inArray(String[] haystack, String needle) {
 		for (int i = 0; i < haystack.length; i++) {
@@ -518,4 +519,3 @@ public class Parser {
 		return str.trim();
 	}
 }
-//@A0116347H

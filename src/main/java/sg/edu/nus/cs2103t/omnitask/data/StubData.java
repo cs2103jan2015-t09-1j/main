@@ -7,6 +7,10 @@ import java.util.UUID;
 import sg.edu.nus.cs2103t.omnitask.item.Task;
 
 //@author A0111795A
+/**
+ * Stub Data class. Used for unit test.
+ *
+ */
 public class StubData extends Data {
 
 	private static StubData data;

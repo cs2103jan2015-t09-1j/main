@@ -27,6 +27,9 @@ public abstract class Data {
 		dataUpdatedListeners = new ArrayList<DataUpdatedListener>();
 	}
 
+	/**
+	 * Add listeners to this class to listen to data changes.
+	 */
 	public void addDataUpdatedListener(DataUpdatedListener listener) {
 		dataUpdatedListeners.add(listener);
 	}

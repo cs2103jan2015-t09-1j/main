@@ -11,6 +11,10 @@ import java.nio.file.StandardOpenOption;
 import org.joda.time.DateTime;
 
 //@author A0111795A
+/**
+ * Simple logger to log to file. Largely unused.
+ *
+ */
 public class Logger {
 	private static Path logFile = new File("log.txt").toPath();
 

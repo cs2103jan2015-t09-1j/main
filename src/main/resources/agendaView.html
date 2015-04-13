@@ -260,7 +260,7 @@
 			}
 			
 			el.find(".title").text(task.getName());
-			var taskName = el.find(".title").text();
+			var taskName = el.find(".title").html();
 			taskName = taskName.replace(/ #(.+)/g, " <a class=\"category\" href=\"#\">#$1</a> ");
 			el.find(".title").html(taskName);
 			

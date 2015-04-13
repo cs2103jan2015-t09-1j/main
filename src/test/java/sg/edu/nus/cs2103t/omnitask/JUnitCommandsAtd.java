@@ -20,7 +20,7 @@ import sg.edu.nus.cs2103t.omnitasks.command.CommandSearch;
 
 public class JUnitCommandsAtd {
 
-	// @author A0111795A
+	// @author A0119643A
 	// Test add command, make sure it is added successfully
 	@Test
 	public void TestCommandAdd() {
@@ -106,7 +106,7 @@ public class JUnitCommandsAtd {
 		assertFalse(success);
 	}
 
-	// @author A0119643A
+	
 	// test search valid string command
 	@Test
 	public void TestCommandSearchValid() {

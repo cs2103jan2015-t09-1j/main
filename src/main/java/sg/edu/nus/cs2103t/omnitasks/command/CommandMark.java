@@ -44,6 +44,7 @@ public class CommandMark extends Command {
 				&& task != null) {
 			ui.showMessage("Task \"" + commandInput.getId()
 					+ "\" is successfully marked as Not Done!");
+			return true;
 		}
 
 		return false;

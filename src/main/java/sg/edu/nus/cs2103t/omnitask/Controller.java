@@ -8,6 +8,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import org.apache.commons.lang.ArrayUtils;
+
+import edu.emory.mathcs.backport.java.util.Arrays;
+import edu.emory.mathcs.backport.java.util.Collections;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import sg.edu.nus.cs2103t.omnitask.data.Data;
@@ -21,8 +25,22 @@ import sg.edu.nus.cs2103t.omnitask.ui.JavaFxUi;
 import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 import sg.edu.nus.cs2103t.omnitask.ui.Ui.ControllerCallback;
 import sg.edu.nus.cs2103t.omnitasks.command.Command;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandAdd;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandArchive;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandDelete;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandDisplay;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandEdit;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandExit;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandHelp;
 import sg.edu.nus.cs2103t.omnitasks.command.CommandMark;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandNext;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandPrev;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandRedo;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandRemoveDate;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandSearch;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandStorage;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandUnarchive;
+import sg.edu.nus.cs2103t.omnitasks.command.CommandUndo;
 
 public class Controller extends Application implements ControllerCallback {
 
@@ -169,15 +187,43 @@ public class Controller extends Application implements ControllerCallback {
 	private ArrayList<String> generatePossibleAutoComplete(String userInput) {
 
 		ArrayList<String> possibleAutoComplete = new ArrayList<String>();
+		ArrayList<String[]> allCommandAliases = new ArrayList<String[]>();
+		ArrayList<String> possibleCommands = new ArrayList<String>();
 
-		String[] possibleCommands = new String[] { "add", "archive", "delete",
-				"show", "edit", "help", "mark", "next", "prev", "redo",
-				"undo", "remove-date", "search", "storage", "unarchive" };
+		allCommandAliases.add(CommandAdd.COMMAND_ALIASES);
+		allCommandAliases.add(CommandArchive.COMMAND_ALIASES);
+		allCommandAliases.add(CommandDelete.COMMAND_ALIASES);
+		allCommandAliases.add(CommandDisplay.COMMAND_ALIASES);
+		allCommandAliases.add(CommandEdit.COMMAND_ALIASES);
+		allCommandAliases.add(CommandExit.COMMAND_ALIASES);
+		allCommandAliases.add(CommandHelp.COMMAND_ALIASES);
+		allCommandAliases.add(CommandMark.COMMAND_ALIASES);
+		allCommandAliases.add(CommandNext.COMMAND_ALIASES);
+		allCommandAliases.add(CommandPrev.COMMAND_ALIASES);
+		allCommandAliases.add(CommandRedo.COMMAND_ALIASES);
+		allCommandAliases.add(CommandRemoveDate.COMMAND_ALIASES);
+		allCommandAliases.add(CommandSearch.COMMAND_ALIASES);
+		allCommandAliases.add(CommandStorage.COMMAND_ALIASES);
+		allCommandAliases.add(CommandUnarchive.COMMAND_ALIASES);
+		allCommandAliases.add(CommandUndo.COMMAND_ALIASES);
 
-		for (int i = 0; i < possibleCommands.length; i++) {
+		
+
+		for (int i = 0; i < allCommandAliases.size(); i++) {
+			for (String s : allCommandAliases.get(i)) {
+				if (!s.trim().isEmpty()) {
+					possibleCommands.add(s);
+				}
+			}
+		}
+		
+		Collections.sort(possibleCommands);
+		
+		
+		for (int i = 0; i < possibleCommands.size(); i++) {
 			if (!userInput.equals("")
-					&& possibleCommands[i].startsWith(userInput.trim())) {
-				possibleAutoComplete.add(possibleCommands[i]);
+					&& possibleCommands.get(i).startsWith(userInput.toLowerCase().trim())) {
+				possibleAutoComplete.add(possibleCommands.get(i));
 			}
 
 		}

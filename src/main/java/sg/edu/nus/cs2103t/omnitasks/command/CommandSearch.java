@@ -8,7 +8,6 @@ import sg.edu.nus.cs2103t.omnitask.item.Task;
 import sg.edu.nus.cs2103t.omnitask.ui.MainViewController.ViewMode;
 import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 
-
 //@author A0119643A
 
 /**
@@ -39,9 +38,10 @@ public class CommandSearch extends Command {
 		ArrayList<Task> fullTaskList = new ArrayList<Task>();
 
 		fullTaskList = data.searchTask();
-		String searchKey = commandInput.getName().toLowerCase();
+		String searchKey;
 
 		if (commandInput.getName() != null) {
+			searchKey = commandInput.getName().toLowerCase();
 			for (int i = 0; i < fullTaskList.size(); i++) {
 				if (fullTaskList.get(i).getName().toLowerCase()
 						.contains(searchKey)) {
@@ -55,8 +55,8 @@ public class CommandSearch extends Command {
 			return true;
 		} else {
 			ui.showError("Please fill in the search key!");
-		}
 
+		}
 		// return false to update the task listing with search result and not
 		// default
 		return false;

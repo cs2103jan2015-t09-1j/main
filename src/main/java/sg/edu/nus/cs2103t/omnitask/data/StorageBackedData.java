@@ -308,8 +308,6 @@ public class StorageBackedData extends Data {
 			e.printStackTrace();
 			printError("Unable to read from file @ dataImpl search function! ");
 		}
-		// make sure the search key is not empty if its empty searchTaskResult
-		// will have size of 0
 
 		return fullTaskList;
 	}

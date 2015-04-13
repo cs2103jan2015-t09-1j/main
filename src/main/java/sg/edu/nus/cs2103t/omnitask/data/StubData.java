@@ -125,8 +125,8 @@ public class StubData extends Data {
 	@Override
 	public ArrayList<Task> searchTask() {
 		assertInited();
-
-		return null;
+		
+		return tasks;
 	}
 
 	public boolean undo() {

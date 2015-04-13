@@ -12,7 +12,7 @@ import sg.edu.nus.cs2103t.omnitask.ui.Ui;
  * specification.
  * <p>
  */
-// @author A0119742A
+// @author A0119742
 public class CommandMark extends Command {
 
 	public static String[] COMMAND_ALIASES = new String[] { "mark" };
@@ -44,7 +44,6 @@ public class CommandMark extends Command {
 				&& task != null) {
 			ui.showMessage("Task \"" + task.getName()
 					+ "\" is successfully marked as Not Done!");
-			return true;
 		}
 
 		return false;

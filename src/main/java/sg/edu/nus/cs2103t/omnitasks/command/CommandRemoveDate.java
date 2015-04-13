@@ -11,7 +11,7 @@ import sg.edu.nus.cs2103t.omnitask.ui.Ui;
  * it is found, the Task's date will be removed
  * <p>
  */
-//@author A0119742A
+//@author A0119742
 public class CommandRemoveDate extends Command {
 
 	public static String[] COMMAND_ALIASES = new String[] { "remove-date" };

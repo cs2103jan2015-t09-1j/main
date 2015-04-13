@@ -8,6 +8,7 @@ import sg.edu.nus.cs2103t.omnitask.item.CommandInput;
 import sg.edu.nus.cs2103t.omnitask.item.Task;
 import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 
+//@author A0119742A
 /**
  * This class contains the logic for Add command. When Add command is triggered,
  * it will create a new Task object that takes the attributes of the

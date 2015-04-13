@@ -100,14 +100,11 @@ public abstract class Data {
 		dataUpdatedListeners.remove(listener);
 	}
 
-	//@author A0119742A
 	public abstract ArrayList<Task> searchTask();
 
 	/**This method rewrites the Tasks list with the Tasks list saved in the UndoState.
 	 * <p>
 	 * 
-	 * @author A0119742A
-	 * 	  
 	 * @param void
 	 * @return True if successful, false if otherwise
 	 */

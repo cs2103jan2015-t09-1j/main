@@ -5,6 +5,7 @@ import sg.edu.nus.cs2103t.omnitask.item.Task;
 
 public class Utils {
 
+	// @author A0119742A
 	public static void addAttributes(CommandInput commandInput, Task task) {
 		task.setName(commandInput.getName());
 
@@ -20,7 +21,6 @@ public class Utils {
 		task.setEndDate(commandInput.getEndDate());
 	}
 
-	// @author A0119742A
 	/**
 	 * This method is a utility method that is used by editTask method in
 	 * StorageBackedData It creates a Task object that contains attributes of
@@ -49,6 +49,8 @@ public class Utils {
 		foundTask.setArchived(mutatorTask.isArchived());
 		foundTask.setCompleted(mutatorTask.isCompleted());
 	}
+
+	// @author A0119742A
 
 	public static CommandInput.CommandType getCommandTypeFromString(String str) {
 

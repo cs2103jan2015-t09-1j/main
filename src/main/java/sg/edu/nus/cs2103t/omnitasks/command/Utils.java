@@ -40,10 +40,8 @@ public class Utils {
 		if (mutatorTask.getPriority() != null) {
 			foundTask.setPriority(mutatorTask.getPriority());
 		}
-		if (mutatorTask.getStartDate() != null) {
+		if (mutatorTask.getStartDate() != null || mutatorTask.getEndDate() != null) {
 			foundTask.setStartDate(mutatorTask.getStartDate());
-		}
-		if (mutatorTask.getEndDate() != null) {
 			foundTask.setEndDate(mutatorTask.getEndDate());
 		}
 		foundTask.setArchived(mutatorTask.isArchived());
@@ -172,10 +170,8 @@ public class Utils {
 		if (commandInput.getPriority() != null) {
 			mutatorTask.setPriority(commandInput.getPriority());
 		}
-		if (commandInput.getStartDate() != null) {
+		if (commandInput.getStartDate() != null || commandInput.getEndDate() != null) {
 			mutatorTask.setStartDate(commandInput.getStartDate());
-		}
-		if (commandInput.getEndDate() != null) {
 			mutatorTask.setEndDate(commandInput.getEndDate());
 		}
 	}

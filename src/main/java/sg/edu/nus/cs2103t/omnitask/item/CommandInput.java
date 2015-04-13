@@ -32,8 +32,6 @@ public class CommandInput {
 
 	private Priority priority;
 
-	private boolean recurrence;
-
 	private DateTime startDate;
 /**
  * This creates the CommandInput object.
@@ -56,6 +54,8 @@ public class CommandInput {
  * @return
  *                returns the numerical representation of priorities
  */
+    //@author A0119643A-unused
+	// deprecated due to enum having ordinal() method
 	public int convertPriorityToNum(Priority priority) {
 		int prioNum = 0;
 		switch (priority) {
@@ -134,15 +134,7 @@ public class CommandInput {
 	public boolean isCompleted() {
 		return isCompleted;
 	}
-
-/**
- * This method returns a boolean value indicating if the task is a recurring task.	
- * @return true if task is recurring; false if not recurring
- */
-	public boolean isRecurrence() {
-		return recurrence;
-	}
-
+	
 /**
  * This method set the commandType of a task to the new input value.	
  * @param commandType new commadType from input
@@ -189,14 +181,6 @@ public class CommandInput {
  */
 	public void setPriority(Priority priority) {
 		this.priority = priority;
-	}
-
-/**
- * This method updates the recurrence attribute of a task.	
- * @param recurrence new boolean value indicating recurrence entered by user
- */
-	public void setRecurrence(boolean recurrence) {
-		this.recurrence = recurrence;
 	}
 
 /**

@@ -10,8 +10,8 @@ import java.util.List;
 
 import sg.edu.nus.cs2103t.omnitask.item.Task;
 
-//@author A0111795A
 public abstract class Storage {
+	//@author A0111795A
 	public static boolean CheckIfFileExistAndCreateIfDoesNot(File file)
 			throws IOException {
 		if (!file.exists()) {

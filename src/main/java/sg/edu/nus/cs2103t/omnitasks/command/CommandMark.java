@@ -37,12 +37,12 @@ public class CommandMark extends Command {
 
 		if (commandInput.isCompleted() == true && data.editTask(task)
 				&& task != null) {
-			ui.showMessage("Task \"" + commandInput.getId()
+			ui.showMessage("Task \"" + task.getName()
 					+ "\" is successfully marked as Done!");
 			return true;
 		} else if (commandInput.isCompleted() == false && data.editTask(task)
 				&& task != null) {
-			ui.showMessage("Task \"" + commandInput.getId()
+			ui.showMessage("Task \"" + task.getName()
 					+ "\" is successfully marked as Not Done!");
 			return true;
 		}

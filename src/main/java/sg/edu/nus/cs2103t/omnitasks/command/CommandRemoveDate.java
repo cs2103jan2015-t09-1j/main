@@ -29,14 +29,14 @@ public class CommandRemoveDate extends Command {
 
 		try {
 			if (data.removeTaskDate(taskToRemoveDate)) {
-				ui.showMessage("Task \"" + commandInput.getId()
+				ui.showMessage("Task \"" + taskToRemoveDate.getName()
 						+ "\" date has been removed!");
 				return true;
 			}
 		} catch (ArrayIndexOutOfBoundsException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			ui.showError("Unable to edit Task \"" + commandInput.getId()
+			ui.showError("Unable to edit Task \"" + taskToRemoveDate.getName()
 					+ "\". Please choose a valid id!");
 
 		}

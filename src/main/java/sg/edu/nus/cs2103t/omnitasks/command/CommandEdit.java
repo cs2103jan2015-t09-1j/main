@@ -50,19 +50,22 @@ public class CommandEdit extends Command {
 			}
 
 		}
+		
+		String taskOldName = task.getName();
+		
 		// edit name, priority, start&end date from commandInput
 		Utils.makeTaskToEdit(commandInput, task);
 
 		try {
 			if (data.editTask(task)) {
-				ui.showMessage("Task \"" + commandInput.getId()
+				ui.showMessage("Task \"" + taskOldName
 						+ "\" updated successfully!");
 				return true;
 			}
 		} catch (ArrayIndexOutOfBoundsException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			ui.showError("Unable to edit Task \"" + commandInput.getId()
+			ui.showError("Unable to edit Task \"" + taskOldName
 					+ "\". Please choose a valid id!");
 
 		}

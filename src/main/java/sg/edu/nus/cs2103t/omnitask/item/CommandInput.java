@@ -23,8 +23,6 @@ public class CommandInput {
 
 	private Priority priority;
 
-	private boolean recurrence;
-
 	private DateTime startDate;
 
 	public CommandInput() {
@@ -34,6 +32,8 @@ public class CommandInput {
 		this.commandType = commandType;
 	}
 
+	//@author A0119643A-unused
+	// deprecated due to enum having ordinal() method
 	public int convertPriorityToNum(Priority priority) {
 		int prioNum = 0;
 		switch (priority) {
@@ -84,10 +84,6 @@ public class CommandInput {
 		return isCompleted;
 	}
 
-	public boolean isRecurrence() {
-		return recurrence;
-	}
-
 	public void setCommandType(CommandType commandType) {
 		this.commandType = commandType;
 	}
@@ -110,10 +106,6 @@ public class CommandInput {
 
 	public void setPriority(Priority priority) {
 		this.priority = priority;
-	}
-
-	public void setRecurrence(boolean recurrence) {
-		this.recurrence = recurrence;
 	}
 
 	public void setStartDate(DateTime startDate) {

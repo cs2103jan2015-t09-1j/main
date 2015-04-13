@@ -9,6 +9,13 @@ import sg.edu.nus.cs2103t.omnitask.ui.MainViewController;
 import sg.edu.nus.cs2103t.omnitask.ui.MainViewController.ViewMode;
 import sg.edu.nus.cs2103t.omnitask.ui.Ui;
 
+/**
+ * This class contains the logic for Display command. When Display command is triggered,
+ * it will search for key words "all", "overdue", etc... then it calls ui to display respective
+ * types of tasks to the user.
+ * 
+ * <p>
+ */
 public class CommandDisplay extends Command {
 
 	public static String[] COMMAND_ALIASES = new String[] { "display",

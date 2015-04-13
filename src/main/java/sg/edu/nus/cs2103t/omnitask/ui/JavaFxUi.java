@@ -47,9 +47,9 @@ import com.tulskiy.keymaster.common.Provider;
 //@author A0111795A
 public class JavaFxUi extends Ui {
 
-	private static double WINDOW_HEIGHT = 680;
+	private static double WINDOW_HEIGHT = (javafx.stage.Screen.getPrimary().getDpi() / 96) * 560;
 
-	private static double WINDOW_WIDTH = 960;
+	private static double WINDOW_WIDTH = (javafx.stage.Screen.getPrimary().getDpi() / 96) * 640;
 
 	private DataUpdatedListener dataUpdatedListener = new DataUpdatedListener() {
 
@@ -267,6 +267,18 @@ public class JavaFxUi extends Ui {
 			helpStage.initStyle(StageStyle.UTILITY);
 			helpStage.setScene(new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT));
 
+			helpStage.setOnShowing(new EventHandler<WindowEvent>() {
+
+				@Override
+				public void handle(WindowEvent event) {
+					helpStage.setWidth(primaryStage.getWidth());
+					helpStage.setHeight(primaryStage.getHeight());
+					helpStage.setX(primaryStage.getX());
+					helpStage.setY(primaryStage.getY());
+				}
+				
+			});
+			
 			helpStage.getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
 				public void handle(KeyEvent event) {
 					if (event.getCode() == KeyCode.ESCAPE) {
@@ -298,7 +310,7 @@ public class JavaFxUi extends Ui {
 
 			miniHelpStage = new Stage();
 			miniHelpStage.initStyle(StageStyle.UTILITY);
-			miniHelpStage.setScene(new Scene(root, WINDOW_WIDTH, 150));
+			miniHelpStage.setScene(new Scene(root, WINDOW_WIDTH, (javafx.stage.Screen.getPrimary().getDpi() / 96) * 150));
 			miniHelpStage.setAlwaysOnTop(true);
 			/*miniHelpStage.focusedProperty().addListener(
 					new ChangeListener<Boolean>() {

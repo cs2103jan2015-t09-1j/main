@@ -68,6 +68,10 @@ public class JUnitSystemTest {
 		// TODO: Test Edit Timed Task
 		// TODO: Test Add Priority
 		// TODO: Test Edit Priority
+		// TODO: Test Mark Done
+		// TODO: Test Mark Undone
+		// TODO: Test remove-date
+		
 	}
 	
 	private void processInput(Ui ui, Parser parser, Data data, String input, CommandType expectedCommandType, long expectedId, String expectedTaskName, DateTime expectedStartDate, DateTime expectedEndDate, Priority expectedPriority) {
